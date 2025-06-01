@@ -1,0 +1,54 @@
+---
+title: "Classification and Regression Tree (CART)"
+author: "Diana Villasana Ocampo"
+format:
+  html:
+    code-fold: true
+    highlight-style: tango
+    theme: flatly
+    toc: true
+    toc-depth: 3
+    toc-location: right
+editor: visual
+project:
+  output-dir: ../../Output/
+---
+
+## Quarto
+
+Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+
+## Running Code
+
+When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+```{python echo=FALSE}
+#| include: false
+#| echo: false
+import subprocess
+import os
+
+input_file = os.path.join(os.getcwd(), "R", "Decision Tree", "CART_py.qmd")
+output_dir = os.path.join(os.getcwd(), "../Output")
+
+subprocess.run([
+    "quarto",
+    "render",
+    input_file,
+    "--output-dir", output_dir
+])
+```
+
+
+```{python}
+1 + 1
+```
+
+You can add options to executable code like this
+
+```{python}
+#| echo: false
+2 * 2
+```
+
+The `echo: false` option disables the printing of code (only output is displayed).
