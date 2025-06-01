@@ -2,7 +2,7 @@
 title: "Classification and Regression Tree (CART)"
 author: "Diana Villasana Ocampo"
 knit: (function(inputFile, encoding) {
-       rmarkdown::render(inputFile, encoding = encoding, output_dir = "../Output/")
+       rmarkdown::render(inputFile, encoding = encoding, output_dir = "../../Output/")
   })
 output:
    html_document:
