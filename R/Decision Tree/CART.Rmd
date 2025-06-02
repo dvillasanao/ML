@@ -102,10 +102,17 @@ knitr::opts_knit$set(root.dir = here::here())
 setwd(here::here())
 ```
 
-```{r,echo=FALSE, eval=FALSE}
+```{r,echo=FALSE, eval=FALSE, }
 rm(list = ls())
 ```
 
+```{r, echo = FALSE, results=FALSE}
+# Se descargan las fuentes de la google fonts
+require(showtext)
+library(extrafont)
+# activar showtext
+windowsFonts()
+```
 
 ## Referencias  
 

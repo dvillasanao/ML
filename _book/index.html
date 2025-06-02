@@ -4,19 +4,19 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Chapter 1 About | A Minimal Book Example</title>
+<title>Machine Learning | A Minimal Book Example</title>
 <meta name="author" content="John Doe">
 <meta name="description" content="&lt;p&gt;This is a minimal example of using the bookdown package to write a book.
 The HTML output format for this example is bookdown::bs4_book,
 set in the _output.yml file.&lt;/p&gt;">
 <meta name="generator" content="bookdown 0.42 with bs4_book()">
-<meta property="og:title" content="Chapter 1 About | A Minimal Book Example">
+<meta property="og:title" content="Machine Learning | A Minimal Book Example">
 <meta property="og:type" content="book">
 <meta property="og:description" content="&lt;p&gt;This is a minimal example of using the bookdown package to write a book.
 The HTML output format for this example is bookdown::bs4_book,
 set in the _output.yml file.&lt;/p&gt;">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Chapter 1 About | A Minimal Book Example">
+<meta name="twitter:title" content="Machine Learning | A Minimal Book Example">
 <meta name="twitter:description" content="&lt;p&gt;This is a minimal example of using the bookdown package to write a book.
 The HTML output format for this example is bookdown::bs4_book,
 set in the _output.yml file.&lt;/p&gt;">
@@ -48,75 +48,265 @@ set in the _output.yml file.&lt;/p&gt;">
 </form>
 
       <nav aria-label="Table of contents"><h2>Table of contents</h2>
-        <ul class="book-toc list-unstyled">
-<li><a class="active" href="index.html"><span class="header-section-number">1</span> About</a></li>
-<li><a class="" href="hello-bookdown.html"><span class="header-section-number">2</span> Hello bookdown</a></li>
-<li><a class="" href="references.html">References</a></li>
-</ul>
-<div class="book-extra">
+        <ul class="book-toc list-unstyled"><li><a class="active" href="index.html">Machine Learning</a></li></ul>
+
+        <div class="book-extra">
           <p><a id="book-repo" href="https://github.com/rstudio/bookdown-demo">View book source <i class="fab fa-github"></i></a></p>
         </div>
       </nav>
 </div>
-  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><!--bookdown:title:end--><!--bookdown:title:start--><div id="about" class="section level1" number="1">
-<h1>
-<span class="header-section-number">1</span> About<a class="anchor" aria-label="anchor" href="#about"><i class="fas fa-link"></i></a>
-<a class="anchor" aria-label="anchor" href="#about"><i class="fas fa-link"></i></a>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><!--bookdown:title:end--><!--bookdown:title:start--><div id="machine-learning" class="section level1 unnumbered">
+<h1>Machine Learning<a class="anchor" aria-label="anchor" href="#machine-learning"><i class="fas fa-link"></i></a>
 </h1>
-<p>This is a <em>sample</em> book written in <strong>Markdown</strong>. You can use anything that Pandoc’s Markdown supports; for example, a math equation <span class="math inline">\(a^2 + b^2 = c^2\)</span>.</p>
-<div id="usage" class="section level2" number="1.1">
+<div id="regressión" class="section level2" number="0.1">
 <h2>
-<span class="header-section-number">1.1</span> Usage<a class="anchor" aria-label="anchor" href="#usage"><i class="fas fa-link"></i></a>
-<a class="anchor" aria-label="anchor" href="#usage"><i class="fas fa-link"></i></a>
+<span class="header-section-number">0.1</span> 🔍 <strong>1. Regressión</strong><a class="anchor" aria-label="anchor" href="#regressi%C3%B3n"><i class="fas fa-link"></i></a>
 </h2>
-<p>Each <strong>bookdown</strong> chapter is an .Rmd file, and each .Rmd file can contain one (and only one) chapter. A chapter <em>must</em> start with a first-level heading: <code># A good chapter</code>, and can contain one (and only one) first-level heading.</p>
-<p>Use second-level and higher headings within chapters like: <code>## A short section</code> or <code>### An even shorter section</code>.</p>
-<p>The <code>index.Rmd</code> file is required, and is also your first book chapter. It will be the homepage when you render the book.</p>
+<p><strong>Ejemplos:</strong> Linear Regression, Ridge, Lasso
+<strong>Cuándo usarlo:</strong></p>
+<ul>
+<li>Predicción de valores numéricos continuos (e.g. precios, temperaturas).</li>
+<li>Relaciones lineales entre variables.</li>
+</ul>
+<p><strong>Ventajas:</strong> Simple, interpretable.<br><strong>Limitaciones:</strong> Mal desempeño con relaciones no lineales complejas.</p>
+<hr>
 </div>
-<div id="render-book" class="section level2" number="1.2">
+<div id="árboles-de-decisión-y-derivados" class="section level2" number="0.2">
 <h2>
-<span class="header-section-number">1.2</span> Render book<a class="anchor" aria-label="anchor" href="#render-book"><i class="fas fa-link"></i></a>
-<a class="anchor" aria-label="anchor" href="#render-book"><i class="fas fa-link"></i></a>
+<span class="header-section-number">0.2</span> 🌲 <strong>2. Árboles de Decisión y Derivados</strong><a class="anchor" aria-label="anchor" href="#%C3%A1rboles-de-decisi%C3%B3n-y-derivados"><i class="fas fa-link"></i></a>
 </h2>
-<p>You can render the HTML version of this example book without changing anything:</p>
-<ol style="list-style-type: decimal">
-<li><p>Find the <strong>Build</strong> pane in the RStudio IDE, and</p></li>
-<li><p>Click on <strong>Build Book</strong>, then select your output format, or select “All formats” if you’d like to use multiple formats from the same book source files.</p></li>
-</ol>
-<p>Or build the book from the R console:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="fu">bookdown</span><span class="fu">::</span><span class="fu"><a href="https://pkgs.rstudio.com/bookdown/reference/render_book.html">render_book</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p>To render this example to PDF as a <code><a href="https://pkgs.rstudio.com/bookdown/reference/pdf_book.html">bookdown::pdf_book</a></code>, you’ll need to install XeLaTeX. You are recommended to install TinyTeX (which includes XeLaTeX): <a href="https://yihui.org/tinytex/" class="uri">https://yihui.org/tinytex/</a>.</p>
+<p><strong>Ejemplos:</strong> Decision Tree, Random Forest, Gradient Boosting
+<strong>Cuándo usarlo:</strong></p>
+<ul>
+<li>Problemas tabulares con relaciones no lineales y variables categóricas o numéricas.</li>
+<li>Cuando interpretabilidad es importante.</li>
+</ul>
+<p><strong>Ventajas:</strong> Manejan datos heterogéneos, fáciles de interpretar (árboles simples).<br><strong>Limitaciones:</strong> Sobreajuste en árboles simples; menor desempeño en datos muy ruidosos sin ensambles.</p>
+<hr>
 </div>
-<div id="preview-book" class="section level2" number="1.3">
+<div id="ensambles-ensemble-methods" class="section level2" number="0.3">
 <h2>
-<span class="header-section-number">1.3</span> Preview book<a class="anchor" aria-label="anchor" href="#preview-book"><i class="fas fa-link"></i></a>
-<a class="anchor" aria-label="anchor" href="#preview-book"><i class="fas fa-link"></i></a>
+<span class="header-section-number">0.3</span> 🌟 <strong>3. Ensambles (Ensemble Methods)</strong><a class="anchor" aria-label="anchor" href="#ensambles-ensemble-methods"><i class="fas fa-link"></i></a>
 </h2>
-<p>As you work, you may start a local server to live preview this HTML book. This preview will update as you edit the book when you save individual .Rmd files. You can start the server in a work session by using the RStudio add-in “Preview book”, or from the R console:</p>
+<p><strong>Ejemplos:</strong> Random Forest, AdaBoost, XGBoost, LightGBM
+<strong>Cuándo usarlo:</strong></p>
+<ul>
+<li>Cuando buscas alto rendimiento en clasificación o regresión tabular.</li>
+<li>Competencias de datos (como Kaggle).</li>
+</ul>
+<p><strong>Ventajas:</strong> Alta precisión, robustez.<br><strong>Limitaciones:</strong> Difícil de interpretar; más costosos computacionalmente.</p>
+<hr>
+</div>
+<div id="redes-neuronales-y-deep-learning" class="section level2" number="0.4">
+<h2>
+<span class="header-section-number">0.4</span> 🧠 <strong>4. Redes Neuronales y Deep Learning</strong><a class="anchor" aria-label="anchor" href="#redes-neuronales-y-deep-learning"><i class="fas fa-link"></i></a>
+</h2>
+<p><strong>Ejemplos:</strong> MLP, CNN, RNN, Transformers
+<strong>Cuándo usarlo:</strong></p>
+<ul>
+<li>Imágenes (CNN), texto y lenguaje natural (Transformers), series temporales (RNN/LSTM).</li>
+<li>Grandes volúmenes de datos no estructurados.</li>
+</ul>
+<p><strong>Ventajas:</strong> Muy poderosos para datos complejos y no estructurados.<br><strong>Limitaciones:</strong> Requieren mucha data y poder computacional. Menor interpretabilidad.</p>
+<hr>
+</div>
+<div id="reducción-de-dimensionalidad" class="section level2" number="0.5">
+<h2>
+<span class="header-section-number">0.5</span> 🧩 <strong>5. Reducción de Dimensionalidad</strong><a class="anchor" aria-label="anchor" href="#reducci%C3%B3n-de-dimensionalidad"><i class="fas fa-link"></i></a>
+</h2>
+<p><strong>Ejemplos:</strong> PCA, t-SNE, UMAP
+<strong>Cuándo usarlo:</strong></p>
+<ul>
+<li>Visualización de datos de alta dimensión.</li>
+<li>Preprocesamiento para eliminar ruido o multicolinealidad.</li>
+</ul>
+<p><strong>Ventajas:</strong> Mejora desempeño y velocidad de otros modelos.<br><strong>Limitaciones:</strong> Puede perder interpretabilidad; no siempre mejora modelos.</p>
+<hr>
+</div>
+<div id="bayesianos" class="section level2" number="0.6">
+<h2>
+<span class="header-section-number">0.6</span> 🧬 <strong>6. Bayesianos</strong><a class="anchor" aria-label="anchor" href="#bayesianos"><i class="fas fa-link"></i></a>
+</h2>
+<p><strong>Ejemplos:</strong> Naive Bayes, Bayesian Networks
+<strong>Cuándo usarlo:</strong></p>
+<ul>
+<li>Clasificación rápida con supuestos simples.</li>
+<li>Problemas de texto o spam detection.</li>
+</ul>
+<p><strong>Ventajas:</strong> Muy rápidos, bien fundamentados.<br><strong>Limitaciones:</strong> Supone independencia de variables (no siempre cierto).</p>
+<hr>
+</div>
+<div id="regularización" class="section level2" number="0.7">
+<h2>
+<span class="header-section-number">0.7</span> 🧮 <strong>7. Regularización</strong><a class="anchor" aria-label="anchor" href="#regularizaci%C3%B3n"><i class="fas fa-link"></i></a>
+</h2>
+<p><strong>Ejemplos:</strong> L1 (Lasso), L2 (Ridge), Elastic Net
+<strong>Cuándo usarlo:</strong></p>
+<ul>
+<li>Para evitar sobreajuste en modelos lineales o redes neuronales.</li>
+<li>Cuando tienes muchas variables (alta dimensionalidad).</li>
+</ul>
+<p><strong>Ventajas:</strong> Penaliza modelos complejos.<br><strong>Limitaciones:</strong> Puede eliminar variables útiles si se usa en exceso.</p>
+<hr>
+</div>
+<div id="instance-based-basados-en-instancias" class="section level2" number="0.8">
+<h2>
+<span class="header-section-number">0.8</span> 🔍 <strong>8. Instance-Based (Basados en Instancias)</strong><a class="anchor" aria-label="anchor" href="#instance-based-basados-en-instancias"><i class="fas fa-link"></i></a>
+</h2>
+<p><strong>Ejemplos:</strong> K-Nearest Neighbors (KNN)
+<strong>Cuándo usarlo:</strong></p>
+<ul>
+<li>Pocos datos, con patrones locales claros.<br>
+</li>
+<li>Cuando la similitud entre casos es importante.</li>
+</ul>
+<p><strong>Ventajas:</strong> Simple y eficaz en problemas de baja dimensión.<br><strong>Limitaciones:</strong> Escala mal con muchos datos; sensible al ruido.</p>
+<hr>
+</div>
+<div id="clustering-no-supervisado" class="section level2" number="0.9">
+<h2>
+<span class="header-section-number">0.9</span> 📏 <strong>9. Clustering (No Supervisado)</strong><a class="anchor" aria-label="anchor" href="#clustering-no-supervisado"><i class="fas fa-link"></i></a>
+</h2>
+<p><strong>Ejemplos:</strong> K-Means, DBSCAN, Hierarchical Clustering
+<strong>Cuándo usarlo:</strong></p>
+<ul>
+<li>Agrupar datos sin etiquetas previas.</li>
+<li>Descubrir estructuras ocultas o segmentos de mercado.</li>
+</ul>
+<p><strong>Ventajas:</strong> Útil en exploración y reducción de complejidad.<br><strong>Limitaciones:</strong> Requiere elegir número de grupos (excepto DBSCAN); puede ser sensible a escala.</p>
+<hr>
+</div>
+<div id="sistemas-basados-en-reglas-rule-based-systems" class="section level2" number="0.10">
+<h2>
+<span class="header-section-number">0.10</span> 📐 <strong>10. Sistemas Basados en Reglas (Rule-Based Systems)</strong><a class="anchor" aria-label="anchor" href="#sistemas-basados-en-reglas-rule-based-systems"><i class="fas fa-link"></i></a>
+</h2>
+<p><strong>Ejemplos:</strong> RuleFit, Decision Rules, lógica difusa
+<strong>Cuándo usarlo:</strong></p>
+<ul>
+<li>Interpretabilidad es clave (por ejemplo, decisiones legales o médicas).</li>
+<li>Incorporar conocimiento experto.</li>
+</ul>
+<p><strong>Ventajas:</strong> Fácil de entender y auditar.<br><strong>Limitaciones:</strong> No tan precisos como otros métodos en datos complejos.</p>
+<hr>
+</div>
+<div id="cuadro" class="section level2" number="0.11">
+<h2>
+<span class="header-section-number">0.11</span> 📌 Cuadro<a class="anchor" aria-label="anchor" href="#cuadro"><i class="fas fa-link"></i></a>
+</h2>
+<pre><code>#&gt; Loading required package: gt</code></pre>
+<div id="xgxvmcolzk" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+  
+  <div class="inline-table"><table class="gt_table" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: 'Century Gothic'; display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 10px; font-weight: normal; font-style: normal; background-color: #FFFFFF; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; table-layout: fixed; width: 0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false" width="0" bgcolor="#FFFFFF">
+<colgroup>
+<col style="width:200px;">
+<col style="width:200px;">
+<col style="width:200px;">
+<col style="width:300px;">
+</colgroup>
+<thead style="border-style: none;">
+<tr class="gt_heading" style="border-style: none; background-color: #FFFFFF; text-align: center; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3;" bgcolor="#FFFFFF" align="center">
+<td colspan="4" class="gt_heading gt_title gt_font_normal gt_bottom_border" style="border-style: none; color: #333333; font-size: 14px; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; background-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; text-align: left; font-weight: bold;" align="left" bgcolor="#FFFFFF">Modelos y cuando usarlos</td>
+    </tr>
+<tr class="gt_col_headings" style="border-style: none; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3;">
+<th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Tipo" style="border-style: none; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 6px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; text-align: left;" bgcolor="#FFFFFF" valign="bottom" align="left">Tipo</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Problema_tipico" style="border-style: none; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 6px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; text-align: left;" bgcolor="#FFFFFF" valign="bottom" align="left">Problema_tipico</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Ventajas" style="border-style: none; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 6px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; text-align: left;" bgcolor="#FFFFFF" valign="bottom" align="left">Ventajas</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Cuando_usarlo" style="border-style: none; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 6px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; text-align: left;" bgcolor="#FFFFFF" valign="bottom" align="left">Cuando_usarlo</th>
+    </tr>
+</thead>
+<tbody class="gt_table_body" style="border-style: none; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3;">
+<tr style="border-style: none;">
+<td headers="Tipo" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Regressión</td>
+<td headers="Problema_tipico" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Valores numéricos</td>
+<td headers="Ventajas" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Simplicidad</td>
+<td headers="Cuando_usarlo" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Relaciones lineales</td>
+</tr>
+<tr style="border-style: none;">
+<td headers="Tipo" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Árboles / Decision Tree</td>
+<td headers="Problema_tipico" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Clasificación, regresión</td>
+<td headers="Ventajas" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Interpretabilidad</td>
+<td headers="Cuando_usarlo" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Datos tabulares</td>
+</tr>
+<tr style="border-style: none;">
+<td headers="Tipo" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Ensambles</td>
+<td headers="Problema_tipico" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Clasificación, regresión</td>
+<td headers="Ventajas" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Precisión</td>
+<td headers="Cuando_usarlo" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Alto rendimiento, Kaggle</td>
+</tr>
+<tr style="border-style: none;">
+<td headers="Tipo" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Deep Learning</td>
+<td headers="Problema_tipico" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Imágenes, texto, audio</td>
+<td headers="Ventajas" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Modelos complejos</td>
+<td headers="Cuando_usarlo" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Datos grandes y no estructurados</td>
+</tr>
+<tr style="border-style: none;">
+<td headers="Tipo" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Reducción de Dim.</td>
+<td headers="Problema_tipico" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Visualización, preprocesamiento</td>
+<td headers="Ventajas" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Mejora eficiencia</td>
+<td headers="Cuando_usarlo" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Datos con muchas variables</td>
+</tr>
+<tr style="border-style: none;">
+<td headers="Tipo" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Bayesianos</td>
+<td headers="Problema_tipico" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Clasificación rápida</td>
+<td headers="Ventajas" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Velocidad</td>
+<td headers="Cuando_usarlo" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Texto, spam detection</td>
+</tr>
+<tr style="border-style: none;">
+<td headers="Tipo" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Regularización</td>
+<td headers="Problema_tipico" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Evitar overfitting</td>
+<td headers="Ventajas" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Generalización</td>
+<td headers="Cuando_usarlo" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Modelos lineales con muchas variables</td>
+</tr>
+<tr style="border-style: none;">
+<td headers="Tipo" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Instance-Based</td>
+<td headers="Problema_tipico" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Clasificación</td>
+<td headers="Ventajas" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Simple, no requiere entrenamiento</td>
+<td headers="Cuando_usarlo" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Pocos datos y relaciones claras</td>
+</tr>
+<tr style="border-style: none;">
+<td headers="Tipo" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Clustering</td>
+<td headers="Problema_tipico" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Agrupamiento no supervisado</td>
+<td headers="Ventajas" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Descubrir estructuras ocultas</td>
+<td headers="Cuando_usarlo" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Segmentación sin etiquetas</td>
+</tr>
+<tr style="border-style: none;">
+<td headers="Tipo" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Rule-Based</td>
+<td headers="Problema_tipico" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Interpretabilidad</td>
+<td headers="Ventajas" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Lógica clara</td>
+<td headers="Cuando_usarlo" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Reglas conocidas, decisiones explicables</td>
+</tr>
+</tbody>
+<tfoot class="gt_footnotes" style="border-style: none; color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3;" bgcolor="#FFFFFF"><tr style="border-style: none;">
+<td class="gt_footnote" colspan="4" style="border-style: none; margin: 0px; font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px;"> Fuente: Elaboración propia</td>
+    </tr></tfoot>
+</table></div>
+</div>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="fu">bookdown</span><span class="fu">::</span><span class="fu"><a href="https://pkgs.rstudio.com/bookdown/reference/serve_book.html">serve_book</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">bookdown</span><span class="fu">::</span><span class="fu"><a href="https://pkgs.rstudio.com/bookdown/reference/render_book.html">render_book</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 
 </div>
 </div>
   <div class="chapter-nav">
 <div class="empty"></div>
-<div class="next"><a href="hello-bookdown.html"><span class="header-section-number">2</span> Hello bookdown</a></div>
-</div>
-<div class="chapter-nav">
-<div class="empty"></div>
 <div class="empty"></div>
 </div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
     <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
       <ul class="nav navbar-nav">
-<li><a class="nav-link" href="#about"><span class="header-section-number">1</span> About</a></li>
-<li><a class="nav-link" href="#usage"><span class="header-section-number">1.1</span> Usage</a></li>
-<li><a class="nav-link" href="#render-book"><span class="header-section-number">1.2</span> Render book</a></li>
-<li><a class="nav-link" href="#preview-book"><span class="header-section-number">1.3</span> Preview book</a></li>
+<li><a class="nav-link" href="#machine-learning">Machine Learning</a></li>
+<li><a class="nav-link" href="#regressi%C3%B3n"><span class="header-section-number">0.1</span> 🔍 1. Regressión</a></li>
+<li><a class="nav-link" href="#%C3%A1rboles-de-decisi%C3%B3n-y-derivados"><span class="header-section-number">0.2</span> 🌲 2. Árboles de Decisión y Derivados</a></li>
+<li><a class="nav-link" href="#ensambles-ensemble-methods"><span class="header-section-number">0.3</span> 🌟 3. Ensambles (Ensemble Methods)</a></li>
+<li><a class="nav-link" href="#redes-neuronales-y-deep-learning"><span class="header-section-number">0.4</span> 🧠 4. Redes Neuronales y Deep Learning</a></li>
+<li><a class="nav-link" href="#reducci%C3%B3n-de-dimensionalidad"><span class="header-section-number">0.5</span> 🧩 5. Reducción de Dimensionalidad</a></li>
+<li><a class="nav-link" href="#bayesianos"><span class="header-section-number">0.6</span> 🧬 6. Bayesianos</a></li>
+<li><a class="nav-link" href="#regularizaci%C3%B3n"><span class="header-section-number">0.7</span> 🧮 7. Regularización</a></li>
+<li><a class="nav-link" href="#instance-based-basados-en-instancias"><span class="header-section-number">0.8</span> 🔍 8. Instance-Based (Basados en Instancias)</a></li>
+<li><a class="nav-link" href="#clustering-no-supervisado"><span class="header-section-number">0.9</span> 📏 9. Clustering (No Supervisado)</a></li>
+<li><a class="nav-link" href="#sistemas-basados-en-reglas-rule-based-systems"><span class="header-section-number">0.10</span> 📐 10. Sistemas Basados en Reglas (Rule-Based Systems)</a></li>
+<li><a class="nav-link" href="#cuadro"><span class="header-section-number">0.11</span> 📌 Cuadro</a></li>
 </ul>
-<div class="book-extra">
+
+      <div class="book-extra">
         <ul class="list-unstyled">
           
         </ul>
@@ -130,7 +320,7 @@ set in the _output.yml file.&lt;/p&gt;">
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>A Minimal Book Example</strong>" was written by John Doe. It was last built on 2025-06-01.</p>
+    <p>"<strong>A Minimal Book Example</strong>" was written by John Doe. It was last built on 2025-06-02.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
@@ -138,34 +328,6 @@ set in the _output.yml file.&lt;/p&gt;">
   </div>
 
 </div></div>
-</footer><!-- dynamically load mathjax for compatibility with self-contained --><script>
-  (function () {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    var src = "true";
-    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:")
-      if (/^https?:/.test(src))
-        src = src.replace(/^https?:/, '');
-    script.src = src;
-    document.getElementsByTagName("head")[0].appendChild(script);
-  })();
-</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
-for (let popover of popovers) {
-  const div = document.createElement('div');
-  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
-  div.innerHTML = popover.getAttribute('data-content');
-
-  var has_math = div.querySelector("span.math");
-  if (has_math) {
-    document.body.appendChild(div);
-    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
-    MathJax.Hub.Queue(function() {
-      popover.setAttribute('data-content', div.innerHTML);
-      document.body.removeChild(div);
-    })
-  }
-}
-</script>
+</footer>
 </body>
 </html>

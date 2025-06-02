@@ -14,43 +14,229 @@ description: |
 biblio-style: apalike
 csl: chicago-fullnote-bibliography.csl
 ---
+Claro, aquí tienes un resumen claro y práctico de los principales **algoritmos de machine learning**, incluyendo **cuándo usar cada tipo** según el problema que enfrentas:
 
-# About
+---
 
-This is a _sample_ book written in **Markdown**. You can use anything that Pandoc's Markdown supports; for example, a math equation $a^2 + b^2 = c^2$.
 
-## Usage 
+# Machine Learning {-}
 
-Each **bookdown** chapter is an .Rmd file, and each .Rmd file can contain one (and only one) chapter. A chapter *must* start with a first-level heading: `# A good chapter`, and can contain one (and only one) first-level heading.
+## 🔍 **1. Regressión**
 
-Use second-level and higher headings within chapters like: `## A short section` or `### An even shorter section`.
+**Ejemplos:** Linear Regression, Ridge, Lasso
+**Cuándo usarlo:**
 
-The `index.Rmd` file is required, and is also your first book chapter. It will be the homepage when you render the book.
+* Predicción de valores numéricos continuos (e.g. precios, temperaturas).
+* Relaciones lineales entre variables.
 
-## Render book
+**Ventajas:** Simple, interpretable.   
+**Limitaciones:** Mal desempeño con relaciones no lineales complejas.
 
-You can render the HTML version of this example book without changing anything:
+---
 
-1. Find the **Build** pane in the RStudio IDE, and
+## 🌲 **2. Árboles de Decisión y Derivados**
 
-1. Click on **Build Book**, then select your output format, or select "All formats" if you'd like to use multiple formats from the same book source files.
+**Ejemplos:** Decision Tree, Random Forest, Gradient Boosting
+**Cuándo usarlo:**
 
-Or build the book from the R console:
+* Problemas tabulares con relaciones no lineales y variables categóricas o numéricas.
+* Cuando interpretabilidad es importante.
+
+**Ventajas:** Manejan datos heterogéneos, fáciles de interpretar (árboles simples).   
+**Limitaciones:** Sobreajuste en árboles simples; menor desempeño en datos muy ruidosos sin ensambles.
+
+---
+
+## 🌟 **3. Ensambles (Ensemble Methods)**
+
+**Ejemplos:** Random Forest, AdaBoost, XGBoost, LightGBM
+**Cuándo usarlo:**
+
+* Cuando buscas alto rendimiento en clasificación o regresión tabular.
+* Competencias de datos (como Kaggle).
+
+**Ventajas:** Alta precisión, robustez.   
+**Limitaciones:** Difícil de interpretar; más costosos computacionalmente.
+
+---
+
+## 🧠 **4. Redes Neuronales y Deep Learning**
+
+**Ejemplos:** MLP, CNN, RNN, Transformers
+**Cuándo usarlo:**
+
+* Imágenes (CNN), texto y lenguaje natural (Transformers), series temporales (RNN/LSTM).
+* Grandes volúmenes de datos no estructurados.
+
+**Ventajas:** Muy poderosos para datos complejos y no estructurados.   
+**Limitaciones:** Requieren mucha data y poder computacional. Menor interpretabilidad.
+
+---
+
+## 🧩 **5. Reducción de Dimensionalidad**
+
+**Ejemplos:** PCA, t-SNE, UMAP
+**Cuándo usarlo:**
+
+* Visualización de datos de alta dimensión.
+* Preprocesamiento para eliminar ruido o multicolinealidad.
+
+**Ventajas:** Mejora desempeño y velocidad de otros modelos.    
+**Limitaciones:** Puede perder interpretabilidad; no siempre mejora modelos.
+
+---
+
+## 🧬 **6. Bayesianos**
+
+**Ejemplos:** Naive Bayes, Bayesian Networks
+**Cuándo usarlo:**
+
+* Clasificación rápida con supuestos simples.
+* Problemas de texto o spam detection.
+
+**Ventajas:** Muy rápidos, bien fundamentados.   
+**Limitaciones:** Supone independencia de variables (no siempre cierto).
+
+---
+
+## 🧮 **7. Regularización**
+
+**Ejemplos:** L1 (Lasso), L2 (Ridge), Elastic Net
+**Cuándo usarlo:**
+
+* Para evitar sobreajuste en modelos lineales o redes neuronales.
+* Cuando tienes muchas variables (alta dimensionalidad).
+
+**Ventajas:** Penaliza modelos complejos.   
+**Limitaciones:** Puede eliminar variables útiles si se usa en exceso.
+
+---
+
+## 🔍 **8. Instance-Based (Basados en Instancias)**
+
+**Ejemplos:** K-Nearest Neighbors (KNN)
+**Cuándo usarlo:**
+
+* Pocos datos, con patrones locales claros.  
+* Cuando la similitud entre casos es importante.
+
+**Ventajas:** Simple y eficaz en problemas de baja dimensión.   
+**Limitaciones:** Escala mal con muchos datos; sensible al ruido.
+
+---
+
+## 📏 **9. Clustering (No Supervisado)**
+
+**Ejemplos:** K-Means, DBSCAN, Hierarchical Clustering
+**Cuándo usarlo:**
+
+* Agrupar datos sin etiquetas previas.
+* Descubrir estructuras ocultas o segmentos de mercado.
+
+**Ventajas:** Útil en exploración y reducción de complejidad.   
+**Limitaciones:** Requiere elegir número de grupos (excepto DBSCAN); puede ser sensible a escala.
+
+---
+
+## 📐 **10. Sistemas Basados en Reglas (Rule-Based Systems)**
+
+**Ejemplos:** RuleFit, Decision Rules, lógica difusa
+**Cuándo usarlo:**
+
+* Interpretabilidad es clave (por ejemplo, decisiones legales o médicas).
+* Incorporar conocimiento experto.
+
+**Ventajas:** Fácil de entender y auditar.   
+**Limitaciones:** No tan precisos como otros métodos en datos complejos.
+
+---
+
+## 📌 Cuadro
+
+```{r, echo = FALSE}
+algoritmos_ml <- data.frame(
+                            Tipo = c(
+                              "Regressión",
+                              "Árboles / Decision Tree",
+                              "Ensambles",
+                              "Deep Learning",
+                              "Reducción de Dim.",
+                              "Bayesianos",
+                              "Regularización",
+                              "Instance-Based",
+                              "Clustering",
+                              "Rule-Based"
+                            ),
+                            Problema_tipico = c(
+                              "Valores numéricos",
+                              "Clasificación, regresión",
+                              "Clasificación, regresión",
+                              "Imágenes, texto, audio",
+                              "Visualización, preprocesamiento",
+                              "Clasificación rápida",
+                              "Evitar overfitting",
+                              "Clasificación",
+                              "Agrupamiento no supervisado",
+                              "Interpretabilidad"
+                            ),
+                            Ventajas = c(
+                              "Simplicidad",
+                              "Interpretabilidad",
+                              "Precisión",
+                              "Modelos complejos",
+                              "Mejora eficiencia",
+                              "Velocidad",
+                              "Generalización",
+                              "Simple, no requiere entrenamiento",
+                              "Descubrir estructuras ocultas",
+                              "Lógica clara"
+                            ),
+                            Cuando_usarlo = c(
+                              "Relaciones lineales",
+                              "Datos tabulares",
+                              "Alto rendimiento, Kaggle",
+                              "Datos grandes y no estructurados",
+                              "Datos con muchas variables",
+                              "Texto, spam detection",
+                              "Modelos lineales con muchas variables",
+                              "Pocos datos y relaciones claras",
+                              "Segmentación sin etiquetas",
+                              "Reglas conocidas, decisiones explicables"
+                            ),
+                            stringsAsFactors = FALSE
+                          )
+
+require(gt)
+
+algoritmos_ml %>% 
+ gt() %>%
+  tab_header(title = "Modelos y cuando usarlos") %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     fmt_integer(columns = names(data)[4:22], 
+                sep_mark = " ") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Cuando_") ~ px(300),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
+
+```
+
+
+
+
 
 ```{r, eval=FALSE}
 bookdown::render_book()
 ```
-
-To render this example to PDF as a `bookdown::pdf_book`, you'll need to install XeLaTeX. You are recommended to install TinyTeX (which includes XeLaTeX): <https://yihui.org/tinytex/>.
-
-## Preview book
-
-As you work, you may start a local server to live preview this HTML book. This preview will update as you edit the book when you save individual .Rmd files. You can start the server in a work session by using the RStudio add-in "Preview book", or from the R console:
-
-```{r eval=FALSE}
-bookdown::serve_book()
-```
-
 
 ```{r include=FALSE}
 # automatically create a bib database for R packages
