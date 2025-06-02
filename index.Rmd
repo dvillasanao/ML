@@ -1,6 +1,6 @@
 --- 
-title: "A Minimal Book Example"
-author: "John Doe"
+title: "Machine Learning (Apuntes) "
+author: "Diana Villasana Ocampo"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 documentclass: book
@@ -19,7 +19,7 @@ Claro, aquí tienes un resumen claro y práctico de los principales **algoritmos
 ---
 
 
-# Machine Learning (Apuntes) {-}
+# Machine Learning {-}
 
 ## 🔍 **1. Regressión** {-}
 
@@ -231,12 +231,6 @@ algoritmos_ml %>%
 ```
 
 
-
-
-
-```{r, eval=FALSE}
-bookdown::render_book()
-```
 
 ```{r include=FALSE}
 # automatically create a bib database for R packages
