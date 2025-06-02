@@ -19,25 +19,25 @@ Claro, aquí tienes un resumen claro y práctico de los principales **algoritmos
 ---
 
 
-# Machine Learning {-}
+# Machine Learning (Apuntes) {-}
 
-## 🔍 **1. Regressión**
+## 🔍 **1. Regressión** {-}
 
-**Ejemplos:** Linear Regression, Ridge, Lasso
+**Ejemplos:** Linear Regression, Ridge, Lasso   
 **Cuándo usarlo:**
 
-* Predicción de valores numéricos continuos (e.g. precios, temperaturas).
-* Relaciones lineales entre variables.
+* Predicción de valores numéricos continuos (e.g. precios, temperaturas).  
+* Relaciones lineales entre variables. 
 
 **Ventajas:** Simple, interpretable.   
 **Limitaciones:** Mal desempeño con relaciones no lineales complejas.
 
 ---
 
-## 🌲 **2. Árboles de Decisión y Derivados**
+## 🌲 **2. Árboles de Decisión y Derivados** {-}  
 
-**Ejemplos:** Decision Tree, Random Forest, Gradient Boosting
-**Cuándo usarlo:**
+**Ejemplos:** Decision Tree, Random Forest, Gradient Boosting  
+**Cuándo usarlo:**  
 
 * Problemas tabulares con relaciones no lineales y variables categóricas o numéricas.
 * Cuando interpretabilidad es importante.
@@ -47,10 +47,10 @@ Claro, aquí tienes un resumen claro y práctico de los principales **algoritmos
 
 ---
 
-## 🌟 **3. Ensambles (Ensemble Methods)**
+## 🌟 **3. Ensambles (Ensemble Methods)** {-}
 
-**Ejemplos:** Random Forest, AdaBoost, XGBoost, LightGBM
-**Cuándo usarlo:**
+**Ejemplos:** Random Forest, AdaBoost, XGBoost, LightGBM   
+**Cuándo usarlo:**   
 
 * Cuando buscas alto rendimiento en clasificación o regresión tabular.
 * Competencias de datos (como Kaggle).
@@ -60,10 +60,10 @@ Claro, aquí tienes un resumen claro y práctico de los principales **algoritmos
 
 ---
 
-## 🧠 **4. Redes Neuronales y Deep Learning**
+## 🧠 **4. Redes Neuronales y Deep Learning** {-}  
 
-**Ejemplos:** MLP, CNN, RNN, Transformers
-**Cuándo usarlo:**
+**Ejemplos:** MLP, CNN, RNN, Transformers   
+**Cuándo usarlo:**   
 
 * Imágenes (CNN), texto y lenguaje natural (Transformers), series temporales (RNN/LSTM).
 * Grandes volúmenes de datos no estructurados.
@@ -73,10 +73,10 @@ Claro, aquí tienes un resumen claro y práctico de los principales **algoritmos
 
 ---
 
-## 🧩 **5. Reducción de Dimensionalidad**
+## 🧩 **5. Reducción de Dimensionalidad** {-}   
 
-**Ejemplos:** PCA, t-SNE, UMAP
-**Cuándo usarlo:**
+**Ejemplos:** PCA, t-SNE, UMAP   
+**Cuándo usarlo:**   
 
 * Visualización de datos de alta dimensión.
 * Preprocesamiento para eliminar ruido o multicolinealidad.
@@ -86,10 +86,10 @@ Claro, aquí tienes un resumen claro y práctico de los principales **algoritmos
 
 ---
 
-## 🧬 **6. Bayesianos**
+## 🧬 **6. Bayesianos** {-}  
 
-**Ejemplos:** Naive Bayes, Bayesian Networks
-**Cuándo usarlo:**
+**Ejemplos:** Naive Bayes, Bayesian Networks  
+**Cuándo usarlo:**   
 
 * Clasificación rápida con supuestos simples.
 * Problemas de texto o spam detection.
@@ -99,10 +99,10 @@ Claro, aquí tienes un resumen claro y práctico de los principales **algoritmos
 
 ---
 
-## 🧮 **7. Regularización**
+## 🧮 **7. Regularización** {-}  
 
-**Ejemplos:** L1 (Lasso), L2 (Ridge), Elastic Net
-**Cuándo usarlo:**
+**Ejemplos:** L1 (Lasso), L2 (Ridge), Elastic Net   
+**Cuándo usarlo:**   
 
 * Para evitar sobreajuste en modelos lineales o redes neuronales.
 * Cuando tienes muchas variables (alta dimensionalidad).
@@ -112,10 +112,10 @@ Claro, aquí tienes un resumen claro y práctico de los principales **algoritmos
 
 ---
 
-## 🔍 **8. Instance-Based (Basados en Instancias)**
+## 🔍 **8. Instance-Based (Basados en Instancias)** {-}  
 
-**Ejemplos:** K-Nearest Neighbors (KNN)
-**Cuándo usarlo:**
+**Ejemplos:** K-Nearest Neighbors (KNN)   
+**Cuándo usarlo:**   
 
 * Pocos datos, con patrones locales claros.  
 * Cuando la similitud entre casos es importante.
@@ -125,10 +125,10 @@ Claro, aquí tienes un resumen claro y práctico de los principales **algoritmos
 
 ---
 
-## 📏 **9. Clustering (No Supervisado)**
+## 📏 **9. Clustering (No Supervisado)** {-}  
 
-**Ejemplos:** K-Means, DBSCAN, Hierarchical Clustering
-**Cuándo usarlo:**
+**Ejemplos:** K-Means, DBSCAN, Hierarchical Clustering  
+**Cuándo usarlo:**   
 
 * Agrupar datos sin etiquetas previas.
 * Descubrir estructuras ocultas o segmentos de mercado.
@@ -138,7 +138,7 @@ Claro, aquí tienes un resumen claro y práctico de los principales **algoritmos
 
 ---
 
-## 📐 **10. Sistemas Basados en Reglas (Rule-Based Systems)**
+## 📐 **10. Sistemas Basados en Reglas (Rule-Based Systems)** {-}
 
 **Ejemplos:** RuleFit, Decision Rules, lógica difusa
 **Cuándo usarlo:**
@@ -155,7 +155,7 @@ Claro, aquí tienes un resumen claro y práctico de los principales **algoritmos
 
 
 ```{=html}
-<div id="gwnlbzvywt" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="pxnooksxad" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
   
   <table class="gt_table" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: 'Century Gothic'; display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 10px; font-weight: normal; font-style: normal; background-color: #FFFFFF; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; table-layout: fixed; width: 0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false" width="0" bgcolor="#FFFFFF">
   <colgroup>

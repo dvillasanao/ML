@@ -1,13 +1,3 @@
-regressión
-árboles-de-decisión-y-derivados
-ensambles-ensemble-methods
-redes-neuronales-y-deep-learning
-reducción-de-dimensionalidad
-bayesianos
-regularización
-instance-based-basados-en-instancias
-clustering-no-supervisado
-sistemas-basados-en-reglas-rule-based-systems
 cuadro
 hello-bookdown
 a-section
