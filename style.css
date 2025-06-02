@@ -30,17 +30,17 @@ body {
 h1 { /* Header 1 */
   font-size: 28px;
   font-weight: bold;
-  color: #030727;
+  color: #0e0d69;
 }
 h2 { /* Header 2 */
   font-size: 20px;
   font-weight: bold;
   font-family: "Century Gothic";
-  color: #030727;
+  color: #153e95;
 }
 h3 { /* Header 3 */
   font-size: 16px;
-  color: #030727;
+  color: #0f0e96;
 }
 .header-section-number::after {
   content: ".";

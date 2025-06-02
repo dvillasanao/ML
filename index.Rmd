@@ -14,10 +14,6 @@ description: |
 biblio-style: apalike
 csl: chicago-fullnote-bibliography.csl
 ---
-Claro, aquí tienes un resumen claro y práctico de los principales **algoritmos de machine learning**, incluyendo **cuándo usar cada tipo** según el problema que enfrentas:
-
----
-
 
 # Machine Learning {-}
 
@@ -31,6 +27,12 @@ Claro, aquí tienes un resumen claro y práctico de los principales **algoritmos
 
 **Ventajas:** Simple, interpretable.   
 **Limitaciones:** Mal desempeño con relaciones no lineales complejas.
+
+### Ordinary Least Squares Regression (`OLSR`) {-} 
+
+**Regresión de Mínimos Cuadrados Ordinarios (OLSR)**: un método de regresión lineal para estimar los parámetros desconocidos mediante la creación de un modelo que minimizará la suma de los errores cuadrados entre los datos observados y los predichos (valores observados y valores estimados).  
+
+
 
 ---
 
