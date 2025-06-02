@@ -1,3 +1,7 @@
 
 # References {-}
 
+
+Sagi, S. (2019). ML Algorithms: One SD (σ). The obvious questions to ask when… | by Sagi Shaier | Medium. https://medium.com/@Shaier/ml-algorithms-one-sd-%CF%83-74bcb28fafb6 
+
+Kuhn, M. (2019). The caret Package. https://topepo.github.io/caret/index.html
