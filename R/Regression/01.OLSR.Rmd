@@ -1,0 +1,293 @@
+---
+title: "Ordinary Least Squares Regression (OLSR)"
+author: "Diana Villasana Ocampo"
+knit: (function(inputFile, encoding) {
+       rmarkdown::render(inputFile, encoding = encoding, output_dir = "../../Output/")
+  })
+output:
+   html_document:
+      code_folding: hide
+      highlight: tango
+      theme: flatly
+      toc: true
+      toc_depth: 3
+      toc_float:
+        collapsed: yes
+---
+
+```{=html}
+<style type="text/css">
+body {
+text-align: justify;
+font-style: normal;
+font-family: "Montserrat";
+font-size: 12px
+}
+h1.title {
+  font-size: 40px;
+  color: #000D3B;
+}
+h1 {
+  color: #B6854D;
+}
+h2 {
+  color: #172984;
+}
+h3 {
+  color: #172984;
+}
+</style>
+```
+
+```{=html}
+<style>
+.nav>li>a {
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+    color: #1C3BA4
+}
+.nav-pills>li.active>a, .nav-pills>li.active>a:hover, .nav-pills>li>a:focus {
+    color: #ffffff;
+    background-color: #09C2BC
+}
+</style>
+```
+
+```{=html}
+<style>
+.tile1-text {
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+    color: #0A6A87;
+    list-style: none;
+}
+.top1-tiles a:nth-of-type(1):hover, .top-tiles1 a:nth-of-type(1):focus{
+    color: #ffffff;
+    background: #0A6A87
+}
+</style>
+```
+
+```{=html}
+<style>
+.tile2-text {
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+    color: #0A6CC8;
+    list-style: none;
+}
+.top2-tiles a:nth-of-type(1):hover, .top2-tiles a:nth-of-type(1):focus{
+    color: #ffffff;
+    background: #0A6CC8
+}
+</style>
+```
+
+```{=html}
+<style>
+.math {
+  font-size: 15px;
+  color: #1e42ab;
+}
+</style>
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, cache = TRUE, 
+                      cache.lazy = FALSE, class.source = "fold-show")
+knitr::opts_knit$set(root.dir = here::here())
+setwd(here::here())
+```
+
+```{r,echo=FALSE, eval=FALSE, }
+rm(list = ls())
+```
+
+```{r, echo = FALSE, results=FALSE}
+# Se descargan las fuentes de la google fonts
+require(showtext)
+library(extrafont)
+# activar showtext
+windowsFonts()
+```
+
+```{r, echo = FALSE}
+# 1. Cargar librerías necesarias
+library(tidyverse)
+library(caret)     # Para dividir datos y evaluación
+library(broom)     # Para tidy modelos
+library(Metrics)   # Para métricas como RMSE, MAE
+```
+
+
+La Regresión por Mínimos Cuadrados Ordinarios (Ordinary Least Squares Regression, **OLSR** u **OLS**) es una técnica estadística fundamental utilizada para estimar la relación entre una **variable dependiente** (o de respuesta) y una o más **variables independientes** (o predictoras). Es uno de los métodos más comunes en el análisis de regresión lineal.
+
+## Objetivo
+
+El objetivo principal de OLSR es encontrar la "línea de mejor ajuste" a través de un conjunto de puntos de datos. Esta línea se determina minimizando la suma de los cuadrados de las diferencias entre los valores observados de la variable dependiente y los valores predichos por el modelo. A estas diferencias se les llama **residuos** o **errores**. Al minimizar la suma de los cuadrados, OLS asegura que los errores positivos y negativos no se cancelen entre sí, y que los errores grandes tengan un impacto proporcionalmente mayor en la minimización.
+
+## Metodología
+
+La metodología de OLSR se basa en los siguientes pasos y principios:
+
+1.  **Modelo Lineal:** OLSR asume una relación lineal entre las variables. Para una regresión lineal simple (una variable independiente), la ecuación es:\
+    $$Y = \beta_0 + \beta_1X + \epsilon$$
+
+    Donde:
+
+    -   $Y$ es la variable dependiente.
+
+-   $X$ es la variable independiente.
+-   $\beta_0$ es el intercepto (el valor de $Y$ cuando $X$ es 0).
+-   $\beta_1$ es la pendiente (el cambio en $Y$ por cada unidad de cambio en $X$).
+-   $\epsilon$ es el término de error o residual, que representa la parte de $Y$ que no puede ser explicada por $X$.
+
+Para una regresión lineal múltiple (varias variables independientes), la ecuación se expande a:\
+$$Y = \beta_0 + \beta_1X_1 + \beta_2X_2 + ... + \beta_kX_k + \epsilon$$
+
+2.  **Minimización de la Suma de Cuadrados de Residuos (SSR):** El corazón de OLS es encontrar los valores de los coeficientes ($\beta_0, \beta_1$, etc.) que minimicen la siguiente función:\
+    $$\text{Minimizar } \sum_{i=1}^{n} (y_i - \hat{y}_i)^2$$\
+    Donde:
+    -   $y_i$ es el valor observado de la variable dependiente para la observación $i$.
+
+-   $\hat{y}_i$ es el valor predicho de la variable dependiente por el modelo para la observación $i$.
+-   $(y_i - \hat{y}_i)$ es el residual para la observación $i$.
+
+Para lograr esta minimización, se utilizan técnicas de cálculo (derivadas parciales) para encontrar los valores de los coeficientes que hacen que la pendiente de la función de suma de cuadrados sea cero.
+
+3.  **Estimación de Coeficientes:** Los valores estimados de los coeficientes, denotados como $\hat{\beta}_0, \hat{\beta}_1$, etc., son aquellos que resultan de la minimización. Estos coeficientes son los que definen la "línea de mejor ajuste".
+
+4.  **Supuestos del OLS:** Para que los estimadores de OLS sean los "mejores estimadores lineales insesgados" (según el Teorema de Gauss-Markov), se deben cumplir ciertas suposiciones:
+
+    -   **Linealidad:** La relación entre las variables es lineal.
+
+    -   **Independencia de los errores:** Los errores de una observación no están correlacionados con los errores de otra.
+
+    -   **Homocedasticidad:** La varianza de los errores es constante en todos los niveles de las variables independientes.
+
+    -   **Normalidad de los errores:** Los errores se distribuyen normalmente (aunque no es estrictamente necesario para la estimación, sí lo es para la inferencia estadística).
+
+    -   **No multicolinealidad perfecta:** Las variables independientes no están perfectamente correlacionadas entre sí.
+
+## **Pasos generales del Machine Learning supervisado**
+
+1.  **Importar y explorar los datos**
+2.  **Preprocesamiento**
+3.  **División de los datos (train/test)**
+4.  **Entrenamiento del modelo**
+5.  **Evaluación del modelo**
+6.  **Ajustes o validación cruzada (si aplica)**
+7.  **Predicción con nuevos datos**
+8.  **Interpretación de resultados**
+
+------------------------------------------------------------------------
+
+## Base de datos   
+
+```{r}
+# 2. Cargar y explorar los datos
+data("mtcars")
+glimpse(mtcars)
+``` 
+
+```{r}
+# Queremos predecir `mpg` (millas por galón) usando otras variables
+# mpg será nuestra variable dependiente (target)
+
+# 3. Dividir datos en entrenamiento y prueba
+set.seed(123)  # Para reproducibilidad
+train_index <- createDataPartition(mtcars$mpg, p = 0.8, list = FALSE)
+train_data <- mtcars[train_index, ]
+test_data <- mtcars[-train_index, ]
+
+# 4. Entrenar el modelo de regresión lineal (OLS)
+modelo_ols <- lm(mpg ~ ., data = train_data)
+
+# Revisar resumen del modelo
+summary(modelo_ols)
+
+# 5. Evaluar el modelo en los datos de prueba
+predicciones <- predict(modelo_ols, newdata = test_data)
+
+# Comparar valores reales vs. predichos
+resultados <- tibble(Real = test_data$mpg,
+                     Predicho = predicciones
+)
+
+# Calcular métricas de error
+rmse_val <- rmse(resultados$Real, resultados$Predicho)
+mae_val <- mae(resultados$Real, resultados$Predicho)
+r2_val <- R2(predicciones, test_data$mpg)
+
+cat("RMSE:", rmse_val, "\n")
+cat("MAE:", mae_val, "\n")
+cat("R2 :", r2_val, "\n")
+
+# 6. Validación cruzada (opcional)
+control <- trainControl(method = "cv", number = 10)
+modelo_cv <- train(mpg ~ ., data = mtcars, method = "lm", trControl = control)
+print(modelo_cv)
+
+# 7. Usar el modelo para predecir nuevos datos (simulación)
+nuevo_auto <- data.frame(
+  cyl = 6,
+  disp = 200,
+  hp = 110,
+  drat = 3.5,
+  wt = 2.8,
+  qsec = 18,
+  vs = 1,
+  am = 1,
+  gear = 4,
+  carb = 2
+)
+
+predict(modelo_ols, newdata = nuevo_auto)
+
+# 8. Interpretación del modelo (con broom)
+tidy(modelo_ols)
+```
+
+## 📌 Notas
+
+-   Este modelo es considerado **supervisado** porque se entrena con pares de entrada y salida.
+-   Aunque la regresión lineal es simple, **sigue siendo un algoritmo de machine learning supervisado** y útil como línea base (baseline).
+-   Puedes reemplazar `lm()` por modelos más complejos como `randomForest`, `xgboost`, etc., manteniendo la misma estructura.
+
+### Ventajas y Limitaciones
+
+**Ventajas:**
+
+-   **Simplicidad:** Es fácil de entender e implementar.
+
+-   **Interpretabilidad:** Los coeficientes estimados tienen una interpretación clara.
+
+-   **Eficiencia:** Bajo ciertas condiciones, los estimadores de OLS son los más eficientes.
+
+**Limitaciones:**
+
+-   **Sensibilidad a valores atípicos:** Los valores extremos pueden influir mucho en la línea de regresión.
+-   **Sensibilidad a violaciones de supuestos:** Si los supuestos no se cumplen, las estimaciones pueden ser sesgadas o ineficientes, y la inferencia estadística puede ser inválida.
+-   **Solo relaciones lineales:** No puede capturar relaciones no lineales a menos que se transformen las variables adecuadamente.
+
+## Referencias
+
+Librerias que se usaron en el documento
+
+```{r, echo = FALSE, eval = TRUE}
+sesion_info <- devtools::session_info()
+require(knitr)
+require(kableExtra)
+kable(dplyr::select(tibble::as_tibble(sesion_info$packages %>% dplyr::filter(attached == TRUE)),
+                    c(package, loadedversion, source))) %>%
+ kable_styling(font_size = 10, 
+               bootstrap_options = c("condensed", "responsive", "bordered")) %>%
+  kable_classic(full_width = TRUE, html_font = "montserrat") %>% 
+   scroll_box(width = "100%", height = "400px") %>%  
+    gsub("font-size: initial !important;", "font-size: 10pt !important;", .)
+```
+
+<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img src="https://i.creativecommons.org/l/by/4.0/88x31.png" alt="Creative Commons Licence" style="border-width:0"/></a><br />This work by [**Diana Villasana Ocampo**]{xmlns:cc="http://creativecommons.org/ns#" property="cc:attributionName"} is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.

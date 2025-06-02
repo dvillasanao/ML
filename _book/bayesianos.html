@@ -4,16 +4,16 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>References | Machine Learning (Apuntes)</title>
+<title>🧬 6. Bayesianos | Machine Learning (Apuntes)</title>
 <meta name="author" content="Diana Villasana Ocampo">
-<meta name="description" content="Sagi, S. (2019). ML Algorithms: One SD (σ). The obvious questions to ask when… | by Sagi Shaier | Medium. https://medium.com/@Shaier/ml-algorithms-one-sd-%CF%83-74bcb28fafb6 Kuhn, M. (2019). The...">
+<meta name="description" content="Ejemplos: Naive Bayes, Bayesian NetworksCuándo usarlo: Clasificación rápida con supuestos simples. Problemas de texto o spam detection. Ventajas: Muy rápidos, bien fundamentados.Limitaciones:...">
 <meta name="generator" content="bookdown 0.42 with bs4_book()">
-<meta property="og:title" content="References | Machine Learning (Apuntes)">
+<meta property="og:title" content="🧬 6. Bayesianos | Machine Learning (Apuntes)">
 <meta property="og:type" content="book">
-<meta property="og:description" content="Sagi, S. (2019). ML Algorithms: One SD (σ). The obvious questions to ask when… | by Sagi Shaier | Medium. https://medium.com/@Shaier/ml-algorithms-one-sd-%CF%83-74bcb28fafb6 Kuhn, M. (2019). The...">
+<meta property="og:description" content="Ejemplos: Naive Bayes, Bayesian NetworksCuándo usarlo: Clasificación rápida con supuestos simples. Problemas de texto o spam detection. Ventajas: Muy rápidos, bien fundamentados.Limitaciones:...">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="References | Machine Learning (Apuntes)">
-<meta name="twitter:description" content="Sagi, S. (2019). ML Algorithms: One SD (σ). The obvious questions to ask when… | by Sagi Shaier | Medium. https://medium.com/@Shaier/ml-algorithms-one-sd-%CF%83-74bcb28fafb6 Kuhn, M. (2019). The...">
+<meta name="twitter:title" content="🧬 6. Bayesianos | Machine Learning (Apuntes)">
+<meta name="twitter:description" content="Ejemplos: Naive Bayes, Bayesian NetworksCuándo usarlo: Clasificación rápida con supuestos simples. Problemas de texto o spam detection. Ventajas: Muy rápidos, bien fundamentados.Limitaciones:...">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
 <script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.7.0/transition.js"></script><script src="libs/bs3compat-0.7.0/tabs.js"></script><script src="libs/bs3compat-0.7.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
@@ -49,12 +49,12 @@
 <li><a class="" href="ensambles-ensemble-methods.html">🌟 3. Ensambles (Ensemble Methods)</a></li>
 <li><a class="" href="redes-neuronales-y-deep-learning.html">🧠 4. Redes Neuronales y Deep Learning</a></li>
 <li><a class="" href="reducci%C3%B3n-de-dimensionalidad.html">🧩 5. Reducción de Dimensionalidad</a></li>
-<li><a class="" href="bayesianos.html">🧬 6. Bayesianos</a></li>
+<li><a class="active" href="bayesianos.html">🧬 6. Bayesianos</a></li>
 <li><a class="" href="regularizaci%C3%B3n.html">🧮 7. Regularización</a></li>
 <li><a class="" href="instance-based-basados-en-instancias.html">🔍 8. Instance-Based (Basados en Instancias)</a></li>
 <li><a class="" href="clustering-no-supervisado.html">📏 9. Clustering (No Supervisado)</a></li>
 <li><a class="" href="sistemas-basados-en-reglas-rule-based-systems.html">📐 10. Sistemas Basados en Reglas (Rule-Based Systems)</a></li>
-<li><a class="active" href="references.html">References</a></li>
+<li><a class="" href="references.html">References</a></li>
 </ul>
 
         <div class="book-extra">
@@ -62,24 +62,28 @@
         </div>
       </nav>
 </div>
-  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="references" class="section level1 unnumbered">
-<h1>References<a class="anchor" aria-label="anchor" href="#references"><i class="fas fa-link"></i></a>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="bayesianos" class="section level1 unnumbered">
+<h1>🧬 <strong>6. Bayesianos</strong><a class="anchor" aria-label="anchor" href="#bayesianos"><i class="fas fa-link"></i></a>
 </h1>
-<p>Sagi, S. (2019). ML Algorithms: One SD (σ). The obvious questions to ask when… | by Sagi Shaier | Medium. <a href="https://medium.com/@Shaier/ml-algorithms-one-sd-%CF%83-74bcb28fafb6" class="uri">https://medium.com/@Shaier/ml-algorithms-one-sd-%CF%83-74bcb28fafb6</a></p>
-<p>Kuhn, M. (2019). The caret Package. <a href="https://topepo.github.io/caret/index.html" class="uri">https://topepo.github.io/caret/index.html</a></p>
-
+<p><strong>Ejemplos:</strong> Naive Bayes, Bayesian Networks<br><strong>Cuándo usarlo:</strong></p>
+<ul>
+<li>Clasificación rápida con supuestos simples.</li>
+<li>Problemas de texto o spam detection.</li>
+</ul>
+<p><strong>Ventajas:</strong> Muy rápidos, bien fundamentados.<br><strong>Limitaciones:</strong> Supone independencia de variables (no siempre cierto).</p>
+<hr>
 </div>
   <div class="chapter-nav">
-<div class="prev"><a href="sistemas-basados-en-reglas-rule-based-systems.html">📐 10. Sistemas Basados en Reglas (Rule-Based Systems)</a></div>
-<div class="empty"></div>
+<div class="prev"><a href="reducci%C3%B3n-de-dimensionalidad.html">🧩 5. Reducción de Dimensionalidad</a></div>
+<div class="next"><a href="regularizaci%C3%B3n.html">🧮 7. Regularización</a></div>
 </div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
     <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
-      <ul class="nav navbar-nav"><li><a class="nav-link" href="#references">References</a></li></ul>
+      <ul class="nav navbar-nav"><li><a class="nav-link" href="#bayesianos">🧬 6. Bayesianos</a></li></ul>
 
       <div class="book-extra">
         <ul class="list-unstyled">
-<li><a id="book-source" href="https://dvillasanao.github.io/IME_2010_2020//blob/master/11-references.Rmd">View source <i class="fab fa-gitlab"></i></a></li>
-          <li><a id="book-edit" href="https://dvillasanao.github.io/IME_2010_2020//edit/master/11-references.Rmd">Edit this page <i class="fab fa-gitlab"></i></a></li>
+<li><a id="book-source" href="https://dvillasanao.github.io/IME_2010_2020//blob/master/06-bayesian.Rmd">View source <i class="fab fa-gitlab"></i></a></li>
+          <li><a id="book-edit" href="https://dvillasanao.github.io/IME_2010_2020//edit/master/06-bayesian.Rmd">Edit this page <i class="fab fa-gitlab"></i></a></li>
         </ul>
 </div>
     </nav>

@@ -51,126 +51,34 @@ set in the _output.yml file.&lt;/p&gt;">
         <ul class="book-toc list-unstyled">
 <li><a class="active" href="index.html">Machine Learning</a></li>
 <li><a class="" href="regressi%C3%B3n.html">🔍 1. Regressión</a></li>
+<li><a class="" href="%C3%A1rboles-de-decisi%C3%B3n-y-derivados.html">🌲 2. Árboles de Decisión y Derivados</a></li>
+<li><a class="" href="ensambles-ensemble-methods.html">🌟 3. Ensambles (Ensemble Methods)</a></li>
+<li><a class="" href="redes-neuronales-y-deep-learning.html">🧠 4. Redes Neuronales y Deep Learning</a></li>
+<li><a class="" href="reducci%C3%B3n-de-dimensionalidad.html">🧩 5. Reducción de Dimensionalidad</a></li>
+<li><a class="" href="bayesianos.html">🧬 6. Bayesianos</a></li>
+<li><a class="" href="regularizaci%C3%B3n.html">🧮 7. Regularización</a></li>
+<li><a class="" href="instance-based-basados-en-instancias.html">🔍 8. Instance-Based (Basados en Instancias)</a></li>
+<li><a class="" href="clustering-no-supervisado.html">📏 9. Clustering (No Supervisado)</a></li>
+<li><a class="" href="sistemas-basados-en-reglas-rule-based-systems.html">📐 10. Sistemas Basados en Reglas (Rule-Based Systems)</a></li>
 <li><a class="" href="references.html">References</a></li>
-<li><a class="" href="references-1.html">References</a></li>
 </ul>
-
-        <div class="book-extra">
+<div class="book-extra">
           <p><a id="book-repo" href="https://dvillasanao.github.io/IME_2010_2020/">View book source <i class="fab fa-gitlab"></i></a></p>
         </div>
       </nav>
 </div>
   </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><!--bookdown:title:end--><!--bookdown:title:start--><div id="machine-learning" class="section level1 unnumbered">
 <h1>Machine Learning<a class="anchor" aria-label="anchor" href="#machine-learning"><i class="fas fa-link"></i></a>
+<a class="anchor" aria-label="anchor" href="#machine-learning"><i class="fas fa-link"></i></a>
 </h1>
-<div id="árboles-de-decisión-y-derivados" class="section level2 unnumbered">
-<h2>🌲 <strong>2. Árboles de Decisión y Derivados</strong><a class="anchor" aria-label="anchor" href="#%C3%A1rboles-de-decisi%C3%B3n-y-derivados"><i class="fas fa-link"></i></a>
-</h2>
-<p><strong>Ejemplos:</strong> Decision Tree, Random Forest, Gradient Boosting<br><strong>Cuándo usarlo:</strong></p>
-<ul>
-<li>Problemas tabulares con relaciones no lineales y variables categóricas o numéricas.</li>
-<li>Cuando interpretabilidad es importante.</li>
-</ul>
-<p><strong>Ventajas:</strong> Manejan datos heterogéneos, fáciles de interpretar (árboles simples).<br><strong>Limitaciones:</strong> Sobreajuste en árboles simples; menor desempeño en datos muy ruidosos sin ensambles.</p>
-<hr>
-</div>
-<div id="ensambles-ensemble-methods" class="section level2 unnumbered">
-<h2>🌟 <strong>3. Ensambles (Ensemble Methods)</strong><a class="anchor" aria-label="anchor" href="#ensambles-ensemble-methods"><i class="fas fa-link"></i></a>
-</h2>
-<p><strong>Ejemplos:</strong> Random Forest, AdaBoost, XGBoost, LightGBM<br><strong>Cuándo usarlo:</strong></p>
-<ul>
-<li>Cuando buscas alto rendimiento en clasificación o regresión tabular.</li>
-<li>Competencias de datos (como Kaggle).</li>
-</ul>
-<p><strong>Ventajas:</strong> Alta precisión, robustez.<br><strong>Limitaciones:</strong> Difícil de interpretar; más costosos computacionalmente.</p>
-<hr>
-</div>
-<div id="redes-neuronales-y-deep-learning" class="section level2 unnumbered">
-<h2>🧠 <strong>4. Redes Neuronales y Deep Learning</strong><a class="anchor" aria-label="anchor" href="#redes-neuronales-y-deep-learning"><i class="fas fa-link"></i></a>
-</h2>
-<p><strong>Ejemplos:</strong> MLP, CNN, RNN, Transformers<br><strong>Cuándo usarlo:</strong></p>
-<ul>
-<li>Imágenes (CNN), texto y lenguaje natural (Transformers), series temporales (RNN/LSTM).</li>
-<li>Grandes volúmenes de datos no estructurados.</li>
-</ul>
-<p><strong>Ventajas:</strong> Muy poderosos para datos complejos y no estructurados.<br><strong>Limitaciones:</strong> Requieren mucha data y poder computacional. Menor interpretabilidad.</p>
-<hr>
-</div>
-<div id="reducción-de-dimensionalidad" class="section level2 unnumbered">
-<h2>🧩 <strong>5. Reducción de Dimensionalidad</strong><a class="anchor" aria-label="anchor" href="#reducci%C3%B3n-de-dimensionalidad"><i class="fas fa-link"></i></a>
-</h2>
-<p><strong>Ejemplos:</strong> PCA, t-SNE, UMAP<br><strong>Cuándo usarlo:</strong></p>
-<ul>
-<li>Visualización de datos de alta dimensión.</li>
-<li>Preprocesamiento para eliminar ruido o multicolinealidad.</li>
-</ul>
-<p><strong>Ventajas:</strong> Mejora desempeño y velocidad de otros modelos.<br><strong>Limitaciones:</strong> Puede perder interpretabilidad; no siempre mejora modelos.</p>
-<hr>
-</div>
-<div id="bayesianos" class="section level2 unnumbered">
-<h2>🧬 <strong>6. Bayesianos</strong><a class="anchor" aria-label="anchor" href="#bayesianos"><i class="fas fa-link"></i></a>
-</h2>
-<p><strong>Ejemplos:</strong> Naive Bayes, Bayesian Networks<br><strong>Cuándo usarlo:</strong></p>
-<ul>
-<li>Clasificación rápida con supuestos simples.</li>
-<li>Problemas de texto o spam detection.</li>
-</ul>
-<p><strong>Ventajas:</strong> Muy rápidos, bien fundamentados.<br><strong>Limitaciones:</strong> Supone independencia de variables (no siempre cierto).</p>
-<hr>
-</div>
-<div id="regularización" class="section level2 unnumbered">
-<h2>🧮 <strong>7. Regularización</strong><a class="anchor" aria-label="anchor" href="#regularizaci%C3%B3n"><i class="fas fa-link"></i></a>
-</h2>
-<p><strong>Ejemplos:</strong> L1 (Lasso), L2 (Ridge), Elastic Net<br><strong>Cuándo usarlo:</strong></p>
-<ul>
-<li>Para evitar sobreajuste en modelos lineales o redes neuronales.</li>
-<li>Cuando tienes muchas variables (alta dimensionalidad).</li>
-</ul>
-<p><strong>Ventajas:</strong> Penaliza modelos complejos.<br><strong>Limitaciones:</strong> Puede eliminar variables útiles si se usa en exceso.</p>
-<hr>
-</div>
-<div id="instance-based-basados-en-instancias" class="section level2 unnumbered">
-<h2>🔍 <strong>8. Instance-Based (Basados en Instancias)</strong><a class="anchor" aria-label="anchor" href="#instance-based-basados-en-instancias"><i class="fas fa-link"></i></a>
-</h2>
-<p><strong>Ejemplos:</strong> K-Nearest Neighbors (KNN)<br><strong>Cuándo usarlo:</strong></p>
-<ul>
-<li>Pocos datos, con patrones locales claros.<br>
-</li>
-<li>Cuando la similitud entre casos es importante.</li>
-</ul>
-<p><strong>Ventajas:</strong> Simple y eficaz en problemas de baja dimensión.<br><strong>Limitaciones:</strong> Escala mal con muchos datos; sensible al ruido.</p>
-<hr>
-</div>
-<div id="clustering-no-supervisado" class="section level2 unnumbered">
-<h2>📏 <strong>9. Clustering (No Supervisado)</strong><a class="anchor" aria-label="anchor" href="#clustering-no-supervisado"><i class="fas fa-link"></i></a>
-</h2>
-<p><strong>Ejemplos:</strong> K-Means, DBSCAN, Hierarchical Clustering<br><strong>Cuándo usarlo:</strong></p>
-<ul>
-<li>Agrupar datos sin etiquetas previas.</li>
-<li>Descubrir estructuras ocultas o segmentos de mercado.</li>
-</ul>
-<p><strong>Ventajas:</strong> Útil en exploración y reducción de complejidad.<br><strong>Limitaciones:</strong> Requiere elegir número de grupos (excepto DBSCAN); puede ser sensible a escala.</p>
-<hr>
-</div>
-<div id="sistemas-basados-en-reglas-rule-based-systems" class="section level2 unnumbered">
-<h2>📐 <strong>10. Sistemas Basados en Reglas (Rule-Based Systems)</strong><a class="anchor" aria-label="anchor" href="#sistemas-basados-en-reglas-rule-based-systems"><i class="fas fa-link"></i></a>
-</h2>
-<p><strong>Ejemplos:</strong> RuleFit, Decision Rules, lógica difusa
-<strong>Cuándo usarlo:</strong></p>
-<ul>
-<li>Interpretabilidad es clave (por ejemplo, decisiones legales o médicas).</li>
-<li>Incorporar conocimiento experto.</li>
-</ul>
-<p><strong>Ventajas:</strong> Fácil de entender y auditar.<br><strong>Limitaciones:</strong> No tan precisos como otros métodos en datos complejos.</p>
-<hr>
-</div>
 <div id="cuadro" class="section level2" number="0.1">
 <h2>
 <span class="header-section-number">0.1</span> 📌 Cuadro<a class="anchor" aria-label="anchor" href="#cuadro"><i class="fas fa-link"></i></a>
+<a class="anchor" aria-label="anchor" href="#cuadro"><i class="fas fa-link"></i></a>
 </h2>
-<div id="prgrlhzbgu" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="nemabvcjvk" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
   
-  <div class="inline-table"><table class="gt_table" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: 'Century Gothic'; display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 10px; font-weight: normal; font-style: normal; background-color: #FFFFFF; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; table-layout: fixed; width: 0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false" width="0" bgcolor="#FFFFFF">
+  <div class="inline-table"><div class="inline-table"><table class="gt_table" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: 'Century Gothic'; display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 10px; font-weight: normal; font-style: normal; background-color: #FFFFFF; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; table-layout: fixed; width: 0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false" width="0" bgcolor="#FFFFFF">
 <colgroup>
 <col style="width:200px;">
 <col style="width:200px;">
@@ -253,7 +161,7 @@ set in the _output.yml file.&lt;/p&gt;">
 <tfoot class="gt_footnotes" style="border-style: none; color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3;" bgcolor="#FFFFFF"><tr style="border-style: none;">
 <td class="gt_footnote" colspan="4" style="border-style: none; margin: 0px; font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px;"> Fuente: Elaboración propia</td>
     </tr></tfoot>
-</table></div>
+</table></div></div>
 </div>
 
 </div>
@@ -261,26 +169,19 @@ set in the _output.yml file.&lt;/p&gt;">
   <div class="chapter-nav">
 <div class="empty"></div>
 <div class="next"><a href="regressi%C3%B3n.html">🔍 1. Regressión</a></div>
+</div>
+<div class="chapter-nav">
+<div class="empty"></div>
+<div class="empty"></div>
 </div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
     <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
       <ul class="nav navbar-nav">
 <li><a class="nav-link" href="#machine-learning">Machine Learning</a></li>
-<li><a class="nav-link" href="#%C3%A1rboles-de-decisi%C3%B3n-y-derivados">🌲 2. Árboles de Decisión y Derivados</a></li>
-<li><a class="nav-link" href="#ensambles-ensemble-methods">🌟 3. Ensambles (Ensemble Methods)</a></li>
-<li><a class="nav-link" href="#redes-neuronales-y-deep-learning">🧠 4. Redes Neuronales y Deep Learning</a></li>
-<li><a class="nav-link" href="#reducci%C3%B3n-de-dimensionalidad">🧩 5. Reducción de Dimensionalidad</a></li>
-<li><a class="nav-link" href="#bayesianos">🧬 6. Bayesianos</a></li>
-<li><a class="nav-link" href="#regularizaci%C3%B3n">🧮 7. Regularización</a></li>
-<li><a class="nav-link" href="#instance-based-basados-en-instancias">🔍 8. Instance-Based (Basados en Instancias)</a></li>
-<li><a class="nav-link" href="#clustering-no-supervisado">📏 9. Clustering (No Supervisado)</a></li>
-<li><a class="nav-link" href="#sistemas-basados-en-reglas-rule-based-systems">📐 10. Sistemas Basados en Reglas (Rule-Based Systems)</a></li>
 <li><a class="nav-link" href="#cuadro"><span class="header-section-number">0.1</span> 📌 Cuadro</a></li>
 </ul>
-
-      <div class="book-extra">
+<div class="book-extra">
         <ul class="list-unstyled">
-<li><a id="book-source" href="https://dvillasanao.github.io/IME_2010_2020//blob/master/index.Rmd">View source <i class="fab fa-gitlab"></i></a></li>
-          <li><a id="book-edit" href="https://dvillasanao.github.io/IME_2010_2020//edit/master/index.Rmd">Edit this page <i class="fab fa-gitlab"></i></a></li>
+          
         </ul>
 </div>
     </nav>
