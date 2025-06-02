@@ -185,24 +185,66 @@ Para lograr esta minimización, se utilizan técnicas de cálculo (derivadas par
 
 ------------------------------------------------------------------------
 
-## Base de datos   
+## Base de datos    
+
+La base de datos `mtcars` es un conjunto de datos clásico en R que contiene información sobre **32 automóviles** (modelos de 1973–74), y fue extraído de la revista *Motor Trend US*. Incluye **variables técnicas** del desempeño de los autos.
+
+Aquí está una descripción de cada columna:
+  
+  | Variable | Significado                                          | Tipo de dato     |
+  | -------- | ---------------------------------------------------- | ---------------- |
+  | `mpg`    | Miles per gallon (millas por galón)                  | Numérica         |
+  | `cyl`    | Número de cilindros                                  | Entero           |
+  | `disp`   | Desplazamiento del motor (en pulgadas cúbicas)       | Numérica         |
+  | `hp`     | Caballos de fuerza                                   | Entero           |
+  | `drat`   | Relación del eje trasero (rear axle ratio)           | Numérica         |
+  | `wt`     | Peso del auto (en miles de libras)                   | Numérica         |
+  | `qsec`   | Tiempo en 1/4 de milla (segundos)                    | Numérica         |
+  | `vs`     | Tipo de motor: 0 = V-shaped, 1 = straight (en línea) | Binaria (factor) |
+  | `am`     | Tipo de transmisión: 0 = automática, 1 = manual      | Binaria (factor) |
+  | `gear`   | Número de velocidades (marchas) adelante             | Entero           |
+  | `carb`   | Número de carburadores                               | Entero           |
 
 ```{r}
-# 2. Cargar y explorar los datos
+# 2. Cargar y se exploran los datos
 data("mtcars")
-glimpse(mtcars)
-``` 
+```
+
+```{r, echo = FALSE}
+require(gt)
+
+mtcars %>% 
+ gt() %>%
+  tab_header(title = "mtcars database") %>%
+   tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Cuando_") ~ px(300),
+                   everything() ~ px(50)) %>%
+         as_raw_html() 
+
+```
+
 
 ```{r}
-# Queremos predecir `mpg` (millas por galón) usando otras variables
-# mpg será nuestra variable dependiente (target)
+# Se quiere predecir `mpg` (millas por galón) usando otras variables
+# mpg será la variable dependiente (target)
 
-# 3. Dividir datos en entrenamiento y prueba
+# 3. Se dividen datos en entrenamiento y prueba
 set.seed(123)  # Para reproducibilidad
 train_index <- createDataPartition(mtcars$mpg, p = 0.8, list = FALSE)
 train_data <- mtcars[train_index, ]
 test_data <- mtcars[-train_index, ]
+```
 
+```{r}
 # 4. Entrenar el modelo de regresión lineal (OLS)
 modelo_ols <- lm(mpg ~ ., data = train_data)
 
