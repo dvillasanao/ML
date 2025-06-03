@@ -3232,7 +3232,7 @@ reducido</strong></p>
 ## &lt;environment: 0x0000024e11a13108&gt;</code></pre>
 <p><strong>Nos aseguramos que las bases de (test / training tengan ) de
 que test_data tenga esas variables</strong></p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r fold-show"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a>test_data_reducido <span class="ot">&lt;-</span> test_data[, <span class="fu">c</span>(<span class="st">&quot;drat&quot;</span>, <span class="st">&quot;wt&quot;</span>, <span class="st">&quot;gear&quot;</span>, <span class="st">&quot;carb&quot;</span>)]</span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r fold-show"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a>test_data_reducido <span class="ot">&lt;-</span> test_data[, <span class="fu">c</span>(<span class="st">&quot;mpg&quot;</span>, <span class="st">&quot;drat&quot;</span>, <span class="st">&quot;wt&quot;</span>, <span class="st">&quot;gear&quot;</span>, <span class="st">&quot;carb&quot;</span>)]</span></code></pre></div>
 <div id="modelo-predictivo" class="section level3">
 <h3>Modelo predictivo</h3>
 <p>Con la función <strong><code>predict()</code></strong> genérica en R
@@ -3263,40 +3263,87 @@ eso).</li>
 <span id="cb22-2"><a href="#cb22-2" tabindex="-1"></a>predicciones <span class="ot">&lt;-</span> <span class="fu">predict</span>(modelo_step, <span class="at">newdata =</span> test_data_reducido)</span></code></pre></div>
 <div class="sourceCode" id="cb23"><pre class="sourceCode r fold-show"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a><span class="co"># Comparar valores reales vs. predichos</span></span>
 <span id="cb23-2"><a href="#cb23-2" tabindex="-1"></a>resultados <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">Real =</span> test_data_reducido<span class="sc">$</span>mpg,</span>
-<span id="cb23-3"><a href="#cb23-3" tabindex="-1"></a>                     <span class="at">Predicho =</span> predicciones</span>
+<span id="cb23-3"><a href="#cb23-3" tabindex="-1"></a>                     <span class="at">Pred =</span> predicciones</span>
 <span id="cb23-4"><a href="#cb23-4" tabindex="-1"></a>)</span></code></pre></div>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r fold-show"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a><span class="co"># Calcular métricas de error</span></span>
-<span id="cb24-2"><a href="#cb24-2" tabindex="-1"></a>rmse_val <span class="ot">&lt;-</span> <span class="fu">rmse</span>(resultados<span class="sc">$</span>Real, resultados<span class="sc">$</span>Predicho)</span>
-<span id="cb24-3"><a href="#cb24-3" tabindex="-1"></a>mae_val <span class="ot">&lt;-</span> <span class="fu">mae</span>(resultados<span class="sc">$</span>Real, resultados<span class="sc">$</span>Predicho)</span>
-<span id="cb24-4"><a href="#cb24-4" tabindex="-1"></a>r2_val <span class="ot">&lt;-</span> <span class="fu">R2</span>(predicciones, test_data_reducido<span class="sc">$</span>mpg)</span>
-<span id="cb24-5"><a href="#cb24-5" tabindex="-1"></a></span>
-<span id="cb24-6"><a href="#cb24-6" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;RMSE:&quot;</span>, rmse_val, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
-<span id="cb24-7"><a href="#cb24-7" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;MAE:&quot;</span>, mae_val, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
-<span id="cb24-8"><a href="#cb24-8" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;R2 :&quot;</span>, r2_val, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
-<span id="cb24-9"><a href="#cb24-9" tabindex="-1"></a></span>
-<span id="cb24-10"><a href="#cb24-10" tabindex="-1"></a><span class="co"># 6. Validación cruzada (opcional)</span></span>
-<span id="cb24-11"><a href="#cb24-11" tabindex="-1"></a>control <span class="ot">&lt;-</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">&quot;cv&quot;</span>, <span class="at">number =</span> <span class="dv">10</span>)</span>
-<span id="cb24-12"><a href="#cb24-12" tabindex="-1"></a>modelo_cv <span class="ot">&lt;-</span> <span class="fu">train</span>(mpg <span class="sc">~</span> ., <span class="at">data =</span> mtcars, <span class="at">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="at">trControl =</span> control)</span>
-<span id="cb24-13"><a href="#cb24-13" tabindex="-1"></a><span class="fu">print</span>(modelo_cv)</span>
-<span id="cb24-14"><a href="#cb24-14" tabindex="-1"></a></span>
-<span id="cb24-15"><a href="#cb24-15" tabindex="-1"></a><span class="co"># 7. Usar el modelo para predecir nuevos datos (simulación)</span></span>
-<span id="cb24-16"><a href="#cb24-16" tabindex="-1"></a>nuevo_auto <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb24-17"><a href="#cb24-17" tabindex="-1"></a>  <span class="at">cyl =</span> <span class="dv">6</span>,</span>
-<span id="cb24-18"><a href="#cb24-18" tabindex="-1"></a>  <span class="at">disp =</span> <span class="dv">200</span>,</span>
-<span id="cb24-19"><a href="#cb24-19" tabindex="-1"></a>  <span class="at">hp =</span> <span class="dv">110</span>,</span>
-<span id="cb24-20"><a href="#cb24-20" tabindex="-1"></a>  <span class="at">drat =</span> <span class="fl">3.5</span>,</span>
-<span id="cb24-21"><a href="#cb24-21" tabindex="-1"></a>  <span class="at">wt =</span> <span class="fl">2.8</span>,</span>
-<span id="cb24-22"><a href="#cb24-22" tabindex="-1"></a>  <span class="at">qsec =</span> <span class="dv">18</span>,</span>
-<span id="cb24-23"><a href="#cb24-23" tabindex="-1"></a>  <span class="at">vs =</span> <span class="dv">1</span>,</span>
-<span id="cb24-24"><a href="#cb24-24" tabindex="-1"></a>  <span class="at">am =</span> <span class="dv">1</span>,</span>
-<span id="cb24-25"><a href="#cb24-25" tabindex="-1"></a>  <span class="at">gear =</span> <span class="dv">4</span>,</span>
-<span id="cb24-26"><a href="#cb24-26" tabindex="-1"></a>  <span class="at">carb =</span> <span class="dv">2</span></span>
-<span id="cb24-27"><a href="#cb24-27" tabindex="-1"></a>)</span>
-<span id="cb24-28"><a href="#cb24-28" tabindex="-1"></a></span>
-<span id="cb24-29"><a href="#cb24-29" tabindex="-1"></a><span class="fu">predict</span>(modelo_ols, <span class="at">newdata =</span> nuevo_auto)</span>
-<span id="cb24-30"><a href="#cb24-30" tabindex="-1"></a></span>
-<span id="cb24-31"><a href="#cb24-31" tabindex="-1"></a><span class="co"># 8. Interpretación del modelo (con broom)</span></span>
-<span id="cb24-32"><a href="#cb24-32" tabindex="-1"></a><span class="fu">tidy</span>(modelo_ols)</span></code></pre></div>
+</div>
+<div id="evaluar-el-desempeño-predictivo" class="section level3">
+<h3>Evaluar el desempeño predictivo</h3>
+<p>El <strong>MAE (Mean Absolute Error)</strong>, o <strong>Error
+Absoluto Medio</strong> en español, es una de las métricas más
+utilizadas para evaluar la precisión de un modelo de regresión. Mide la
+<strong>magnitud promedio de los errores</strong> entre los valores
+predichos por un modelo y los valores reales observados.</p>
+<div id="fórmula-del-mae" class="section level4">
+<h4>Fórmula del MAE</h4>
+<p>La fórmula para calcular el MAE es la siguiente:</p>
+<p><span class="math display">\[MAE = \frac{1}{n} \sum_{i=1}^{n} |y_i -
+\hat{y}_i|\]</span></p>
+<p>Donde:</p>
+<ul>
+<li><span class="math inline">\(n\)</span>: Es el número total de
+observaciones (o puntos de datos) en el conjunto de datos.</li>
+<li><span class="math inline">\(y_i\)</span>: Es el <strong>valor real u
+observado</strong> de la variable dependiente para la observación <span class="math inline">\(i\)</span>.</li>
+<li><span class="math inline">\(\hat{y}_i\)</span>: Es el <strong>valor
+predicho</strong> por el modelo para la observación <span class="math inline">\(i\)</span>.</li>
+<li><span class="math inline">\(|y_i - \hat{y}_i|\)</span>: Es el
+<strong>valor absoluto</strong> de la diferencia entre el valor real y
+el valor predicho para la observación <span class="math inline">\(i\)</span>. Tomar el valor absoluto es crucial
+porque evita que los errores positivos y negativos se cancelen entre sí,
+lo que daría una falsa impresión de precisión.</li>
+<li><span class="math inline">\(\sum_{i=1}^{n}\)</span>: Indica la suma
+de todos los errores absolutos para todas las <span class="math inline">\(n\)</span> observaciones.</li>
+</ul>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r fold-show"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a><span class="co"># Cálculo del MAE (Mean Absolute Error)</span></span>
+<span id="cb24-2"><a href="#cb24-2" tabindex="-1"></a>MAE <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">abs</span>(predicciones <span class="sc">-</span> test_data_reducido<span class="sc">$</span>mpg))</span>
+<span id="cb24-3"><a href="#cb24-3" tabindex="-1"></a>MAE</span></code></pre></div>
+<pre><code>## [1] 3.679999</code></pre>
+<p>Esto significa que, <strong>en promedio</strong>, el modelo reducido
+predice el consumo de combustible con un error de ±3.68 mpg. Esto es
+bueno o malo. Depende del rango de la variable <code>mpg</code> en
+<code>mtcars</code>.</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r fold-show"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" tabindex="-1"></a><span class="fu">range</span>(mtcars<span class="sc">$</span>mpg)</span></code></pre></div>
+<pre><code>## [1] 10.4 33.9</code></pre>
+<p>El rango de <code>mpg</code> es de <strong>10.4 a 33.9</strong>, es
+decir, abarca <strong>~23.5 unidades</strong>.</p>
+<p>Por tanto:</p>
+<pre><code>  * Un MAE de **3.68** representa alrededor de un **15% del rango total**. El modelo, en promedio, se equivoca por 3.68 millas por galón en sus predicciones.
+* No es un error enorme, pero **tampoco es excelente**.
+* Si el modelo completo (`modelo_ols`) tenía un MAE menor, podría predecir mejor, aunque con más colinealidad.</code></pre>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r fold-show"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" tabindex="-1"></a><span class="co"># Cálculo del RMSE (Root Mean Squared Error)</span></span>
+<span id="cb29-2"><a href="#cb29-2" tabindex="-1"></a>RMSE <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">mean</span>((predicciones <span class="sc">-</span> test_data_reducido<span class="sc">$</span>mpg)<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb29-3"><a href="#cb29-3" tabindex="-1"></a>RMSE</span></code></pre></div>
+<pre><code>## [1] 4.866215</code></pre>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r fold-show"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" tabindex="-1"></a><span class="co"># R² manual (opcional)</span></span>
+<span id="cb31-2"><a href="#cb31-2" tabindex="-1"></a>SST <span class="ot">&lt;-</span> <span class="fu">sum</span>((test_data_reducido<span class="sc">$</span>mpg <span class="sc">-</span> <span class="fu">mean</span>(test_data_reducido<span class="sc">$</span>mpg))<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb31-3"><a href="#cb31-3" tabindex="-1"></a>SSE <span class="ot">&lt;-</span> <span class="fu">sum</span>((test_data_reducido<span class="sc">$</span>mpg <span class="sc">-</span> predicciones)<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb31-4"><a href="#cb31-4" tabindex="-1"></a>R2 <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> SSE<span class="sc">/</span>SST</span>
+<span id="cb31-5"><a href="#cb31-5" tabindex="-1"></a>R2</span></code></pre></div>
+<pre><code>## [1] 0.6021664</code></pre>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r fold-show"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" tabindex="-1"></a><span class="co"># 6. Validación cruzada (opcional)</span></span>
+<span id="cb33-2"><a href="#cb33-2" tabindex="-1"></a>control <span class="ot">&lt;-</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">&quot;cv&quot;</span>, <span class="at">number =</span> <span class="dv">10</span>)</span>
+<span id="cb33-3"><a href="#cb33-3" tabindex="-1"></a>modelo_cv <span class="ot">&lt;-</span> <span class="fu">train</span>(mpg <span class="sc">~</span> ., <span class="at">data =</span> mtcars, <span class="at">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="at">trControl =</span> control)</span>
+<span id="cb33-4"><a href="#cb33-4" tabindex="-1"></a><span class="fu">print</span>(modelo_cv)</span>
+<span id="cb33-5"><a href="#cb33-5" tabindex="-1"></a></span>
+<span id="cb33-6"><a href="#cb33-6" tabindex="-1"></a><span class="co"># 7. Usar el modelo para predecir nuevos datos (simulación)</span></span>
+<span id="cb33-7"><a href="#cb33-7" tabindex="-1"></a>nuevo_auto <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb33-8"><a href="#cb33-8" tabindex="-1"></a>  <span class="at">cyl =</span> <span class="dv">6</span>,</span>
+<span id="cb33-9"><a href="#cb33-9" tabindex="-1"></a>  <span class="at">disp =</span> <span class="dv">200</span>,</span>
+<span id="cb33-10"><a href="#cb33-10" tabindex="-1"></a>  <span class="at">hp =</span> <span class="dv">110</span>,</span>
+<span id="cb33-11"><a href="#cb33-11" tabindex="-1"></a>  <span class="at">drat =</span> <span class="fl">3.5</span>,</span>
+<span id="cb33-12"><a href="#cb33-12" tabindex="-1"></a>  <span class="at">wt =</span> <span class="fl">2.8</span>,</span>
+<span id="cb33-13"><a href="#cb33-13" tabindex="-1"></a>  <span class="at">qsec =</span> <span class="dv">18</span>,</span>
+<span id="cb33-14"><a href="#cb33-14" tabindex="-1"></a>  <span class="at">vs =</span> <span class="dv">1</span>,</span>
+<span id="cb33-15"><a href="#cb33-15" tabindex="-1"></a>  <span class="at">am =</span> <span class="dv">1</span>,</span>
+<span id="cb33-16"><a href="#cb33-16" tabindex="-1"></a>  <span class="at">gear =</span> <span class="dv">4</span>,</span>
+<span id="cb33-17"><a href="#cb33-17" tabindex="-1"></a>  <span class="at">carb =</span> <span class="dv">2</span></span>
+<span id="cb33-18"><a href="#cb33-18" tabindex="-1"></a>)</span>
+<span id="cb33-19"><a href="#cb33-19" tabindex="-1"></a></span>
+<span id="cb33-20"><a href="#cb33-20" tabindex="-1"></a><span class="fu">predict</span>(modelo_ols, <span class="at">newdata =</span> nuevo_auto)</span>
+<span id="cb33-21"><a href="#cb33-21" tabindex="-1"></a></span>
+<span id="cb33-22"><a href="#cb33-22" tabindex="-1"></a><span class="co"># 8. Interpretación del modelo (con broom)</span></span>
+<span id="cb33-23"><a href="#cb33-23" tabindex="-1"></a><span class="fu">tidy</span>(modelo_ols)</span></code></pre></div>
+</div>
 </div>
 </div>
 <div id="notas" class="section level2">

@@ -588,13 +588,43 @@ resultados <- tibble(Real = test_data_reducido$mpg,
 )
 ```
 
-### Evaluar el desempeño predictivo  
+### Evaluar el desempeño predictivo   
 
-```{r, eval = FALSE}
+El **MAE (Mean Absolute Error)**, o **Error Absoluto Medio** en español, es una de las métricas más utilizadas para evaluar la precisión de un modelo de regresión. Mide la **magnitud promedio de los errores** entre los valores predichos por un modelo y los valores reales observados.
+
+#### Fórmula del MAE
+
+La fórmula para calcular el MAE es la siguiente:
+  
+  $$MAE = \frac{1}{n} \sum_{i=1}^{n} |y_i - \hat{y}_i|$$
+  
+  Donde:
+  
+  * $n$: Es el número total de observaciones (o puntos de datos) en el conjunto de datos.
+* $y_i$: Es el **valor real u observado** de la variable dependiente para la observación $i$.
+* $\hat{y}_i$: Es el **valor predicho** por el modelo para la observación $i$.
+* $|y_i - \hat{y}_i|$: Es el **valor absoluto** de la diferencia entre el valor real y el valor predicho para la observación $i$. Tomar el valor absoluto es crucial porque evita que los errores positivos y negativos se cancelen entre sí, lo que daría una falsa impresión de precisión.
+* $\sum_{i=1}^{n}$: Indica la suma de todos los errores absolutos para todas las $n$ observaciones.
+
+
+```{r}
 # Cálculo del MAE (Mean Absolute Error)
 MAE <- mean(abs(predicciones - test_data_reducido$mpg))
 MAE
 ```
+Esto significa que, **en promedio**, el modelo reducido predice el consumo de combustible con un error de ±3.68 mpg. Esto es bueno o malo. Depende del rango de la variable `mpg` en `mtcars`.  
+
+```{r}
+range(mtcars$mpg)
+```
+El rango de `mpg` es de **10.4 a 33.9**, es decir, abarca **\~23.5 unidades**.
+    
+Por tanto:
+      
+      * Un MAE de **3.68** representa alrededor de un **15% del rango total**. El modelo, en promedio, se equivoca por 3.68 millas por galón en sus predicciones.
+    * No es un error enorme, pero **tampoco es excelente**.
+    * Si el modelo completo (`modelo_ols`) tenía un MAE menor, podría predecir mejor, aunque con más colinealidad.
+
 
 ```{r}
 # Cálculo del RMSE (Root Mean Squared Error)
@@ -611,7 +641,7 @@ R2
 ```
 
 
-```{r}
+```{r, eval = FALSE}
 # 6. Validación cruzada (opcional)
 control <- trainControl(method = "cv", number = 10)
 modelo_cv <- train(mpg ~ ., data = mtcars, method = "lm", trControl = control)
