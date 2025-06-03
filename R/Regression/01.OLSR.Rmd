@@ -334,6 +334,164 @@ p <- tabla %>%
 p
 ```
     
+## Selección de variables   
+
+
+### Criterio de Información de Akaike   
+
+
+El Criterio de Información de Akaike (AIC, por sus siglas en inglés, Akaike Information Criterion) es una medida de la bondad de ajuste de un modelo estadístico que penaliza la complejidad del modelo. Su objetivo es seleccionar el modelo que mejor se ajusta a los datos con la menor cantidad de parámetros, evitando así el sobreajuste (overfitting).
+
+La fórmula general para calcular el AIC es:
+  
+$$AIC = 2k - 2\ln(L)$$
+  
+Donde:
+  * $k$ es el número de parámetros del modelo. En un modelo de regresión, esto incluye el intercepto y los coeficientes de las variables predictoras, más la varianza del error si se estima (en modelos de mínimos cuadrados ordinarios, esto es a menudo el caso, por lo que $k$ a veces se cuenta como el número de coeficientes + 1 para la varianza del error, o simplemente el número de coeficientes si la varianza del error se considera implícita en la función de verosimilitud).
+* $\ln(L)$ es el logaritmo natural del valor máximo de la función de verosimilitud (log-likelihood) del modelo. La función de verosimilitud mide qué tan bien el modelo reproduce los datos observados.
+
+#### Cómo se interpreta:
+
+* **Valores más bajos de AIC indican un mejor modelo.** El AIC busca un equilibrio entre la bondad de ajuste del modelo a los datos (representada por $\ln(L)$) y la complejidad del modelo (representada por $2k$).
+* El término $2k$ es una **penalización por la complejidad**. Cada parámetro adicional en el modelo aumenta el valor de AIC, lo que desincentiva la inclusión de variables innecesarias que podrían sobreajustar los datos.  
+
+#### Para modelos de Regresión por Mínimos Cuadrados Ordinarios (OLS):
+
+Aunque la fórmula general del AIC es la que se mencionó, para modelos de OLS con residuos normalmente distribuidos, la función de log-verosimilitud tiene una forma específica, lo que permite reescribir el AIC de una manera más práctica.
+
+Para un modelo de regresión lineal con $n$ observaciones y $k$ parámetros (incluyendo el intercepto), y asumiendo errores normales con varianza constante, el AIC se puede calcular como:
+  
+  $$AIC = n \cdot \ln\left(\frac{RSS}{n}\right) + 2k$$
+  
+  Donde:
+  * $n$ es el número de observaciones (tamaño de la muestra).
+* $RSS$ es la Suma de Cuadrados de los Residuos (Residual Sum of Squares), que es la suma de los cuadrados de las diferencias entre los valores observados y los valores predichos por el modelo.
+* $k$ es el número de parámetros del modelo (coeficientes de las variables independientes + intercepto).
+
+**Es importante recordar:**
+  
+  * El AIC no es una prueba de hipótesis en el sentido tradicional; no te dice si un modelo es "bueno" o "malo" en un sentido absoluto.
+* Es una herramienta para la **selección de modelos entre un conjunto de modelos candidatos**. Siempre se compara el AIC de diferentes modelos ajustados a los **mismos datos**. El modelo con el AIC más bajo es el preferido.
+* Cuando la muestra es pequeña, a veces se prefiere el **AIC corregido (AICc)**, que añade una penalización adicional por el tamaño de la muestra:
+  $$AICc = AIC + \frac{2k(k+1)}{n-k-1}$$
+  A medida que $n$ (tamaño de la muestra) es grande, el término de corrección se vuelve insignificante y el AICc converge al AIC.
+
+
+Se realiza una selección automática de variables para un modelo de regresión lineal, utilizando el **criterio AIC (Criterio de Información de Akaike**)   
+
+```{r}
+require(MASS)
+
+# Aplicar selección automática con criterio AIC
+modelo_step <- stepAIC(modelo_ols, direction = "both")
+```
+
+El procedimiento va eliminando o agregando variables al modelo original para reducir el **AIC (Criterio de Información de Akaike)**. El objetivo es encontrar un modelo más **parsimonioso** (simple) con **buena capacidad predictiva**.  
+
+* El proceso empieza con un modelo completo:
+  `mpg ~ cyl + disp + hp + drat + wt + qsec + vs + am + gear + carb`
+y un AIC inicial, por ejemplo: `AIC = 57.77`.
+
+* Luego evalúa qué pasa si **quita** una variable (`- vs`, `- cyl`, etc.).
+
+* Si al eliminar una variable el AIC **baja**, se acepta ese cambio.
+Ejemplo:
+  `- vs    1    2.1293  102.57  56.353`
+Significa que si quitas la variable `vs`, el AIC baja de 57.77 a 56.35 → ¡mejor!
+  
+  * Se acepta esa modificación y se repite el procedimiento, ahora con el nuevo modelo.
+
+* También puede intentar **agregar** variables previamente eliminadas (`+ vs`, `+ hp`, etc.) si esto mejora el AIC.
+
+* Cuando **ya no puede bajar más el AIC** quitando o agregando variables. El modelo final es el que **tiene el AIC más bajo** alcanzado durante el proceso. 
+
+```{r}
+# Ver resumen del modelo seleccionado
+summary(modelo_step)
+```
+
+* **Error estándar residual**: En promedio, el error de predicción es de ±2.2 mpg.
+* **R² = 0.8738**: El modelo explica el **87.4% de la variabilidad** en `mpg`.
+* **R² ajustado = 0.8518**: Ajusta por el número de predictores; aún muy bueno.
+* **F-statistic = 39.81**, **p-value muy bajo (≈0)**: El modelo global es **altamente significativo**.
+
+
+### Forward or backward stepwise  
+
+Los modelos "forward" (hacia adelante) y "backward" (hacia atrás) son dos enfoques comunes dentro de la **regresión stepwise (paso a paso)**, un método de selección automática de variables para construir modelos de regresión. El objetivo de la regresión stepwise es encontrar un subconjunto óptimo de variables predictoras que expliquen la mayor parte de la varianza en la variable dependiente con la menor complejidad posible, evitando el sobreajuste y mejorando la interpretabilidad del modelo.
+
+Ambos métodos operan de manera iterativa, agregando o eliminando variables basándose en un criterio estadístico (como el p-valor, AIC, BIC, etc.).
+ 
+#### **Forward Selection** (Selección Hacia Adelante)
+
+La selección hacia adelante comienza con un modelo "nulo", es decir, un modelo que no contiene ninguna variable predictora (solo el intercepto). Luego, en cada paso, evalúa todas las variables predictoras no incluidas en el modelo y agrega aquella que, al ser incluida, produce la mejora más significativa en el ajuste del modelo. Este proceso continúa hasta que ninguna de las variables restantes cumple con el criterio de entrada preestablecido (por ejemplo, su p-valor es mayor que un umbral determinado).
+
+#### **Backward Elimination** (Eliminación Hacia Atrás)
+
+La eliminación hacia atrás comienza con un modelo "completo", es decir, un modelo que incluye todas las variables predictoras candidatas. Luego, en cada paso, evalúa la contribución de cada variable predictora en el modelo y elimina aquella que, al ser retirada, tiene el menor impacto negativo en el ajuste del modelo (o la que es menos significativa, por ejemplo, la que tiene el p-valor más alto). Este proceso continúa hasta que todas las variables restantes en el modelo cumplen con un criterio de permanencia preestablecido (por ejemplo, su p-valor es menor que un umbral determinado).
+
+
+#### Consideraciones Generales sobre la Regresión Stepwise
+
+Es importante mencionar que, aunque los métodos forward y backward son populares por su automatización, también tienen sus **críticas y desventajas**:
+  
+  * **Sobreajuste (Overfitting):** Los modelos resultantes pueden ajustarse muy bien a los datos de entrenamiento, pero no generalizar bien a nuevos datos. Esto se debe a que el proceso de selección de variables se basa en los datos observados, lo que puede llevar a incluir variables que parecen importantes por puro azar en esa muestra particular.
+* **P-valores y Coeficientes Sesgados:** Los p-valores y los coeficientes de regresión obtenidos de un modelo stepwise pueden ser sesgados. Los p-valores tienden a ser más pequeños de lo que realmente son, lo que lleva a una falsa confianza en la significancia de las variables.
+* **No considera la teoría:** El proceso es puramente estadístico y no incorpora el conocimiento del dominio o la teoría subyacente sobre las relaciones entre las variables. Un modelo estadísticamente "óptimo" podría carecer de sentido teórico o práctico.
+* **Dependencia del orden:** La selección de variables puede ser sensible al orden en que se añaden o eliminan, especialmente en la selección hacia adelante.
+
+
+```{r}
+require(leaps)
+
+#	Use exhaustive search, forward selection, backward selection or sequential replacement to search.
+#method=c("exhaustive", "backward", "forward", "seqrep")  
+
+# Evaluar todos los subconjuntos posibles
+regfit <- regsubsets(mpg ~ ., data = train_data, nvmax = 10)
+summary(regfit)
+```
+`Selection Algorithm: exhaustive`**: Esto es crucial. Significa que el algoritmo probó **todas las combinaciones posibles** de variables para cada tamaño de subconjunto hasta `nvmax = 10` y seleccionó el mejor para cada tamaño. Esto asegura que, para cada número de variables (1, 2, ..., 10), el modelo presentado es el óptimo según el criterio interno de `regsubsets` (generalmente $R^2$ ajustado, BIC o Cp de Mallows, a menos que se especifique otro).
+
+
+```{r}
+# Ver los mejores modelos según el número de variables
+plot(regfit, scale = "adjr2")  # O usar "bic" o "Cp" para otros criterios
+```
+
+```{r, class.source = "fold-hide"}
+require(ggplot2)
+# Crear un data frame con las métricas para ggplot2
+reg_summary <- summary(regfit)
+
+models_data <- data.frame(
+                          num_variables = 1:length(reg_summary$adjr2),
+                          adjr2 = reg_summary$adjr2,
+                          cp = reg_summary$cp,
+                          bic = reg_summary$bic
+)
+
+ggplot(models_data, aes(x = num_variables, y = adjr2)) +
+ geom_line(color = "blue") +
+  geom_point(color = "blue") +
+   geom_vline(xintercept = which.max(models_data$adjr2), linetype = "dashed", color = "red") +
+    geom_text(aes(x = which.max(models_data$adjr2) + 0.5, y = max(adjr2) * 0.95,
+                  label = paste("Max R2 Ajustado con", which.max(models_data$adjr2), "vars")),
+                  color = "red", size = 3, hjust = 0) +
+     theme(plot.title = element_text(size = 22, hjust = 0.15, family = "Montserrat", face = "bold"),
+           plot.subtitle = element_text(size = 18, hjust = 0, family = "Montserrat", face = "bold"),
+           plot.caption = element_text(size = 11, hjust = 0.2, vjust = 1, family = "Montserrat"), 
+           axis.text = element_text(family = "Montserrat"), 
+           axis.title = element_text(family = "Montserrat", size = 15), 
+           legend.position = "none"
+               ) + 
+     scale_x_continuous(breaks = 1:10) + 
+     labs(title = "R2 Ajustado vs. Número de Variables",
+          x = "Número de Variables",
+          y = "R2 Ajustado") +
+      theme_minimal()
+```
+
 
 ```{r}
 # 5. Evaluar el modelo en los datos de prueba
