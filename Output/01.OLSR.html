@@ -3230,8 +3230,8 @@ reducido</strong></p>
 <span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a><span class="fu">formula</span>(modelo_step)</span></code></pre></div>
 <pre><code>## mpg ~ drat + wt + gear + carb
 ## &lt;environment: 0x0000024e11a13108&gt;</code></pre>
-<p><strong>Nos aseguramos que las bases de (test / training tengan ) de
-que test_data tenga esas variables</strong></p>
+<p><strong>Nos aseguramos que las bases de (test / training tengan esas
+variables</strong></p>
 <div class="sourceCode" id="cb21"><pre class="sourceCode r fold-show"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a>test_data_reducido <span class="ot">&lt;-</span> test_data[, <span class="fu">c</span>(<span class="st">&quot;mpg&quot;</span>, <span class="st">&quot;drat&quot;</span>, <span class="st">&quot;wt&quot;</span>, <span class="st">&quot;gear&quot;</span>, <span class="st">&quot;carb&quot;</span>)]</span></code></pre></div>
 <div id="modelo-predictivo" class="section level3">
 <h3>Modelo predictivo</h3>
@@ -3268,11 +3268,14 @@ eso).</li>
 </div>
 <div id="evaluar-el-desempeño-predictivo" class="section level3">
 <h3>Evaluar el desempeño predictivo</h3>
+<div id="mean-absolute-error-mae" class="section level4">
+<h4>Mean Absolute Error (<code>MAE</code>)</h4>
 <p>El <strong>MAE (Mean Absolute Error)</strong>, o <strong>Error
 Absoluto Medio</strong> en español, es una de las métricas más
 utilizadas para evaluar la precisión de un modelo de regresión. Mide la
 <strong>magnitud promedio de los errores</strong> entre los valores
 predichos por un modelo y los valores reales observados.</p>
+</div>
 <div id="fórmula-del-mae" class="section level4">
 <h4>Fórmula del MAE</h4>
 <p>La fórmula para calcular el MAE es la siguiente:</p>
@@ -3310,6 +3313,74 @@ decir, abarca <strong>~23.5 unidades</strong>.</p>
 <pre><code>  * Un MAE de **3.68** representa alrededor de un **15% del rango total**. El modelo, en promedio, se equivoca por 3.68 millas por galón en sus predicciones.
 * No es un error enorme, pero **tampoco es excelente**.
 * Si el modelo completo (`modelo_ols`) tenía un MAE menor, podría predecir mejor, aunque con más colinealidad.</code></pre>
+</div>
+<div id="root-mean-squared-error-rmse" class="section level4">
+<h4>Root Mean Squared Error (<code>RMSE</code>)</h4>
+<p>El <strong>RMSE (Root Mean Squared Error)</strong>, o <strong>Raíz
+del Error Cuadrático Medio</strong>, es una de las métricas más comunes
+y ampliamente utilizadas para evaluar la precisión de los modelos de
+regresión. Mide la <strong>magnitud promedio de los errores</strong>
+entre los valores predichos por un modelo y los valores reales
+observados, pero dando <strong>mayor peso a los errores más
+grandes</strong>.</p>
+</div>
+</div>
+<div id="fórmula-del-rmse" class="section level3">
+<h3>Fórmula del RMSE</h3>
+<p><span class="math display">\[RMSE = \sqrt{\frac{1}{n} \sum_{i=1}^{n}
+(y_i - \hat{y}_i)^2}\]</span></p>
+<p>Donde:</p>
+<ul>
+<li><span class="math inline">\(n\)</span>: Es el número total de
+observaciones (o puntos de datos).</li>
+<li><span class="math inline">\(y_i\)</span>: Es el <strong>valor real u
+observado</strong> de la variable dependiente para la observación <span class="math inline">\(i\)</span>.</li>
+<li><span class="math inline">\(\hat{y}_i\)</span>: Es el <strong>valor
+predicho</strong> por el modelo para la observación <span class="math inline">\(i\)</span>.</li>
+<li><span class="math inline">\((y_i - \hat{y}_i)^2\)</span>: Es el
+<strong>cuadrado de la diferencia</strong> entre el valor real y el
+valor predicho para la observación <span class="math inline">\(i\)</span>. Elevar al cuadrado las diferencias
+tiene dos propósitos principales:
+<ul>
+<li>Eliminar los signos negativos: Asegura que los errores positivos y
+negativos no se cancelen entre sí.</li>
+</ul></li>
+<li>Penalizar más los errores grandes: Los errores más grandes tienen un
+impacto desproporcionadamente mayor en el resultado final del RMSE que
+los errores pequeños, debido a la operación al cuadrado.</li>
+<li><span class="math inline">\(\sum_{i=1}^{n}\)</span>: Indica la suma
+de todos los errores al cuadrado para todas las <span class="math inline">\(n\)</span> observaciones.</li>
+</ul>
+</div>
+<div id="interpretación-del-rmse" class="section level3">
+<h3>Interpretación del RMSE:</h3>
+<ul>
+<li>El RMSE se expresa en las <strong>mismas unidades que la variable
+dependiente original</strong>. Esto facilita su interpretación. Por
+ejemplo, si estás prediciendo la altura en metros y el RMSE es 0.5,
+significa que, en promedio, las predicciones del modelo se desvían
+aproximadamente 0.5 metros de la altura real.</li>
+<li><strong>Un RMSE de 0 (cero) indica un modelo perfecto</strong>,
+donde todas las predicciones son exactamente iguales a los valores
+reales.</li>
+<li><strong>Valores más bajos de RMSE indican un mejor rendimiento del
+modelo.</strong>
+<ul>
+<li><strong>Sensibilidad a valores atípicos:</strong> Debido al término
+al cuadrado, el RMSE penaliza más fuertemente los errores grandes
+(valores atípicos) que el MAE. Esto significa que si tu modelo tiene
+algunos errores de predicción muy grandes, el RMSE será
+significativamente más alto que el MAE. Esta característica puede ser
+una ventaja o desventaja dependiendo del contexto:</li>
+<li><strong>Ventaja:</strong> Si los errores grandes son particularmente
+indeseables en tu aplicación, el RMSE es una buena métrica porque los
+destaca.</li>
+</ul></li>
+<li><strong>Desventaja:</strong> Si tu conjunto de datos contiene muchos
+valores atípicos reales o errores de medición que no son representativos
+del rendimiento general del modelo, el RMSE podría dar una visión
+pesimista.</li>
+</ul>
 <div class="sourceCode" id="cb29"><pre class="sourceCode r fold-show"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" tabindex="-1"></a><span class="co"># Cálculo del RMSE (Root Mean Squared Error)</span></span>
 <span id="cb29-2"><a href="#cb29-2" tabindex="-1"></a>RMSE <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">mean</span>((predicciones <span class="sc">-</span> test_data_reducido<span class="sc">$</span>mpg)<span class="sc">^</span><span class="dv">2</span>))</span>
 <span id="cb29-3"><a href="#cb29-3" tabindex="-1"></a>RMSE</span></code></pre></div>
@@ -3343,7 +3414,6 @@ decir, abarca <strong>~23.5 unidades</strong>.</p>
 <span id="cb33-21"><a href="#cb33-21" tabindex="-1"></a></span>
 <span id="cb33-22"><a href="#cb33-22" tabindex="-1"></a><span class="co"># 8. Interpretación del modelo (con broom)</span></span>
 <span id="cb33-23"><a href="#cb33-23" tabindex="-1"></a><span class="fu">tidy</span>(modelo_ols)</span></code></pre></div>
-</div>
 </div>
 </div>
 <div id="notas" class="section level2">

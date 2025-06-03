@@ -560,7 +560,7 @@ Ahora se va a trabajar con un **modelo reducido (`modelo_step`)**, es importante
 formula(modelo_step)
 ```
 
-**Nos aseguramos que las bases de (test / training tengan ) de que test_data tenga esas variables**
+**Nos aseguramos que las bases de (test / training tengan esas variables**
 ```{r}
 test_data_reducido <- test_data[, c("mpg", "drat", "wt", "gear", "carb")]
 ```
@@ -588,7 +588,9 @@ resultados <- tibble(Real = test_data_reducido$mpg,
 )
 ```
 
-### Evaluar el desempeño predictivo   
+### Evaluar el desempeño predictivo  
+
+#### Mean Absolute Error (`MAE`)
 
 El **MAE (Mean Absolute Error)**, o **Error Absoluto Medio** en español, es una de las métricas más utilizadas para evaluar la precisión de un modelo de regresión. Mide la **magnitud promedio de los errores** entre los valores predichos por un modelo y los valores reales observados.
 
@@ -624,6 +626,33 @@ Por tanto:
       * Un MAE de **3.68** representa alrededor de un **15% del rango total**. El modelo, en promedio, se equivoca por 3.68 millas por galón en sus predicciones.
     * No es un error enorme, pero **tampoco es excelente**.
     * Si el modelo completo (`modelo_ols`) tenía un MAE menor, podría predecir mejor, aunque con más colinealidad.
+
+#### Root Mean Squared Error (`RMSE`)  
+
+El **RMSE (Root Mean Squared Error)**, o **Raíz del Error Cuadrático Medio**, es una de las métricas más comunes y ampliamente utilizadas para evaluar la precisión de los modelos de regresión. Mide la **magnitud promedio de los errores** entre los valores predichos por un modelo y los valores reales observados, pero dando **mayor peso a los errores más grandes**.
+
+### Fórmula del RMSE
+
+  $$RMSE = \sqrt{\frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2}$$
+  
+Donde:
+  
+  * $n$: Es el número total de observaciones (o puntos de datos).
+* $y_i$: Es el **valor real u observado** de la variable dependiente para la observación $i$.
+* $\hat{y}_i$: Es el **valor predicho** por el modelo para la observación $i$.
+* $(y_i - \hat{y}_i)^2$: Es el **cuadrado de la diferencia** entre el valor real y el valor predicho para la observación $i$. Elevar al cuadrado las diferencias tiene dos propósitos principales:
+  * Eliminar los signos negativos: Asegura que los errores positivos y negativos no se cancelen entre sí.
+* Penalizar más los errores grandes: Los errores más grandes tienen un impacto desproporcionadamente mayor en el resultado final del RMSE que los errores pequeños, debido a la operación al cuadrado.
+* $\sum_{i=1}^{n}$: Indica la suma de todos los errores al cuadrado para todas las $n$ observaciones.
+
+### Interpretación del RMSE:
+
+* El RMSE se expresa en las **mismas unidades que la variable dependiente original**. Esto facilita su interpretación. Por ejemplo, si estás prediciendo la altura en metros y el RMSE es 0.5, significa que, en promedio, las predicciones del modelo se desvían aproximadamente 0.5 metros de la altura real.
+* **Un RMSE de 0 (cero) indica un modelo perfecto**, donde todas las predicciones son exactamente iguales a los valores reales.
+* **Valores más bajos de RMSE indican un mejor rendimiento del modelo.**
+  * **Sensibilidad a valores atípicos:** Debido al término al cuadrado, el RMSE penaliza más fuertemente los errores grandes (valores atípicos) que el MAE. Esto significa que si tu modelo tiene algunos errores de predicción muy grandes, el RMSE será significativamente más alto que el MAE. Esta característica puede ser una ventaja o desventaja dependiendo del contexto:
+  * **Ventaja:** Si los errores grandes son particularmente indeseables en tu aplicación, el RMSE es una buena métrica porque los destaca.
+* **Desventaja:** Si tu conjunto de datos contiene muchos valores atípicos reales o errores de medición que no son representativos del rendimiento general del modelo, el RMSE podría dar una visión pesimista.
 
 
 ```{r}
