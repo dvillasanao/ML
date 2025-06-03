@@ -120,6 +120,7 @@ library(tidyverse)
 library(caret)     # Para dividir datos y evaluación
 library(broom)     # Para tidy modelos
 library(Metrics)   # Para métricas como RMSE, MAE
+require(tibble)
 ```
 
 La Regresión por Mínimos Cuadrados Ordinarios (Ordinary Least Squares Regression, **OLSR** u **OLS**) es una técnica estadística fundamental utilizada para estimar la relación entre una **variable dependiente** (o de respuesta) y una o más **variables independientes** (o predictoras). Es uno de los métodos más comunes en el análisis de regresión lineal.
@@ -493,24 +494,124 @@ ggplot(models_data, aes(x = num_variables, y = adjr2)) +
 ```
 
 
+### Variance Inflation Factor (`VIF`)  
+
+El **Factor de Inflación de la Varianza (VIF)** es una herramienta estadística fundamental utilizada para **detectar y cuantificar la multicolinealidad** en modelos de regresión lineal múltiple.
+
+**Problemas que causa la multicolinealidad:**
+  
+  * **Coeficientes de regresión inestables y difíciles de interpretar:** Cuando las variables predictoras están altamente correlacionadas, es difícil para el modelo determinar la contribución única de cada variable a la variable dependiente. Pequeños cambios en los datos pueden llevar a grandes cambios en los coeficientes estimados, haciendo que sean poco fiables.
+* **Errores estándar inflados:** La multicolinealidad aumenta los errores estándar de los coeficientes de regresión, lo que a su vez disminuye los valores de las estadísticas t y aumenta los p-valores. Esto puede llevar a la conclusión errónea de que una variable no es estadísticamente significativa cuando en realidad sí lo es.
+* **Poder predictivo reducido:** Aunque la multicolinealidad no necesariamente afecta la capacidad predictiva global del modelo (el $R^2$ ajustado puede seguir siendo alto), sí afecta la precisión de las estimaciones de los coeficientes individuales, lo que hace difícil comprender la relación real entre cada predictor y la variable de respuesta.
+
+
+El VIF mide **cuánto se "infla" la varianza del coeficiente de regresión estimado de una variable predictora debido a su correlación con otras variables predictoras** en el modelo.
+
+**La fórmula del VIF para una variable $X_j$ es:**
+  
+  $$VIF_j = \frac{1}{1 - R_j^2}$$
+  
+  Donde $R_j^2$ es el coeficiente de determinación ($R^2$) de una regresión auxiliar en la que la variable $X_j$ se predice utilizando todas las demás variables independientes del modelo.
+
+#### ¿Cómo se interpreta el VIF?
+
+* **VIF = 1:** Indica que la variable predictora no está correlacionada con ninguna de las otras variables predictoras en el modelo. No hay multicolinealidad.
+* **VIF > 1:** Indica que existe algún grado de multicolinealidad. Cuanto mayor sea el valor del VIF, mayor es el grado de multicolinealidad.
+
+**Reglas generales para interpretar los valores de VIF (son reglas de "pulgar" y pueden variar ligeramente según el contexto y el campo de estudio):**
+  
+  * **VIF ≤ 5:** Generalmente se considera que no hay problemas graves de multicolinealidad.
+* **5 < VIF ≤ 10:** Puede indicar un nivel moderado a alto de multicolinealidad que podría justificar una investigación.
+* **VIF > 10:** A menudo se considera una indicación clara de multicolinealidad grave y problemática. Es un umbral comúnmente aceptado para señalar que una variable está fuertemente correlacionada con otras, lo que podría afectar la estabilidad y fiabilidad del modelo.
+
 ```{r}
-# 5. Evaluar el modelo en los datos de prueba
-predicciones <- predict(modelo_ols, newdata = test_data)
+require(car)
 
+# Calcular VIF para el modelo original
+vif(modelo_ols)
+```
+**Altísima colinealidad** en:
+  
+  * `cyl`, `disp`, `wt`, `carb` 
+
+**Sospechosos comunes**:
+  
+  * `cyl`, `disp`, `hp` y `wt` están muy correlacionados entre sí (motores grandes tienden a pesar más, tener más cilindros y más caballos).
+
+
+```{r}
+# Calcular VIF para el modelo reducido 
+vif(modelo_step)
+```
+Todos los VIF están **por debajo del umbral de 5**, lo que indica:
+  
+* No hay **colinealidad preocupante** entre las variables.
+* El modelo es **estable** y los coeficientes son interpretables con confianza.
+* `stepAIC` hizo un buen trabajo al reducir la complejidad y mejorar la interpretabilidad del modelo.
+
+## Evaluación del modelo  
+
+Ahora se va a trabajar con un **modelo reducido (`modelo_step`)**, es importante **usar ese modelo** para hacer predicciones en el conjunto de prueba. Además, como solo algunas variables quedaron en el modelo (`drat`, `wt`, `gear`, `carb`), el `test_data` debe contener esas columnas.
+
+**Verificar qué variables necesita el modelo reducido**
+
+```{r}
+# Ver fórmulas del modelo reducido
+formula(modelo_step)
+```
+
+**Nos aseguramos que las bases de (test / training tengan ) de que test_data tenga esas variables**
+```{r}
+test_data_reducido <- test_data[, c("mpg", "drat", "wt", "gear", "carb")]
+```
+
+### Modelo predictivo   
+
+Con la función **`predict()`** genérica en R que se utiliza para obtener predicciones de varios tipos de objetos de modelos (lineales, árboles de decisión, series de tiempo, etc.). Su comportamiento exacto depende de la clase del objeto que se le pasa como primer argumento.  
+
+Esta operación es un paso clave en el flujo de trabajo de modelado predictivo, ya que permite:
+  
+1.  **Evaluación del modelo:** Una vez que se tienen las `predicciones` para el `test_data`, se puede compararlas con los valores reales (observados) de la variable dependiente en el `test_data` (si se tienen) para **evaluar qué tan bien se desempeña el modelo** en datos no vistos. Esto ayuda a estimar su rendimiento en el mundo real y a detectar problemas como el **sobreajuste (overfitting)**.  
+2.  **Uso práctico del modelo:** Después de validar que el modelo es bueno, se puede usarlo para predecir la variable dependiente para nuevas observaciones futuras de las que solo se conocen las variables predictoras (por ejemplo, predecir el precio de una casa basándose en sus características, si el modelo fue entrenado para eso).
+
+
+```{r}
+# 5. Se evalua el modelo en los datos de prueba
+predicciones <- predict(modelo_step, newdata = test_data_reducido)
+```
+
+
+```{r}
 # Comparar valores reales vs. predichos
-resultados <- tibble(Real = test_data$mpg,
-                     Predicho = predicciones
+resultados <- tibble(Real = test_data_reducido$mpg,
+                     Pred = predicciones
 )
+```
 
-# Calcular métricas de error
-rmse_val <- rmse(resultados$Real, resultados$Predicho)
-mae_val <- mae(resultados$Real, resultados$Predicho)
-r2_val <- R2(predicciones, test_data$mpg)
+### Evaluar el desempeño predictivo  
 
-cat("RMSE:", rmse_val, "\n")
-cat("MAE:", mae_val, "\n")
-cat("R2 :", r2_val, "\n")
+```{r, eval = FALSE}
+# Cálculo del MAE (Mean Absolute Error)
+MAE <- mean(abs(predicciones - test_data_reducido$mpg))
+MAE
+```
 
+```{r}
+# Cálculo del RMSE (Root Mean Squared Error)
+RMSE <- sqrt(mean((predicciones - test_data_reducido$mpg)^2))
+RMSE
+```
+
+```{r}
+# R² manual (opcional)
+SST <- sum((test_data_reducido$mpg - mean(test_data_reducido$mpg))^2)
+SSE <- sum((test_data_reducido$mpg - predicciones)^2)
+R2 <- 1 - SSE/SST
+R2
+```
+
+
+```{r}
 # 6. Validación cruzada (opcional)
 control <- trainControl(method = "cv", number = 10)
 modelo_cv <- train(mpg ~ ., data = mtcars, method = "lm", trControl = control)
