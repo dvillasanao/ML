@@ -594,7 +594,7 @@ resultados <- tibble(Real = test_data_reducido$mpg,
 
 El **MAE (Mean Absolute Error)**, o **Error Absoluto Medio** en español, es una de las métricas más utilizadas para evaluar la precisión de un modelo de regresión. Mide la **magnitud promedio de los errores** entre los valores predichos por un modelo y los valores reales observados.
 
-#### Fórmula del MAE
+##### Fórmula del MAE
 
 La fórmula para calcular el MAE es la siguiente:
   
@@ -631,7 +631,7 @@ Por tanto:
 
 El **RMSE (Root Mean Squared Error)**, o **Raíz del Error Cuadrático Medio**, es una de las métricas más comunes y ampliamente utilizadas para evaluar la precisión de los modelos de regresión. Mide la **magnitud promedio de los errores** entre los valores predichos por un modelo y los valores reales observados, pero dando **mayor peso a los errores más grandes**.
 
-### Fórmula del RMSE
+#### Fórmula del RMSE
 
   $$RMSE = \sqrt{\frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2}$$
   
@@ -645,7 +645,7 @@ Donde:
 * Penalizar más los errores grandes: Los errores más grandes tienen un impacto desproporcionadamente mayor en el resultado final del RMSE que los errores pequeños, debido a la operación al cuadrado.
 * $\sum_{i=1}^{n}$: Indica la suma de todos los errores al cuadrado para todas las $n$ observaciones.
 
-### Interpretación del RMSE:
+##### Interpretación del RMSE:
 
 * El RMSE se expresa en las **mismas unidades que la variable dependiente original**. Esto facilita su interpretación. Por ejemplo, si estás prediciendo la altura en metros y el RMSE es 0.5, significa que, en promedio, las predicciones del modelo se desvían aproximadamente 0.5 metros de la altura real.
 * **Un RMSE de 0 (cero) indica un modelo perfecto**, donde todas las predicciones son exactamente iguales a los valores reales.
@@ -660,6 +660,38 @@ Donde:
 RMSE <- sqrt(mean((predicciones - test_data_reducido$mpg)^2))
 RMSE
 ```
+* Un RMSE de **4.87** significa que, en promedio, las predicciones difieren de los valores reales por **±4.87 millas por galón**.
+  * Como **los errores grandes tienen más peso** (al ser elevados al cuadrado), el RMSE será siempre **igual o mayor al MAE**. Penaliza más los errores grandes que el MAE.
+  *  Es **aceptable para predicción en `mtcars`**, pero con espacio para mejora si se requiere mayor precisión.      
+  
+**Compararlo con el MAE**
+  
+  * Si **RMSE está mucho más alto que el MAE**, el modelo está cometiendo **errores grandes con frecuencia** (outliers, mala especificación).
+  * Si **RMSE ≈ MAE**, los errores están bien distribuidos.
+  
+
+#### Coeficiente de determinación $R^2$  
+
+$R^{2}$ (**coeficiente de determinación**) mide qué proporción de la variabilidad de la **variable dependiente** es explicada por el modelo.  
+
+La fórmula general del $R^2$ (coeficiente de determinación) es:
+  
+  $$R^2 = 1 - \frac{SSE}{SST}$$
+  
+  Donde:
+  
+  * **$SSE$** (Sum of Squared Errors) o **$RSS$** (Residual Sum of Squares): Es la **Suma de Cuadrados de los Errores** (o Suma de Cuadrados de los Residuos). Mide la variación no explicada por el modelo. Se calcula como la suma de los cuadrados de las diferencias entre los valores observados ($y_i$) y los valores predichos por el modelo ($\hat{y}_i$):
+  $$SSE = \sum_{i=1}^{n} (y_i - \hat{y}_i)^2$$
+  
+  * **$SST$** (Total Sum of Squares): Es la **Suma Total de Cuadrados**. Mide la variación total de la variable dependiente respecto a su media. Representa la variabilidad total en los datos que el modelo intenta explicar. Se calcula como la suma de los cuadrados de las diferencias entre los valores observados ($y_i$) y la media de la variable dependiente ($\bar{y}$):
+  $$SST = \sum_{i=1}^{n} (y_i - \bar{y})^2$$ 
+  
+##### Interpretación del $R^2$:
+
+* El $R^2$ es una métrica que varía entre **0 y 1** (o 0% y 100%).
+* **$R^2 = 0$**: Indica que el modelo no explica ninguna de la variabilidad en la variable dependiente. Es tan bueno como simplemente usar la media de la variable dependiente para la predicción.
+* **$R^2 = 1$**: Indica que el modelo explica el 100% de la variabilidad en la variable dependiente. Esto rara vez ocurre en la práctica con datos del mundo real, y a menudo sugiere sobreajuste si sucede en un conjunto de entrenamiento.
+* **Valores más altos de $R^2$ indican un mejor ajuste del modelo** a los datos observados, lo que significa que las variables predictoras del modelo explican una mayor proporción de la variabilidad en la variable dependiente.
 
 ```{r}
 # R² manual (opcional)
@@ -669,6 +701,112 @@ R2 <- 1 - SSE/SST
 R2
 ```
 
+ * Esto significa que el **60.2% de la variabilidad** de `mpg` (consumo de combustible) en los datos de prueba **es explicada por el modelo**.
+    * El **39.8% restante** es **variabilidad no explicada** (error, factores no incluidos, ruido). 
+    * El modelo predice **más de la mitad de la variabilidad de `mpg`** en los datos de prueba. 
+    
+
+#### Distribución de los residuos  
+
+Relación lineal entre variable dependiente e independiente:
+
+Se calculan los residuos para cada observación y se representan (scatterplot). Si las observaciones siguen la línea del modelo, los residuos se deben distribuir aleatoriamente entorno al valor 0.
+
+```{r, class.source = "fold-hide"}
+tabla <- data.frame(prediccion = modelo_step$fitted.values,
+                    residuos = modelo_step$residuals)
+
+ggplot(data = tabla, aes(x = prediccion, y = residuos)) +
+ geom_point(aes(color = residuos)) +
+  scale_color_gradient2(low = "blue3", mid = "grey", high = "red") +
+   geom_hline(yintercept = 0) +
+    geom_segment(aes(xend = prediccion, yend = 0), alpha = 0.2) +
+     theme_bw() +
+      theme(plot.title = element_text(size = 22, hjust = 0, family = "Montserrat", face = "bold"),
+            plot.subtitle = element_text(size = 18, hjust = 0, family = "Montserrat", face = "bold"),
+            plot.caption = element_text(size = 11, hjust = 0.2, vjust = 1, family = "Montserrat"), 
+            axis.text = element_text(family = "Montserrat"), 
+            axis.title = element_text(family = "Montserrat", size = 15), 
+            legend.position = "none"
+                   ) + 
+     labs(title = "Distribución de los residuos", 
+          x = "predicción modelo",
+          y = "residuo") 
+  
+```
+
+
+Los residuos se distribuyen de forma aleatoria entorno al 0 por lo que se acepta la linealidad.  
+
+##### Distribución normal de los residuos
+
+Los residuos se deben distribuir de forma normal con media 0. Para comprobarlo se recurre a histogramas, a los cuantiles normales o a un test de contraste de normalidad.    
+
+```{r, class.source = "fold-hide"}
+ggplot(data = tabla, aes(x = residuos)) +
+  geom_histogram(aes(y = ..density..)) +
+   theme_light() +
+    theme(plot.title = element_text(size = 22, hjust = 0, family = "Montserrat", face = "bold"),
+          plot.subtitle = element_text(size = 18, hjust = 0, family = "Montserrat", face = "bold"),
+          plot.caption = element_text(size = 11, hjust = 0.2, vjust = 1, family = "Montserrat"), 
+          axis.text = element_text(family = "Montserrat"), 
+          axis.title = element_text(family = "Montserrat", size = 15), 
+          legend.position = "none"
+                   ) + 
+      labs(title = "Histograma de los residuos")
+```
+
+
+#### Q-Q Plot   
+
+Los gráficos Q-Q normales son esenciales para verificar uno de los supuestos clave en la regresión lineal: la **normalidad de los residuos**. Si los residuos siguen una distribución normal, los puntos en el gráfico Q-Q deben caer aproximadamente a lo largo de una línea recta.
+
+
+```{r, class.source = "fold-hide"}
+# Residuos del modelo
+residuos <- residuals(modelo_step)
+
+# Calcular los cuantiles teóricos normales
+# La función 'qqnorm' internamente calcula estos valores
+# Puedes replicarlo manualmente o usar la función 'qqnorm' y luego extraer sus valores
+qq_data <- data.frame(teoricos = qqnorm(residuos, plot.it = FALSE)$x,
+                      observados = residuos)
+
+
+ggplot(qq_data, aes(x = teoricos, y = observados)) +
+ geom_point(alpha = 0.7, color = "darkblue") + # Puntos de los cuantiles
+  geom_abline(intercept = 0, slope = 1, linetype = "dashed", color = "red") + # Línea de referencia ideal (y=x)
+   theme_minimal() + 
+   labs(title = "Gráfico Q-Q Normal de los Residuos del Modelo",
+        x = "Cuantiles Teóricos Normales",
+        y = "Residuos del Modelo") 
+```
+
+##### Interpretación del gráfico Q-Q Normal:
+  
+  * **Si los puntos caen aproximadamente sobre la línea roja diagonal**, indica que los residuos siguen una distribución normal. Esto es lo que idealmente buscas.
+* **Si los puntos se desvían de la línea**, puede indicar una violación del supuesto de normalidad:
+  * **Forma de "S"**: Los residuos pueden tener colas más pesadas o más ligeras de lo esperado (ej. distribución con curtosis).
+* **Curvatura en un extremo o ambos**: Los residuos pueden estar sesgados (skewed) hacia la izquierda o la derecha.
+
+
+#### Shapiro-Wilk normality test  
+
+El **Test de Normalidad de Shapiro-Wilk** es una prueba estadística que se utiliza para determinar si una muestra de datos procede de una población con distribución normal. Es una de las pruebas de normalidad más potentes y ampliamente recomendadas, especialmente para tamaños de muestra pequeños a moderados.  
+
+Es una prueba estadística que evalúa si los datos provienen de una distribución normal.
+
+* **Hipótesis nula (H₀)**: los datos siguen una distribución normal.
+* **Hipótesis alternativa (H₁)**: los datos **no** siguen una distribución normal.
+
+ 
+```{r}
+shapiro.test(modelo_step$residuals)
+```
+* **p = 0.5222 > 0.05** → **no se rechaza H₀**
+  * **Conclusión**: **los residuos del modelo pueden considerarse normalmente distribuidos**.   
+
+### Validación cruzada   
 
 ```{r, eval = FALSE}
 # 6. Validación cruzada (opcional)
