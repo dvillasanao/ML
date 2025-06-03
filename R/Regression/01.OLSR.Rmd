@@ -122,7 +122,6 @@ library(broom)     # Para tidy modelos
 library(Metrics)   # Para métricas como RMSE, MAE
 ```
 
-
 La Regresión por Mínimos Cuadrados Ordinarios (Ordinary Least Squares Regression, **OLSR** u **OLS**) es una técnica estadística fundamental utilizada para estimar la relación entre una **variable dependiente** (o de respuesta) y una o más **variables independientes** (o predictoras). Es uno de los métodos más comunes en el análisis de regresión lineal.
 
 ## Objetivo
@@ -185,25 +184,25 @@ Para lograr esta minimización, se utilizan técnicas de cálculo (derivadas par
 
 ------------------------------------------------------------------------
 
-## Base de datos    
+## Base de datos
 
 La base de datos `mtcars` es un conjunto de datos clásico en R que contiene información sobre **32 automóviles** (modelos de 1973–74), y fue extraído de la revista *Motor Trend US*. Incluye **variables técnicas** del desempeño de los autos.
 
 Aquí está una descripción de cada columna:
-  
-  | Variable | Significado                                          | Tipo de dato     |
-  | -------- | ---------------------------------------------------- | ---------------- |
-  | `mpg`    | Miles per gallon (millas por galón)                  | Numérica         |
-  | `cyl`    | Número de cilindros                                  | Entero           |
-  | `disp`   | Desplazamiento del motor (en pulgadas cúbicas)       | Numérica         |
-  | `hp`     | Caballos de fuerza                                   | Entero           |
-  | `drat`   | Relación del eje trasero (rear axle ratio)           | Numérica         |
-  | `wt`     | Peso del auto (en miles de libras)                   | Numérica         |
-  | `qsec`   | Tiempo en 1/4 de milla (segundos)                    | Numérica         |
-  | `vs`     | Tipo de motor: 0 = V-shaped, 1 = straight (en línea) | Binaria (factor) |
-  | `am`     | Tipo de transmisión: 0 = automática, 1 = manual      | Binaria (factor) |
-  | `gear`   | Número de velocidades (marchas) adelante             | Entero           |
-  | `carb`   | Número de carburadores                               | Entero           |
+
+| Variable | Significado | Tipo de dato |
+|------------------|-----------------------------------|------------------|
+| `mpg` | Miles per gallon (millas por galón) | Numérica |
+| `cyl` | Número de cilindros | Entero |
+| `disp` | Desplazamiento del motor (en pulgadas cúbicas) | Numérica |
+| `hp` | Caballos de fuerza | Entero |
+| `drat` | Relación del eje trasero (rear axle ratio) | Numérica |
+| `wt` | Peso del auto (en miles de libras) | Numérica |
+| `qsec` | Tiempo en 1/4 de milla (segundos) | Numérica |
+| `vs` | Tipo de motor: 0 = V-shaped, 1 = straight (en línea) | Binaria (factor) |
+| `am` | Tipo de transmisión: 0 = automática, 1 = manual | Binaria (factor) |
+| `gear` | Número de velocidades (marchas) adelante | Entero |
+| `carb` | Número de carburadores | Entero |
 
 ```{r}
 # 2. Cargar y se exploran los datos
@@ -215,7 +214,7 @@ require(gt)
 
 mtcars %>% 
  gt() %>%
-  tab_header(title = "mtcars database") %>%
+  tab_header(title = "mtcars data") %>%
    tab_options(heading.title.font.size = 14, 
                  heading.subtitle.font.size = 12,
                  table.font.names = "Century Gothic",
@@ -232,17 +231,37 @@ mtcars %>%
 
 ```
 
+## Entrenamiento de los datos (train/test)
+
+-   Se usa la función `createDataPartition()` del paquete `caret` para **dividir los datos**.
+-   Se crea un **índice** con el 80% de las filas del `mtcars`, **estratificado** según la variable `mpg` (la variable objetivo).
+-   El argumento `p = 0.8` significa que el 80% se usará para **entrenamiento** y el 20% restante para **prueba**.
+-   `list = FALSE` devuelve los índices como un vector, no como una lista.
 
 ```{r}
 # Se quiere predecir `mpg` (millas por galón) usando otras variables
 # mpg será la variable dependiente (target)
 
-# 3. Se dividen datos en entrenamiento y prueba
+# 3. Se dividen losdatos en entrenamiento y prueba
 set.seed(123)  # Para reproducibilidad
 train_index <- createDataPartition(mtcars$mpg, p = 0.8, list = FALSE)
 train_data <- mtcars[train_index, ]
 test_data <- mtcars[-train_index, ]
 ```
+
+-   Particionar los datos, evita el **overfitting** (cuando el modelo memoriza los datos de entrenamiento).
+-   Permite una **evaluación honesta** del modelo al probarlo en datos que no vio durante el entrenamiento.
+-   Es una práctica estándar en cualquier pipeline de aprendizaje automático.
+
+## Entrenamiento del modelo
+
+-   la función **`lm()`** es la función base de R para ajustar un modelo de **regresión lineal** (OLS = *Ordinary Least Squares*).
+
+-   **`mpg ~ .`** es una fórmula que indica:
+
+    -   `mpg` es la **variable dependiente** (lo que queremos predecir).
+    -   `.` significa “todas las demás variables” del conjunto de datos se usarán como **variables independientes** (predictoras).
+    -   **`data = train_data`** especifica que el modelo debe entrenarse usando el conjunto de **entrenamiento** (80% de los datos).
 
 ```{r}
 # 4. Entrenar el modelo de regresión lineal (OLS)
@@ -250,7 +269,73 @@ modelo_ols <- lm(mpg ~ ., data = train_data)
 
 # Revisar resumen del modelo
 summary(modelo_ols)
+```
 
+Interpretemos los resultados:
+
+**Residuales**
+
+````         
+```r
+Residuals:
+  Min      1Q  Median      3Q     Max 
+-3.2742 -1.3609 -0.2707  1.1921  4.9877 
+```
+````
+
+-   Indica la distribución de los **errores de predicción** (diferencia entre valor real y valor predicho).
+-   Lo ideal es que estén **centrados en 0** y sean **simétricos**, lo que parece cumplirse aquí.
+-   El valor máximo del error es aproximadamente ±5 millas por galón.
+
+**Ninguna variable es estadísticamente significativa individualmente** (todas tienen p \> 0.05).
+
+| Métrica | Valor | Significado |
+|------------------|------------------|------------------------------------|
+| **R-squared** | 0.8861 | El modelo explica el **88.6%** de la variabilidad de `mpg` |
+| **Adjusted R-squared** | 0.8191 | Ajusta el R² penalizando el número de predictores |
+| **F-statistic** | 13.23 | El modelo como conjunto es **significativo** |
+| **p-value global** | 3.719e-06 | Muy bajo → **el modelo es útil en conjunto** (aunque variables individuales no lo sean) |
+
+### 📌 **Observaciones generales**
+
+-   **El modelo es bueno en conjunto**, pero ninguna variable individual es altamente significativa.\
+-   Esto puede ser por **colinealidad** (las variables están correlacionadas entre sí).\
+-   Se podría:
+    -   Usar un modelo más simple (quitar predictores no útiles).
+    -   Aplicar **selección de variables** (ej. stepAIC, regsubsets).
+    -   Verificar colinealidad con el **VIF** (Variance Inflation Factor).
+    -   Visualizar los residuos para ver si el modelo cumple los supuestos.
+    
+    
+```{r, class.source = "fold-hide"}
+require(ggplot2)
+require(reshape2)
+
+tabla <- mtcars %>% 
+          melt(., id = "mpg")
+
+p <- tabla %>% 
+      ggplot(aes(y = mpg, x = value, color = variable)) + 
+       geom_point() +
+        geom_smooth(method = "lm", se = TRUE, color = "black") +
+         theme_bw() + 
+          theme(plot.title = element_text(size = 22, hjust = 0.15, family = "Montserrat", face = "bold"),
+                plot.subtitle = element_text(size = 18, hjust = 0, family = "Montserrat", face = "bold"),
+                plot.caption = element_text(size = 11, hjust = 0.2, vjust = 1, family = "Montserrat"), 
+                axis.text = element_text(family = "Montserrat"), 
+                axis.title = element_text(family = "Montserrat", size = 15), 
+                legend.position = "none"
+               ) + 
+           scale_color_viridis_d(option = "A") +
+            facet_wrap(variable~., scales = "free") + 
+             labs(title = "Diagramas de dispersión",
+                  x = "",
+                  y = "")
+p
+```
+    
+
+```{r}
 # 5. Evaluar el modelo en los datos de prueba
 predicciones <- predict(modelo_ols, newdata = test_data)
 
