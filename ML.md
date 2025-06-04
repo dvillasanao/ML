@@ -1,7 +1,7 @@
 --- 
 title: "Machine Learning (Apuntes) "
 author: "Diana Villasana Ocampo"
-date: "2025-06-02"
+date: "2025-06-03"
 site: bookdown::bookdown_site
 documentclass: book
 bibliography: [book.bib, packages.bib]

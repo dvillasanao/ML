@@ -28,12 +28,23 @@ h1.title {
   color: #000D3B;
 }
 h1 {
+  font-size: 35px;
   color: #B6854D;
 }
 h2 {
+  font-size: 30px;
   color: #172984;
 }
 h3 {
+  font-size: 25px;
+  color: #172984;
+}
+h4 {
+  font-size: 22px;
+  color: #172984;
+}
+h5 {
+  ont-size: 20px;
   color: #172984;
 }
 </style>
@@ -127,7 +138,7 @@ La Regresión por Mínimos Cuadrados Ordinarios (Ordinary Least Squares Regressi
 
 ## Objetivo
 
-El objetivo principal de OLSR es encontrar la "línea de mejor ajuste" a través de un conjunto de puntos de datos. Esta línea se determina minimizando la suma de los cuadrados de las diferencias entre los valores observados de la variable dependiente y los valores predichos por el modelo. A estas diferencias se les llama **residuos** o **errores**. Al minimizar la suma de los cuadrados, OLS asegura que los errores positivos y negativos no se cancelen entre sí, y que los errores grandes tengan un impacto proporcionalmente mayor en la minimización.
+El objetivo principal de Ordinary Least Squares Regression, (`OLSR`) es encontrar la "línea de mejor ajuste" a través de un conjunto de puntos de datos. Esta línea se determina minimizando la suma de los cuadrados de las diferencias entre los valores observados de la variable dependiente y los valores predichos por el modelo. A estas diferencias se les llama **residuos** o **errores**. Al minimizar la suma de los cuadrados, OLS asegura que los errores positivos y negativos no se cancelen entre sí, y que los errores grandes tengan un impacto proporcionalmente mayor en la minimización.
 
 ## Metodología
 
@@ -181,7 +192,11 @@ Para lograr esta minimización, se utilizan técnicas de cálculo (derivadas par
 5.  **Evaluación del modelo**
 6.  **Ajustes o validación cruzada (si aplica)**
 7.  **Predicción con nuevos datos**
-8.  **Interpretación de resultados**
+8.  **Interpretación de resultados**  
+
+<p align="center">
+  <img src="../../img/ML_Steps.png" alt="Machine Learning Steps" width="100%">
+</p>
 
 ------------------------------------------------------------------------
 
@@ -782,12 +797,43 @@ ggplot(qq_data, aes(x = teoricos, y = observados)) +
         y = "Residuos del Modelo") 
 ```
 
+
 ##### Interpretación del gráfico Q-Q Normal:
   
   * **Si los puntos caen aproximadamente sobre la línea roja diagonal**, indica que los residuos siguen una distribución normal. Esto es lo que idealmente buscas.
 * **Si los puntos se desvían de la línea**, puede indicar una violación del supuesto de normalidad:
   * **Forma de "S"**: Los residuos pueden tener colas más pesadas o más ligeras de lo esperado (ej. distribución con curtosis).
 * **Curvatura en un extremo o ambos**: Los residuos pueden estar sesgados (skewed) hacia la izquierda o la derecha.
+
+
+
+#### Residuos Studentizados (Studentized Residuals)
+
+- También conocidos como residuos studentizados externamente (o residuos t). Son una versión más refinada de los residuos estandarizados.  
+
+- Cada residuo se divide por una estimación de su error estándar que excluye la observación actual, lo que los hace más apropiados para la detección de outliers, ya que el outlier no influye en la estimación de su propia varianza.
+
+
+```{r, class.source = "fold-hide"}
+# Residuos del modelo
+residuos <- rstudent(modelo_step)
+
+# Calcular los cuantiles teóricos normales
+# La función 'qqnorm' internamente calcula estos valores
+# Puedes replicarlo manualmente o usar la función 'qqnorm' y luego extraer sus valores
+qq_data <- data.frame(teoricos = qqnorm(residuos, plot.it = FALSE)$x,
+                      observados = residuos)
+
+
+ggplot(qq_data, aes(x = teoricos, y = observados)) +
+ geom_point(alpha = 0.7, color = "darkblue") + # Puntos de los cuantiles
+  geom_abline(intercept = 0, slope = 1, linetype = "dashed", color = "red") + # Línea de referencia ideal (y=x)
+   theme_minimal() + 
+   labs(title = "Gráfico Q-Q Normal de los Residuos studentized",
+        x = "Cuantiles Teóricos Normales",
+        y = "Residuos studentized") 
+```
+
 
 
 #### Shapiro-Wilk normality test  
@@ -804,9 +850,43 @@ Es una prueba estadística que evalúa si los datos provienen de una distribuci�
 shapiro.test(modelo_step$residuals)
 ```
 * **p = 0.5222 > 0.05** → **no se rechaza H₀**
-  * **Conclusión**: **los residuos del modelo pueden considerarse normalmente distribuidos**.   
+  * **Conclusión**: **los residuos del modelo pueden considerarse normalmente distribuidos**. 
+  
+  
+##### Evaluación de los residuos de un modelo lineal
+
+```{r, fig.width=10}
+par(mfrow = c(1,2))
+plot(modelo_step)
+```
+
 
 ### Validación cruzada   
+
+  La **validación cruzada** es una técnica estadística esencial utilizada en el aprendizaje automático y la modelización para **evaluar la capacidad de un modelo para generalizar a un conjunto de datos independiente**, es decir, a datos que no se han visto durante el entrenamiento. Su objetivo principal es obtener una estimación más robusta y menos sesgada del rendimiento predictivo del modelo, ayudando a evitar el **sobreajuste (overfitting)**.  
+
+Cuando se construye un modelo, y se entrena con un conjunto de datos. Se evalúa el rendimiento del modelo en esos mismos datos de entrenamiento, a menudo se obtendrá una métrica de rendimiento inflada (por ejemplo, un $R^2$ muy alto o un MAE/RMSE muy bajo). Esto se debe a que el modelo ha "memorizado" los datos de entrenamiento, incluyendo el ruido y las particularidades de esa muestra específica. Sin embargo, un modelo sobreajustado no funcionará bien con datos nuevos y reales.
+
+##### Tipos Comunes de Validación Cruzada:
+  
+Aunque hay varias variaciones, las más comunes son:
+  
+**Validación Cruzada K-Fold (K-Fold Cross-Validation):**
+  * Es el tipo más popular. El conjunto de datos se divide en $k$ folds. El proceso descrito anteriormente se aplica.
+* **Elección de $k$**: Los valores comunes para $k$ son 5 o 10. Un $k$ más alto (por ejemplo, 10) proporciona una estimación más precisa del rendimiento pero es computacionalmente más costoso. Un $k$ más bajo (por ejemplo, 5) es más rápido pero la estimación puede ser más variable.
+
+**Validación Cruzada de Dejar Uno Fuera (Leave-One-Out Cross-Validation - LOOCV):**
+  * Es un caso especial de K-Fold donde $k$ es igual al número de observaciones ($n$) en el conjunto de datos.
+* En cada iteración, una sola observación se usa como conjunto de validación, y las $n-1$ observaciones restantes se usan para entrenar el modelo.
+* **Ventaja:** Proporciona una estimación casi insesgada del rendimiento.
+* **Desventaja:** Es computacionalmente muy costoso, especialmente para grandes conjuntos de datos, ya que se ajusta el modelo $n$ veces.
+
+##### Beneficios de la Validación Cruzada:
+  
+  * **Estimación Robusta del Rendimiento:** Proporciona una métrica de rendimiento más fiable y menos sesgada de cómo se comportará el modelo con datos nuevos.
+* **Detección de Sobreajuste:** Ayuda a identificar si un modelo está sobreajustado, ya que un modelo sobreajustado tendrá un rendimiento mucho peor en los folds de validación que en los de entrenamiento.
+* **Selección de Modelos y Ajuste de Hiperparámetros:** Es fundamental para comparar y seleccionar entre diferentes modelos (ej., regresión lineal vs. árboles de decisión) o para encontrar los mejores **hiperparámetros** para un modelo (ej., la profundidad máxima de un árbol de decisión). Esto se logra a menudo mediante técnicas como la **búsqueda de rejilla (Grid Search)** o la **búsqueda aleatoria (Random Search)** combinadas con validación cruzada.
+
 
 ```{r, eval = FALSE}
 # 6. Validación cruzada (opcional)
@@ -856,7 +936,22 @@ tidy(modelo_ols)
 -   **Sensibilidad a violaciones de supuestos:** Si los supuestos no se cumplen, las estimaciones pueden ser sesgadas o ineficientes, y la inferencia estadística puede ser inválida.
 -   **Solo relaciones lineales:** No puede capturar relaciones no lineales a menos que se transformen las variables adecuadamente.
 
-## Referencias
+## Referencias  
+
+James, G., Witten, D., Hastie, T., & Tibshirani, R. (2021). *An introduction to statistical learning: With applications in R* (2nd ed.). Springer.
+[https://www.statlearning.com](https://www.statlearning.com)
+
+> Accesible y práctico, con aplicaciones modernas en machine learning. Capítulos 3 y 6 explican OLS en el contexto de predicción.
+
+Fox, J., & Weisberg, S. (2019). *An R companion to applied regression* (3rd ed.). Sage.
+
+> Muy útil para usuarios de R; cubre desde OLS básico hasta diagnósticos avanzados con funciones específicas.
+
+
+Montgomery, D. C., Peck, E. A., & Vining, G. G. (2012). *Introduction to linear regression analysis* (5th ed.). Wiley.
+
+> Excelente para profundizar en supuestos, pruebas de normalidad, heterocedasticidad, multicolinealidad, etc.
+
 
 Librerias que se usaron en el documento
 
