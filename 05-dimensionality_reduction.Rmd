@@ -14,34 +14,370 @@
 ## Principal Component Analysis (PCA)  {-}  
 
 ```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
 
+aplica <- c(
+  "⚠️ No supervisado (reducción de dimensiones)",
+  "❌ No aplica (no hay target a predecir)",
+  "✅ Numéricas (requiere escalado), categóricas procesadas como dummies",
+  "✅ Captura correlaciones lineales entre predictores",
+  "❌ No requiere supuestos de distribución en residuos",
+  "⚠️ Ideal si las observaciones son independientes, aunque no crítico",
+  "✅ Deseable (datos homogenizados tras escalado)",
+  "⚠️ Moderado (outliers pueden distorsionar componentes principales)",
+  "✅ Sensible a colinealidad (reduce variables correlacionadas a componentes)",
+  "⚠️ Media (componentes lineales son interpretables, pero combinaciones pueden no serlo)",
+  "✅ Rápido en datasets medianos; escalable con álgebra lineal optimizada",
+  "⚠️ No se aplica CV clásico; se puede usar reconstrucción de error o validación por bloques",
+  "❌ No funciona bien si las relaciones son no lineales o datos muy ruidosos sin preprocesar"
+)
+
+detalles <- c(
+  "Método no supervisado para reducir la dimensión del espacio de predictores.",
+  "No predice variables, se centra en variabilidad interna de los datos.",
+  "Todas las variables numéricas deben escalarse; las categóricas convertir a variables indicadoras.",
+  "Busca direcciones (componentes) que maximizan varianza lineal entre predictores.",
+  "No impone supuestos sobre errores; se basa en descomposición de la matriz de covarianza.",
+  "Mejor si las muestras no están correlacionadas en el tiempo o espacialmente.",
+  "Escalar y homogeneizar mejora el cálculo de componentes principales.",
+  "Outliers extremos pueden sesgar la dirección de los componentes principales.",
+  "Reduce colinealidad al combinar variables correlacionadas en componentes ortogonales.",
+  "Componentes iniciales pueden interpretarse mediante pesos, pero componentes posteriores son combinaciones lineales complejas.",
+  "Computación depende de descomposición de matrices (SVD), es eficiente con optimización BLAS.",
+  "Se puede evaluar número óptimo de componentes con validación de reconstrucción o bootstrap de SVD.",
+  "No apto para relaciones no lineales complejas; en tal caso usar Kernel PCA o métodos no lineales."
+)
+
+tabla_pca <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_pca %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir PCA",
+             subtitle = "Principal Component Analysis (PCA)")  %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
 ```
 
 ## Partial Least Squares Regression (PLSR)  {-}   
 
 ```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
 
+aplica <- c(
+  "⚠️ Supervisado (regresión y clasificación con adaptación)",
+  "✅ Continua (regresión) o Categórica (clasificación si se transforma)",
+  "✅ Numéricas (requiere escalado), categóricas como dummies",
+  "✅ Captura relaciones lineales y reduce dimensiones simultáneamente",
+  "❌ No requiere estrictamente, pero mejora con residuos normales",
+  "✅ Deseable, aunque no crítico",
+  "✅ Deseable para homogeneizar varianza tras escalado",
+  "⚠️ Moderado (outliers pueden influir en componentes latentes)",
+  "✅ Diseñado para alta colinealidad entre predictores",
+  "⚠️ Media (componentes latentes son interpretables, pero relaciones pueden ser complejas)",
+  "⚠️ Moderada (depende de número de componentes y tamaño del dataset)",
+  "✅ Usar k-fold para elegir número de componentes óptimos",
+  "❌ No funciona bien si relaciones son muy no lineales o datos muy ruidosos sin preprocesar"
+)
+
+detalles <- c(
+  "Modelo que proyecta predictores y respuesta a espacios latentes para maximizar covarianza.",
+  "PLSR encuentra componentes que explican varianza en X y covarianza con Y.",
+  "Todas las variables numéricas deben escalarse; convertir categóricas en indicadores.",
+  "Combina reducción de dimensión (PCA-like) con regresión en componentes latentes.",
+  "No impone supuestos estrictos, pero residuos normales facilitan inferencia estadística.",
+  "Mejor si muestras son independientes; RLSR en datos correlacionados requiere cuidado.",
+  "Escalar y homogeneizar predictores e incluso respuesta mejora la estabilidad.",
+  "Outliers extremos pueden distorsionar cálculo de componentes; usar robust PLSR para mitigarlo.",
+  "PLSR maneja colinealidad al construir pocas componentes que representan grupos de variables correlacionadas.",
+  "Componentes latentes tienen pesos interpretables, pero interpretar combinaciones puede ser complejo.",
+  "El método usa descomposición de matrices; eficiente con BLAS/LAPACK optimizado.",
+  "Validación cruzada ayuda a determinar el número óptimo de componentes latentes a usar.",
+  "No es adecuado para relaciones puramente no lineales; en ese caso usar Kernel PLSR o métodos no lineales."
+)
+
+tabla_plsr <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_plsr %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir PLSR",
+             subtitle = "Partial Least Squares Regression (PLSR)")  %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
 ```
 
 ## Sammon Mapping  {-}  
 
 ```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
 
+aplica <- c(
+  "❌ No supervisado (reducción de dimensionalidad)",
+  "❌ No aplica (no hay variable respuesta)",
+  "✅ Numéricas (distancias euclidianas)",
+  "✅ No lineal, mantiene distancias entre puntos",
+  "❌ No aplica",
+  "❌ No aplica",
+  "❌ No aplica",
+  "⚠️ Sí, es sensible a valores atípicos",
+  "⚠️ No afecta directamente (no hay predictores)",
+  "⚠️ Interpretación visual en 2D o 3D; no en componentes",
+  "❌ Lento para conjuntos grandes (algoritmo iterativo)",
+  "⚠️ Se puede validar visualmente o con estrés",
+  "❌ Mal desempeño en datos ruidosos o de alta dimensión sin estructura"
+
+)
+
+detalles <- c(
+  "Método no supervisado para proyectar datos de alta dimensión en espacios de menor dimensión preservando distancias.",
+  "No busca predecir, sino representar relaciones de cercanía entre observaciones.",
+  "Usa distancias entre puntos; solo variables numéricas tienen sentido.",
+  "A diferencia de PCA, Sammon busca preservar distancias relativas entre puntos originales y proyectados.",
+  "No genera residuos como un modelo predictivo, por lo tanto no se aplica la normalidad.",
+  "No hay modelo de error porque no hay predicción.",
+  "No aplica el supuesto de homoscedasticidad.",
+  "Valores extremos alteran las distancias y distorsionan el mapa resultante.",
+  "Como es una técnica de reducción, no le afecta multicolinealidad directamente.",
+  "El mapa resultante puede interpretarse en términos de proximidad, no de pesos o coeficientes.",
+  "Implementación clásica es iterativa y costosa computacionalmente en datasets grandes.",
+  "Puede usarse estrés (error entre distancias originales y proyectadas) como métrica de calidad.",
+  "Si las distancias no reflejan bien la estructura real (por ruido o dimensiones irrelevantes), el método falla en representar datos útiles."
+)
+
+tabla_sammon <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_sammon %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir sammon mapping",
+             subtitle = "Sammon Mapping")  %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
 ```
 
 ## Multidimensional Scaling (MDS)  {-}   
 
 ```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
 
+aplica <- c(
+  "❌ No supervisado (reducción de dimensionalidad)",
+  "❌ No aplica (no hay variable respuesta)",
+  "✅ Numéricas (requiere matriz de distancias)",
+  "✅ No lineal en MDS no clásico; lineal en MDS clásico",
+  "❌ No aplica",
+  "❌ No aplica",
+  "❌ No aplica",
+  "⚠️ Sí, valores atípicos afectan distancias",
+  "⚠️ No afecta directamente (no hay predictores)",
+  "⚠️ Interpretación visual en 2D o 3D, no en ejes significativos",
+  "❌ Lento si se usan distancias complejas o muchos puntos",
+  "⚠️ Validación mediante 'stress' y visualización",
+  "❌ Mal desempeño con datos sin estructura o ruido elevado"
+)
+
+detalles <- c(
+  "Método no supervisado que proyecta datos de alta dimensión en espacios de 2D o 3D preservando distancias entre puntos.",
+  "No busca predecir una variable, solo representar relaciones de cercanía entre observaciones.",
+  "Se basa en distancias euclidianas u otras métricas aplicadas a datos numéricos.",
+  "MDS clásico es lineal; el no clásico (por ejemplo metric o non-metric MDS) puede modelar relaciones no lineales.",
+  "No se modelan residuos, por lo que no aplica la normalidad.",
+  "No hay errores de predicción, por tanto no aplica este supuesto.",
+  "No hay varianzas residuales, por lo que este supuesto tampoco aplica.",
+  "Valores extremos modifican distancias y distorsionan la representación espacial.",
+  "Al no haber regresores, la multicolinealidad no es un problema.",
+  "El mapa generado se interpreta por proximidad relativa, no por pesos o coeficientes.",
+  "Puede ser costoso computacionalmente si hay muchos puntos o si se optimiza la función de estrés.",
+  "Se evalúa qué tan bien se preservan las distancias originales con la métrica de estrés o visualmente.",
+  "No funciona bien si los datos no tienen estructura clara, están muy dispersos o contienen ruido irrelevante."
+)
+
+tabla_mds <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_mds %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir MDS",
+             subtitle = "Multidimensional Scaling (MDS)")  %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
 ```
 
-## Projection Pursuit  {-}   
+## Projection Pursuit (PP)  {-}   
 
 ```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
 
+aplica <- c(
+  "❌ No supervisado (reducción de dimensionalidad)",
+  "❌ No aplica (no hay variable respuesta)",
+  "✅ Numéricas (requiere matriz de datos)",
+  "✅ Detecta proyecciones no lineales con estructura interesante",
+  "❌ No aplica",
+  "❌ No aplica",
+  "❌ No aplica",
+  "⚠️ Puede ser sensible a valores extremos",
+  "⚠️ Puede verse afectado si hay alta redundancia",
+  "⚠️ Interpretación más difícil que PCA; proyecciones no son ortogonales",
+  "❌ Puede ser lento por búsqueda iterativa de proyecciones",
+  "⚠️ Validación subjetiva o basada en heurísticas de interés",
+  "❌ No útil si no hay estructuras no gaussianas en los datos"
+)
+
+detalles <- c(
+  "Método no supervisado que busca proyecciones de los datos donde se maximice cierta 'interesantitud' (varianza no gaussiana, agrupamientos, etc.).",
+  "No está diseñado para predicción, sino para exploración visual o estructural.",
+  "Se aplica a datos numéricos, generalmente estandarizados, buscando direcciones relevantes.",
+  "A diferencia del PCA (que busca máxima varianza), PP busca patrones como colas pesadas, clusters, o distribuciones no normales.",
+  "No es un modelo predictivo, por tanto no se calculan residuos.",
+  "No se modela el error; se enfoca en la estructura interna de los datos.",
+  "No tiene varianzas residuales, por lo que no aplica homoscedasticidad.",
+  "Proyecciones pueden verse distorsionadas por valores extremos.",
+  "Variables muy correlacionadas pueden dominar las proyecciones si no se controlan.",
+  "Proyecciones son difíciles de interpretar directamente; pueden requerir análisis posterior.",
+  "Requiere métodos numéricos iterativos para encontrar direcciones de interés, lo que lo vuelve computacionalmente intensivo.",
+  "Puede usarse validación visual (por ejemplo, si se detectan agrupamientos) o criterios como 'kurtosis'.",
+  "Si los datos son gaussianos y no contienen patrones relevantes, PP no encuentra proyecciones útiles."
+)
+
+tabla_pp <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_pp %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir PP",
+             subtitle = "Projection Pursuit (PP) ")  %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
 ```
 
-## Principal Component Regression  {-}   
+## Principal Component Regression (PCR)  {-}   
 
 ```{r, echo = FALSE}
 

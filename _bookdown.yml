@@ -1,4 +1,4 @@
-book_filename: "Scripts DP2"
+book_filename: "ML (Apuntes)"
 new_session: false
 before_chapter_script: _common.R
 view: https://github.com/dvillasanao/ML

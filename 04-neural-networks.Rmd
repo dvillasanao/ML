@@ -15,49 +15,589 @@
 ## Radial Basis Function Network (RBFN)  {-}     
 
 ```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
 
+aplica <- c(
+  "✅ Supervisado",
+  "✅ Continua (regresión) o Categórica (clasificación)",
+  "✅ Numéricas (requiere normalización), Categóricas como dummies",
+  "✅ Captura no linealidades mediante funciones base radiales",
+  "❌ No requiere supuestos de normalidad",
+  "✅ Deseable, pero no obligatorio (mejor si muestras i.i.d.)",
+  "❌ No asume varianza constante",
+  "⚠️ Moderadamente (centros pueden verse alterados por outliers)",
+  "⚠️ Puede influir en la selección de centros, pero no tan crítico como en OLS",
+  "⚠️ Baja (la capa oculta con RBF es difícil de interpretar)",
+  "⚠️ Moderada (depende de número de centros y dimensiones)",
+  "✅ Recomendable para ajustar número de bases y spread",
+  "❌ Datos muy grandes o alta dimensionalidad sin reducción, mucho ruido"
+)
+
+detalles <- c(
+  "Red neuronal de una capa oculta con funciones radial basis como activación.",
+  "Para regresión predice un valor continuo; para clasificación usa votación o softmax sobre salidas.",
+  "Requiere que las características numéricas estén escaladas; las categóricas deben convertirse a variables indicadoras.",
+  "Cada neurona oculta calcula una función gaussiana (u otra RBF) centrada en un punto, captando curvas suaves.",
+  "No impone distribución normal en los errores, pues optimiza en función de mínimos cuadrados o cross-entropy.",
+  "Funciona mejor si las observaciones son independientes; sensible a estructuras de dependencia sin modelar.",
+  "No requiere homocedasticidad ya que no se basa en un modelo paramétrico de error con varianza fija.",
+  "Los valores extremos pueden desplazar los centros de las RBF, afectando la forma del modelo.",
+  "La colinealidad puede dificultar la determinación de centros óptimos, pero no invalida el ajuste.",
+  "Las neuronas ocultas representan combinaciones complejas de características, por lo que el modelo es tipo 'caja negra'.",
+  "El entrenamiento implica fijar o aprender centros y spreads; para muchos centros o dimensiones altas, el costo crece rápido.",
+  "Se usa CV para elegir el número de bases (centros) y el parámetro de ancho (`sigma` o `spread`) para evitar sobreajuste.",
+  "No conviene cuando hay decenas de miles de características sin reducción previa o cuando el ruido es muy alto."
+)
+
+tabla_rbfn <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_rbfn %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir RBFN",
+             subtitle = "Radial Basis Function Network (RBFN)")  %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
 ```
 
 ## Perceptron  {-}    
 
 ```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
 
+aplica <- c(
+  "✅ Supervisado",
+  "✅ Categórica binaria (0/1)",
+  "✅ Numéricas (requiere normalizar), Categóricas como dummies",
+  "⚠️ Aprendizaje lineal: separabilidad lineal requerida",
+  "❌ No requiere",
+  "✅ Deseable, pero no obligatorio (mejor si muestras i.i.d.)",
+  "❌ No se asume homoscedasticidad",
+  "⚠️ Moderado (outliers pueden cambiar el hiperplano)",
+  "⚠️ Afecta la convergencia si está muy alta",
+  "⚠️ Baja (modelo básico de una capa sin capas ocultas)",
+  "✅ Muy rápido para datasets medianos",
+  "✅ Útil para evaluar margen de separación",
+  "❌ No sirve si las clases no son linealmente separables"
+)
+
+detalles <- c(
+  "Red neuronal de una sola capa que ajusta un hiperplano separador.",
+  "Diseñado para clasificación binaria; no predice valores continuos.",
+  "Todas las features deben ser numéricas y escaladas; las categóricas deben convertirse en indicadores.",
+  "Busca maximizar el margen de separación lineal entre dos clases; no captura no linealidades.",
+  "No exige distribución normal de errores ya que optimiza con perceptrón simple.",
+  "Funciona mejor si las instancias son independientes; sensible a dependencias temporales sin ajuste.",
+  "No se basa en varianza de errores; el algoritmo actualiza pesos sin supuestos de varianza.",
+  "Los valores extremos cercanos al margen pueden forzar ajustes bruscos de pesos.",
+  "La colinealidad puede ralentizar la convergencia, aunque no impide la definición de hiperplano.",
+  "Fácil de entender: el peso de cada característica indica dirección del hiperplano.",
+  "Entrenamiento rápido usando regla de aprendizaje por error; escalable a datos medianos.",
+  "Se usa CV para ajustar tasa de aprendizaje y número de épocas para evitar bajo/sobreajuste.",
+  "Inútil si las clases no se pueden separar linealmente; requiere extensiones (por ejemplo, kernel) para no linealidad."
+)
+
+tabla_perceptron <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_perceptron %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir perceptron",
+             subtitle = "Perceptron")  %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
 ```
 
 ## Back - Propagation  {-}  
 
 ```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
 
+aplica <- c(
+  "✅ Supervisado",
+  "✅ Categórica (clasificación) o Continua (regresión)",
+  "✅ Numéricas (requiere normalizar), Categóricas como dummies",
+  "✅ Captura relaciones no lineales profundas",
+  "❌ No requiere",
+  "✅ Deseable, aunque no obligatorio",
+  "❌ No se asume homoscedasticidad",
+  "⚠️ Elevado (puede requerir robustez ante valores extremos)",
+  "⚠️ Puede ralentizar convergencia si es muy alta",
+  "⚠️ Baja (modelo de “caja negra”)",
+  "⚠️ Depende de la arquitectura y tamaño del dataset",
+  "✅ Recomendable para ajustar tasas de aprendizaje, capas y neuronas",
+  "❌ No conviene con datos muy pequeños o alta dimensionalidad sin regularizar"
+)
+
+detalles <- c(
+  "Algoritmo para entrenar redes neuronales multicapa ajustando pesos por retropropagación del error.",
+  "En clasificación usa softmax o sigmoide en salida; en regresión, capa lineal para valor continuo.",
+  "Debe escalarse cada característica; las categóricas transformarse a variables indicadoras antes de entrenar.",
+  "Aprende funciones arbitrariamente complejas activando múltiples capas ocultas con funciones no lineales.",
+  "No impone distribución específica en errores, se optimiza vía descenso de gradiente.",
+  "Mejor si las observaciones son independientes; sensible a secuencias sin ajustes específicos.",
+  "No requiere varianza constante, ya que los pesos se ajustan adaptativamente durante el entrenamiento.",
+  "Valores extremos pueden causar activaciones saturadas (vanishing/exploding gradients) si no se manejan.",
+  "Predictores muy correlacionados pueden ralentizar la convergencia; Batch Normalization ayuda a mitigar.",
+  "Difícil interpretar cada peso individual; se usan técnicas como LIME o SHAP para explicar decisiones.",
+  "El tiempo crece con número de capas, neuronas y epochs; GPUs aceleran el proceso.",
+  "Cross-validation (o k-fold) ayuda a elegir número de capas, neuronas por capa, tasa de aprendizaje y regularización.",
+  "No funciona bien con datasets pequeños (overfitting fácil) o ruido elevado sin técnicas de regularización."
+)
+
+tabla_backprop <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_backprop %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir back-propagation",
+             subtitle = "Back - Propagation")  %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html()  
 ```
 
 ## Hopfield Network  {-}  
 
 ```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica <- c(
+  "⚠️ No es supervisado en el sentido clásico",
+  "⚠️ No hay “target” continuo o categórico (almacenamiento de patrones)",
+  "✅ Variables binarias o valores discretizados (patrones binarios)",
+  "✅ Correlaciona patrones con pesos simétricos entre neuronas",
+  "❌ No aplica (no hay residuos paramétricos)",
+  "✅ Deseable, aunque no obligatorio (los estados deben actualizarse sin bucles no deseados)",
+  "❌ No aplica (no modela varianza de errores)",
+  "⚠️ Muy sensible (un solo nodo saturado puede distorsionar la red)",
+  "⚠️ Puede verse afectado si los patrones de entrenamiento tienen redundancia fuerte",
+  "⚠️ Media (la dinámica de atração es interpretable, pero las conexiones pueden ser complejas)",
+  "⚠️ Moderada (dependiendo del número de neuronas y estados síncronos/asíncronos)",
+  "❌ No se usa tradicionalmente, pero se puede validar estabilidad de memorias con pruebas de convergencia",
+  "⚠️ No sirve si los patrones no son binarios o si hay alto ruido en entradas asociativas"
+)
+
+detalles <- c(
+  "Red neuronal recurrente para recuperación asociativa de patrones, no requiere pares X→y.",
+  "No predice una variable externa, recupera patrones completos a partir de entradas parciales o ruidosas.",
+  "Requiere que cada elemento del patrón sea binario (±1) o esté discretizado; las variables continuas deben binarizarse.",
+  "Los pesos simétricos se calculan por Hebb (p. ej. W = Σ pᵢ pᵢᵀ), sin umbral explícito para relaciones lineales.",
+  "No hay un término de error paramétrico; la dinámica sigue la función de energía, no un residuo gaussiano.",
+  "Es mejor si las actualizaciones de estado son independientes o síncronas; la dependencia temporal puede generar oscilaciones.",
+  "No modela varianza de error, pues busca minimizar energía, no error cuadrático.",
+  "Patrones fuera del rango binario pueden causar saturación o estados inestables.",
+  "Patrones muy similares (colineales) pueden interferir en recuperaciones correctas (atractores vecinos).",
+  "La dinámica de convergencia hacia un estado estable (atractor) se puede visualizar, pero la topología de pesos puede no ser transparente.",
+  "Simulación de dinámicas es razonable para tamaños moderados (≤1000 neuronas); grandes redes requieren optimización paralela.",
+  "No se usa CV tradicional; se analiza la robustez de memorias variando inicialización o agregando ruido.",
+  "No apto si los datos no pueden discretizarse en patrones binarios, o si se requieren múltiples clases de salida simultáneas."
+)
+
+tabla_hopfield <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+
+tabla_hopfield %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir hopfield network",
+             subtitle = "Hopfield Network")  %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html()  
 
 ```
 
-## MLP  {-}    
+## Multilayer Perceptron (MP)  {-}    
 
 ```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
 
+aplica <- c(
+  "✅ Supervisado",
+  "✅ Categórica (clasificación) o Continua (regresión)",
+  "✅ Numéricas (normalizar) y categóreas (dummies)",
+  "✅ Captura relaciones no lineales profundas",
+  "❌ No requiere supuestos de normalidad",
+  "✅ Deseable, aunque no obligatorio",
+  "❌ No se asume homoscedasticidad",
+  "⚠️ Moderado (puede requerir robustez ante outliers)",
+  "⚠️ Afecta la convergencia si es muy alta",
+  "⚠️ Baja (modelo tipo 'caja negra')",
+  "⚠️ Depende de arquitectura y tamaño del dataset",
+  "✅ Recomendable (k-fold o repeated CV)",
+  "❌ No conviene con pocos datos o ruido elevado"
+)
+
+detalles <- c(
+  "Red neuronal con múltiples capas ocultas y función de activación no lineal.",
+  "Clasificación con softmax/sigmoide; regresión con capa lineal en salida.",
+  "Debe escalarse cada característica; las categóricas convierten a variables indicadoras.",
+  "Aprende patrones complejos combinando múltiples capas y neuronas.",
+  "No impone distribución específica de errores, se optimiza con optimizadores basados en gradiente.",
+  "Funciona mejor si las muestras son independientes; sensibles a dependencia temporal sin ajustes.",
+  "No requiere varianza constante, ajusta pesos en cada mini-batch o lote.",
+  "Outliers pueden causar gradientes explosivos o desaparecidos sin mecanismos de robustez.",
+  "Predictores muy correlacionados pueden ralentizar la convergencia; batch normalization ayuda.",
+  "Difícil de interpretar cada peso/neuronas; se usan técnicas como SHAP o LIME para explicación.",
+  "El tiempo de entrenamiento aumenta con cada capa, neuronas y epochs; GPUs aceleran el proceso.",
+  "Crucial para ajustar hiperparámetros: número de capas, neuronas por capa, tasa de aprendizaje, regularización.",
+  "No útil para datasets muy pequeños (sobreajuste) o altamente ruidosos sin regularización."
+)
+
+tabla_mp <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_mp %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir MP",
+             subtitle = "Multilayer Perceptron (MP)")  %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html()  
 ```
 
-## CNN  {-}  
+## Convolutional Neural Network (CNN)  {-}  
 
 ```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
 
+aplica <- c(
+  "✅ Supervisado",
+  "✅ Continua (regresión) o Categórica (clasificación)",
+  "✅ Imágenes (matrices de píxeles) y datos con estructura espacial",
+  "✅ Captura relaciones locales y espaciales mediante filtros convolucionales",
+  "❌ No requiere supuestos de normalidad en residuos",
+  "✅ Deseable, aunque no obligatorio (mejor si instancias son independientes)",
+  "❌ No se asume homoscedasticidad",
+  "⚠️ Moderadamente (artefactos o ruido en imágenes puede afectar)",
+  "⚠️ No se evalúa colinealidad de predictores, maneja correlaciones espaciales",
+  "⚠️ Baja (modelo tipo ‘caja negra’, usar técnicas como Grad-CAM para interpretación)",
+  "⚠️ Lento sin GPU, entrenamiento intensivo en cómputo",
+  "✅ Robusto si se aplica k-fold o validación en conjunto de imágenes",
+  "❌ No funciona bien con pocos datos o sin estructura espacial significativa"
+)
+
+detalles <- c(
+  "Red neuronal profunda especializada en procesar datos con estructura de grilla (ej. imágenes).",
+  "En clasificación utiliza softmax; en regresión, capa lineal para valores continuos.",
+  "Requiere tensores de entrada (canales, altura, ancho); funciones de preprocesamiento para imágenes.",
+  "Filtros convolucionales extraen características locales, max-pooling disminuye dimensionalidad manteniendo información relevante.",
+  "No impone ninguna distribución en los errores, optimiza función de pérdida directamente.",
+  "Ideal si las muestras son independientes; sensible a dependencias temporales o espaciales no modeladas.",
+  "No requiere varianza constante pues se basa en convoluciones y pooling, no en un modelo paramétrico de error.",
+  "Ruido o artefactos en píxeles pueden alterar el aprendizaje de filtros, es importante usar técnicas de regularización.",
+  "La red aprende filtros que capturan patrones locales, por lo que no es necesario verificar colinealidad explícitamente.",
+  "Difícil de interpretar cada filtro y capa; se utilizan mapas de activación o Grad-CAM para entender qué regiones influyen en la predicción.",
+  "El entrenamiento con múltiples capas convolucionales y millones de parámetros es intensivo en GPU/TPU.",
+  "Validación cruzada o separación de conjuntos (train/validation/test) ayuda a evitar overfitting.",
+  "No es apropiado para datasets muy pequeños sin aumentar datos (data augmentation) o sin información espacial clara."
+)
+
+tabla_cnn <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles) 
+
+tabla_mp %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir CNN",
+             subtitle = "Convolutional Neural Network (CNN)")  %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html()  
 ```
 
-## RNN  {-}  
+## Recurrent Neural Networks (RNNs) {-}  
 
 ```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
 
+aplica <- c(
+  "⚠️ Supervisado secuencial",
+  "✅ Continua (regresión) o Categórica (clasificación) en secuencias",
+  "✅ Series temporales y datos secuenciales (texto, audio, series) convertidos a vectores",
+  "✅ Captura dependencias temporales y de largo plazo entre pasos de la secuencia",
+  "❌ No requiere supuestos de normalidad de residuos",
+  "⚠️ Ideal si las secuencias son independientes entre sí; no modela dependencia exógena automáticamente",
+  "❌ No asume homoscedasticidad",
+  "⚠️ Moderado (outliers en la serie pueden sesgar el entrenamiento si no se detectan)",
+  "⚠️ La colinealidad en características secuenciales puede afectar la convergencia (usar embeddings o reducción)",
+  "⚠️ Baja (“caja negra” con muchas capas; usar técnicas de atención o visualización de activaciones)",
+  "⚠️ Lento sin GPU/TPU; entrenamiento costoso para secuencias largas o redes profundas",
+  "⚠️ Usar validación cronológica (time series split) es más apropiado que k-fold clásico",
+  "❌ No conviene con muy pocas muestras temporales, secuencias extremadamente largas sin truncar, o datos muy ruidosos"
+)
+
+detalles <- c(
+  "Red neuronal recurrente que procesa datos en pasos temporales manteniendo un estado interno.",
+  "En clasificación, etiqueta cada elemento o secuencia; en regresión, predice valores continuos a lo largo del tiempo.",
+  "Las entradas deben transformarse en vectores o embeddings; por ejemplo, texto a índices, series normalizadas.",
+  "La arquitectura RNN (LSTM, GRU) retiene información de pasos anteriores para afectar salidas posteriores.",
+  "No impone distribución en errores, ya que se optimiza vía descenso de gradiente sobre secuencias.",
+  "Funciona mejor si cada secuencia (serie) es independiente; para datos con autocorrelación compleja, usar variantes especializadas.",
+  "No requiere varianza constante, pues se basa en propagación de estado y no en un término de error paramétrico.",
+  "Valores atípicos en la serie pueden provocar gradientes explosivos o desvanecidos sin mecanismos como clipping.",
+  "La representación internal de patrones secuenciales puede verse afectada si hay características muy correlacionadas; usar regularización.",
+  "Difícil interpretar pesos internos; se usan mecánicas como atención (attention) o visualización de celdas LSTM.",
+  "El entrenamiento con backpropagation through time es intensivo; GPUs o TPUs aceleran enormemente el proceso.",
+  "Para series temporales, se prefiere validación basada en ventanas de tiempo (rolling/expanding window) en lugar de random split.",
+  "No apto si las secuencias son muy cortas o muy pocas, o hay mucho ruido sin filtrado; en esos casos, usar modelos estadísticos simples."
+)
+
+tabla_rnn <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_rnn %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir RNN",
+             subtitle = "Recurrent Neural Networks (RNNs)")  %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
 ```
 
 ## Transformers  {-}  
 
 ```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
 
+aplica <- c(
+  "⚠️ Supervisado (frecuentemente secuencial o multitarea)",
+  "✅ Categórica (clasificación) o Continua (regresión en secuencias)",
+  "✅ Texto, secuencias, imágenes en vectores o embeddings",
+  "✅ Captura dependencia secuencial y global mediante mecanismos de atención",
+  "❌ No requiere supuestos de normalidad en residuos",
+  "⚠️ Ideal si las muestras o secuencias son independientes; para datos correlacionados usar variantes específicas",
+  "❌ No asume homoscedasticidad",
+  "⚠️ Moderado (outliers en embeddings o entradas ruidosas pueden afectar atención)",
+  "⚠️ La colinealidad en embedding space puede ralentizar aprendizaje; usar regularización",
+  "⚠️ Baja (modelo de ’caja negra’, requieren métodos como attention visualization o interpretabilidad basada en pesos)",
+  "⚠️ Lento sin hardware especializado (secuencialidad en atención puede ser costosa)",
+  "⚠️ Validación temporal o k-fold anidada, según tarea; en NLP se prefiere holdout sobre texto sin mezclar",
+  "❌ No es apropiado con muy pocos datos de entrenamiento o sin estructura secuencial clara"
+)
+
+detalles <- c(
+  "Arquitectura basada en capas de atención para procesar secuencias completas en paralelo.",
+  "Modelos como BERT, GPT, T5 pueden usarse para tareas de clasificación, traducción, regresión de valores continuos en secuencias.",
+  "Entradas requieren tokenización y conversión a embeddings; pueden combinarse varias modalidades.",
+  "La auto‐atención global permite capturar relaciones a largo y corto plazo sin sesgo posicional estricto.",
+  "No impone distribución paramétrica de errores; se entrena con optimizadores basados en pérdidas cross‐entropy o MSE.",
+  "Se prefiere que las secuencias en el batch no sean dependientes; para series de tiempo, usar variantes como Time‐Series Transformer.",
+  "No se modela varianza del error; el entrenamiento se enfoca en minimizar función de pérdida directa.",
+  "Ruido en texto (typos) o en datos numéricos de entrada puede inducir atención errática; usar limpieza de datos y regularización.",
+  "Los embeddings pueden contener información redundante de características correlacionadas; ajustar tamaño de embedding y regularización.",
+  "Interpretabilidad limitada; se usan técnicas como visualización de mapas de atención, LIME, SHAP para entender decisiones.",
+  "El cómputo de atención es O(n²) en longitud de secuencia; GPUs/TPUs o variantes eficientes (Linformer, Performer) alivian costo.",
+  "Para tareas de texto, a veces se usa train/validation/test sin CV clásica; para tareas generales, k-fold anidada ayuda a elegir hiperparámetros.",
+  "No es adecuado con datasets muy pequeños, sin preentrenamiento o sin estructuras secuenciales definidas."
+)
+
+tabla_transformers <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_transformers %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir transformers",
+             subtitle = "Transformers")  %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
 ```
+
+
 
 
