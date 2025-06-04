@@ -14,19 +14,222 @@
 ## Random Forest  {-}  
 
 ```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
 
+aplica <- c(
+  "✅ Supervisado",
+  "✅ Categórica o Continua",
+  "✅ Numéricas y categóricas (requiere codificación)",
+  "✅ Captura relaciones no lineales e interacciones complejas",
+  "❌ No requiere",
+  "✅ Deseable pero no obligatorio",
+  "❌ No se asume homoscedasticidad",
+  "✅ Robusto a outliers (por agregación)",
+  "✅ Robusto (selecciona subconjuntos aleatorios)",
+  "⚠️ Moderada (difícil interpretar cientos de árboles)",
+  "⚠️ Lento con muchos árboles o datos grandes",
+  "✅ Recomendado usar k-fold",
+  "❌ Puede sobreajustar si no se ajustan hiperparámetros (e.g. profundidad, número de árboles)"
+)
+
+detalles <- c(
+  "Ensamble de árboles de decisión, cada uno entrenado en una muestra bootstrap y usando un subconjunto aleatorio de predictores.",
+  "En clasificación predice la clase mayoritaria entre árboles; en regresión, el promedio de predicciones.",
+  "Acepta muchas variables y selecciona automáticamente las más relevantes por importancia.",
+  "Al generar múltiples árboles, capta interacciones no lineales sin necesidad de especificarlas.",
+  "No hay supuestos sobre la distribución de los errores.",
+  "Los árboles individuales pueden manejar correlación leve; el ensamble mitiga la dependencia.",
+  "No necesita homogeneidad de varianza en los errores residuales.",
+  "Cada árbol es poco sensible a outliers, y la agregación mejora robustez.",
+  "Reduce el problema de colinealidad al seleccionar subconjuntos de variables por árbol.",
+  "Es difícil de explicar, aunque se pueden usar métricas de importancia de variables.",
+  "Puede volverse lento si se entrenan miles de árboles en datasets muy grandes.",
+  "Cross-validation ayuda a evitar overfitting y evaluar generalización.",
+  "No es ideal si el interpretabilidad es crítica o el tiempo computacional es limitado."
+)
+
+tabla_rf <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_rf %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir random forest",
+             subtitle = "Random Forest") %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
 ```
 
 ## Gradient Boosting Machines (GBM)  {-}  
 
 ```{r, echo = FALSE}
 
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica <- c(
+  "✅ Supervisado",
+  "✅ Categórica o Continua",
+  "✅ Numéricas y categóricas (requiere codificación)",
+  "✅ Captura no linealidades e interacciones complejas vía boosting",
+  "❌ No requiere",
+  "✅ Deseable pero no obligatorio",
+  "❌ No se asume homoscedasticidad",
+  "⚠️ Moderadamente (los outliers pueden influir en árboles individuales)",
+  "✅ Robusto (los arboles manejan colinealidad localmente)",
+  "⚠️ Baja (modelo de tipo caja negra con varios árboles secuenciales)",
+  "⚠️ Lento con muchos árboles, datos grandes o parámetros altos",
+  "✅ Recomendable con k-fold o repeated CV para ajuste de hiperparámetros",
+  "❌ Si se tienen pocos datos, muchas categorías o ruido alto"
+)
+
+detalles <- c(
+  "Ensamble de árboles secuenciales donde cada árbol corrige errores del anterior.",
+  "En clasificación se combinan probabilidades; en regresión se promedian predicciones.",
+  "Funciona con muchas variables y aprende la importancia automáticamente.",
+  "Construye árboles débiles que se enfocan en los errores residuales previos.",
+  "No impone supuestos en la distribución de los errores.",
+  "Los datos deben ser observaciones independientes; sensible a dependencias temporales.",
+  "No requiere varianza constante puesto que se basa en árboles.",
+  "Los outliers pueden exagerar los gradientes y forzar ajustes extremos en árboles individuales.",
+  "Los árboles reducen impacto de colinealidad, pero múltiples árboles pueden still complicarla.",
+  "Difícil de interpretar el conjunto; se pueden usar importance plots o SHAP para explicación.",
+  "La construcción secuencial de cientos de árboles puede ser costosa en tiempo y memoria.",
+  "La validación cruzada ayuda a determinar tasa de aprendizaje, número de árboles y profundidad.",
+  "No es ideal cuando se tienen muy pocos datos o categorías con pocos ejemplos."
+)
+
+tabla_gbm <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)  
+
+tabla_gbm %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir GBM",
+             subtitle = "Gradient Boosting Machines (GBM)") %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
+
 ```
 
 ## Boosting  {-}  
 
 ```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
 
+aplica <- c(
+  "✅ Supervisado",
+  "✅ Categórica (clasificación) o Continua (regresión)",
+  "✅ Numéricas y categóricas (requiere codificación para algunas implementaciones)",
+  "✅ Captura no linealidades e interacciones complejas mediante aprendizaje secuencial",
+  "❌ No requiere supuestos de normalidad",
+  "✅ Deseable, aunque no obligatorio para muchos algoritmos",
+  "❌ No se asume homoscedasticidad",
+  "⚠️ Moderadamente (puede ajustar demasiado a outliers si no se controla)",
+  "✅ Robusto (cada iteración utiliza un subconjunto ponderado de datos)",
+  "⚠️ Baja (modelo en su conjunto es tipo caja negra)",
+  "⚠️ Lento con muchos árboles o altas iteraciones",
+  "✅ Recomendable con k-fold o repeated CV para ajustar tasa de aprendizaje y número de iteraciones",
+  "❌ Si se tienen pocos datos, alto ruido o target muy desbalanceado sin ajuste"
+)
+
+detalles <- c(
+  "Ensamble supervisado que combina varios modelos débiles (ej. árboles pequeños) de forma secuencial",
+  "En clasificación se usan votaciones ponderadas; en regresión se suman predicciones graduadas",
+  "Acepta variables mixtas; algunas bibliotecas requieren convertir categóricas en dummies",
+  "Construye modelos débiles en cada iteración, enfocándose en muestras mal clasificadas o con alto residuo",
+  "No exige distribución de errores, ya que se basa en función de pérdida sin supuestos paramétricos",
+  "Mejor si los ejemplos son independientes; puede usar técnicas especiales para datos correlacionados",
+  "No asume varianza constante, usa función de pérdida directa para optimizar",
+  "Los outliers pueden recibir peso excesivo en iteraciones posteriores, por lo que es necesario regularizar o usar robust loss",
+  "La selección de variables se hace implícitamente, reduciendo el impacto de colinealidad",
+  "Difícil de interpretar directamente; se pueden usar métricas de importancia, SHAP o partial dependence para explicación",
+  "Cada iteración entrena un modelo débil, por lo que puede ser costoso si el número de iteraciones es alto",
+  "CV ayuda a determinar la tasa de aprendizaje (learning rate), número de iteraciones y complejidad de base learners",
+  "No es adecuado si hay muy pocos ejemplos, alta dimensionalidad con poco señal o target extremadamente desequilibrado"
+)
+
+tabla_boosting <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_boosting %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir Boosting",
+             subtitle = "Boosting") %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
 ```
 
 
