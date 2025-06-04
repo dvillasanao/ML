@@ -11,7 +11,7 @@
 
 ---
 
-## Classification and Regression Tree (CART) 
+## Classification and Regression Tree (CART)  {-} 
 
 ```{r, echo =FALSE}
 
@@ -88,24 +88,598 @@ tabla_cart %>%
 ```
 
 
-## Support Vector Machines (SVMs)  
+## Support Vector Machine (SVM)  {-}   
 
 ```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica <- c(
+  "✅ Supervisado",
+  "✅ Categórica o Continua",
+  "✅ Numéricas (categorías deben codificarse)",
+  "✅ Capta relaciones no lineales (kernel)",
+  "❌ No requiere",
+  "✅ Idealmente sí",
+  "❌ No es requisito",
+  "⚠️ Sí, especialmente sin margen amplio",
+  "✅ Puede manejarla bien",
+  "❌ Baja (modelo es una caja negra)",
+  "⚠️ Lento con muchos datos o predictores",
+  "✅ Esencial para elegir kernel y parámetros",
+  "❌ Datos con mucho ruido o solapamiento entre clases"
+)
+
+detalles <- c(
+  "Modelo supervisado que maximiza el margen entre clases",
+  "Clasificación binaria, multiclase o regresión (SVR)",
+  "Requiere escalar o estandarizar las variables numéricas",
+  "Puede usar kernel para resolver problemas no lineales",
+  "No requiere supuestos clásicos como normalidad",
+  "Mejor si los datos son independientes",
+  "Puede usarse aunque haya heterocedasticidad",
+  "Los outliers cercanos al margen afectan el modelo",
+  "Los kernels pueden reducir el efecto de multicolinealidad",
+  "Difícil de explicar; es un modelo de tipo caja negra",
+  "Puede ser costoso computacionalmente con datos grandes",
+  "Parámetros como C y gamma se ajustan vía validación cruzada",
+  "No es ideal si hay ruido o datos mal etiquetados"
+)
+
+tabla_svm <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+require(gt) 
+
+tabla_svm %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir SVM",
+             subtitle = "Support Vector Machine (SVM) ") %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
+```
+
+
+## Iterative Dichotomiser 3 (ID3)  {-}  
+
+```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica <- c(
+  "✅ Supervisado",
+  "✅ Categórica (clasificación)",
+  "✅ Principalmente categóricas (numéricas requieren discretización)",
+  "✅ No lineal (basado en ganancia de información)",
+  "❌ No requiere",
+  "✅ Deseable, pero no obligatorio",
+  "❌ No aplica",
+  "⚠️ Moderadamente (valores atípicos pueden generar ramas poco representativas)",
+  "✅ Robusto a multicolinealidad",
+  "✅ Alta (árbol simple de interpretar)",
+  "✅ Rápido con datos moderados y discretizados",
+  "✅ Recomendable para equilibrar datos y evitar overfitting",
+  "❌ Respuesta continua, muchos valores faltantes o ruido elevado"
+)
+
+detalles <- c(
+  "Construye un árbol de decisión dividiendo por ganancia de información (entropía).",
+  "Clasifica muestras en categorías discretas, ej. Sí/No, A/B/C.",
+  "Mejor con variables categóricas nativas; las numéricas deben transformarse en rangos.",
+  "No asume ninguna relación funcional: usa particiones basadas en criterios de información.",
+  "No hay residuos en el sentido paramétrico; no exige distribución normal.",
+  "Las instancias deben ser independientes; no orientado a series temporales.",
+  "No requiere varianzas constantes porque no hay término de error paramétrico.",
+  "Los outliers categóricos pueden crear nodos muy pequeños no representativos.",
+  "ID3 ignora correlaciones altas, pero demasiadas variables correlacionadas pueden ralentizar la búsqueda de mejores divisiones.",
+  "Cada nodo muestra la regla de división; el árbol global es fácil de visualizar para pocos niveles.",
+  "La construcción recursiva es eficiente para datos discretizados; se vuelve lento si hay muchas categorías o atributos.",
+  "Se usa para podar y seleccionar profundidad óptima del árbol, equilibrando sesgo y varianza.",
+  "No es recomendable si la variable objetivo es continua o si hay mucho ruido sin transformar."
+)
+
+tabla_id3 <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)  
+
+tabla_id3 %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir IDE3",
+             subtitle = "Iterative Dichotomiser 3 (ID3)") %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
+```
+
+
+## C4.5  {-}   
+
+```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica <- c(
+  "✅ Supervisado",
+  "✅ Categórica (clasificación)",
+  "✅ Categóricas y numéricas",
+  "✅ Captura relaciones no lineales",
+  "❌ No requiere",
+  "✅ Deseable, pero no obligatorio",
+  "❌ No es relevante",
+  "⚠️ Moderadamente (puede hacer overfitting con ruido)",
+  "✅ Robusto a multicolinealidad",
+  "✅ Alta (árbol interpretable)",
+  "✅ Relativamente rápido",
+  "✅ Recomendable para evitar sobreajuste",
+  "❌ Demasiadas categorías o ruido en datos"
+)
+
+detalles <- c(
+  "Modelo supervisado tipo árbol de decisión",
+  "Clasifica variables categóricas en ramas lógicas",
+  "Divide por puntos de corte para variables numéricas",
+  "No asume forma funcional entre predictores y respuesta",
+  "No necesita normalidad de errores",
+  "Mejor si las observaciones son independientes",
+  "No requiere varianzas constantes",
+  "Datos ruidosos pueden afectar las ramas",
+  "No se ve afectado por correlaciones entre predictores",
+  "Salida fácil de visualizar y explicar",
+  "Escala bien para tamaños de muestra medianos",
+  "Evita sobreajuste con poda y validación",
+  "Muchas clases con pocos datos pueden sobreajustar"
+)
+
+tabla_c45 <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_c45 %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir C4.5") %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
 
 ```
 
 
-## Iterative Dichotomiser 3 (ID3)
+## C5.0  {-}  
 
-## C4.5
+```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
 
-## C5.0
+aplica <- c(
+  "✅ Supervisado",
+  "✅ Categórica (clasificación)",
+  "✅ Categóricas y numéricas",
+  "✅ Captura relaciones no lineales",
+  "❌ No requiere",
+  "✅ Deseable, pero no obligatorio",
+  "❌ No es relevante",
+  "⚠️ Moderadamente (puede generar ramas excesivas)",
+  "✅ Robusto a multicolinealidad",
+  "✅ Alta (árbol fácil de visualizar)",
+  "✅ Relativamente rápido en training",
+  "✅ Recomendable para evitar sobreajuste",
+  "❌ Clases muy desbalanceadas sin ajuste"
+)
 
-## Chi-squared Automatic Interaction Detection (CHAID) 
+detalles <- c(
+  "Algoritmo de árbol de decisión avanzado basado en C4.5",
+  "Clasifica en múltiples categorías (también multiclase)",
+  "Divide automáticamente variables numéricas con puntos de corte",
+  "No asume función lineal: usa ganancia de información y boosting",
+  "No exige normalidad de errores",
+  "Mejor si las instancias son independientes",
+  "No requiere varianzas constantes",
+  "Los valores extremos pueden influir en ramas profundas",
+  "No se ve afectado por correlación alta entre predictores",
+  "Salida clara con reglas y pesos de boosting",
+  "Más rápido que C4.5 y con opciones de boosting",
+  "Usar k-fold o repeated CV para determinar parámetros óptimos",
+  "Muchos atributos irrelevantes pueden generar sobreajuste"
+)
 
-## Decision Stump
+tabla_c50 <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
 
-## Conditional Decision Trees
+tabla_c50 %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir C5.0") %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
 
-## M5
+```
+
+## Chi-squared Automatic Interaction Detection (CHAID)  {-}  
+
+```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica <- c(
+  "✅ Supervisado",
+  "✅ Categórica (clasificación multinivel)",
+  "✅ Categóricas nativas (numéricas requieren binarización o discretización)",
+  "✅ No lineal (explora interacciones automáticas con χ²)",
+  "❌ No requiere",
+  "✅ Deseable, pero no obligatorio",
+  "❌ No aplica",
+  "⚠️ Moderadamente (outliers categóricos pueden crear nodos muy pequeños)",
+  "✅ Robusto a multicolinealidad (usa χ², no varianzas)",
+  "✅ Media (árboles con muchos nodos pueden resultar complejos)",
+  "⚠️ Razonablemente rápido en datasets moderados, lento si hay muy altas cardinalidades",
+  "✅ Recomendable para determinar profundidad y grado de interacción",
+  "❌ Variable objetivo continua o muchos niveles con pocas observaciones"
+)
+
+detalles <- c(
+  "Construye un árbol de decisión usando pruebas χ² para detectar interacciones entre predictores y variable objetivo.",
+  "Diseñado para clasificar en múltiples categorías sin orden; puede manejar targets con más de dos niveles.",
+  "Funciona mejor con predictores categóricos; las variables numéricas deben transformarse en categorías mediante binning.",
+  "No asume ninguna forma funcional; detecta automáticamente relaciones complejas basadas en χ².",
+  "No depende de supuestos de normalidad de errores ni de forma de distribución de residuos.",
+  "Las instancias deben ser independientes; no es ideal para datos con fuerte dependencia temporal sin procesar.",
+  "Homoscedasticidad no se evalúa, ya que no se basa en un término de error paramétrico como OLS.",
+  "Los valores extremos en variables categóricas con pocas observaciones pueden crear ramas muy específicas, pero CHAID maneja cardinalidades moderadas.",
+  "Al basarse en χ², CHAID no se ve afectado directamente por colinealidad, aunque variables muy correlacionadas pueden crear redundancia en las divisiones.",
+  "Cada división se basa en pruebas de χ²; el árbol resultante puede interpretarse visualmente, pero muchos niveles pueden reducir claridad.",
+  "La creación recursiva de nodos por agrupación de categorías es eficiente para conjuntos de datos moderados; puede volverse lento si hay muchas categorías de predictores.",
+  "Se usa validación cruzada para podar el árbol y elegir el nivel óptimo de interacción, equilibrando sesgo y varianza.",
+  "No es adecuado si la variable objetivo es continua (sin discretizar) o si hay demasiados niveles con muy pocos casos en cada uno."
+)
+
+tabla_chaid <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+
+tabla_chaid %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir CHAID",
+             subtitle = "Chi-squared Automatic Interaction Detection (CHAID)") %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
+```
+
+
+
+
+## Decision Stump  {-} 
+
+```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica <- c(
+  "✅ Supervisado",
+  "✅ Categórica (clasificación) o Continua (regresión simplificada)",
+  "✅ Numéricas y/o categóricas",
+  "⚠️ Captura solo una división (muy simple, un solo nodo interno)",
+  "❌ No requiere",
+  "✅ Deseable, pero no obligatorio",
+  "❌ No relevante",
+  "✅ Relativamente robusto (poca complejidad)",
+  "✅ Ignora colinealidad (usa solo una variable)",
+  "✅ Muy alta (un solo umbral para dividir)",
+  "✅ Extremadamente rápido",
+  "✅ Se puede usar k-fold para evaluar estabilidad",
+  "❌ No funciona bien si la relación es compleja o no hay un buen umbral único"
+)
+
+detalles <- c(
+  "Modelo de árbol con un solo nivel de decisión (un umbral en una sola variable).",
+  "En clasificación predice una clase binaria; en regresión, un valor medio para cada división.",
+  "Selecciona la mejor variable con el punto de corte que maximiza ganancia (clasificación) o reduce varianza (regresión).",
+  "Solo ajusta un umbral, por lo que no modela interacciones ni no linealidades complejas.",
+  "No hay supuestos paramétricos de distribución de errores.",
+  "Mejor si las instancias no están correlacionadas (por ejemplo, no aplica a series de tiempo sin agrupar).",
+  "La varianza constante no se evalúa, pues el modelo es no paramétrico y muy simple.",
+  "Un solo punto de corte es menos sensible a outliers en comparación con árboles profundos, pero aún puede verse afectado si un outlier define el umbral.",
+  "Como solo usa una variable, no se ve afectado por correlaciones altas entre predictores.",
+  "El modelo entero es resumido en un único umbral; fácil de explicar.",
+  "Muy rápido de entrenar y predecir, pues solo se evalúa un umbral en un predictor.",
+  "Es útil para comprobar si hay una única variable con gran poder predictivo; k-fold ayuda a validar que el umbral se mantenga estable.",
+  "No sirve si el problema requiere varias divisiones, interacciones o relaciones no lineales profundas."
+)
+
+tabla_stump <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_stump %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir Decision Stump",
+             subtitle = "Decision Stump") %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
+```
+
+## Conditional Decision Trees  {-}  
+
+```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica <- c(
+  "✅ Supervisado",
+  "✅ Continua (regresión) o Categórica (clasificación)",
+  "✅ Numéricas y categóricas",
+  "✅ No lineal, usa tests condicionales para particionar",
+  "❌ No requiere",
+  "✅ Deseable, pero no obligatorio",
+  "❌ No relevante",
+  "⚠️ Moderadamente (consume tests basados en permutaciones)",
+  "✅ Robusto a colinealidad",
+  "✅ Alta (cada división está basada en criterios estadísticos claros)",
+  "⚠️ Más lento que CART en datasets grandes",
+  "✅ Recomendable para podar y evitar sobreajuste",
+  "❌ Datos muy pequeños por nodo o variables irrelevantes"
+)
+
+detalles <- c(
+  "Construye árboles basados en test de independencia condicional (ctree).",
+  "Permite tanto regresión (valor continuo) como clasificación multinivel.",
+  "Acepta variables numéricas y categóricas sin necesidad de dummies.",
+  "Detecta relaciones complejas y no lineales usando tests basados en permutaciones.",
+  "No exige que los residuos sigan una distribución específica.",
+  "Ideal si las observaciones no están correlacionadas en el tiempo.",
+  "No requiere homoscedasticidad porque no se basa en un modelo paramétrico de error.",
+  "Los outliers pueden afectar el cálculo de los tests, aunque es más robusto que CART.",
+  "El algoritmo ctree no se ve afectado por predictores altamente correlacionados.",
+  "Los árboles generados son fáciles de visualizar y explicar.",
+  "Para cada división realiza múltiples tests, por lo que es más lento en datos muy grandes.",
+  "Usar k-fold o repeated CV para elegir la profundidad y evitar sobreajuste.",
+  "No es apto si tienes muy pocas observaciones en cada parto o muchas variables irrelevantes."
+)
+
+tabla_ctree <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_ctree %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir ctree",
+             subtitle = "Conditional Decision Trees") %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
+
+```
+
+
+## M5  {-} 
+
+```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica <- c(
+  "✅ Supervisado",
+  "✅ Continua",
+  "✅ Numéricas (categóricas procesar como dummies)",
+  "✅ Lineal por segmentos (árbol + regresión en hojas)",
+  "❌ No requiere estrictamente",
+  "✅ Deseable, pero no obligatorio",
+  "❌ No es requisito",
+  "⚠️ Moderadamente (outliers pueden distorsionar regresiones locales)",
+  "✅ Relativamente robusto (regresión en hojas mitiga algo la colinealidad)",
+  "⚠️ Media (árbol complejo, hojas lineales más interpretables)",
+  "⚠️ Moderado (depende de número de nodos y atributos)",
+  "✅ Recomendable para optimizar número de nodos y hojas",
+  "❌ Muchos nodos con pocos casos o ruido elevado"
+)
+
+detalles <- c(
+  "Modelo de árbol de regresión con ajustes lineales en cada hoja.",
+  "Predice valores continuos, p. ej., precio, consumo, etc.",
+  "Requiere que variables categóricas se conviertan a indicadores antes de ajuste.",
+  "Combina particiones basadas en atributos con regresiones múltiples en hojas.",
+  "No exige que los residuos en cada hoja sean normales, aunque mejora inferencia.",
+  "Ideal si las observaciones son independientes; en series de tiempo hay que agrupar.",
+  "La varianza constante no es crítica, cada hoja ajusta localmente.",
+  "Los extremos pueden afectar las regresiones locales; poda puede mitigar esto.",
+  "El método divide el espacio antes de ajustar, reduciendo efectos de colinealidad.",
+  "El árbol completo puede ser grande, pero cada hoja contiene una función lineal clara.",
+  "Construcción y poda del árbol más costosas que OLS, pero razonables para tamaños medianos.",
+  "Ayuda a determinar número óptimo de hojas y complejidad del árbol.",
+  "Si hay muy pocas observaciones por hoja o ruido demasiado alto, las regresiones locales fallan."
+)
+
+tabla_m5 <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_m5 %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir M5",
+             subtitle = "M5 model tree algorithm") %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
+```
 

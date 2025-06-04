@@ -11,11 +11,30 @@
 
 ---
 
-## k - Nearest Neighbour (kNN)  
+## k - Nearest Neighbour (kNN)  {-}   
 
-## Learning Vector Quantization (LVQ)  
+```{r, echo = FALSE}
 
-## Self - Organizing Map (SOM)  
+```
 
-## Locally Weigted Learning (LWL)   
+
+## Learning Vector Quantization (LVQ)  {-}   
+
+```{r, echo = FALSE}
+
+```
+
+
+## Self - Organizing Map (SOM)  {-} 
+
+```{r, echo = FALSE}
+
+```
+
+
+## Locally Weigted Learning (LWL)  {-}   
+
+```{r, echo = FALSE}
+
+```
 

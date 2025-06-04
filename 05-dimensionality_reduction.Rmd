@@ -11,27 +11,81 @@
 
 ---
 
-## Principal Component Analysis (PCA)  
+## Principal Component Analysis (PCA)  {-}  
 
-## Partial Least Squares Regression (PLSR)  
+```{r, echo = FALSE}
 
-## Sammon Mapping  
+```
 
-## Multidimensional Scaling (MDS)  
+## Partial Least Squares Regression (PLSR)  {-}   
 
-## Projection Pursuit  
+```{r, echo = FALSE}
 
-## Principal Component Regression  
+```
 
-## Partial Least Squares Discriminant Analysis   
+## Sammon Mapping  {-}  
 
-## Mixture Discriminant Analysis (MDA)  
+```{r, echo = FALSE}
 
-## Quadratic Discriminant Analysis  
+```
 
-## Regularized Discriminant Analysis (RDA)  
+## Multidimensional Scaling (MDS)  {-}   
 
-## Flexible Discriminant Analysis (FDA)  
+```{r, echo = FALSE}
 
-## Linear Discriminant Analysis (LDA)  
+```
+
+## Projection Pursuit  {-}   
+
+```{r, echo = FALSE}
+
+```
+
+## Principal Component Regression  {-}   
+
+```{r, echo = FALSE}
+
+```
+
+## Partial Least Squares Discriminant Analysis  {-}  
+
+```{r, echo = FALSE}
+
+```
+
+## Mixture Discriminant Analysis (MDA)  {-}  
+
+```{r, echo = FALSE}
+
+```
+
+
+## Quadratic Discriminant Analysis  {-}  
+
+```{r, echo = FALSE}
+
+```
+
+## Regularized Discriminant Analysis (RDA)  {-}   
+
+```{r, echo = FALSE}
+
+```
+
+
+
+## Flexible Discriminant Analysis (FDA)  {-}  
+
+```{r, echo = FALSE}
+
+```
+
+
+
+## Linear Discriminant Analysis (LDA)  {-}   
+
+```{r, echo = FALSE}
+
+```
+
 

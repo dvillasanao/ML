@@ -11,16 +11,35 @@
 
 ---
 
-## Naive Bayes 
+## Naive Bayes  {-}  
 
-## Averaged One - Dependence Estimators (AODE)  
 
-## Bayesian Belief Network (BBN) 
 
-## Gaussian Naive Bayes   
 
-## Multinomial Naive Bayes   
+## Averaged One - Dependence Estimators (AODE)  {-}   
 
-## Bayesian Network (BN)  
+
+
+
+## Bayesian Belief Network (BBN)  {-}  
+
+
+
+
+## Gaussian Naive Bayes  {-}    
+
+
+
+
+
+## Multinomial Naive Bayes  {-}  
+
+
+
+
+
+## Bayesian Network (BN)  {-}   
+
+
 
 

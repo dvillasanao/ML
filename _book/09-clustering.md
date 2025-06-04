@@ -11,13 +11,24 @@
 
 ---
 
-## k-Means 
+## k-Means  {-}  
 
-## k-Medians  
 
-## Expectation Maximization   
 
-## Hierarchical Clustering    
 
-## DBSCAN   
+## k-Medians  {-}   
+
+
+
+## Expectation Maximization  {-}  
+
+
+
+## Hierarchical Clustering  {-}  
+
+
+
+## DBSCAN  {-}    
+
+
 

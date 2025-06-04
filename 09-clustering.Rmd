@@ -11,13 +11,34 @@
 
 ---
 
-## k-Means 
+## k-Means  {-}  
 
-## k-Medians  
+```{r, echo = FALSE}
 
-## Expectation Maximization   
+```
 
-## Hierarchical Clustering    
 
-## DBSCAN   
+## k-Medians  {-}   
+
+```{r, echo = FALSE}
+
+```
+
+## Expectation Maximization  {-}  
+
+```{r, echo = FALSE}
+
+```
+
+## Hierarchical Clustering  {-}  
+
+```{r, echo = FALSE}
+
+```
+
+## DBSCAN  {-}    
+
+```{r, echo = FALSE}
+
+```
 

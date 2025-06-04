@@ -12,20 +12,36 @@
 ---
 
 
-## Radial Basis Function Network (RBFN)   
+## Radial Basis Function Network (RBFN)  {-}     
 
-## Perceptron  
 
-## Back - Propagation   
 
-## Hopfield Network  
+## Perceptron  {-}    
 
-## MLP  
 
-## CNN  
 
-## RNN  
+## Back - Propagation  {-}  
 
-## Transformers   
+
+
+## Hopfield Network  {-}  
+
+
+
+## MLP  {-}    
+
+
+
+## CNN  {-}  
+
+
+
+## RNN  {-}  
+
+
+
+## Transformers  {-}  
+
+
 
 

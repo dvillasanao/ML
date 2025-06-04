@@ -11,21 +11,62 @@
 
 ---
 
-## Random Forest
+## Random Forest  {-}  
 
-## Gradient Boosting Machines (GBM)
+```{r, echo = FALSE}
 
-## Boosting
+```
 
-## Bootstrapped Aggregation (Bagging)  
+## Gradient Boosting Machines (GBM)  {-}  
 
-## AdaBoost  
+```{r, echo = FALSE}
 
-## Stacked Generalization (Blending)   
+```
 
-## Gradient Boosted Regression Trees (GBRT)   
+## Boosting  {-}  
 
-## XGBoost  
+```{r, echo = FALSE}
 
-## LightGBM    
+```
+
+
+## Bootstrapped Aggregation (Bagging)  {-}   
+
+```{r, echo = FALSE}
+
+```
+
+## AdaBoost  {-}    
+
+```{r, echo = FALSE}
+
+```
+
+
+## Stacked Generalization (Blending)  {-}  
+
+```{r, echo = FALSE}
+
+```
+
+
+## Gradient Boosted Regression Trees (GBRT)  {-}  
+
+```{r, echo = FALSE}
+
+```
+
+
+
+## XGBoost  {-}   
+
+```{r, echo = FALSE}
+
+```
+
+## LightGBM  {-}    
+
+```{r, echo = FALSE}
+
+```
 

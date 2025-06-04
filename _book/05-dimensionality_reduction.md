@@ -11,27 +11,57 @@
 
 ---
 
-## Principal Component Analysis (PCA)  
+## Principal Component Analysis (PCA)  {-}  
 
-## Partial Least Squares Regression (PLSR)  
 
-## Sammon Mapping  
 
-## Multidimensional Scaling (MDS)  
+## Partial Least Squares Regression (PLSR)  {-}   
 
-## Projection Pursuit  
 
-## Principal Component Regression  
 
-## Partial Least Squares Discriminant Analysis   
+## Sammon Mapping  {-}  
 
-## Mixture Discriminant Analysis (MDA)  
 
-## Quadratic Discriminant Analysis  
 
-## Regularized Discriminant Analysis (RDA)  
+## Multidimensional Scaling (MDS)  {-}   
 
-## Flexible Discriminant Analysis (FDA)  
 
-## Linear Discriminant Analysis (LDA)  
+
+## Projection Pursuit  {-}   
+
+
+
+## Principal Component Regression  {-}   
+
+
+
+## Partial Least Squares Discriminant Analysis  {-}  
+
+
+
+## Mixture Discriminant Analysis (MDA)  {-}  
+
+
+
+
+## Quadratic Discriminant Analysis  {-}  
+
+
+
+## Regularized Discriminant Analysis (RDA)  {-}   
+
+
+
+
+
+## Flexible Discriminant Analysis (FDA)  {-}  
+
+
+
+
+
+## Linear Discriminant Analysis (LDA)  {-}   
+
+
+
 

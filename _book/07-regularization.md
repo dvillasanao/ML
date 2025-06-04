@@ -11,11 +11,23 @@
 
 ---
 
-## Ridge Regression  
+## Ridge Regression  {-}   
 
-## Least Absolute Shrinkage and Selection Operator (LASSO)  
 
-## Elastic Net  
 
-## Least Angle Regression (LARS)  
+
+## Least Absolute Shrinkage and Selection Operator (LASSO)  {-}  
+
+
+
+
+## Elastic Net  {-}  
+
+
+
+
+## Least Angle Regression (LARS)  {-}   
+
+
+
 

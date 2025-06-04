@@ -11,15 +11,45 @@
 
 ---
 
-## Cubist 
+## Cubist  {-}  
 
-## One Rule (OneR)  
+```{r, echo = FALSE}
 
-## Zero Rule (ZeroR)   
+```
 
-## Repeated Incremental Pruning to Produce Error Reduction (RIPPER)  
 
-## Rule Fit  
 
-## Decision Rules  
+## One Rule (OneR)  {-}   
+
+```{r, echo = FALSE}
+
+```
+
+
+## Zero Rule (ZeroR)  {-}    
+
+```{r, echo = FALSE}
+
+```
+
+
+## Repeated Incremental Pruning to Produce Error Reduction (RIPPER)  {-} 
+
+```{r, echo = FALSE}
+
+```
+
+
+## Rule Fit  {-}   
+
+```{r, echo = FALSE}
+
+```
+
+
+## Decision Rules  {-}  
+
+```{r, echo = FALSE}
+
+```
 

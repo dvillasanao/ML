@@ -11,11 +11,22 @@
 
 ---
 
-## k - Nearest Neighbour (kNN)  
+## k - Nearest Neighbour (kNN)  {-}   
 
-## Learning Vector Quantization (LVQ)  
 
-## Self - Organizing Map (SOM)  
 
-## Locally Weigted Learning (LWL)   
+
+## Learning Vector Quantization (LVQ)  {-}   
+
+
+
+
+## Self - Organizing Map (SOM)  {-} 
+
+
+
+
+## Locally Weigted Learning (LWL)  {-}   
+
+
 
