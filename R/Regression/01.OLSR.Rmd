@@ -47,6 +47,10 @@ h5 {
   ont-size: 20px;
   color: #172984;
 }
+h6{
+  ont-size: 18px;
+  color: #1864cb;
+}
 </style>
 ```
 
@@ -371,42 +375,46 @@ p
 
 El Criterio de Información de Akaike (AIC, por sus siglas en inglés, Akaike Information Criterion) es una medida de la bondad de ajuste de un modelo estadístico que penaliza la complejidad del modelo. Su objetivo es seleccionar el modelo que mejor se ajusta a los datos con la menor cantidad de parámetros, evitando así el sobreajuste (overfitting).
 
-La fórmula general para calcular el AIC es:
+La fórmula general para calcular el AIC es:   
   
 $$AIC = 2k - 2\ln(L)$$
+
   
-Donde:
-  * $k$ es el número de parámetros del modelo. En un modelo de regresión, esto incluye el intercepto y los coeficientes de las variables predictoras, más la varianza del error si se estima (en modelos de mínimos cuadrados ordinarios, esto es a menudo el caso, por lo que $k$ a veces se cuenta como el número de coeficientes + 1 para la varianza del error, o simplemente el número de coeficientes si la varianza del error se considera implícita en la función de verosimilitud).
+Donde:   
+  * $k$ es el número de parámetros del modelo. En un modelo de regresión, esto incluye el intercepto y los coeficientes de las variables predictoras, más la varianza del error si se estima (en modelos de mínimos cuadrados ordinarios, esto es a menudo el caso, por lo que $k$ a veces se cuenta como el número de coeficientes + 1 para la varianza del error, o simplemente el número de coeficientes si la varianza del error se considera implícita en la función de verosimilitud).   
 * $\ln(L)$ es el logaritmo natural del valor máximo de la función de verosimilitud (log-likelihood) del modelo. La función de verosimilitud mide qué tan bien el modelo reproduce los datos observados.
 
-#### Cómo se interpreta:
+#### Cómo se interpreta:   
 
-* **Valores más bajos de AIC indican un mejor modelo.** El AIC busca un equilibrio entre la bondad de ajuste del modelo a los datos (representada por $\ln(L)$) y la complejidad del modelo (representada por $2k$).
-* El término $2k$ es una **penalización por la complejidad**. Cada parámetro adicional en el modelo aumenta el valor de AIC, lo que desincentiva la inclusión de variables innecesarias que podrían sobreajustar los datos.  
+* **Valores más bajos de AIC indican un mejor modelo.** El AIC busca un equilibrio entre la bondad de ajuste del modelo a los datos (representada por $\ln(L)$) y la complejidad del modelo (representada por $2k$).  
+* El término $2k$ es una **penalización por la complejidad**. Cada parámetro adicional en el modelo aumenta el valor de AIC, lo que desincentiva la inclusión de variables innecesarias que podrían sobreajustar los datos.   
 
-#### Para modelos de Regresión por Mínimos Cuadrados Ordinarios (OLS):
+#### Para modelos de Regresión por Mínimos Cuadrados Ordinarios (OLS):   
 
-Aunque la fórmula general del AIC es la que se mencionó, para modelos de OLS con residuos normalmente distribuidos, la función de log-verosimilitud tiene una forma específica, lo que permite reescribir el AIC de una manera más práctica.
+Aunque la fórmula general del AIC es la que se mencionó, para modelos de OLS con residuos normalmente distribuidos, la función de log-verosimilitud tiene una forma específica, lo que permite reescribir el AIC de una manera más práctica.  
 
-Para un modelo de regresión lineal con $n$ observaciones y $k$ parámetros (incluyendo el intercepto), y asumiendo errores normales con varianza constante, el AIC se puede calcular como:
+Para un modelo de regresión lineal con $n$ observaciones y $k$ parámetros (incluyendo el intercepto), y asumiendo errores normales con varianza constante, el AIC se puede calcular como:  
   
   $$AIC = n \cdot \ln\left(\frac{RSS}{n}\right) + 2k$$
   
-  Donde:
-  * $n$ es el número de observaciones (tamaño de la muestra).
-* $RSS$ es la Suma de Cuadrados de los Residuos (Residual Sum of Squares), que es la suma de los cuadrados de las diferencias entre los valores observados y los valores predichos por el modelo.
-* $k$ es el número de parámetros del modelo (coeficientes de las variables independientes + intercepto).
-
-**Es importante recordar:**
   
-  * El AIC no es una prueba de hipótesis en el sentido tradicional; no te dice si un modelo es "bueno" o "malo" en un sentido absoluto.
-* Es una herramienta para la **selección de modelos entre un conjunto de modelos candidatos**. Siempre se compara el AIC de diferentes modelos ajustados a los **mismos datos**. El modelo con el AIC más bajo es el preferido.
-* Cuando la muestra es pequeña, a veces se prefiere el **AIC corregido (AICc)**, que añade una penalización adicional por el tamaño de la muestra:
-  $$AICc = AIC + \frac{2k(k+1)}{n-k-1}$$
-  A medida que $n$ (tamaño de la muestra) es grande, el término de corrección se vuelve insignificante y el AICc converge al AIC.
+  Donde:  
+  * $n$ es el número de observaciones (tamaño de la muestra).  
+* $RSS$ es la Suma de Cuadrados de los Residuos (Residual Sum of Squares), que es la suma de los cuadrados de las diferencias entre los valores observados y los valores predichos por el modelo.  
+* $k$ es el número de parámetros del modelo (coeficientes de las variables independientes + intercepto).  
+
+**Es importante recordar:**  
+  
+  * El AIC no es una prueba de hipótesis en el sentido tradicional; no te dice si un modelo es "bueno" o "malo" en un sentido absoluto.  
+* Es una herramienta para la **selección de modelos entre un conjunto de modelos candidatos**. Siempre se compara el AIC de diferentes modelos ajustados a los **mismos datos**. El modelo con el AIC más bajo es el preferido.  
+* Cuando la muestra es pequeña, a veces se prefiere el **AIC corregido (AICc)**, que añade una penalización adicional por el tamaño de la muestra:  
+  $$AICc = AIC + \frac{2k(k+1)}{n-k-1}$$  
+  
+  
+A medida que $n$ (tamaño de la muestra) es grande, el término de corrección se vuelve insignificante y el AICc converge al AIC.
 
 
-Se realiza una selección automática de variables para un modelo de regresión lineal, utilizando el **criterio AIC (Criterio de Información de Akaike**)   
+Se realiza una selección automática de variables para un modelo de regresión lineal, utilizando el **criterio AIC (Criterio de Información de Akaike**)    
 
 ```{r}
 require(MASS)
@@ -415,24 +423,24 @@ require(MASS)
 modelo_step <- stepAIC(modelo_ols, direction = "both")
 ```
 
-El procedimiento va eliminando o agregando variables al modelo original para reducir el **AIC (Criterio de Información de Akaike)**. El objetivo es encontrar un modelo más **parsimonioso** (simple) con **buena capacidad predictiva**.  
+El procedimiento va eliminando o agregando variables al modelo original para reducir el **AIC (Criterio de Información de Akaike)**. El objetivo es encontrar un modelo más **parsimonioso** (simple) con **buena capacidad predictiva**.   
 
-* El proceso empieza con un modelo completo:
+* El proceso empieza con un modelo completo:  
   `mpg ~ cyl + disp + hp + drat + wt + qsec + vs + am + gear + carb`
-y un AIC inicial, por ejemplo: `AIC = 57.77`.
+y un AIC inicial, por ejemplo: `AIC = 57.77`.  
 
-* Luego evalúa qué pasa si **quita** una variable (`- vs`, `- cyl`, etc.).
+* Luego evalúa qué pasa si **quita** una variable (`- vs`, `- cyl`, etc.).  
 
-* Si al eliminar una variable el AIC **baja**, se acepta ese cambio.
-Ejemplo:
-  `- vs    1    2.1293  102.57  56.353`
-Significa que si quitas la variable `vs`, el AIC baja de 57.77 a 56.35 → ¡mejor!
+* Si al eliminar una variable el AIC **baja**, se acepta ese cambio.   
+Ejemplo:  
+  `- vs    1    2.1293  102.57  56.353`   
+Significa que si quitas la variable `vs`, el AIC baja de 57.77 a 56.35 → ¡mejor!   
   
-  * Se acepta esa modificación y se repite el procedimiento, ahora con el nuevo modelo.
+  * Se acepta esa modificación y se repite el procedimiento, ahora con el nuevo modelo.  
 
 * También puede intentar **agregar** variables previamente eliminadas (`+ vs`, `+ hp`, etc.) si esto mejora el AIC.
 
-* Cuando **ya no puede bajar más el AIC** quitando o agregando variables. El modelo final es el que **tiene el AIC más bajo** alcanzado durante el proceso. 
+* Cuando **ya no puede bajar más el AIC** quitando o agregando variables. El modelo final es el que **tiene el AIC más bajo** alcanzado durante el proceso.  
 
 ```{r}
 # Ver resumen del modelo seleccionado
@@ -480,7 +488,8 @@ require(leaps)
 regfit <- regsubsets(mpg ~ ., data = train_data, nvmax = 10)
 summary(regfit)
 ```
-`Selection Algorithm: exhaustive`**: Esto es crucial. Significa que el algoritmo probó **todas las combinaciones posibles** de variables para cada tamaño de subconjunto hasta `nvmax = 10` y seleccionó el mejor para cada tamaño. Esto asegura que, para cada número de variables (1, 2, ..., 10), el modelo presentado es el óptimo según el criterio interno de `regsubsets` (generalmente $R^2$ ajustado, BIC o Cp de Mallows, a menos que se especifique otro).
+
+`Selection Algorithm: exhaustive` **: Esto es crucial. Significa que el algoritmo probó todas las combinaciones posibles** de variables para cada tamaño de subconjunto hasta `nvmax = 10` y seleccionó el mejor para cada tamaño. Esto asegura que, para cada número de variables (1, 2, ..., 10), el modelo presentado es el óptimo según el criterio interno de `regsubsets` (generalmente $R^2$ ajustado, BIC o Cp de Mallows, a menos que se especifique otro).
 
 
 ```{r}
@@ -588,7 +597,8 @@ Ahora se va a trabajar con un **modelo reducido (`modelo_step`)**, es importante
 formula(modelo_step)
 ```
 
-**Nos aseguramos que las bases de (test / training tengan esas variables**
+**Nos aseguramos que las bases de (test / training) tengan esas variables** 
+
 ```{r}
 test_data_reducido <- test_data[, c("mpg", "drat", "wt", "gear", "carb")]
 ```
@@ -600,6 +610,7 @@ Con la función **`predict()`** genérica en R que se utiliza para obtener predi
 Esta operación es un paso clave en el flujo de trabajo de modelado predictivo, ya que permite:
   
 1.  **Evaluación del modelo:** Una vez que se tienen las `predicciones` para el `test_data`, se puede compararlas con los valores reales (observados) de la variable dependiente en el `test_data` (si se tienen) para **evaluar qué tan bien se desempeña el modelo** en datos no vistos. Esto ayuda a estimar su rendimiento en el mundo real y a detectar problemas como el **sobreajuste (overfitting)**.  
+
 2.  **Uso práctico del modelo:** Después de validar que el modelo es bueno, se puede usarlo para predecir la variable dependiente para nuevas observaciones futuras de las que solo se conocen las variables predictoras (por ejemplo, predecir el precio de una casa basándose en sus características, si el modelo fue entrenado para eso).
 
 
@@ -628,7 +639,8 @@ La fórmula para calcular el MAE es la siguiente:
   
   $$MAE = \frac{1}{n} \sum_{i=1}^{n} |y_i - \hat{y}_i|$$
   
-  Donde:
+
+Donde:    
   
   * $n$: Es el número total de observaciones (o puntos de datos) en el conjunto de datos.
 * $y_i$: Es el **valor real u observado** de la variable dependiente para la observación $i$.
@@ -647,40 +659,44 @@ Esto significa que, **en promedio**, el modelo reducido predice el consumo de co
 ```{r}
 range(mtcars$mpg)
 ```
-El rango de `mpg` es de **10.4 a 33.9**, es decir, abarca **\~23.5 unidades**.
+El rango de `mpg` es de **10.4 a 33.9**, es decir, abarca **\~23.5 unidades**.  
     
-Por tanto:
+Por tanto:   
       
-      * Un MAE de **3.68** representa alrededor de un **15% del rango total**. El modelo, en promedio, se equivoca por 3.68 millas por galón en sus predicciones.
-    * No es un error enorme, pero **tampoco es excelente**.
+      * Un MAE de **3.68** representa alrededor de un **15% del rango total**. El modelo, en promedio, se equivoca por 3.68 millas por galón en sus predicciones.  
+    * No es un error enorme, pero **tampoco es excelente**.  
     * Si el modelo completo (`modelo_ols`) tenía un MAE menor, podría predecir mejor, aunque con más colinealidad.
 
 #### Root Mean Squared Error (`RMSE`)  
 
 El **RMSE (Root Mean Squared Error)**, o **Raíz del Error Cuadrático Medio**, es una de las métricas más comunes y ampliamente utilizadas para evaluar la precisión de los modelos de regresión. Mide la **magnitud promedio de los errores** entre los valores predichos por un modelo y los valores reales observados, pero dando **mayor peso a los errores más grandes**.
 
-#### Fórmula del RMSE
+#### Fórmula del RMSE 
 
-  $$RMSE = \sqrt{\frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2}$$
+  $$RMSE = \sqrt{\frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2}$$  
   
-Donde:
   
-  * $n$: Es el número total de observaciones (o puntos de datos).
-* $y_i$: Es el **valor real u observado** de la variable dependiente para la observación $i$.
-* $\hat{y}_i$: Es el **valor predicho** por el modelo para la observación $i$.
-* $(y_i - \hat{y}_i)^2$: Es el **cuadrado de la diferencia** entre el valor real y el valor predicho para la observación $i$. Elevar al cuadrado las diferencias tiene dos propósitos principales:
-  * Eliminar los signos negativos: Asegura que los errores positivos y negativos no se cancelen entre sí.
-* Penalizar más los errores grandes: Los errores más grandes tienen un impacto desproporcionadamente mayor en el resultado final del RMSE que los errores pequeños, debido a la operación al cuadrado.
-* $\sum_{i=1}^{n}$: Indica la suma de todos los errores al cuadrado para todas las $n$ observaciones.
+Donde:  
+  
+  * $n$: Es el número total de observaciones (o puntos de datos).  
+* $y_i$: Es el **valor real u observado** de la variable dependiente para la observación $i$.  
+* $\hat{y}_i$: Es el **valor predicho** por el modelo para la observación $i$.  
+* $(y_i - \hat{y}_i)^2$: Es el **cuadrado de la diferencia** entre el valor real y el valor predicho para la observación $i$.  
 
-##### Interpretación del RMSE:
+Elevar al cuadrado las diferencias tiene dos propósitos principales:  
 
-* El RMSE se expresa en las **mismas unidades que la variable dependiente original**. Esto facilita su interpretación. Por ejemplo, si estás prediciendo la altura en metros y el RMSE es 0.5, significa que, en promedio, las predicciones del modelo se desvían aproximadamente 0.5 metros de la altura real.
+  * Eliminar los signos negativos: Asegura que los errores positivos y negativos no se cancelen entre sí.  
+* Penalizar más los errores grandes: Los errores más grandes tienen un impacto desproporcionadamente mayor en el resultado final del RMSE que los errores pequeños, debido a la operación al cuadrado.  
+* $\sum_{i=1}^{n}$: Indica la suma de todos los errores al cuadrado para todas las $n$ observaciones.  
+
+##### Interpretación del RMSE:  
+
+* El RMSE se expresa en las **mismas unidades que la variable dependiente original**. Esto facilita su interpretación. Por ejemplo, si estás prediciendo la altura en metros y el RMSE es 0.5, significa que, en promedio, las predicciones del modelo se desvían aproximadamente 0.5 metros de la altura real.  
 * **Un RMSE de 0 (cero) indica un modelo perfecto**, donde todas las predicciones son exactamente iguales a los valores reales.
-* **Valores más bajos de RMSE indican un mejor rendimiento del modelo.**
-  * **Sensibilidad a valores atípicos:** Debido al término al cuadrado, el RMSE penaliza más fuertemente los errores grandes (valores atípicos) que el MAE. Esto significa que si tu modelo tiene algunos errores de predicción muy grandes, el RMSE será significativamente más alto que el MAE. Esta característica puede ser una ventaja o desventaja dependiendo del contexto:
-  * **Ventaja:** Si los errores grandes son particularmente indeseables en tu aplicación, el RMSE es una buena métrica porque los destaca.
-* **Desventaja:** Si tu conjunto de datos contiene muchos valores atípicos reales o errores de medición que no son representativos del rendimiento general del modelo, el RMSE podría dar una visión pesimista.
+* **Valores más bajos de RMSE indican un mejor rendimiento del modelo.**  
+  * **Sensibilidad a valores atípicos:** Debido al término al cuadrado, el RMSE penaliza más fuertemente los errores grandes (valores atípicos) que el MAE. Esto significa que si tu modelo tiene algunos errores de predicción muy grandes, el RMSE será significativamente más alto que el MAE. Esta característica puede ser una ventaja o desventaja dependiendo del contexto:  
+  * **Ventaja:** Si los errores grandes son particularmente indeseables en tu aplicación, el RMSE es una buena métrica porque los destaca.  
+* **Desventaja:** Si tu conjunto de datos contiene muchos valores atípicos reales o errores de medición que no son representativos del rendimiento general del modelo, el RMSE podría dar una visión pesimista.  
 
 
 ```{r}
@@ -688,38 +704,40 @@ Donde:
 RMSE <- sqrt(mean((predicciones - test_data_reducido$mpg)^2))
 RMSE
 ```
-* Un RMSE de **4.87** significa que, en promedio, las predicciones difieren de los valores reales por **±4.87 millas por galón**.
+* Un RMSE de **4.87** significa que, en promedio, las predicciones difieren de los valores reales por **±4.87 millas por galón**.  
   * Como **los errores grandes tienen más peso** (al ser elevados al cuadrado), el RMSE será siempre **igual o mayor al MAE**. Penaliza más los errores grandes que el MAE.
-  *  Es **aceptable para predicción en `mtcars`**, pero con espacio para mejora si se requiere mayor precisión.      
+  *  Es **aceptable para predicción en `mtcars`**, pero con espacio para mejora si se requiere mayor precisión.       
   
-**Compararlo con el MAE**
+**Compararlo con el MAE**  
   
-  * Si **RMSE está mucho más alto que el MAE**, el modelo está cometiendo **errores grandes con frecuencia** (outliers, mala especificación).
-  * Si **RMSE ≈ MAE**, los errores están bien distribuidos.
+  * Si **RMSE está mucho más alto que el MAE**, el modelo está cometiendo **errores grandes con frecuencia** (outliers, mala especificación).  
+  * Si **RMSE ≈ MAE**, los errores están bien distribuidos.  
   
 
 #### Coeficiente de determinación $R^2$  
 
-$R^{2}$ (**coeficiente de determinación**) mide qué proporción de la variabilidad de la **variable dependiente** es explicada por el modelo.  
+$R^{2}$ (**coeficiente de determinación**) mide qué proporción de la variabilidad de la **variable dependiente** es explicada por el modelo.   
 
-La fórmula general del $R^2$ (coeficiente de determinación) es:
+La fórmula general del $R^2$ (coeficiente de determinación) es:  
   
   $$R^2 = 1 - \frac{SSE}{SST}$$
   
-  Donde:
+Donde:  
   
-  * **$SSE$** (Sum of Squared Errors) o **$RSS$** (Residual Sum of Squares): Es la **Suma de Cuadrados de los Errores** (o Suma de Cuadrados de los Residuos). Mide la variación no explicada por el modelo. Se calcula como la suma de los cuadrados de las diferencias entre los valores observados ($y_i$) y los valores predichos por el modelo ($\hat{y}_i$):
-  $$SSE = \sum_{i=1}^{n} (y_i - \hat{y}_i)^2$$
+  * **$SSE$** (Sum of Squared Errors) o **$RSS$** (Residual Sum of Squares): Es la **Suma de Cuadrados de los Errores** (o Suma de Cuadrados de los Residuos). Mide la variación no explicada por el modelo. Se calcula como la suma de los cuadrados de las diferencias entre los valores observados ($y_i$) y los valores predichos por el modelo ($\hat{y}_i$):  
   
-  * **$SST$** (Total Sum of Squares): Es la **Suma Total de Cuadrados**. Mide la variación total de la variable dependiente respecto a su media. Representa la variabilidad total en los datos que el modelo intenta explicar. Se calcula como la suma de los cuadrados de las diferencias entre los valores observados ($y_i$) y la media de la variable dependiente ($\bar{y}$):
-  $$SST = \sum_{i=1}^{n} (y_i - \bar{y})^2$$ 
+  $$SSE = \sum_{i=1}^{n} (y_i - \hat{y}_i)^2$$  
   
-##### Interpretación del $R^2$:
+  * **$SST$** (Total Sum of Squares): Es la **Suma Total de Cuadrados**. Mide la variación total de la variable dependiente respecto a su media. Representa la variabilidad total en los datos que el modelo intenta explicar. Se calcula como la suma de los cuadrados de las diferencias entre los valores observados ($y_i$) y la media de la variable dependiente ($\bar{y}$):  
+  
+  $$SST = \sum_{i=1}^{n} (y_i - \bar{y})^2$$  
+  
+##### Interpretación del $R^2$:  
 
-* El $R^2$ es una métrica que varía entre **0 y 1** (o 0% y 100%).
-* **$R^2 = 0$**: Indica que el modelo no explica ninguna de la variabilidad en la variable dependiente. Es tan bueno como simplemente usar la media de la variable dependiente para la predicción.
-* **$R^2 = 1$**: Indica que el modelo explica el 100% de la variabilidad en la variable dependiente. Esto rara vez ocurre en la práctica con datos del mundo real, y a menudo sugiere sobreajuste si sucede en un conjunto de entrenamiento.
-* **Valores más altos de $R^2$ indican un mejor ajuste del modelo** a los datos observados, lo que significa que las variables predictoras del modelo explican una mayor proporción de la variabilidad en la variable dependiente.
+* El $R^2$ es una métrica que varía entre **0 y 1** (o 0% y 100%).  
+* **$R^2 = 0$**: Indica que el modelo no explica ninguna de la variabilidad en la variable dependiente. Es tan bueno como simplemente usar la media de la variable dependiente para la predicción.  
+* **$R^2 = 1$**: Indica que el modelo explica el 100% de la variabilidad en la variable dependiente. Esto rara vez ocurre en la práctica con datos del mundo real, y a menudo sugiere sobreajuste si sucede en un conjunto de entrenamiento.  
+* **Valores más altos de $R^2$ indican un mejor ajuste del modelo** a los datos observados, lo que significa que las variables predictoras del modelo explican una mayor proporción de la variabilidad en la variable dependiente.  
 
 ```{r}
 # R² manual (opcional)
@@ -729,16 +747,16 @@ R2 <- 1 - SSE/SST
 R2
 ```
 
- * Esto significa que el **60.2% de la variabilidad** de `mpg` (consumo de combustible) en los datos de prueba **es explicada por el modelo**.
-    * El **39.8% restante** es **variabilidad no explicada** (error, factores no incluidos, ruido). 
-    * El modelo predice **más de la mitad de la variabilidad de `mpg`** en los datos de prueba. 
+ * Esto significa que el **60.2% de la variabilidad** de `mpg` (consumo de combustible) en los datos de prueba **es explicada por el modelo**.  
+    * El **39.8% restante** es **variabilidad no explicada** (error, factores no incluidos, ruido).  
+    * El modelo predice **más de la mitad de la variabilidad de `mpg`** en los datos de prueba.  
     
 
-#### Distribución de los residuos  
+#### Distribución de los residuos   
 
 Relación lineal entre variable dependiente e independiente:
 
-Se calculan los residuos para cada observación y se representan (scatterplot). Si las observaciones siguen la línea del modelo, los residuos se deben distribuir aleatoriamente entorno al valor 0.
+Se calculan los residuos para cada observación y se representan (`scatterplot`). Si las observaciones siguen la línea del modelo, los residuos se deben distribuir aleatoriamente entorno al valor 0.
 
 ```{r, class.source = "fold-hide"}
 tabla <- data.frame(prediccion = modelo_step$fitted.values,
@@ -764,9 +782,9 @@ ggplot(data = tabla, aes(x = prediccion, y = residuos)) +
 ```
 
 
-Los residuos se distribuyen de forma aleatoria entorno al 0 por lo que se acepta la linealidad.  
+Los residuos se distribuyen de forma aleatoria entorno al `0` por lo que se acepta la linealidad.  
 
-##### Distribución normal de los residuos
+##### Distribución normal de los residuos   
 
 Los residuos se deben distribuir de forma normal con media 0. Para comprobarlo se recurre a histogramas, a los cuantiles normales o a un test de contraste de normalidad.    
 
@@ -785,9 +803,9 @@ ggplot(data = tabla, aes(x = residuos)) +
 ```
 
 
-#### Q-Q Plot   
+#### Q-Q Plot    
 
-Los gráficos Q-Q normales son esenciales para verificar uno de los supuestos clave en la regresión lineal: la **normalidad de los residuos**. Si los residuos siguen una distribución normal, los puntos en el gráfico Q-Q deben caer aproximadamente a lo largo de una línea recta.
+Los gráficos Q-Q normales son esenciales para verificar uno de los supuestos clave en la regresión lineal: la **normalidad de los residuos**. Si los residuos siguen una distribución normal, los puntos en el gráfico Q-Q deben caer aproximadamente a lo largo de una línea recta. 
 
 
 ```{r, class.source = "fold-hide"}
@@ -811,18 +829,18 @@ ggplot(qq_data, aes(x = teoricos, y = observados)) +
 ```
 
 
-##### Interpretación del gráfico Q-Q Normal:
+##### Interpretación del gráfico Q-Q Normal:  
   
-  * **Si los puntos caen aproximadamente sobre la línea roja diagonal**, indica que los residuos siguen una distribución normal. Esto es lo que idealmente buscas.
-* **Si los puntos se desvían de la línea**, puede indicar una violación del supuesto de normalidad:
-  * **Forma de "S"**: Los residuos pueden tener colas más pesadas o más ligeras de lo esperado (ej. distribución con curtosis).
-* **Curvatura en un extremo o ambos**: Los residuos pueden estar sesgados (skewed) hacia la izquierda o la derecha.
+  * **Si los puntos caen aproximadamente sobre la línea roja diagonal**, indica que los residuos siguen una distribución normal. Esto es lo que idealmente buscas.  
+* **Si los puntos se desvían de la línea**, puede indicar una violación del supuesto de normalidad:  
+  * **Forma de "S"**: Los residuos pueden tener colas más pesadas o más ligeras de lo esperado (ej. distribución con curtosis). 
+* **Curvatura en un extremo o ambos**: Los residuos pueden estar sesgados (skewed) hacia la izquierda o la derecha.  
 
 
 
-#### Residuos Studentizados (Studentized Residuals)
+#### Residuos Studentizados (Studentized Residuals)  
 
-- También conocidos como residuos studentizados externamente (o residuos t). Son una versión más refinada de los residuos estandarizados.  
+- También conocidos como residuos studentizados externamente (o residuos t). Son una versión más refinada de los residuos estandarizados.   
 
 - Cada residuo se divide por una estimación de su error estándar que excluye la observación actual, lo que los hace más apropiados para la detección de outliers, ya que el outlier no influye en la estimación de su propia varianza.
 
@@ -849,14 +867,14 @@ ggplot(qq_data, aes(x = teoricos, y = observados)) +
 
 
 
-#### Shapiro-Wilk normality test  
+#### Shapiro-Wilk normality test   
 
-El **Test de Normalidad de Shapiro-Wilk** es una prueba estadística que se utiliza para determinar si una muestra de datos procede de una población con distribución normal. Es una de las pruebas de normalidad más potentes y ampliamente recomendadas, especialmente para tamaños de muestra pequeños a moderados.  
+El **Test de Normalidad de Shapiro-Wilk** es una prueba estadística que se utiliza para determinar si una muestra de datos procede de una población con distribución normal. Es una de las pruebas de normalidad más potentes y ampliamente recomendadas, especialmente para tamaños de muestra pequeños a moderados.   
 
-Es una prueba estadística que evalúa si los datos provienen de una distribución normal.
+Es una prueba estadística que evalúa si los datos provienen de una distribución normal. 
 
-* **Hipótesis nula (H₀)**: los datos siguen una distribución normal.
-* **Hipótesis alternativa (H₁)**: los datos **no** siguen una distribución normal.
+* **Hipótesis nula (H₀)**: los datos siguen una distribución normal. 
+* **Hipótesis alternativa (H₁)**: los datos **no** siguen una distribución normal. 
 
  
 ```{r}
@@ -876,7 +894,7 @@ plot(modelo_step)
 
 ### Validación cruzada   
 
-  La **validación cruzada** es una técnica estadística esencial utilizada en el aprendizaje automático y la modelización para **evaluar la capacidad de un modelo para generalizar a un conjunto de datos independiente**, es decir, a datos que no se han visto durante el entrenamiento. Su objetivo principal es obtener una estimación más robusta y menos sesgada del rendimiento predictivo del modelo, ayudando a evitar el **sobreajuste (overfitting)**.  
+  La **validación cruzada** es una técnica estadística esencial utilizada en el aprendizaje automático y la modelización para **evaluar la capacidad de un modelo para generalizar a un conjunto de datos independiente**, es decir, a datos que no se han visto durante el entrenamiento. Su objetivo principal es obtener una estimación más robusta y menos sesgada del rendimiento predictivo del modelo, ayudando a evitar el **sobreajuste (overfitting)**.   
 
 Cuando se construye un modelo, y se entrena con un conjunto de datos. Se evalúa el rendimiento del modelo en esos mismos datos de entrenamiento, a menudo se obtendrá una métrica de rendimiento inflada (por ejemplo, un $R^2$ muy alto o un MAE/RMSE muy bajo). Esto se debe a que el modelo ha "memorizado" los datos de entrenamiento, incluyendo el ruido y las particularidades de esa muestra específica. Sin embargo, un modelo sobreajustado no funcionará bien con datos nuevos y reales.
 
@@ -884,16 +902,6 @@ Cuando se construye un modelo, y se entrena con un conjunto de datos. Se evalúa
   
 Aunque hay varias variaciones, las más comunes son:
   
-**Validación Cruzada K-Fold (K-Fold Cross-Validation):**
-  * Es el tipo más popular. El conjunto de datos se divide en $k$ folds. El proceso descrito anteriormente se aplica.
-* **Elección de $k$**: Los valores comunes para $k$ son 5 o 10. Un $k$ más alto (por ejemplo, 10) proporciona una estimación más precisa del rendimiento pero es computacionalmente más costoso. Un $k$ más bajo (por ejemplo, 5) es más rápido pero la estimación puede ser más variable.
-
-**Validación Cruzada de Dejar Uno Fuera (Leave-One-Out Cross-Validation - LOOCV):**
-  * Es un caso especial de K-Fold donde $k$ es igual al número de observaciones ($n$) en el conjunto de datos.
-* En cada iteración, una sola observación se usa como conjunto de validación, y las $n-1$ observaciones restantes se usan para entrenar el modelo.
-* **Ventaja:** Proporciona una estimación casi insesgada del rendimiento.
-* **Desventaja:** Es computacionalmente muy costoso, especialmente para grandes conjuntos de datos, ya que se ajusta el modelo $n$ veces.
-
 ##### Beneficios de la Validación Cruzada:
   
   * **Estimación Robusta del Rendimiento:** Proporciona una métrica de rendimiento más fiable y menos sesgada de cómo se comportará el modelo con datos nuevos.
@@ -901,12 +909,82 @@ Aunque hay varias variaciones, las más comunes son:
 * **Selección de Modelos y Ajuste de Hiperparámetros:** Es fundamental para comparar y seleccionar entre diferentes modelos (ej., regresión lineal vs. árboles de decisión) o para encontrar los mejores **hiperparámetros** para un modelo (ej., la profundidad máxima de un árbol de decisión). Esto se logra a menudo mediante técnicas como la **búsqueda de rejilla (Grid Search)** o la **búsqueda aleatoria (Random Search)** combinadas con validación cruzada.
 
 
+##### Validaciones cruzadas recomendadas para OLSR  
+
+En modelos de **regresión lineal OLS (Ordinary Least Squares Regression)**, la **validación cruzada (cross-validation)** es clave para estimar la capacidad de generalización del modelo.  
+
+###### **Validación Cruzada K-Fold (K-Fold Cross-Validation):**    
+
+  * Es el tipo más popular. El conjunto de datos se divide en $k$ folds. .
+* **Elección de $k$**: Los valores comunes para $k$ son 5 o 10. Un $k$ más alto (por ejemplo, 10) proporciona una estimación más precisa del rendimiento pero es computacionalmente más costoso. Un $k$ más bajo (por ejemplo, 5) es más rápido pero la estimación puede ser más variable.
+
+<p align="center">
+  <img src="../../img/K-Fold (Cross Validation).png" alt="Machine Learning Steps" width="80%">
+</p>
+
+
+```` 
+```r
+trainControl(method = "cv", number = 10)
+```
+````
+
+* **Más usada** y recomendada para regresión lineal.
+* Divide los datos en *k* grupos (folds), entrena el modelo en *k-1* y valida en el restante, repitiendo *k* veces.
+* `k = 10` es un valor estándar que ofrece **buen balance entre sesgo y varianza**.
+* Muy útil para evaluar errores como RMSE o MAE.
+
+
+###### **Validación Cruzada de Dejar Uno Fuera (Leave-One-Out Cross-Validation - LOOCV):**  
+
+  * Es un caso especial de K-Fold donde $k$ es igual al número de observaciones ($n$) en el conjunto de datos.
+* En cada iteración, una sola observación se usa como conjunto de validación, y las $n-1$ observaciones restantes se usan para entrenar el modelo.
+* **Ventaja:** Proporciona una estimación casi insesgada del rendimiento.
+* **Desventaja:** Es computacionalmente muy costoso, especialmente para grandes conjuntos de datos, ya que se ajusta el modelo $n$ veces. 
+
+<p align="center">
+  <img src="../../img/LOOCV (Cross Validation).png" alt="Machine Learning Steps" width="80%">
+</p>
+
+```` 
+```r
+trainControl(method = "LOOCV")
+```
+```` 
+
+* Cada observación se deja fuera una vez (es como `k = n`).
+* Proporciona una evaluación **menos sesgada**, pero puede ser **computacionalmente costosa**.
+* En modelos lineales como OLS, es factible y a veces preferido si tienes pocos datos.
+
+###### **Validación Cruzada de Repeated k-fold cross-validation**    
+
+La **validación cruzada repetida k-fold** (`Repeated k-Fold Cross-Validation`) es una extensión del método k-fold cross-validation y se utiliza para obtener una **estimación más estable** y **confiable del desempeño de un modelo**, especialmente cuando el conjunto de datos es pequeño o tiene mucha variabilidad.
+
+  
+<p align="center">
+  <img src="../../img/Repeated k-fold cross-validation.png" alt="Machine Learning Steps" width="50%">
+</p>
+
+```` 
+```r
+trainControl(method = "repeatedcv", number = 10, repeats = 5)
+```
+```` 
+
+* Repite el proceso de k-fold varias veces con diferentes particiones aleatorias.
+* Ofrece una **estimación más estable** del error de generalización.
+* Útil si los datos tienen mucha variabilidad o ruido.
+
 ```{r, eval = FALSE}
-# 6. Validación cruzada (opcional)
+# 6. Validación cruzada 
 control <- trainControl(method = "cv", number = 10)
+
 modelo_cv <- train(mpg ~ ., data = mtcars, method = "lm", trControl = control)
 print(modelo_cv)
+```
 
+
+```{r, eval = FALSE}
 # 7. Usar el modelo para predecir nuevos datos (simulación)
 nuevo_auto <- data.frame(
   cyl = 6,
