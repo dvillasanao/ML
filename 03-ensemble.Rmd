@@ -236,27 +236,296 @@ tabla_boosting %>%
 ## Bootstrapped Aggregation (Bagging)  {-}   
 
 ```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
 
+aplica <- c(
+  "✅ Supervisado",
+  "✅ Categórica o Continua",
+  "✅ Numéricas y categóricas",
+  "✅ Captura relaciones no lineales al promediar múltiples modelos",
+  "❌ No requiere",
+  "✅ Deseable, pero no obligatorio",
+  "❌ No se asume homoscedasticidad",
+  "✅ Robusto (cada bootstrap reduce el impacto de outliers)",
+  "✅ Robusto (la agregación mitiga colinealidad)",
+  "⚠️ Moderada (difícil interpretar conjunto de modelos)",
+  "⚠️ Moderado (depende del número de árboles y tamaño del dataset)",
+  "✅ Recomendable usar k-fold",
+  "❌ No es ideal con muy pocos datos o si los base learners son demasiado simples"
+)
+
+detalles <- c(
+  "Ensamble supervisado que ajusta varios modelos (usualmente árboles) sobre muestras bootstrap y promedia predicciones.",
+  "En clasificación predice la clase más votada; en regresión, promedia los valores predichos.",
+  "Acepta todo tipo de variables; las categóricas deben codificarse adecuadamente.",
+  "Al promediar múltiples modelos, reduce varianza y captura no linealidades implícitamente.",
+  "No impone supuestos sobre la distribución de errores.",
+  "Los datos deben ser independientes; funciona peor en datos con fuerte autocorrelación sin ajuste.",
+  "No requiere varianza constante puesto que se basa en agregación de múltiples predicciones.",
+  "Cada muestra bootstrap y árbol es menos sensible a valores extremos; la agregación aumenta robustez.",
+  "La selección aleatoria de subconjuntos y bootstrap reduce el efecto de predictores correlacionados.",
+  "El modelo final es un conjunto de muchos árboles, lo que dificulta su explicación directa.",
+  "Entrenar cientos de árboles toma tiempo, pero es paralelizable; la predicción es relativamente rápida.",
+  "CV ayuda a ajustar parámetros como número de árboles y profundidad máxima de cada árbol.",
+  "Con pocos ejemplos, los bootstrap no aportan diversidad suficiente; si los base learners son muy simples, no capturan bien patrones complejos."
+)
+
+tabla_bagging <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_bagging %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir bagging",
+             subtitle = "Bootstrapped Aggregation (Bagging) ") %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
 ```
 
 ## AdaBoost  {-}    
 
 ```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
 
+aplica <- c(
+  "✅ Supervisado",
+  "✅ Categórica (clasificación) o Continua (regresión adaptada)",
+  "✅ Numéricas y categóricas (requiere codificación para algunas implementaciones)",
+  "✅ Captura no linealidades e interacciones mediante reponderación iterativa",
+  "❌ No requiere supuestos de normalidad en los residuos",
+  "✅ Deseable, aunque no obligatorio (mejor si instancias independientes)",
+  "❌ No asume homoscedasticidad",
+  "⚠️ Moderadamente (outliers pueden obtener demasiado peso durante iteraciones)",
+  "✅ Robusto (reduce colinealidad al iterar sobre subconjuntos ponderados)",
+  "⚠️ Baja (modelo resultante es especie de ’caja negra’)",
+  "⚠️ Lento con muchas iteraciones o datos grandes",
+  "✅ Recomendable para ajustar tasa de aprendizaje y número de iteraciones",
+  "❌ No es ideal con datos muy ruidosos o clases extremadamente desbalanceadas sin técnicas adicionales"
+)
+
+detalles <- c(
+  "Ensamble supervisado que combina varios modelos débiles (ej. árboles simples) ajustando pesos según errores anteriores.",
+  "En clasificación ajusta pesos para mal clasificados; en regresión, adapta predicción por minimización de pérdida.",
+  "Puede trabajar con datos mixtos; para variables categóricas suele usar codificación de dummies.",
+  "Cada iteración repondera observaciones difíciles, enfocándose en patrones que previos modelos no capturaron.",
+  "No impone distribución de errores; se basa en función de pérdida, no en supuestos paramétricos.",
+  "Funciona mejor si cada observación es independiente; sensible a dependencias temporales si no se corrige.",
+  "No requiere varianza constante, ya que funciona sobre el error iterativo en lugar de residuos tradicionales.",
+  "Outliers difíciles de clasificar tienden a recibir mayor peso, lo que puede sesgar el ensamble si no se controla el learning rate.",
+  "La reponderación de muestras atenúa el efecto de predictores correlacionados, pues cada iteración puede focalizarse en subconjuntos distintos.",
+  "Es complejo desentrañar la contribución de cada modelo débil; se pueden usar métricas de importancia o SHAP para interpretación.",
+  "Cada iteración entrena un modelo débil; muchas iteraciones o modelos complejos pueden ralentizar el entrenamiento.",
+  "K-fold o repeated CV ayudan a elegir tasa de aprendizaje (learning rate) y número de iteraciones (trials).",
+  "No conviene con instancias altamente ruidosas: se puede sobreajustar rápidamente si la tasa de aprendizaje es alta o no se regula iteraciones."
+)
+
+tabla_adaboost <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)  
+
+tabla_adaboost %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir adaboost",
+             subtitle = "AdaBoost") %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
 ```
 
 
-## Stacked Generalization (Blending)  {-}  
+## Stacked Generlizaation (Blending)  {-}  
 
 ```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
 
+aplica <- c(
+  "✅ Supervisado",
+  "✅ Categórica o Continua (depende de los modelos base)",
+  "✅ Numéricas y/o categóricas (codificación según modelos base)",
+  "✅ Captura relaciones complejas vía combinación de modelos base",
+  "❌ No exige supuestos de normalidad en residuos",
+  "✅ Deseable, pero no obligatorio (mejor si observaciones independientes)",
+  "❌ No se asume homoscedasticidad",
+  "⚠️ Moderadamente (outliers afectan modelos base individuales)",
+  "⚠️ Puede verse afectado (depende de base learners y correlated features)",
+  "⚠️ Baja (modelo meta difícil de interpretar directamente)",
+  "⚠️ Lento en entrenamiento y predicción, según número de base learners",
+  "✅ Esencial (usar CV anidada para entrenar meta-modelo)",
+  "❌ Si datos muy escasos o muy ruidosos, riesgo de sobreajuste"
+)
+
+detalles <- c(
+  "Ensamble supervisado que combina varias predicciones (base learners) mediante un modelo meta.",
+  "El meta-modelo acepta la salida de modelos base; puede predecir clases o valores continuos.",
+  "Usa predictores originales para los base learners; algunos requieren dummies, otros no.",
+  "Aprende patrones no lineales e interacciones complejas a través de múltiples capas.",
+  "No impone distribución normal: cada base learner tiene sus propios supuestos.",
+  "Ideal si cada muestra es independiente; sensibles a dependencias en validaciones cruzadas.",
+  "No requiere varianza constante, ya que se basa en agregación de predicciones.",
+  "Modelos base (p. ej. ARBOTS, SVM) pueden verse influenciados por valores extremos;",
+  "Modelos base diversificados reducen colinealidad, pero meta-modelo puede verse afectado.",
+  "Difícil atribuir importancia directa; se pueden usar técnicas como SHAP para interpretación.",
+  "Entrenamiento de múltiples base learners y meta-modelo incrementa tiempo; predicción también más lenta.",
+  "Usar validación cruzada anidada: inner folds para entrenar base learners y stacking, outer folds para evaluar.",
+  "No recomendable si hay muy pocos datos (stacking requiere dividir en folds) o si los base learners no aportan diversidad."
+)
+
+tabla_stacking <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+
+tabla_stacking %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir blending",
+             subtitle = "Stacked Generlizaation (Blending)")  %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
 ```
 
 
 ## Gradient Boosted Regression Trees (GBRT)  {-}  
 
 ```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
 
+aplica <- c(
+  "✅ Supervisado",
+  "✅ Continua (regresión)",
+  "✅ Numéricas y categóricas (requiere codificación para ciertas implementaciones)",
+  "✅ Captura no linealidades e interacciones complejas mediante boosting de árboles",
+  "❌ No requiere supuestos de normalidad en residuos",
+  "✅ Deseable, aunque no obligatorio (mejor si instancias independientes)",
+  "❌ No asume homoscedasticidad",
+  "⚠️ Moderadamente (outliers pueden influir en árboles individuales)",
+  "✅ Robusto (los árboles reducen el impacto de colinealidad localmente)",
+  "⚠️ Baja (modelo en su conjunto es “caja negra”)",
+  "⚠️ Lento con muchos árboles o datos extensos",
+  "✅ Recomendable usar k-fold o repeated CV para ajuste de hiperparámetros",
+  "❌ No es ideal si hay muy pocos datos o ruido excesivo"
+)
+
+detalles <- c(
+  "Ensamble de árboles de regresión secuenciales donde cada árbol corrige errores del anterior mediante gradiente.",
+  "Predice valores continuos sumando las predicciones ponderadas de múltiples árboles débiles.",
+  "Funciona con variables mixtas; las categóricas suelen transformarse en dummies.",
+  "Cada nuevo árbol se enfoca en los residuos del modelo anterior, capturando patrones complejos.",
+  "No impone distribución normal porque optimiza una función de pérdida (por ejemplo, MSE) directamente.",
+  "Mejor si las observaciones no están correlacionadas en el tiempo; ajustar para series si es necesario.",
+  "No requiere varianza constante puesto que se basa en árboles, no en un modelo paramétrico de errores.",
+  "Los valores extremos pueden provocar ajustes excesivos en árboles individuales; usar tasa de aprendizaje baja ayuda a mitigar.",
+  "Los árboles reducen el impacto de variables correlacionadas, aunque múltiples iteraciones pueden complicar interpretaciones.",
+  "Difícil de interpretar directamente; se puede usar importancia de variables o herramientas como SHAP para explicación.",
+  "Cada iteración entrena un árbol nuevo; muchos árboles o gran profundidad de árbol incrementan el tiempo de entrenamiento.",
+  "CV ayuda a determinar parámetros como tasa de aprendizaje (`learning_rate`), número de árboles (`n.trees`) y profundidad máxima (`max_depth`).",
+  "No es adecuado cuando el dataset es muy pequeño o extremadamente ruidoso, ya que puede sobreajustar fácilmente."
+)
+
+tabla_gbrt <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_gbrt %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir GBRT",
+             subtitle = "Gradient Boosted Regression Trees (GBRT)")  %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
 ```
 
 
@@ -264,12 +533,146 @@ tabla_boosting %>%
 ## XGBoost  {-}   
 
 ```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
 
+aplica <- c(
+  "✅ Supervisado",
+  "✅ Continua (regresión) o Categórica (clasificación)",
+  "✅ Numéricas y categóricas (requiere codificación para dummies o label encoding)",
+  "✅ Captura no linealidades e interacciones complejas vía árboles en boosting",
+  "❌ No requiere supuestos de normalidad",
+  "✅ Deseable, aunque no obligatorio (mejor si instancias independientes)",
+  "❌ No asume homoscedasticidad",
+  "⚠️ Moderadamente (puede sobreajustar a outliers si no regula)",
+  "✅ Robusto (reduce efecto de colinealidad al usar árboles secuenciales)",
+  "⚠️ Baja (modelo complejo y tipo ’caja negra’)",
+  "✅ Muy rápido y escalable (implementación optimizada, paralelizable)",
+  "✅ Recomendable usar k-fold o repeated CV para ajustar hiperparámetros",
+  "❌ No es ideal con datos muy pequeños, ruido alto o target extremadamente desbalanceado sin ajuste"
+)
+
+detalles <- c(
+  "Ensamble supervisado que combina múltiples árboles débiles optimizados con gradiente descendente acelerado.",
+  "En regresión predice valores continuos; en clasificación combina probabilidades o clases mediante log-loss o multiclass objectives.",
+  "Acepta variables mixtas; las categóricas deben convertirse a formatos compatibles (p. ej. factor numerico, one-hot encoding).",
+  "Cada iteración ajusta un nuevo árbol enfocándose en los residuos del modelo anterior, capturando patrones complejos.",
+  "No impone distribución paramétrica de errores, ya que optimiza funciones de pérdida directamente.",
+  "Funciona mejor si cada muestra es independiente; sensible a series de tiempo sin preparación apropiada.",
+  "No requiere varianza constante, porque basa la optimización en gradientes del loss, no en supuestos de error.",
+  "Los outliers difíciles de predecir pueden recibir demasiado peso en iteraciones sucesivas; usar _learning_rate_ bajo y _max_depth_ pequeño para regular.",
+  "Los árboles reducen el impacto de variables altamente correlacionadas, aunque múltiples iteraciones pueden aún privilegiar características correlacionadas.",
+  "Difícil interpretar directamente cada árbol; se utilizan métricas de importancia, SHAP values o partial dependence plots para explicación.",
+  "Implementación en C++ altamente optimizada (CPU/GPU), permite entrenamiento muy rápido incluso con millones de filas.",
+  "Validación cruzada anidada o simple ayuda a elegir hiperparámetros como `eta` (learning_rate), `nrounds` (número de árboles), `max_depth`, `subsample`, `colsample_bytree`.",
+  "No conviene con datasets muy pequeños, ya que puede sobreajustar; tampoco si el ruido es muy alto y no se regula bien la complejidad."
+)
+
+tabla_xgboost <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_xgboost %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir xgboost",
+             subtitle = "XGBoost")  %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
 ```
 
 ## LightGBM  {-}    
 
 ```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
 
+aplica <- c(
+  "✅ Supervisado",
+  "✅ Continua (regresión) o Categórica (clasificación)",
+  "✅ Numéricas y categóricas (requiere codificación apropiada)",
+  "✅ Captura no linealidades e interacciones mediante árboles en boosting",
+  "❌ No requiere supuestos de normalidad",
+  "✅ Deseable, aunque no obligatorio (mejor si instancias independientes)",
+  "❌ No asume homoscedasticidad",
+  "⚠️ Moderadamente (los outliers pueden influir en pesos de hojas)",
+  "✅ Robusto (usa histogram-based split que atenúa colinealidad)",
+  "⚠️ Baja (modelo complejo tipo ‘caja negra’)",
+  "✅ Muy rápido y escalable (optimized gradient-based)",
+  "✅ Recomendable usar k-fold o repeated CV para ajustar hiperparámetros",
+  "❌ No conviene con datos muy pequeños o muy ruidosos sin regularización"
+)
+
+detalles <- c(
+  "Ensamble supervisado que entrenan árboles de decisión usando histogram-based gradient boosting.",
+  "En regresión predice valores continuos; en clasificación maximiza log-loss u otras funciones objetivo.",
+  "Acepta variables mixtas; las categóricas deben convertirse a formato numérico o usar encoding interno.",
+  "Cada iteración ajusta un árbol enfocándose en los residuos del anterior, capturando patrones complejos.",
+  "No impone distribución paramétrica de errores; optimiza la función de pérdida directamente.",
+  "Funciona mejor si las muestras son independientes; sensible a series de tiempo sin preparación adecuada.",
+  "No requiere varianza constante, dado que es un método basado en árbol, no en supuestos de error.",
+  "Los valores extremos pueden afectar el cálculo de gradientes y splits; usar regularización y parámetros de manejo de outliers.",
+  "La división basada en histogramas reduce el impacto de predictores altamente correlacionados.",
+  "Difícil interpretar cada árbol; se utilizan métricas de importancia y herramientas como SHAP para explicación.",
+  "Implementación en C++ altamente optimizada que permite entrenamiento muy rápido incluso con grandes volúmenes de datos.",
+  "CV ayuda a elegir parámetros como `learning_rate`, `num_leaves`, `max_depth`, `feature_fraction`, `bagging_fraction`.",
+  "No es ideal si el dataset es muy pequeño, pues el boosting puede sobreajustar; tampoco con mucho ruido sin regularización adecuada."
+)
+
+tabla_lightgbm <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_lightgbm %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir LightGBM",
+             subtitle = "LightGBM")  %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
 ```
 
