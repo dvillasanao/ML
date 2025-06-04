@@ -10,3 +10,17 @@
 **Limitaciones:** Sobreajuste en árboles simples; menor desempeño en datos muy ruidosos sin ensambles.
 
 ---
+
+Classification and Regression Tree (CART) 
+
+Árbol de Clasificación y Regresión (CART): CART es el acrónimo del término árbol de decisión. En general, la implementación de CART es muy similar a la implementación del C4.5 mencionado anteriormente. La única diferencia radica en que CART construye árboles basándose en un criterio de división numérica aplicado recursivamente a los datos, mientras que el C4.5 incluye el paso intermedio de construir conjuntos de reglas.  
+
+Dicotomizador Iterativo 3 (ID3): construye un árbol descendente. Comienza en la raíz y selecciona un atributo que se probará en cada nodo. Cada atributo se evalúa mediante métodos estadísticos para detectar cuál divide mejor el conjunto de datos. El mejor atributo se convierte en la raíz, y sus valores se ramifican. El proceso continúa con el resto de los atributos. Una vez seleccionado un atributo, no es posible retroceder.
+
+C4.5 y C5.0 (diferentes versiones de un enfoque potente): C4.5, la siguiente iteración de Quinlan, es una versión más reciente de ID3. Las nuevas características (en comparación con ID3) son: (i) acepta características continuas y discretas; (ii) maneja puntos de datos incompletos; (iii) resuelve el problema del sobreajuste mediante una técnica ascendente, generalmente conocida como "poda"; y (iv) se pueden aplicar diferentes ponderaciones a las características que componen los datos de entrenamiento. C5.0, la iteración más reciente de Quinlan. Esta implementación está protegida por patente y, probablemente por ello, rara vez se implementa (fuera de paquetes de software comerciales).
+
+Detección Automática de Interacción Chi-cuadrado (CHAID): algoritmo utilizado para descubrir relaciones entre una variable de respuesta categórica y otras variables predictoras categóricas. Crea todas las tabulaciones cruzadas posibles para cada predictor categórico hasta obtener el mejor resultado y no se pueden realizar más divisiones. CHAID construye un modelo predictivo, o árbol, para determinar la mejor manera de combinar las variables y explicar el resultado de la variable dependiente dada. En el análisis CHAID, se pueden utilizar datos nominales, ordinales y continuos, donde los predictores continuos se dividen en categorías con un número aproximadamente igual de observaciones. Resulta útil para buscar patrones en conjuntos de datos con muchas variables categóricas y es una forma práctica de resumir los datos, ya que las relaciones se visualizan fácilmente.
+
+Árbol de decisión : un modelo de aprendizaje automático que consta de un árbol de decisión de un nivel; un árbol con un nodo interno (la raíz) conectado a los nodos terminales (sus hojas). Este modelo realiza una predicción basándose en el valor de una sola característica de entrada.
+
+M5 : M5 combina un árbol de decisión convencional con la posibilidad de usar funciones de regresión lineal en los nodos. Además de la precisión, admite tareas con dimensiones muy altas, con hasta cientos de atributos. El árbol de modelo M5 es un aprendiz de árbol de decisión para tareas de regresión, lo que significa que se utiliza para predecir valores de la variable de respuesta numérica Y. Si bien el árbol M5 utiliza el mismo enfoque que el árbol CART para elegir el error cuadrático medio como función de impureza, no asigna una constante al nodo hoja, sino que se ajusta a un modelo de regresión lineal multivariante.
