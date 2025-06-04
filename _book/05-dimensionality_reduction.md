@@ -10,3 +10,28 @@
 **Limitaciones:** Puede perder interpretabilidad; no siempre mejora modelos.
 
 ---
+
+## Principal Component Analysis (PCA)  
+
+## Partial Least Squares Regression (PLSR)  
+
+## Sammon Mapping  
+
+## Multidimensional Scaling (MDS)  
+
+## Projection Pursuit  
+
+## Principal Component Regression  
+
+## Partial Least Squares Discriminant Analysis   
+
+## Mixture Discriminant Analysis (MDA)  
+
+## Quadratic Discriminant Analysis  
+
+## Regularized Discriminant Analysis (RDA)  
+
+## Flexible Discriminant Analysis (FDA)  
+
+## Linear Discriminant Analysis (LDA)  
+

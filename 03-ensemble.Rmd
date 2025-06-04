@@ -10,3 +10,22 @@
 **Limitaciones:** Difícil de interpretar; más costosos computacionalmente.
 
 ---
+
+## Random Forest
+
+## Gradient Boosting Machines (GBM)
+
+## Boosting
+
+## Bootstrapped Aggregation (Bagging)  
+
+## AdaBoost  
+
+## Stacked Generalization (Blending)   
+
+## Gradient Boosted Regression Trees (GBRT)   
+
+## XGBoost  
+
+## LightGBM    
+

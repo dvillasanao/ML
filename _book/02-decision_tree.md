@@ -10,3 +10,20 @@
 **Limitaciones:** Sobreajuste en árboles simples; menor desempeño en datos muy ruidosos sin ensambles.
 
 ---
+
+## Classification and Regression Tree (CART) 
+
+## Iterative Dichotomiser 3 (ID3)
+
+## C4.5
+
+## C5.0
+
+## Chi-squared Automatic Interaction Detection (CHAID) 
+
+## Decision Stump
+
+## Conditional Decision Trees
+
+## M5
+

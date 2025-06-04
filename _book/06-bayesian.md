@@ -10,3 +10,17 @@
 **Limitaciones:** Supone independencia de variables (no siempre cierto).
 
 ---
+
+## Naive Bayes 
+
+## Averaged One - Dependence Estimators (AODE)  
+
+## Bayesian Belief Network (BBN) 
+
+## Gaussian Naive Bayes   
+
+## Multinomial Naive Bayes   
+
+## Bayesian Network (BN)  
+
+

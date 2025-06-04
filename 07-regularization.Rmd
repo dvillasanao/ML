@@ -10,3 +10,12 @@
 **Limitaciones:** Puede eliminar variables útiles si se usa en exceso.
 
 ---
+
+## Ridge Regression  
+
+## Least Absolute Shrinkage and Selection Operator (LASSO)  
+
+## Elastic Net  
+
+## Least Angle Regression (LARS)  
+

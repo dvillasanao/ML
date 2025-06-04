@@ -11,15 +11,93 @@
 
 ## Ordinary Least Squares Regression (`OLSR`) {-} 
 
-**Regresión de Mínimos Cuadrados Ordinarios (OLSR)**: un método de regresión lineal para estimar los parámetros desconocidos mediante la creación de un modelo que minimizará la suma de los errores cuadrados entre los datos observados y los predichos (valores observados y valores estimados).  
+**Regresión de Mínimos Cuadrados Ordinarios (OLSR)**: un método de regresión lineal para estimar los parámetros desconocidos mediante la creación de un modelo que minimizará la suma de los errores cuadrados entre los datos observados y los predichos (valores observados y valores estimados).   
+
+```{r, echo = FALSE}
+# Datos de la tabla
+criterios <- c(
+  "🔍 Tipo de modelo",
+  "🎯 Variable respuesta",
+  "🔢 Variables predictoras",
+  "📈 Relación entre variables",
+  "🧪 Normalidad de residuos",
+  "🔁 Independencia de errores",
+  "⚖️ Homoscedasticidad",
+  "❗ Sensible a outliers",
+  "🔗 Multicolinealidad entre predictores",
+  "🧠 Interpretabilidad",
+  "🚀 Velocidad y eficiencia",
+  "🧪 Validación cruzada",
+  "❌ No funciona bien si..."
+)
+
+aplica <- c(
+  "Supervisado",
+  "Numérica continua",
+  "Numéricas y/o categóricas",
+  "Lineal (supuesto clave)",
+  "Deseable",
+  "Necesaria",
+  "Necesaria",
+  "Sí",
+  "Problema común",
+  "Alta",
+  "Muy alta",
+  "Compatible",
+  "Relaciones no lineales, outliers severos, colinealidad"
+)
+
+detalles <- c(
+  "Se entrena con datos X → y",
+  "Ej. mpg, precio, ingresos",
+  "Categorías convertidas a dummies",
+  "Se asume una relación lineal entre X e Y",
+  "Importante para intervalos de confianza válidos",
+  "Errores deben ser independientes",
+  "Varianza de errores debe ser constante",
+  "Outliers pueden influir mucho en el modelo",
+  "Usar VIF para detectar problemas",
+  "Modelo fácil de explicar",
+  "Rápido incluso con datos grandes",
+  "Ayuda a prevenir overfitting",
+  "Evitar si no hay linealidad o hay muchos outliers"
+)
+
+# Crear y mostrar tabla
+tabla_olsr <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+require(gt)
+
+tabla_olsr %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir OLSR") %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
+```
+
 
 ## Linear Regression {-} 
 
-**Regresión lineal** : se utiliza para estimar valores reales (costo de las casas, número de visitas, ventas totales, etc.) basados en variables continuas.
+**Regresión lineal** : se utiliza para estimar valores reales (costo de las casas, número de visitas, ventas totales, etc.) basados en variables continuas.  
+
 
 ## Logistic Regression {-} 
 
-**Regresión logística** : se utiliza para estimar valores discretos (valores binarios como 0/1, sí/no, verdadero/falso) basados en un conjunto dado de variables independientes.
+**Regresión logística** : se utiliza para estimar valores discretos (valores binarios como 0/1, sí/no, verdadero/falso) basados en un conjunto dado de variables independientes. 
+
+
 
 ## Stepwise Regression {-} 
 

@@ -10,3 +10,14 @@
 **Limitaciones:** Requiere elegir número de grupos (excepto DBSCAN); puede ser sensible a escala.
 
 ---
+
+## k-Means 
+
+## k-Medians  
+
+## Expectation Maximization   
+
+## Hierarchical Clustering    
+
+## DBSCAN   
+

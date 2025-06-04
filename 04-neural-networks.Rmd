@@ -10,3 +10,22 @@
 **Limitaciones:** Requieren mucha data y poder computacional. Menor interpretabilidad.
 
 ---
+
+
+## Radial Basis Function Network (RBFN)   
+
+## Perceptron  
+
+## Back - Propagation   
+
+## Hopfield Network  
+
+## MLP  
+
+## CNN  
+
+## RNN  
+
+## Transformers   
+
+

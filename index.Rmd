@@ -18,19 +18,7 @@ csl: chicago-fullnote-bibliography.csl
 # Machine Learning {-}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-## 📌 Cuadro
+## 📌 Cuadro {-}
 
 ```{r, echo = FALSE}
 algoritmos_ml <- data.frame(
