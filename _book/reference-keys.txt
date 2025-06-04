@@ -1,4 +1,5 @@
 classification-and-regression-tree-cart
+support-vector-machines-svms
 iterative-dichotomiser-3-id3
 c4.5
 c5.0
@@ -42,7 +43,7 @@ gaussian-naive-bayes
 multinomial-naive-bayes
 bayesian-network-bn
 ridge-regression
-least-absolute-shrinkage-and-selection-operator-lasso-1
+least-absolute-shrinkage-and-selection-operator-lasso
 elastic-net
 least-angle-regression-lars
 k---nearest-neighbour-knn

@@ -13,6 +13,88 @@
 
 ## Classification and Regression Tree (CART) 
 
+```{r, echo =FALSE}
+
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica <- c(
+  "✅ Supervisado",
+  "✅ Categórica o Continua",
+  "✅ Numéricas y Categóricas",
+  "✅ No lineal y con interacciones",
+  "❌ No requiere",
+  "⚠️ Puede verse afectado",
+  "⚠️ No necesario pero deseable",
+  "⚠️ Sí, en puntos de corte",
+  "✅ No se ve afectado",
+  "✅ Alta (gráfico del árbol)",
+  "✅ Rápido en datasets medianos",
+  "✅ Muy usado para poda y ajuste",
+  "❌ Muy profundo (overfitting), datos muy ruidosos"
+)
+
+detalles <- c(
+  "Algoritmo basado en divisiones binarias",
+  "Puede predecir clases o valores continuos",
+  "Acepta todo tipo de variables predictoras",
+  "Captura relaciones complejas y no lineales",
+  "No requiere distribución normal",
+  "Idealmente los errores deben ser independientes",
+  "La varianza constante mejora resultados",
+  "Puede generar divisiones extremas por valores atípicos",
+  "No necesita preocuparse por colinealidad",
+  "Fácil de entender, especialmente con árboles pequeños",
+  "Escalable pero no óptimo en grandes volúmenes sin poda",
+  "Usa poda y validación cruzada para evitar sobreajuste",
+  "Tiende al sobreajuste si no se poda o se regulariza"
+)
+
+tabla_cart <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)  
+
+require(gt) 
+
+tabla_cart %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir CART",
+             subtitle = "Classification and Regression Tree (CART)") %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
+```
+
+
+## Support Vector Machines (SVMs)  
+
+```{r, echo = FALSE}
+
+```
+
+
 ## Iterative Dichotomiser 3 (ID3)
 
 ## C4.5

@@ -76,40 +76,138 @@
 <h2>
 <span class="header-section-number">0.1</span> Classification and Regression Tree (CART)<a class="anchor" aria-label="anchor" href="#classification-and-regression-tree-cart"><i class="fas fa-link"></i></a>
 </h2>
+<div id="fydjbgmhyo" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+  
+  <div class="inline-table"><table class="gt_table" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: 'Century Gothic'; display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 10px; font-weight: normal; font-style: normal; background-color: #FFFFFF; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; table-layout: fixed; width: 0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false" width="0" bgcolor="#FFFFFF">
+<colgroup>
+<col style="width:200px;">
+<col style="width:200px;">
+<col style="width:500px;">
+</colgroup>
+<thead style="border-style: none;">
+<tr class="gt_heading" style="border-style: none; background-color: #FFFFFF; text-align: center; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3;" bgcolor="#FFFFFF" align="center">
+<td colspan="3" class="gt_heading gt_title gt_font_normal" style="border-style: none; color: #333333; font-size: 14px; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; border-bottom-width: 0; background-color: #FFFFFF; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; text-align: left; font-weight: bold;" align="left" bgcolor="#FFFFFF">Guía rápida para elegir CART</td>
+    </tr>
+<tr class="gt_heading" style="border-style: none; background-color: #FFFFFF; text-align: center; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3;" bgcolor="#FFFFFF" align="center">
+<td colspan="3" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border" style="border-style: none; color: #333333; font-size: 12px; padding-top: 3px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; border-top-color: #FFFFFF; border-top-width: 0; background-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; font-weight: normal; text-align: left;" align="left" bgcolor="#FFFFFF">Classification and Regression Tree (CART)</td>
+    </tr>
+<tr class="gt_col_headings" style="border-style: none; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3;">
+<th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Criterio" style="border-style: none; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 6px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; text-align: left;" bgcolor="#FFFFFF" valign="bottom" align="left">Criterio</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Aplica" style="border-style: none; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 6px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; text-align: left;" bgcolor="#FFFFFF" valign="bottom" align="left">Aplica</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Detalles" style="border-style: none; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 6px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; text-align: left;" bgcolor="#FFFFFF" valign="bottom" align="left">Detalles</th>
+    </tr>
+</thead>
+<tbody class="gt_table_body" style="border-style: none; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3;">
+<tr style="border-style: none;">
+<td headers="Criterio" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Tipo de modelo</td>
+<td headers="Aplica" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">✅ Supervisado</td>
+<td headers="Detalles" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Algoritmo basado en divisiones binarias</td>
+</tr>
+<tr style="border-style: none;">
+<td headers="Criterio" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Variable respuesta</td>
+<td headers="Aplica" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">✅ Categórica o Continua</td>
+<td headers="Detalles" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Puede predecir clases o valores continuos</td>
+</tr>
+<tr style="border-style: none;">
+<td headers="Criterio" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Variables predictoras</td>
+<td headers="Aplica" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">✅ Numéricas y Categóricas</td>
+<td headers="Detalles" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Acepta todo tipo de variables predictoras</td>
+</tr>
+<tr style="border-style: none;">
+<td headers="Criterio" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Relación entre variables</td>
+<td headers="Aplica" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">✅ No lineal y con interacciones</td>
+<td headers="Detalles" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Captura relaciones complejas y no lineales</td>
+</tr>
+<tr style="border-style: none;">
+<td headers="Criterio" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Normalidad de residuos</td>
+<td headers="Aplica" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">❌ No requiere</td>
+<td headers="Detalles" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">No requiere distribución normal</td>
+</tr>
+<tr style="border-style: none;">
+<td headers="Criterio" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Independencia de errores</td>
+<td headers="Aplica" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">⚠️ Puede verse afectado</td>
+<td headers="Detalles" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Idealmente los errores deben ser independientes</td>
+</tr>
+<tr style="border-style: none;">
+<td headers="Criterio" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Homoscedasticidad</td>
+<td headers="Aplica" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">⚠️ No necesario pero deseable</td>
+<td headers="Detalles" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">La varianza constante mejora resultados</td>
+</tr>
+<tr style="border-style: none;">
+<td headers="Criterio" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Sensible a outliers</td>
+<td headers="Aplica" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">⚠️ Sí, en puntos de corte</td>
+<td headers="Detalles" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Puede generar divisiones extremas por valores atípicos</td>
+</tr>
+<tr style="border-style: none;">
+<td headers="Criterio" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Multicolinealidad entre predictores</td>
+<td headers="Aplica" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">✅ No se ve afectado</td>
+<td headers="Detalles" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">No necesita preocuparse por colinealidad</td>
+</tr>
+<tr style="border-style: none;">
+<td headers="Criterio" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Interpretabilidad</td>
+<td headers="Aplica" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">✅ Alta (gráfico del árbol)</td>
+<td headers="Detalles" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Fácil de entender, especialmente con árboles pequeños</td>
+</tr>
+<tr style="border-style: none;">
+<td headers="Criterio" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Velocidad y eficiencia</td>
+<td headers="Aplica" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">✅ Rápido en datasets medianos</td>
+<td headers="Detalles" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Escalable pero no óptimo en grandes volúmenes sin poda</td>
+</tr>
+<tr style="border-style: none;">
+<td headers="Criterio" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Validación cruzada</td>
+<td headers="Aplica" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">✅ Muy usado para poda y ajuste</td>
+<td headers="Detalles" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Usa poda y validación cruzada para evitar sobreajuste</td>
+</tr>
+<tr style="border-style: none;">
+<td headers="Criterio" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">No funciona bien si...</td>
+<td headers="Aplica" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">❌ Muy profundo (overfitting), datos muy ruidosos</td>
+<td headers="Detalles" class="gt_row gt_left" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Tiende al sobreajuste si no se poda o se regulariza</td>
+</tr>
+</tbody>
+<tfoot class="gt_footnotes" style="border-style: none; color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3;" bgcolor="#FFFFFF"><tr style="border-style: none;">
+<td class="gt_footnote" colspan="3" style="border-style: none; margin: 0px; font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px;"> Fuente: Elaboración propia</td>
+    </tr></tfoot>
+</table></div>
 </div>
-<div id="iterative-dichotomiser-3-id3" class="section level2" number="0.2">
+</div>
+<div id="support-vector-machines-svms" class="section level2" number="0.2">
 <h2>
-<span class="header-section-number">0.2</span> Iterative Dichotomiser 3 (ID3)<a class="anchor" aria-label="anchor" href="#iterative-dichotomiser-3-id3"><i class="fas fa-link"></i></a>
+<span class="header-section-number">0.2</span> Support Vector Machines (SVMs)<a class="anchor" aria-label="anchor" href="#support-vector-machines-svms"><i class="fas fa-link"></i></a>
 </h2>
 </div>
-<div id="c4.5" class="section level2" number="0.3">
+<div id="iterative-dichotomiser-3-id3" class="section level2" number="0.3">
 <h2>
-<span class="header-section-number">0.3</span> C4.5<a class="anchor" aria-label="anchor" href="#c4.5"><i class="fas fa-link"></i></a>
+<span class="header-section-number">0.3</span> Iterative Dichotomiser 3 (ID3)<a class="anchor" aria-label="anchor" href="#iterative-dichotomiser-3-id3"><i class="fas fa-link"></i></a>
 </h2>
 </div>
-<div id="c5.0" class="section level2" number="0.4">
+<div id="c4.5" class="section level2" number="0.4">
 <h2>
-<span class="header-section-number">0.4</span> C5.0<a class="anchor" aria-label="anchor" href="#c5.0"><i class="fas fa-link"></i></a>
+<span class="header-section-number">0.4</span> C4.5<a class="anchor" aria-label="anchor" href="#c4.5"><i class="fas fa-link"></i></a>
 </h2>
 </div>
-<div id="chi-squared-automatic-interaction-detection-chaid" class="section level2" number="0.5">
+<div id="c5.0" class="section level2" number="0.5">
 <h2>
-<span class="header-section-number">0.5</span> Chi-squared Automatic Interaction Detection (CHAID)<a class="anchor" aria-label="anchor" href="#chi-squared-automatic-interaction-detection-chaid"><i class="fas fa-link"></i></a>
+<span class="header-section-number">0.5</span> C5.0<a class="anchor" aria-label="anchor" href="#c5.0"><i class="fas fa-link"></i></a>
 </h2>
 </div>
-<div id="decision-stump" class="section level2" number="0.6">
+<div id="chi-squared-automatic-interaction-detection-chaid" class="section level2" number="0.6">
 <h2>
-<span class="header-section-number">0.6</span> Decision Stump<a class="anchor" aria-label="anchor" href="#decision-stump"><i class="fas fa-link"></i></a>
+<span class="header-section-number">0.6</span> Chi-squared Automatic Interaction Detection (CHAID)<a class="anchor" aria-label="anchor" href="#chi-squared-automatic-interaction-detection-chaid"><i class="fas fa-link"></i></a>
 </h2>
 </div>
-<div id="conditional-decision-trees" class="section level2" number="0.7">
+<div id="decision-stump" class="section level2" number="0.7">
 <h2>
-<span class="header-section-number">0.7</span> Conditional Decision Trees<a class="anchor" aria-label="anchor" href="#conditional-decision-trees"><i class="fas fa-link"></i></a>
+<span class="header-section-number">0.7</span> Decision Stump<a class="anchor" aria-label="anchor" href="#decision-stump"><i class="fas fa-link"></i></a>
 </h2>
 </div>
-<div id="m5" class="section level2" number="0.8">
+<div id="conditional-decision-trees" class="section level2" number="0.8">
 <h2>
-<span class="header-section-number">0.8</span> M5<a class="anchor" aria-label="anchor" href="#m5"><i class="fas fa-link"></i></a>
+<span class="header-section-number">0.8</span> Conditional Decision Trees<a class="anchor" aria-label="anchor" href="#conditional-decision-trees"><i class="fas fa-link"></i></a>
+</h2>
+</div>
+<div id="m5" class="section level2" number="0.9">
+<h2>
+<span class="header-section-number">0.9</span> M5<a class="anchor" aria-label="anchor" href="#m5"><i class="fas fa-link"></i></a>
 </h2>
 
 </div>
@@ -122,13 +220,14 @@
       <ul class="nav navbar-nav">
 <li><a class="nav-link" href="#%C3%A1rboles-de-decisi%C3%B3n-y-derivados">🌲 2. Árboles de Decisión y Derivados</a></li>
 <li><a class="nav-link" href="#classification-and-regression-tree-cart"><span class="header-section-number">0.1</span> Classification and Regression Tree (CART)</a></li>
-<li><a class="nav-link" href="#iterative-dichotomiser-3-id3"><span class="header-section-number">0.2</span> Iterative Dichotomiser 3 (ID3)</a></li>
-<li><a class="nav-link" href="#c4.5"><span class="header-section-number">0.3</span> C4.5</a></li>
-<li><a class="nav-link" href="#c5.0"><span class="header-section-number">0.4</span> C5.0</a></li>
-<li><a class="nav-link" href="#chi-squared-automatic-interaction-detection-chaid"><span class="header-section-number">0.5</span> Chi-squared Automatic Interaction Detection (CHAID)</a></li>
-<li><a class="nav-link" href="#decision-stump"><span class="header-section-number">0.6</span> Decision Stump</a></li>
-<li><a class="nav-link" href="#conditional-decision-trees"><span class="header-section-number">0.7</span> Conditional Decision Trees</a></li>
-<li><a class="nav-link" href="#m5"><span class="header-section-number">0.8</span> M5</a></li>
+<li><a class="nav-link" href="#support-vector-machines-svms"><span class="header-section-number">0.2</span> Support Vector Machines (SVMs)</a></li>
+<li><a class="nav-link" href="#iterative-dichotomiser-3-id3"><span class="header-section-number">0.3</span> Iterative Dichotomiser 3 (ID3)</a></li>
+<li><a class="nav-link" href="#c4.5"><span class="header-section-number">0.4</span> C4.5</a></li>
+<li><a class="nav-link" href="#c5.0"><span class="header-section-number">0.5</span> C5.0</a></li>
+<li><a class="nav-link" href="#chi-squared-automatic-interaction-detection-chaid"><span class="header-section-number">0.6</span> Chi-squared Automatic Interaction Detection (CHAID)</a></li>
+<li><a class="nav-link" href="#decision-stump"><span class="header-section-number">0.7</span> Decision Stump</a></li>
+<li><a class="nav-link" href="#conditional-decision-trees"><span class="header-section-number">0.8</span> Conditional Decision Trees</a></li>
+<li><a class="nav-link" href="#m5"><span class="header-section-number">0.9</span> M5</a></li>
 </ul>
 
       <div class="book-extra">

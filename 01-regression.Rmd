@@ -16,35 +16,35 @@
 ```{r, echo = FALSE}
 # Datos de la tabla
 criterios <- c(
-  "🔍 Tipo de modelo",
-  "🎯 Variable respuesta",
-  "🔢 Variables predictoras",
-  "📈 Relación entre variables",
-  "🧪 Normalidad de residuos",
-  "🔁 Independencia de errores",
-  "⚖️ Homoscedasticidad",
-  "❗ Sensible a outliers",
-  "🔗 Multicolinealidad entre predictores",
-  "🧠 Interpretabilidad",
-  "🚀 Velocidad y eficiencia",
-  "🧪 Validación cruzada",
-  "❌ No funciona bien si..."
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
 )
 
 aplica <- c(
-  "Supervisado",
-  "Numérica continua",
-  "Numéricas y/o categóricas",
-  "Lineal (supuesto clave)",
-  "Deseable",
-  "Necesaria",
-  "Necesaria",
-  "Sí",
-  "Problema común",
-  "Alta",
-  "Muy alta",
-  "Compatible",
-  "Relaciones no lineales, outliers severos, colinealidad"
+  "✅ Supervisado",
+  "✅ Numérica continua",
+  "✅ Numéricas y/o categóricas",
+  "✅ Lineal (supuesto clave)",
+  "☑️ Deseable",
+  "✅ Necesaria",
+  "✅ Necesaria",
+  "⚠️ Sí",
+  "⚠️ Problema común",
+  "✅ Alta",
+  "✅ Muy alta",
+  "✅ Compatible",
+  "❌ Relaciones no lineales, outliers severos, colinealidad"
 )
 
 detalles <- c(
@@ -70,7 +70,8 @@ require(gt)
 
 tabla_olsr %>%
  gt() %>%
-  tab_header(title = "Guía rápida para elegir OLSR") %>%
+  tab_header(title = "Guía rápida para elegir OLSR",
+             subtitle = "Regresión de Mínimos Cuadrados Ordinarios (OLSR)") %>%
    tab_footnote(footnote = "Fuente: Elaboración propia") %>%
      tab_options(heading.title.font.size = 14, 
                  heading.subtitle.font.size = 12,
@@ -97,6 +98,78 @@ tabla_olsr %>%
 
 **Regresión logística** : se utiliza para estimar valores discretos (valores binarios como 0/1, sí/no, verdadero/falso) basados en un conjunto dado de variables independientes. 
 
+```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica <- c(
+  "✅ Supervisado",
+  "✅ Categórica binaria (0/1)",
+  "✅ Numéricas y categóricas",
+  "✅ Lineal entre log-odds y predictores",
+  "❌ No es requisito",
+  "✅ Necesaria",
+  "✅ Deseable",
+  "⚠️ Sí",
+  "⚠️ Puede afectar",
+  "✅ Alta (coeficientes interpretables)",
+  "✅ Alta",
+  "✅ Compatible",
+  "❌ Respuesta no binaria o multiclase sin ajuste"
+)
+
+detalles <- c(
+  "Clasificación binaria",
+  "Ej. éxito/fracaso, sí/no",
+  "Convertir categóricas a dummies",
+  "Relación entre log(p/(1-p)) y X debe ser lineal",
+  "No se exige normalidad en errores",
+  "Independencia entre observaciones",
+  "Idealmente varianza constante",
+  "Outliers pueden alterar los coeficientes",
+  "Usar VIF y regularización si hay problema",
+  "Coeficientes en términos de odds/log-odds",
+  "Rápido y estable para datasets medianos",
+  "K-fold funciona muy bien",
+  "Evitar si hay multiclase sin ajuste"
+)
+
+tabla_logit <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)  
+
+require(gt)
+
+tabla_logit %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir logit",
+             subtitle = "Regresión logística") %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
+```
 
 
 ## Stepwise Regression {-} 
@@ -107,18 +180,154 @@ tabla_olsr %>%
 
 **Splines de Regresión Adaptativa Multivariante (`MARS`)**: un método de regresión flexible que busca interacciones y relaciones no lineales que ayudan a maximizar la precisión predictiva. Este algoritmo es inherentemente no lineal (lo que significa que no es necesario adaptar el modelo a patrones no lineales en el datos agregando manualmente términos del modelo (squared terms, interaction effects).   
 
+```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica <- c(
+  "✅ Supervisado",
+  "✅ Continua o categórica (binaria con extensión)",
+  "✅ Numéricas (categóricas con dummies)",
+  "✅ No lineal (automático)",
+  "❌ No requerida",
+  "✅ Deseable",
+  "✅ Deseable",
+  "⚠️ Sí (aunque algo robusto)",
+  "⚠️ Puede afectar",
+  "⚠️ Media (modelo tipo caja negra)",
+  "✅ Razonable para tamaños medianos",
+  "✅ Recomendado (ej. repeated k-fold)",
+  "❌ Relación puramente lineal o muchos factores irrelevantes"
+)
+
+detalles <- c(
+  "Regresión flexible no lineal",
+  "Ideal para regresión continua (también clasificación con `earth`)",
+  "Crea automáticamente 'splines' por variable",
+  "Crea funciones por tramos con 'nudos'",
+  "No exige distribución específica de errores",
+  "Mejor si los datos no están correlacionados temporalmente",
+  "Idealmente errores con varianza constante",
+  "Puede ser sensible a valores extremos",
+  "Detecta interacciones, pero VIF sigue siendo útil",
+  "Coeficientes no tan interpretables como OLS",
+  "Más lento que OLS pero más flexible",
+  "CV ayuda a elegir número óptimo de términos",
+  "Tiene riesgo de sobreajuste si no se controla bien"
+)
+
+tabla_mars <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)  
+
+require(gt)
+
+tabla_mars %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir MARS",
+             subtitle = "Splines de Regresión Adaptativa Multivariante (MARS)") %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
+```
+
+
 ## Locally Estimated Scatterplot Smoothing (`LOESS`) {-} 
 
 **Locally Estimated Scatterplot Smoothing (`LOESS`)**: un método para ajustar una curva suave entre dos variables o una superficie  entre un resultado y hasta cuatro variables predictoras. La idea es que, si los datos no se distribuyen linealmente, se puede aplicar el concepto de regresión. Se puede aplicar regresión, lo que se denomina regresión ponderada localmente. Se puede aplicar LOESS cuando la relación entre las variables independientes y dependientes no es lineal. Hoy en día, la mayoría de los algoritmos (como las redes neuronales de propagación hacia adelante clásicas, las máquinas de vectores de soporte, los algoritmos del vecino más cercano, etc.) son sistemas de aprendizaje global que se utilizan para minimizar las funciones de pérdida globales (por ejemplo, el error cuadrático medio). Por el contrario, los sistemas de aprendizaje local dividen el problema de aprendizaje global en múltiples problemas de aprendizaje más pequeños y simples. Esto generalmente se logra dividiendo la función de costo en múltiples funciones de costo locales independientes. Una de las desventajas de los métodos globales es que, a veces, ningún valor de parámetro puede proporcionar una aproximación suficientemente buena. Pero entonces surge LOESS, una alternativa a la aproximación de funciones globales.   
 
 
-## Regression Ridge {-} 
+```{r, echo = FALSE} 
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
 
-**Regresión Ridge** es una extensión de la regresión lineal clásica (`OLS`) que se usa cuando hay problemas de multicolinealidad o riesgo de sobreajuste. Aborda estos problemas introduciendo un término de penalización a la función de coste de la regresión lineal ordinaria (mínimos cuadrados ordinarios, OLS).  
+aplica <- c(
+  "✅ Supervisado",
+  "✅ Continua",
+  "✅ Numéricas (usualmente 1 o 2 predictores)",
+  "✅ No lineal y suave",
+  "❌ No necesaria",
+  "✅ Deseable",
+  "✅ Deseable",
+  "⚠️ Muy sensible",
+  "❌ No aplica (pocos predictores)",
+  "✅ Muy interpretable gráficamente",
+  "⚠️ Lento en grandes volúmenes de datos",
+  "✅ Puede usarse para elegir 'span'",
+  "❌ Datos grandes o con ruido fuerte"
+)
 
-## Least Absolute Shrinkage and Selection Operator (`LASSO`) {-}
+detalles <- c(
+  "Modelo no paramétrico local",
+  "Regresión para valores continuos",
+  "Generalmente 1 o 2 variables numéricas",
+  "Ajuste por vecindad, suaviza la curva",
+  "No asume distribución específica",
+  "Supuesto deseable si hay dependencias temporales",
+  "Ideal si la varianza no cambia mucho localmente",
+  "Altamente afectado por outliers locales",
+  "No es una técnica multivariable compleja",
+  "La curva ajustada se interpreta visualmente",
+  "Computacionalmente costoso con datos grandes",
+  "Ayuda a seleccionar el mejor 'span'",
+  "Poco eficaz en alta dimensión o datos muy dispersos"
+)
 
-**Least Absolute Shrinkage and Selection Operator (`LASSO`)**: es otra técnica de regularización utilizada en modelos de regresión lineal, similar a la Regresión Ridge, pero con una diferencia clave en el tipo de penalización que aplica en la función de coste de la regresión lineal ordinaria.    
+tabla_loess <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_loess %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir LOESS",
+             subtitle = "Locally Estimated Scatterplot Smoothing (LOESS)") %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
+```
 
 
----
