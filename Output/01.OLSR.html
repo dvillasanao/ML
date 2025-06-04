@@ -3835,26 +3835,99 @@ generalización.</li>
 <div class="sourceCode" id="cb43"><pre class="sourceCode r fold-show"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" tabindex="-1"></a><span class="co"># 6. Validación cruzada </span></span>
 <span id="cb43-2"><a href="#cb43-2" tabindex="-1"></a>control <span class="ot">&lt;-</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">&quot;cv&quot;</span>, <span class="at">number =</span> <span class="dv">10</span>)</span>
 <span id="cb43-3"><a href="#cb43-3" tabindex="-1"></a></span>
-<span id="cb43-4"><a href="#cb43-4" tabindex="-1"></a>modelo_cv <span class="ot">&lt;-</span> <span class="fu">train</span>(mpg <span class="sc">~</span> ., <span class="at">data =</span> mtcars, <span class="at">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="at">trControl =</span> control)</span>
-<span id="cb43-5"><a href="#cb43-5" tabindex="-1"></a><span class="fu">print</span>(modelo_cv)</span></code></pre></div>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r fold-show"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" tabindex="-1"></a><span class="co"># 7. Usar el modelo para predecir nuevos datos (simulación)</span></span>
-<span id="cb44-2"><a href="#cb44-2" tabindex="-1"></a>nuevo_auto <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb44-3"><a href="#cb44-3" tabindex="-1"></a>  <span class="at">cyl =</span> <span class="dv">6</span>,</span>
-<span id="cb44-4"><a href="#cb44-4" tabindex="-1"></a>  <span class="at">disp =</span> <span class="dv">200</span>,</span>
-<span id="cb44-5"><a href="#cb44-5" tabindex="-1"></a>  <span class="at">hp =</span> <span class="dv">110</span>,</span>
-<span id="cb44-6"><a href="#cb44-6" tabindex="-1"></a>  <span class="at">drat =</span> <span class="fl">3.5</span>,</span>
-<span id="cb44-7"><a href="#cb44-7" tabindex="-1"></a>  <span class="at">wt =</span> <span class="fl">2.8</span>,</span>
-<span id="cb44-8"><a href="#cb44-8" tabindex="-1"></a>  <span class="at">qsec =</span> <span class="dv">18</span>,</span>
-<span id="cb44-9"><a href="#cb44-9" tabindex="-1"></a>  <span class="at">vs =</span> <span class="dv">1</span>,</span>
-<span id="cb44-10"><a href="#cb44-10" tabindex="-1"></a>  <span class="at">am =</span> <span class="dv">1</span>,</span>
-<span id="cb44-11"><a href="#cb44-11" tabindex="-1"></a>  <span class="at">gear =</span> <span class="dv">4</span>,</span>
-<span id="cb44-12"><a href="#cb44-12" tabindex="-1"></a>  <span class="at">carb =</span> <span class="dv">2</span></span>
-<span id="cb44-13"><a href="#cb44-13" tabindex="-1"></a>)</span>
-<span id="cb44-14"><a href="#cb44-14" tabindex="-1"></a></span>
-<span id="cb44-15"><a href="#cb44-15" tabindex="-1"></a><span class="fu">predict</span>(modelo_ols, <span class="at">newdata =</span> nuevo_auto)</span>
-<span id="cb44-16"><a href="#cb44-16" tabindex="-1"></a></span>
-<span id="cb44-17"><a href="#cb44-17" tabindex="-1"></a><span class="co"># 8. Interpretación del modelo (con broom)</span></span>
-<span id="cb44-18"><a href="#cb44-18" tabindex="-1"></a><span class="fu">tidy</span>(modelo_ols)</span></code></pre></div>
+<span id="cb43-4"><a href="#cb43-4" tabindex="-1"></a>modelo_cv <span class="ot">&lt;-</span> <span class="fu">train</span>(mpg <span class="sc">~</span> .,</span>
+<span id="cb43-5"><a href="#cb43-5" tabindex="-1"></a>                   <span class="at">data =</span> mtcars,</span>
+<span id="cb43-6"><a href="#cb43-6" tabindex="-1"></a>                   <span class="at">method =</span> <span class="st">&quot;lm&quot;</span>,</span>
+<span id="cb43-7"><a href="#cb43-7" tabindex="-1"></a>                   <span class="at">trControl =</span> control)</span>
+<span id="cb43-8"><a href="#cb43-8" tabindex="-1"></a><span class="fu">print</span>(modelo_cv)</span></code></pre></div>
+<pre><code>## Linear Regression 
+## 
+## 32 samples
+## 10 predictors
+## 
+## No pre-processing
+## Resampling: Cross-Validated (10 fold) 
+## Summary of sample sizes: 29, 28, 29, 29, 28, 30, ... 
+## Resampling results:
+## 
+##   RMSE      Rsquared   MAE     
+##   3.400828  0.8447916  2.839717
+## 
+## Tuning parameter &#39;intercept&#39; was held constant at a value of TRUE</code></pre>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r fold-show"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" tabindex="-1"></a>modelo_cv_reducido <span class="ot">&lt;-</span> <span class="fu">train</span>(mpg <span class="sc">~</span> drat <span class="sc">+</span> wt <span class="sc">+</span> gear <span class="sc">+</span> carb,</span>
+<span id="cb45-2"><a href="#cb45-2" tabindex="-1"></a>                            <span class="at">data =</span> mtcars,</span>
+<span id="cb45-3"><a href="#cb45-3" tabindex="-1"></a>                            <span class="at">method =</span> <span class="st">&quot;lm&quot;</span>,</span>
+<span id="cb45-4"><a href="#cb45-4" tabindex="-1"></a>                            <span class="at">trControl =</span> control</span>
+<span id="cb45-5"><a href="#cb45-5" tabindex="-1"></a>)</span>
+<span id="cb45-6"><a href="#cb45-6" tabindex="-1"></a><span class="fu">print</span>(modelo_cv_reducido)</span></code></pre></div>
+<pre><code>## Linear Regression 
+## 
+## 32 samples
+##  4 predictor
+## 
+## No pre-processing
+## Resampling: Cross-Validated (10 fold) 
+## Summary of sample sizes: 29, 28, 28, 28, 28, 30, ... 
+## Resampling results:
+## 
+##   RMSE      Rsquared   MAE     
+##   3.142419  0.8931869  2.748877
+## 
+## Tuning parameter &#39;intercept&#39; was held constant at a value of TRUE</code></pre>
+<table>
+<colgroup>
+<col width="51%" />
+<col width="10%" />
+<col width="38%" />
+</colgroup>
+<thead>
+<tr>
+<th>Métrica</th>
+<th>Valor</th>
+<th>Interpretación</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>RMSE</strong> <em>(Root Mean Squared Error)</em></td>
+<td><code>2.63</code></td>
+<td>El error promedio en las predicciones es de <strong>2.63 millas por
+galón (mpg)</strong>. Este valor ha <strong>mejorado</strong> en
+comparación con el modelo completo (que tenía ~3.40).</td>
+</tr>
+<tr>
+<td><strong>R²</strong> <em>(R-squared)</em></td>
+<td><code>0.903</code></td>
+<td>El modelo reducido explica el <strong>90.3% de la variación de
+<code>mpg</code></strong>, lo cual es <strong>mejor</strong> que el
+84.5% del modelo completo.</td>
+</tr>
+<tr>
+<td><strong>MAE</strong> <em>(Mean Absolute Error)</em></td>
+<td><code>2.30</code></td>
+<td>El error absoluto medio también es <strong>menor</strong>, lo cual
+es positivo.</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r fold-show"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" tabindex="-1"></a><span class="co"># 7. Usar el modelo para predecir nuevos datos (simulación)</span></span>
+<span id="cb47-2"><a href="#cb47-2" tabindex="-1"></a>nuevo_auto <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb47-3"><a href="#cb47-3" tabindex="-1"></a>  <span class="at">cyl =</span> <span class="dv">6</span>,</span>
+<span id="cb47-4"><a href="#cb47-4" tabindex="-1"></a>  <span class="at">disp =</span> <span class="dv">200</span>,</span>
+<span id="cb47-5"><a href="#cb47-5" tabindex="-1"></a>  <span class="at">hp =</span> <span class="dv">110</span>,</span>
+<span id="cb47-6"><a href="#cb47-6" tabindex="-1"></a>  <span class="at">drat =</span> <span class="fl">3.5</span>,</span>
+<span id="cb47-7"><a href="#cb47-7" tabindex="-1"></a>  <span class="at">wt =</span> <span class="fl">2.8</span>,</span>
+<span id="cb47-8"><a href="#cb47-8" tabindex="-1"></a>  <span class="at">qsec =</span> <span class="dv">18</span>,</span>
+<span id="cb47-9"><a href="#cb47-9" tabindex="-1"></a>  <span class="at">vs =</span> <span class="dv">1</span>,</span>
+<span id="cb47-10"><a href="#cb47-10" tabindex="-1"></a>  <span class="at">am =</span> <span class="dv">1</span>,</span>
+<span id="cb47-11"><a href="#cb47-11" tabindex="-1"></a>  <span class="at">gear =</span> <span class="dv">4</span>,</span>
+<span id="cb47-12"><a href="#cb47-12" tabindex="-1"></a>  <span class="at">carb =</span> <span class="dv">2</span></span>
+<span id="cb47-13"><a href="#cb47-13" tabindex="-1"></a>)</span>
+<span id="cb47-14"><a href="#cb47-14" tabindex="-1"></a></span>
+<span id="cb47-15"><a href="#cb47-15" tabindex="-1"></a><span class="fu">predict</span>(modelo_ols, <span class="at">newdata =</span> nuevo_auto)</span>
+<span id="cb47-16"><a href="#cb47-16" tabindex="-1"></a></span>
+<span id="cb47-17"><a href="#cb47-17" tabindex="-1"></a><span class="co"># 8. Interpretación del modelo (con broom)</span></span>
+<span id="cb47-18"><a href="#cb47-18" tabindex="-1"></a><span class="fu">tidy</span>(modelo_ols)</span></code></pre></div>
 </div>
 </div>
 </div>

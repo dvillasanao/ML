@@ -975,13 +975,29 @@ trainControl(method = "repeatedcv", number = 10, repeats = 5)
 * Ofrece una **estimación más estable** del error de generalización.
 * Útil si los datos tienen mucha variabilidad o ruido.
 
-```{r, eval = FALSE}
+```{r}
 # 6. Validación cruzada 
 control <- trainControl(method = "cv", number = 10)
 
-modelo_cv <- train(mpg ~ ., data = mtcars, method = "lm", trControl = control)
+modelo_cv <- train(mpg ~ .,
+                   data = mtcars,
+                   method = "lm",
+                   trControl = control)
 print(modelo_cv)
 ```
+```{r}
+modelo_cv_reducido <- train(mpg ~ drat + wt + gear + carb,
+                            data = mtcars,
+                            method = "lm",
+                            trControl = control
+)
+print(modelo_cv_reducido)
+```
+| Métrica                              | Valor   | Interpretación             |
+| ------------------------------------ | ------- |--------------------------- |
+| **RMSE** *(Root Mean Squared Error)* | `2.63`  | El error promedio en las predicciones es de **2.63 millas por galón (mpg)**. Este valor ha **mejorado** en comparación con el modelo completo (que tenía \~3.40). |
+| **R²** *(R-squared)*                 | `0.903` | El modelo reducido explica el **90.3% de la variación de `mpg`**, lo cual es **mejor** que el 84.5% del modelo completo.                                          |
+| **MAE** *(Mean Absolute Error)*      | `2.30`  | El error absoluto medio también es **menor**, lo cual es positivo.                                                                                                 |
 
 
 ```{r, eval = FALSE}
