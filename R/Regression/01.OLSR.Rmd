@@ -138,7 +138,82 @@ library(Metrics)   # Para métricas como RMSE, MAE
 require(tibble)
 ```
 
-La Regresión por Mínimos Cuadrados Ordinarios (Ordinary Least Squares Regression, **OLSR** u **OLS**) representa una metodología estadística esencial que permite analizar la correlación entre una **variable dependiente** (también conocida como variable de respuesta) y una o más **variables independientes** (o predictoras). Este método constituye una herramienta fundamental en el campo del análisis de regresión lineal.  
+La Regresión por Mínimos Cuadrados Ordinarios (Ordinary Least Squares Regression, **OLSR** u **OLS**) representa una metodología estadística esencial que permite analizar la correlación entre una **variable dependiente** (también conocida como variable de respuesta) y una o más **variables independientes** (o predictoras). Este método constituye una herramienta fundamental en el campo del análisis de regresión lineal.   
+
+```{r, echo = FALSE}
+# Datos de la tabla
+criterios <- c(
+  "🔍 Tipo de modelo",
+  "🎯 Variable respuesta",
+  "🔢 Variables predictoras",
+  "📈 Relación entre variables",
+  "🧪 Normalidad de residuos",
+  "🔁 Independencia de errores",
+  "⚖️ Homoscedasticidad",
+  "❗ Sensible a outliers",
+  "🔗 Multicolinealidad entre predictores",
+  "🧠 Interpretabilidad",
+  "🚀 Velocidad y eficiencia",
+  "🧪 Validación cruzada",
+  "❌ No funciona bien si..."
+)
+
+aplica <- c(
+  "Supervisado",
+  "Numérica continua",
+  "Numéricas y/o categóricas",
+  "Lineal (supuesto clave)",
+  "Deseable",
+  "Necesaria",
+  "Necesaria",
+  "Sí",
+  "Problema común",
+  "Alta",
+  "Muy alta",
+  "Compatible",
+  "Relaciones no lineales, outliers severos, colinealidad"
+)
+
+detalles <- c(
+  "Se entrena con datos X → y",
+  "Ej. mpg, precio, ingresos",
+  "Categorías convertidas a dummies",
+  "Se asume una relación lineal entre X e Y",
+  "Importante para intervalos de confianza válidos",
+  "Errores deben ser independientes",
+  "Varianza de errores debe ser constante",
+  "Outliers pueden influir mucho en el modelo",
+  "Usar VIF para detectar problemas",
+  "Modelo fácil de explicar",
+  "Rápido incluso con datos grandes",
+  "Ayuda a prevenir overfitting",
+  "Evitar si no hay linealidad o hay muchos outliers"
+)
+
+# Crear y mostrar tabla
+tabla_olsr <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+require(gt)
+
+tabla_olsr %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir OLSR") %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
+```
+
 
 ## Objetivo
 
@@ -898,11 +973,11 @@ plot(modelo_step)
 
 Cuando se construye un modelo, y se entrena con un conjunto de datos. Se evalúa el rendimiento del modelo en esos mismos datos de entrenamiento, a menudo se obtendrá una métrica de rendimiento inflada (por ejemplo, un $R^2$ muy alto o un MAE/RMSE muy bajo). Esto se debe a que el modelo ha "memorizado" los datos de entrenamiento, incluyendo el ruido y las particularidades de esa muestra específica. Sin embargo, un modelo sobreajustado no funcionará bien con datos nuevos y reales.
 
-##### Tipos Comunes de Validación Cruzada:
+#### Tipos Comunes de Validación Cruzada:
   
 Aunque hay varias variaciones, las más comunes son:
   
-##### Beneficios de la Validación Cruzada:
+#### Beneficios de la Validación Cruzada:
   
   * **Estimación Robusta del Rendimiento:** Proporciona una métrica de rendimiento más fiable y menos sesgada de cómo se comportará el modelo con datos nuevos.
 * **Detección de Sobreajuste:** Ayuda a identificar si un modelo está sobreajustado, ya que un modelo sobreajustado tendrá un rendimiento mucho peor en los folds de validación que en los de entrenamiento.
@@ -995,30 +1070,31 @@ print(modelo_cv_reducido)
 ```
 | Métrica                              | Valor   | Interpretación             |
 | ------------------------------------ | ------- |--------------------------- |
-| **RMSE** *(Root Mean Squared Error)* | `2.63`  | El error promedio en las predicciones es de **2.63 millas por galón (mpg)**. Este valor ha **mejorado** en comparación con el modelo completo (que tenía \~3.40). |
-| **R²** *(R-squared)*                 | `0.903` | El modelo reducido explica el **90.3% de la variación de `mpg`**, lo cual es **mejor** que el 84.5% del modelo completo.                                          |
-| **MAE** *(Mean Absolute Error)*      | `2.30`  | El error absoluto medio también es **menor**, lo cual es positivo.                                                                                                 |
+| **RMSE** *(Root Mean Squared Error)* | `3.14`  | El error promedio en las predicciones es de **3.14 millas por galón (mpg)**. Este valor ha **mejorado** en comparación con el modelo completo (que tenía \~3.40). |
+| **R²** *(R-squared)*                 | `0.893` | El modelo reducido explica el **89.3% de la variación de `mpg`**, lo cual es **mejor** que el 84.5% del modelo completo.                                          |
+| **MAE** *(Mean Absolute Error)*      | `2.74`  | El error absoluto medio también es **menor**, lo cual es positivo.                                                                                                 |
 
+#### Nuevos datos
+
+Se **utiliza el modelo ya entrenado** para predecir el consumo de gasolina (variable `mpg`) de un **nuevo automóvil simulado**, con características específicas.  
+
+$$\hat{Y} = 12.1 + 2.20(drat) - 1.8(wt) + 2.84(gear) - 1.63(carb)$$
+  
 
 ```{r, eval = FALSE}
 # 7. Usar el modelo para predecir nuevos datos (simulación)
-nuevo_auto <- data.frame(
-  cyl = 6,
-  disp = 200,
-  hp = 110,
-  drat = 3.5,
-  wt = 2.8,
-  qsec = 18,
-  vs = 1,
-  am = 1,
-  gear = 4,
-  carb = 2
-)
+nuevo_auto <- data.frame(drat = 3.5,
+                         wt = 2.8,
+                         gear = 4,
+                         carb = 2)
 
-predict(modelo_ols, newdata = nuevo_auto)
+predict(modelo_step, newdata = nuevo_auto)
+```
+Esto significa que, según el modelo, un auto con esas características tendrá un rendimiento de aproximadamente 22.8 mpg.
 
+```{r}
 # 8. Interpretación del modelo (con broom)
-tidy(modelo_ols)
+tidy(modelo_step)
 ```
 
 ## 📌 Notas
@@ -1048,16 +1124,9 @@ tidy(modelo_ols)
 James, G., Witten, D., Hastie, T., & Tibshirani, R. (2021). *An introduction to statistical learning: With applications in R* (2nd ed.). Springer.
 [https://www.statlearning.com](https://www.statlearning.com)
 
-> Accesible y práctico, con aplicaciones modernas en machine learning. Capítulos 3 y 6 explican OLS en el contexto de predicción.
-
 Fox, J., & Weisberg, S. (2019). *An R companion to applied regression* (3rd ed.). Sage.
 
-> Muy útil para usuarios de R; cubre desde OLS básico hasta diagnósticos avanzados con funciones específicas.
-
-
 Montgomery, D. C., Peck, E. A., & Vining, G. G. (2012). *Introduction to linear regression analysis* (5th ed.). Wiley.
-
-> Excelente para profundizar en supuestos, pruebas de normalidad, heterocedasticidad, multicolinealidad, etc.
 
 
 Librerias que se usaron en el documento
