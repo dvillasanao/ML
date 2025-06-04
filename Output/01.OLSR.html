@@ -2561,6 +2561,13 @@ los autos.</p>
 </div>
 <div id="entrenamiento-de-los-datos-traintest" class="section level2">
 <h2>Entrenamiento de los datos (train/test)</h2>
+<p>La división de datos en conjuntos de <strong>entrenamiento
+(train)</strong> y <strong>prueba (test)</strong> es una práctica
+fundamental en el aprendizaje automático y la modelización predictiva.
+Su importancia radica en la necesidad de obtener una evaluación
+<strong>realista y no sesgada</strong> del rendimiento de un modelo, y
+de asegurar que el modelo sea capaz de <strong>generalizar</strong> a
+datos nuevos y no vistos.</p>
 <ul>
 <li>Se usa la función <code>createDataPartition()</code> del paquete
 <code>caret</code> para <strong>dividir los datos</strong>.</li>
@@ -2592,6 +2599,41 @@ automático.</li>
 </div>
 <div id="entrenamiento-del-modelo" class="section level2">
 <h2>Entrenamiento del modelo</h2>
+<p>El <strong>entrenamiento de un modelo</strong> es la piedra angular
+de cualquier proyecto de aprendizaje automático. Con un conjunto de
+datos dedicado (<code>train_data</code>) es fundamental porque es el
+paso donde el modelo adquiere su “conocimiento” de los datos, y, lo más
+importante, es la estrategia principal para garantizar que el modelo sea
+capaz de hacer predicciones fiables y generalizables en el mundo real,
+no solo en los datos con los que fue creado y es de vital importancia
+por varias razones clave:</p>
+<ul>
+<li>El proceso de entrenamiento es donde el modelo <strong>aprende las
+relaciones y patrones</strong> dentro de los datos.<br />
+</li>
+<li>La razón más crítica para dividir los datos en conjuntos de
+entrenamiento y prueba (y a veces validación) y entrenar el modelo solo
+con los datos de entrenamiento, es que el modelo predictivo no es solo
+que funcione bien con los datos que ya ha visto, sino que sea capaz de
+hacer predicciones precisas sobre <strong>datos nuevos y no
+vistos</strong>. Los datos de entrenamiento le enseñan al modelo qué
+patrones esperar.<br />
+</li>
+<li>Una vez que el modelo ha sido entrenado con <code>train_data</code>,
+se utiliza el <strong>conjunto de prueba
+(<code>test_data</code>)</strong> para evaluar su rendimiento. Las
+métricas de rendimiento (MAE, RMSE, <span class="math inline">\(R^2\)</span>) calculadas sobre
+<code>test_data</code> son una estimación mucho más honesta de la
+<strong>capacidad del modelo para generalizar</strong>. Si el modelo se
+sobreajustó durante el entrenamiento, su rendimiento en
+<code>test_data</code> será significativamente peor que en
+<code>train_data</code>.<br />
+</li>
+<li>Esto ayuda a los científicos de datos a tomar decisiones informadas
+sobre si el modelo es adecuado para su implementación o si necesita ser
+ajustado o incluso si deben probarse otros algoritmos.</li>
+</ul>
+<p><strong>Función de entrenamiento</strong></p>
 <ul>
 <li><p>la función <strong><code>lm()</code></strong> es la función base
 de R para ajustar un modelo de <strong>regresión lineal</strong> (OLS =

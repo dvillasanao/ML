@@ -134,11 +134,11 @@ library(Metrics)   # Para métricas como RMSE, MAE
 require(tibble)
 ```
 
-La Regresión por Mínimos Cuadrados Ordinarios (Ordinary Least Squares Regression, **OLSR** u **OLS**) es una técnica estadística fundamental utilizada para estimar la relación entre una **variable dependiente** (o de respuesta) y una o más **variables independientes** (o predictoras). Es uno de los métodos más comunes en el análisis de regresión lineal.
+La Regresión por Mínimos Cuadrados Ordinarios (Ordinary Least Squares Regression, **OLSR** u **OLS**) representa una metodología estadística esencial que permite analizar la correlación entre una **variable dependiente** (también conocida como variable de respuesta) y una o más **variables independientes** (o predictoras). Este método constituye una herramienta fundamental en el campo del análisis de regresión lineal.  
 
 ## Objetivo
 
-El objetivo principal de Ordinary Least Squares Regression, (`OLSR`) es encontrar la "línea de mejor ajuste" a través de un conjunto de puntos de datos. Esta línea se determina minimizando la suma de los cuadrados de las diferencias entre los valores observados de la variable dependiente y los valores predichos por el modelo. A estas diferencias se les llama **residuos** o **errores**. Al minimizar la suma de los cuadrados, OLS asegura que los errores positivos y negativos no se cancelen entre sí, y que los errores grandes tengan un impacto proporcionalmente mayor en la minimización.
+La Regresión por Mínimos Cuadrados Ordinarios (`OLSR`) busca la línea que mejor se ajusta a los datos. Para lograrlo, reduce al mínimo la suma de los cuadrados de las diferencias entre los valores reales y los valores que predice el modelo. Estas diferencias son los **residuos** o **errores**. Al trabajar con los cuadrados de los errores, este método evita que los errores positivos y negativos se anulen entre sí, y da más peso a los errores grandes durante el proceso de minimización.
 
 ## Metodología
 
@@ -247,7 +247,10 @@ mtcars %>%
 
 ```
 
-## Entrenamiento de los datos (train/test)
+## Entrenamiento de los datos (train/test)  
+
+La división de datos en conjuntos de **entrenamiento (train)** y **prueba (test)** es una práctica fundamental en el aprendizaje automático y la modelización predictiva. Su importancia radica en la necesidad de obtener una evaluación **realista y no sesgada** del rendimiento de un modelo, y de asegurar que el modelo sea capaz de **generalizar** a datos nuevos y no vistos.
+
 
 -   Se usa la función `createDataPartition()` del paquete `caret` para **dividir los datos**.
 -   Se crea un **índice** con el 80% de las filas del `mtcars`, **estratificado** según la variable `mpg` (la variable objetivo).
@@ -269,7 +272,17 @@ test_data <- mtcars[-train_index, ]
 -   Permite una **evaluación honesta** del modelo al probarlo en datos que no vio durante el entrenamiento.
 -   Es una práctica estándar en cualquier pipeline de aprendizaje automático.
 
-## Entrenamiento del modelo
+## Entrenamiento del modelo  
+
+El **entrenamiento de un modelo** es el paso más importante en el aprendizaje automático. Usando un conjunto de datos de entrenamiento (`train_data`), el modelo aprende a reconocer patrones para hacer predicciones confiables con datos nuevos. Este proceso es esencial por estas razones:
+
+- Durante el entrenamiento, el modelo **identifica patrones específicos** en los datos.
+- Separamos los datos en grupos de entrenamiento y prueba para asegurar que el modelo funcione bien no solo con datos conocidos, sino también con **datos nuevos y no vistos**.
+- Después del entrenamiento con `train_data`, usamos el **conjunto de prueba (`test_data`)** para medir el rendimiento. Las métricas (MAE, RMSE, $R^2$) nos muestran qué tan bien el modelo **maneja datos nuevos**.
+- Un rendimiento peor en `test_data` que en `train_data` indica que el modelo está sobreajustado.
+- Con estos resultados, podemos decidir si el modelo está listo para usar o necesita ajustes.
+
+**Función de entrenamiento**   
 
 -   la función **`lm()`** es la función base de R para ajustar un modelo de **regresión lineal** (OLS = *Ordinary Least Squares*).
 
