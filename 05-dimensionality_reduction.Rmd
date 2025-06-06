@@ -380,32 +380,368 @@ tabla_pp %>%
 ## Principal Component Regression (PCR)  {-}   
 
 ```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
 
+aplica <- c(
+  "✅ Supervisado (combinación de PCA + regresión)",
+  "✅ Variable continua (numérica)",
+  "✅ Numéricas (se aplica PCA primero)",
+  "✅ Puede capturar relaciones lineales (con reducción de dimensionalidad)",
+  "⚠️ Requiere verificar residuos del modelo final",
+  "⚠️ Se deben revisar los residuos como en regresión clásica",
+  "⚠️ Requiere diagnóstico posterior a la regresión",
+  "⚠️ PCA puede estar influenciada por outliers",
+  "✅ Reduce multicolinealidad usando componentes ortogonales",
+  "⚠️ Menos interpretable (usa componentes, no variables originales)",
+  "✅ Eficiente, especialmente con datos de alta dimensión",
+  "✅ Puede usar validación cruzada para elegir número de componentes",
+  "❌ Si las primeras componentes no explican bien la variable respuesta"
+)
+
+detalles <- c(
+  "Modelo supervisado que aplica PCA a los predictores y luego ajusta una regresión lineal sobre los componentes principales seleccionados.",
+  "Se requiere que la variable dependiente sea numérica (continua).",
+  "Se espera que los predictores sean numéricos para aplicar PCA adecuadamente.",
+  "PCR puede detectar relaciones lineales al reducir la dimensionalidad primero y luego ajustar la regresión.",
+  "Aunque el PCA es no supervisado, los residuos de la regresión deben ser normales para cumplir los supuestos de OLS.",
+  "Es necesario revisar la independencia de errores como en cualquier regresión lineal.",
+  "También deben analizarse posibles problemas de heterocedasticidad en los residuos.",
+  "Outliers pueden influir en los componentes principales y, por lo tanto, en el modelo final.",
+  "PCR es muy útil cuando los predictores están altamente correlacionados.",
+  "Interpretar los resultados puede ser difícil porque las componentes no corresponden a variables originales.",
+  "El proceso es rápido incluso con muchos predictores, ya que PCA reduce la dimensión.",
+  "Usualmente se usa validación cruzada para determinar cuántas componentes usar.",
+  "No es efectivo si los primeros componentes (con mayor varianza) no están relacionados con la variable dependiente."
+)
+
+tabla_pcr <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_pcr %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir PCR",
+             subtitle = "Principal Component Regression (PCR)")  %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
 ```
 
-## Partial Least Squares Discriminant Analysis  {-}  
+## Partial Least Squares Discriminant Analysis (PLSDA)  {-}  
 
 ```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
 
+aplica <- c(
+  "✅ Supervisado (clasificación)",
+  "✅ Categórica (binaria o multicategoría)",
+  "✅ Numéricas (se proyectan a componentes)",
+  "✅ Captura relaciones lineales y no lineales a través de proyecciones",
+  "❌ No aplica directamente (modelo de clasificación)",
+  "❌ No aplica como en regresión clásica",
+  "❌ No se evalúa como en modelos de regresión",
+  "⚠️ Algo sensible a outliers (pueden influir en componentes)",
+  "✅ Muy útil si hay multicolinealidad",
+  "⚠️ Menos interpretable que modelos clásicos; depende de componentes",
+  "✅ Eficiente, especialmente con datos de alta dimensión",
+  "✅ Se recomienda usar validación cruzada para elegir el número de componentes",
+  "❌ Si las proyecciones no separan bien las clases o hay mucho ruido"
+)
+
+detalles <- c(
+  "Modelo supervisado de clasificación basado en PLS (Partial Least Squares) que proyecta los datos para maximizar la separación entre clases.",
+  "Se requiere que la variable dependiente sea categórica. PLS-DA funciona bien con 2 o más clases.",
+  "Las variables predictoras deben ser numéricas para que el modelo pueda proyectarlas en componentes latentes.",
+  "El modelo encuentra combinaciones de predictores que mejor separan las clases en el espacio proyectado.",
+  "No se evalúa normalidad de residuos como en modelos de regresión; la salida es de clasificación.",
+  "Tampoco aplica la independencia clásica de errores ya que se clasifican observaciones.",
+  "El supuesto de homoscedasticidad no es relevante aquí.",
+  "Outliers pueden afectar la construcción de componentes, distorsionando la separación de clases.",
+  "PLS-DA es útil cuando los predictores están altamente correlacionados, ya que crea componentes ortogonales.",
+  "Los componentes no son directamente interpretables como las variables originales, aunque se pueden analizar los pesos de carga.",
+  "Es un algoritmo relativamente eficiente, especialmente para conjuntos con muchas variables.",
+  "La validación cruzada es crítica para seleccionar el número óptimo de componentes y evitar overfitting.",
+  "No funciona bien si las clases no están bien separadas en el espacio proyectado o si hay demasiado ruido en los datos."
+)
+
+tabla_plsda <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_plsda %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir PLSDA",
+             subtitle = "Partial Least Squares Discriminant Analysis (PLSDA)")  %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
 ```
 
 ## Mixture Discriminant Analysis (MDA)  {-}  
 
 ```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
 
+aplica <- c(
+  "✅ Supervisado (clasificación)",
+  "✅ Categórica (clases)",
+  "✅ Numéricas",
+  "✅ No lineal (usa mezclas de gaussianas para modelar clases)",
+  "❌ No aplica como en regresión",
+  "❌ No se evalúa como en regresión",
+  "⚠️ Supone varianza homogénea dentro de componentes, pero puede variar entre clases",
+  "⚠️ Puede ser sensible a outliers (afectan las medias y covarianzas)",
+  "⚠️ Puede verse afectado, aunque usa reducción dimensional",
+  "⚠️ Moderadamente interpretable (depende de componentes gaussianos)",
+  "⚠️ Más lento que LDA/QDA, pero más flexible",
+  "✅ Recomendable para elegir número de componentes y evitar sobreajuste",
+  "❌ Mal desempeño si la distribución dentro de clases no es bien modelada por gaussianas"
+)
+
+detalles <- c(
+  "Modelo supervisado de clasificación que combina regresión discriminante con mezclas gaussianas dentro de cada clase.",
+  "Se usa para clasificar observaciones en grupos definidos por una variable categórica.",
+  "Requiere predictores numéricos para ajustar distribuciones normales multivariadas.",
+  "Modela cada clase como una combinación de distribuciones gaussianas, permitiendo formas no lineales.",
+  "No hay residuos como en regresión, ya que se trata de una tarea de clasificación.",
+  "No evalúa independencia clásica de errores; se enfoca en estimar la densidad condicional.",
+  "Permite varianza distinta entre componentes, pero se puede ajustar homogeneidad según implementación.",
+  "Outliers pueden afectar las medias y varianzas estimadas de las mezclas gaussianas.",
+  "La multicolinealidad puede dificultar la estimación de matrices de covarianza.",
+  "Interpretar los componentes internos (medias y pesos) puede ser complejo, pero ofrece buena visualización.",
+  "Es más lento que LDA o QDA por su naturaleza iterativa y uso de EM (Expectation-Maximization).",
+  "Se puede usar validación cruzada para seleccionar el número óptimo de mezclas por clase.",
+  "Si las clases no se ajustan bien a combinaciones de gaussianas, el modelo pierde precisión."
+)
+
+tabla_mda <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_mda %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir MDA",
+             subtitle = "Mixture Discriminant Analysis (MDA)")  %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
 ```
 
 
-## Quadratic Discriminant Analysis  {-}  
+## Quadratic Discriminant Analysis (QDA) {-}  
 
 ```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
 
+aplica <- c(
+  "✅ Supervisado (clasificación)",
+  "✅ Categórica (clases)",
+  "✅ Numéricas",
+  "✅ Modela separación cuadrática entre clases",
+  "❌ No aplica (clasificación, no regresión)",
+  "❌ No aplica (se asume independencia dentro de clases)",
+  "❌ No se asume homoscedasticidad (cada clase tiene su propia matriz de covarianza)",
+  "⚠️ Puede ser muy sensible a outliers (afectan las matrices de covarianza)",
+  "⚠️ Puede verse afectado, especialmente si hay pocos datos",
+  "✅ Relativamente interpretable (fronteras no lineales entre clases)",
+  "⚠️ Más costoso que LDA; ineficiente con pocos datos o muchas variables",
+  "✅ Recomendado para evitar overfitting, especialmente con pocos datos",
+  "❌ Si hay pocos datos por clase, estimar matrices de covarianza es inestable"
+)
+
+detalles <- c(
+  "Modelo supervisado de clasificación que permite que cada clase tenga su propia matriz de covarianza.",
+  "Se utiliza para predecir a qué clase pertenece una observación con base en sus características.",
+  "Requiere predictores numéricos continuos, ya que calcula medias y covarianzas.",
+  "A diferencia de LDA, permite fronteras no lineales al no asumir varianzas iguales entre clases.",
+  "No tiene residuos como en regresión, por lo que el supuesto de normalidad de errores no aplica.",
+  "No aplica el supuesto de independencia de errores; se enfoca en la distribución conjunta por clase.",
+  "Cada clase tiene su propia varianza y covarianza, lo que lo hace más flexible que LDA.",
+  "Valores extremos pueden distorsionar la estimación de medias y covarianzas de cada clase.",
+  "Multicolinealidad puede dificultar la inversión de la matriz de covarianza en clases pequeñas.",
+  "Los coeficientes y decisiones son interpretables en términos de separaciones estadísticas entre clases.",
+  "Más lento y costoso computacionalmente que LDA, especialmente con muchas variables.",
+  "La validación cruzada ayuda a prevenir sobreajuste y a seleccionar características relevantes.",
+  "Con clases poco representadas o muchas variables, las matrices de covarianza pueden volverse inestables."
+)
+
+tabla_qda <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles) 
+
+tabla_qda %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir QDA",
+             subtitle = "Quadratic Discriminant Analysis (QDA)")  %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
 ```
 
 ## Regularized Discriminant Analysis (RDA)  {-}   
 
 ```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
 
+aplica <- c(
+  "✅ Supervisado (clasificación)",
+  "✅ Categórica (clases)",
+  "✅ Numéricas",
+  "✅ No lineal (transición entre LDA y QDA)",
+  "❌ No aplica (no es un modelo de regresión)",
+  "❌ No aplica directamente",
+  "⚠️ Controla la homoscedasticidad mediante regularización",
+  "⚠️ Puede ser sensible, aunque la regularización reduce impacto",
+  "✅ Reduce impacto mediante regularización de covarianzas",
+  "⚠️ Menos interpretable que LDA/QDA puro, pero con mayor flexibilidad",
+  "✅ Más eficiente que QDA en conjuntos pequeños o ruidosos",
+  "✅ Muy útil para evitar overfitting, sobre todo con validación cruzada",
+  "❌ Puede no mejorar sobre LDA/QDA si no hay problemas de varianza o sobreajuste"
+)
+
+detalles <- c(
+  "Modelo supervisado de clasificación que combina LDA y QDA usando parámetros de regularización.",
+  "Clasifica observaciones en clases discretas basándose en variables numéricas predictoras.",
+  "Requiere variables numéricas para calcular medias y covarianzas por clase.",
+  "Introduce parámetros de mezcla que ajustan la matriz de covarianza hacia la identidad (como ridge) y hacia la covarianza común.",
+  "No genera residuos como un modelo de regresión, por lo tanto el supuesto no aplica.",
+  "No se enfoca en errores independientes, sino en distribuciones de clase.",
+  "La regularización suaviza las diferencias entre covarianzas, mitigando problemas de homoscedasticidad.",
+  "Los valores atípicos pueden influir en la estimación, pero se reduce con regularización.",
+  "Mejor manejo de multicolinealidad que QDA gracias a la matriz regularizada.",
+  "La interpretación depende de los valores de regularización elegidos; más flexible pero menos directa.",
+  "Reduce complejidad computacional respecto a QDA; útil con pocas observaciones por clase.",
+  "Es común usar validación cruzada para seleccionar los parámetros de regularización óptimos.",
+  "No aporta mejoras significativas si los supuestos de LDA o QDA se cumplen perfectamente sin sobreajuste."
+)
+
+tabla_rda <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+
+tabla_rda %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir RDA",
+             subtitle = "Regularized Discriminant Analysis (RDA)")  %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
 ```
 
 
@@ -413,7 +749,74 @@ tabla_pp %>%
 ## Flexible Discriminant Analysis (FDA)  {-}  
 
 ```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
 
+aplica <- c(
+  "✅ Supervisado (clasificación)",
+  "✅ Categórica (clases)",
+  "✅ Numéricas (puede usar transformaciones)",
+  "✅ No lineal (usa regresión flexible en el espacio transformado)",
+  "❌ No aplica (no es regresión de residuos)",
+  "❌ No aplica directamente",
+  "⚠️ FDA suaviza este supuesto al modelar relaciones no lineales",
+  "⚠️ Puede ser sensible a outliers, dependiendo del método de ajuste",
+  "⚠️ Puede mitigar multicolinealidad si se usa penalización",
+  "⚠️ Menos interpretable que LDA, pero permite mayor flexibilidad",
+  "⚠️ Menor eficiencia que LDA por mayor complejidad computacional",
+  "✅ Validación cruzada útil para seleccionar transformaciones o suavizados",
+  "❌ En datos con pocos casos o ruido excesivo puede sobreajustarse"
+)
+
+detalles <- c(
+  "Extensión de LDA que permite relaciones no lineales entre predictores y clases mediante técnicas como splines o regresión flexible.",
+  "Clasifica observaciones en clases categóricas basándose en predictores transformados.",
+  "Admite variables numéricas, las cuales pueden ser transformadas de forma no lineal.",
+  "Usa regresión no lineal flexible (como splines) para modelar relaciones complejas en el espacio de discriminación.",
+  "No genera residuos como regresión tradicional; es un modelo de clasificación.",
+  "No se enfoca en errores secuenciales o dependientes.",
+  "Relaja la homocedasticidad al no asumir distribución gaussiana estricta.",
+  "Puede verse afectado por valores extremos, según el método de suavizado.",
+  "La transformación flexible puede reducir colinealidad, pero no siempre la elimina.",
+  "Los coeficientes y funciones discriminantes pueden ser difíciles de interpretar si se usan transformaciones complejas.",
+  "Mayor costo computacional que LDA, pero más potente en patrones no lineales.",
+  "Se recomienda CV para evaluar desempeño y evitar overfitting en el proceso de ajuste flexible.",
+  "Si los datos no requieren flexibilidad o el tamaño muestral es bajo, FDA puede ser innecesariamente complejo."
+)
+
+tabla_fda <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_fda %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir FDA",
+             subtitle = "Flexible Discriminant Analysis (FDA)")  %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
 ```
 
 
@@ -421,7 +824,74 @@ tabla_pp %>%
 ## Linear Discriminant Analysis (LDA)  {-}   
 
 ```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
 
+aplica <- c(
+  "✅ Supervisado (clasificación)",
+  "✅ Categórica (clases)",
+  "✅ Numéricas (preferentemente)",
+  "✅ Asume relaciones lineales entre variables y clases",
+  "✅ Supone normalidad multivariante de los predictores dentro de cada clase",
+  "✅ Supone independencia entre observaciones",
+  "✅ Asume varianza-covarianza igual entre clases (homocedasticidad)",
+  "⚠️ Sensible a valores atípicos",
+  "⚠️ Puede verse afectado negativamente por alta colinealidad",
+  "✅ Alta, coeficientes discriminantes son interpretables",
+  "✅ Muy eficiente computacionalmente",
+  "✅ Se recomienda para evaluar estabilidad y evitar sobreajuste",
+  "❌ Mal desempeño si no se cumplen supuestos de normalidad y homocedasticidad"
+)
+
+detalles <- c(
+  "Modelo supervisado clásico para clasificación que encuentra combinaciones lineales de predictores que separan clases.",
+  "Requiere una variable categórica como objetivo, con dos o más clases.",
+  "Mejor con predictores numéricos continuos; categóricos requieren codificación previa.",
+  "Calcula funciones discriminantes lineales que maximizan la separación entre clases.",
+  "Cada grupo debe seguir una distribución normal multivariante para resultados óptimos.",
+  "Las observaciones deben ser independientes para validez de inferencia.",
+  "Supone igual matriz de covarianzas entre grupos; si no se cumple, usar QDA.",
+  "Outliers influyen en la media y la varianza estimada, distorsionando fronteras.",
+  "Multicolinealidad puede hacer que los coeficientes discriminantes sean inestables.",
+  "Las funciones discriminantes se interpretan como direcciones de máxima separación.",
+  "Requiere bajo costo computacional y se entrena rápidamente.",
+  "Se puede usar validación cruzada para elegir el número de componentes o verificar precisión.",
+  "Cuando los datos no cumplen normalidad ni homocedasticidad, el modelo pierde precisión."
+)
+
+tabla_lda <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_lda %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir LDA",
+             subtitle = "Linear Discriminant Analysis (LDA)")  %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
 ```
 
 
