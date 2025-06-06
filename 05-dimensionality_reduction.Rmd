@@ -11,7 +11,24 @@
 
 ---
 
-## Principal Component Analysis (PCA)  {-}  
+## Principal Component Analysis (PCA)  {-}   
+
+**Principal Component Analysis (PCA)** es una técnica fundamental de **reducción de dimensionalidad** no supervisada que se utiliza para transformar un conjunto de variables posiblemente correlacionadas en un conjunto de variables no correlacionadas llamadas **componentes principales**. La idea fundamental de PCA es identificar las direcciones (ejes) en el espacio de los datos a lo largo de las cuales la **varianza de los datos es máxima**. Estas nuevas direcciones son ortogonales entre sí y representan la mayor parte de la información (varianza) contenida en el conjunto de datos original con un número reducido de dimensiones.
+
+El proceso de PCA generalmente implica los siguientes pasos:
+
+1.  **Estandarización de los Datos:** Es crucial estandarizar los datos (centrar en cero y escalar a varianza unitaria) antes de aplicar PCA, ya que PCA es sensible a la escala de las variables.
+2.  **Cálculo de la Matriz de Covarianza:** Se calcula la matriz de covarianza de los datos estandarizados, que describe la relación entre cada par de variables.
+3.  **Cálculo de Eigenvalores y Eigenvectores:** Se calculan los **eigenvalores** y **eigenvectores** de la matriz de covarianza.
+    * Los **eigenvectores** representan las **direcciones de los componentes principales** (los nuevos ejes en el espacio de los datos). El primer eigenvector corresponde a la dirección de mayor varianza, el segundo a la segunda mayor varianza, y así sucesivamente.
+    * Los **eigenvalores** corresponden a la **magnitud de la varianza** a lo largo de cada eigenvector. Un eigenvalor más grande indica que el componente principal asociado explica una mayor proporción de la varianza total de los datos.
+4.  **Selección de Componentes Principales:** Se ordenan los eigenvalores de mayor a menor y se seleccionan los $k$ eigenvectores correspondientes a los $k$ eigenvalores más grandes. Estos $k$ eigenvectores forman la nueva base del subespacio dimensional reducido. La elección de $k$ se puede basar en la varianza acumulada deseada o en un gráfico de codo (scree plot).
+5.  **Proyección de Datos:** Finalmente, se proyectan los datos originales sobre estos $k$ componentes principales para obtener un nuevo conjunto de datos con menor dimensionalidad pero que retiene la mayor parte de la varianza original.
+
+En el contexto del **aprendizaje global vs. local**, PCA es inherentemente un método de **aprendizaje global**. Busca una transformación lineal que capture la estructura de varianza **global** de todo el conjunto de datos. No divide el problema en subproblemas locales ni se enfoca en regiones específicas de los datos. La idea es que, si los datos no se distribuyen linealmente, PCA (en su forma lineal) **no puede capturar relaciones no lineales complejas** de manera efectiva. Está limitado a encontrar las direcciones ortogonales de máxima varianza en un espacio lineal.
+
+A diferencia de LOESS, que aplica una forma de regresión ponderada localmente para ajustar curvas suaves en datos no lineales, PCA no está diseñado para eso. Precisamente porque busca una representación lineal global, si la estructura subyacente de los datos es intrínsecamente no lineal, PCA puede no ser capaz de proporcionar una reducción de dimensionalidad suficientemente buena o capturar las relaciones esenciales. En tales casos, se recurre a técnicas de reducción de dimensionalidad no lineal como t-SNE o UMAP, o a variantes de PCA como Kernel PCA. No obstante, PCA sigue siendo una herramienta fundamental y muy útil para la visualización de datos, la reducción de ruido y la preparación de datos para otros algoritmos, especialmente cuando la varianza se explica bien por relaciones lineales o cuando la dimensionalidad es un problema para la eficiencia computacional.
+
 
 ```{r, echo = FALSE}
 criterios <- c(
@@ -84,7 +101,30 @@ tabla_pca %>%
          as_raw_html() 
 ```
 
-## Partial Least Squares Regression (PLSR)  {-}   
+## Partial Least Squares Regression (PLSR)  {-}    
+
+**Partial Least Squares Regression (PLSR)** es una técnica de **regresión multivariada** que combina características de la **regresión por mínimos cuadrados ordinarios (OLS)** y el **análisis de componentes principales (PCA)**. Se utiliza para modelar la relación entre un conjunto de variables predictoras (X) y uno o más conjuntos de variables de respuesta (Y), siendo particularmente útil en situaciones donde hay un gran número de variables predictoras, **multicolinealidad** (altas correlaciones entre las variables predictoras), o cuando el número de predictoras excede el número de observaciones.
+
+La idea fundamental de PLSR es encontrar un conjunto de **componentes latentes** (también conocidos como "factores" o "variables latentes") tanto en el espacio de las variables X como en el de las variables Y. Estos componentes se construyen de tal manera que **maximizan la covarianza** entre las variables predictoras y las variables de respuesta. A diferencia de PCA, que solo busca componentes que expliquen la máxima varianza en X, PLSR busca componentes que sean relevantes para explicar la varianza en X *y* que también estén altamente correlacionados con Y. Una vez que se extraen estos componentes, se realiza una regresión de mínimos cuadrados ordinarios de Y sobre estos componentes latentes.
+
+El proceso general de PLSR implica:
+
+1.  **Extracción de Componentes Latentes:** PLSR construye iterativamente un conjunto de componentes latentes. En cada paso:
+    * Identifica una combinación lineal de las variables X (un componente de X) y una combinación lineal de las variables Y (un componente de Y) que tienen la mayor covarianza entre sí.
+    * Estos componentes representan las direcciones en el espacio de datos que explican la mayor cantidad de la relación entre X y Y.
+    * Una vez que se extrae un componente, la varianza explicada por ese componente se "deflacta" (se elimina) de las matrices X e Y, y el proceso se repite con los residuos para encontrar el siguiente componente ortogonal.
+2.  **Regresión:** Una vez que se ha determinado el número óptimo de componentes latentes (a menudo a través de validación cruzada), se realiza una regresión lineal estándar de las variables Y sobre estos componentes latentes de X.
+
+**Ventajas clave de PLSR:**
+
+* **Manejo de Multicolinealidad:** Es muy efectivo en la reducción de dimensionalidad y el manejo de predictoras altamente correlacionadas, donde la regresión OLS fallaría o produciría estimaciones inestables.
+* **Manejo de Datos de Alta Dimensionalidad:** Funciona bien cuando el número de variables predictoras es mayor que el número de observaciones.
+* **Enfoque Predictivo:** Se centra en desarrollar modelos con una fuerte capacidad predictiva.
+
+En el contexto del **aprendizaje global vs. local**, PLSR es un algoritmo de **aprendizaje global**. Busca una transformación lineal global de los datos originales en un espacio de componentes latentes, donde se maximiza la covarianza entre los conjuntos de variables predictoras y de respuesta. La relación que modela es una relación lineal global en este espacio transformado.
+
+Si bien PLSR no es un método de **regresión ponderada localmente** como LOESS (que ajusta modelos simples a subconjuntos locales de datos), comparte con ellos el objetivo de modelar relaciones complejas. Sin embargo, lo hace de una manera diferente. En lugar de dividir el espacio de características y aplicar modelos locales, PLSR transforma el espacio de características de forma global para encontrar una representación de menor dimensionalidad que sea óptima para la predicción. Cuando los datos no se distribuyen linealmente, PLSR puede no ser la herramienta más adecuada en su forma lineal básica, ya que sigue siendo una técnica lineal. Sin embargo, al encontrar las direcciones más relevantes en el espacio de los datos, puede capturar aspectos importantes de la estructura de los datos que son útiles incluso si la relación subyacente es no lineal. Para manejar la no linealidad explícitamente, existen extensiones como **Nonlinear Partial Least Squares (NPLS)** o **Kernel PLS (KPLS)**, que introducen funciones kernel para mapear los datos a un espacio de características de mayor dimensión donde la relación podría ser linealmente modelable por PLS.
+
 
 ```{r, echo = FALSE}
 criterios <- c(
@@ -157,7 +197,22 @@ tabla_plsr %>%
          as_raw_html() 
 ```
 
-## Sammon Mapping  {-}  
+## Sammon Mapping  {-}   
+
+**Sammon Mapping**, también conocida como **Sammon's Nonlinear Mapping (NLM)**, es una técnica de **reducción de dimensionalidad no lineal** utilizada principalmente para **visualización de datos**. La idea fundamental de Sammon Mapping es proyectar un conjunto de datos de un espacio de alta dimensión a un espacio de menor dimensión (típicamente 2D o 3D) de tal manera que se preserve lo mejor posible la **estructura de las distancias entre los puntos** del espacio original. Es decir, si dos puntos estaban cerca en el espacio de alta dimensión, se espera que también estén cerca en el espacio de baja dimensión, y viceversa.
+
+A diferencia de técnicas lineales como PCA, que se enfocan en preservar la varianza o la covarianza, Sammon Mapping se centra en preservar las **distancias por pares** entre los puntos. Para lograr esto, utiliza un algoritmo iterativo que busca minimizar una **función de error de Sammon**. Esta función mide la diferencia entre las distancias por pares en el espacio de alta dimensión y las distancias correspondientes en el espacio de baja dimensión, ponderando más los errores para los puntos que están más cerca en el espacio original. Esto significa que Sammon Mapping presta especial atención a preservar la estructura local del conjunto de datos.
+
+La función de error de Sammon ($E$) se define como:
+$$E = \frac{1}{\sum_{i < j} d_{ij}^* } \sum_{i < j} \frac{(d_{ij}^* - d_{ij})^2}{d_{ij}^*}$$
+Donde:
+* $d_{ij}^*$ es la distancia euclidiana entre el punto $i$ y el punto $j$ en el espacio de alta dimensión.
+* $d_{ij}$ es la distancia euclidiana entre el punto $i$ y el punto $j$ en el espacio de baja dimensión.
+
+El algoritmo busca iterativamente las coordenadas de los puntos en el espacio de baja dimensión que minimizan esta función de error, utilizando un método de **descenso de gradiente**.
+
+En el contexto del **aprendizaje global vs. local**, Sammon Mapping es una técnica que busca un compromiso entre la preservación de la estructura **local** y **global** de los datos. Sin embargo, su énfasis en ponderar los errores de las distancias pequeñas (puntos cercanos) hace que sea más sensible a la **estructura local** del conjunto de datos. La idea es que, si los datos no se distribuyen linealmente, Sammon Mapping puede generar una representación en baja dimensión que revele agrupaciones y patrones que no serían evidentes con técnicas lineales como PCA. A diferencia de un método de regresión ponderada localmente como LOESS, que se enfoca en ajustar una curva, Sammon Mapping se dedica a la visualización de la estructura de similitud. Al intentar preservar las relaciones de distancia no lineales, aborda directamente la desventaja de que "a veces ningún valor de parámetro puede proporcionar una aproximación suficientemente buena" en las proyecciones lineales, ya que se adapta a la curvatura y la estructura intrínseca no lineal de los datos para ofrecer una visualización más fiel. Aunque puede ser computacionalmente intensivo para conjuntos de datos muy grandes, es una herramienta valiosa para explorar la estructura oculta en datos complejos.
+
 
 ```{r, echo = FALSE}
 criterios <- c(
@@ -231,7 +286,28 @@ tabla_sammon %>%
          as_raw_html() 
 ```
 
-## Multidimensional Scaling (MDS)  {-}   
+## Multidimensional Scaling (MDS)  {-}    
+
+
+**Multidimensional Scaling (MDS)** es una técnica de **reducción de dimensionalidad** utilizada principalmente para la **visualización de datos** y el análisis exploratorio. La idea fundamental de MDS es representar un conjunto de objetos (puntos de datos) en un espacio de baja dimensión (típicamente 2D o 3D) de tal manera que las **distancias o disimilitudes entre los objetos en el espacio de baja dimensión reflejen lo más fielmente posible sus distancias o disimilitudes originales** en el espacio de alta dimensión o en función de una matriz de disimilitudes dada.
+
+A diferencia de PCA, que opera directamente sobre una matriz de datos original (variables x observaciones), MDS típicamente toma como entrada una **matriz de disimilitud** (o similitud) entre cada par de objetos. Esta matriz de disimilitud puede ser calculada a partir de las características de los objetos (ej., distancia euclidiana, distancia de Manhattan) o puede ser una medida subjetiva de disimilitud (ej., juicios humanos sobre la similitud entre productos).
+
+Existen varias variantes de MDS, pero las más comunes son:
+
+1.  **MDS Clásico (PCoA - Principal Coordinates Analysis):** Es la forma más básica de MDS. Asume que las disimilitudes son distancias euclidianas y es matemáticamente equivalente a PCA cuando se trabaja con una matriz de covarianza derivada de datos centrados. Sin embargo, su input es una matriz de disimilitudes, no directamente los datos originales.
+2.  **MDS Métrica:** Minimiza una función de costo que mide la diferencia entre las disimilitudes observadas y las distancias en el espacio de baja dimensión. Utiliza una métrica de distancia específica (ej., euclidiana).
+3.  **MDS No Métrica:** Es más flexible y se utiliza cuando las disimilitudes originales son solo de naturaleza ordinal (es decir, solo sabemos que un par es "más disímil" que otro, pero no la magnitud exacta de la diferencia). En lugar de preservar las distancias exactas, intenta preservar el **orden de las disimilitudes**. Minimiza una función de costo que mide la monotonía de la relación entre las disimilitudes originales y las distancias en el espacio de baja dimensión.
+
+El algoritmo MDS busca iterativamente las coordenadas de los puntos en el espacio de baja dimensión que minimizan una **función de estrés (stress function)** o **función de ajuste (badness-of-fit function)**. Esta función cuantifica qué tan bien las distancias en la representación de baja dimensión se ajustan a las disimilitudes originales.
+
+En el contexto del **aprendizaje global vs. local**, MDS es un sistema que busca una representación **global** de la estructura de las distancias. A diferencia de LOESS, que ajusta modelos a subconjuntos locales de datos, MDS intenta preservar la totalidad de las relaciones de disimilitud en una proyección de menor dimensión. Sin embargo, su capacidad para manejar la no linealidad depende de la variante:
+
+* **MDS Clásico/Métrico** son esencialmente métodos **lineales** en cuanto a la forma en que proyectan las distancias. Si los datos no se distribuyen linealmente y sus disimilitudes no son bien representadas por distancias euclidianas en un espacio de baja dimensión lineal, estos métodos pueden no proporcionar una buena visualización de la estructura intrínseca. En este sentido, "a veces ningún valor de parámetro puede proporcionar una aproximación suficientemente buena" si la relación subyacente es fuertemente no lineal.
+* **MDS No Métrica**, al preservar el orden de las disimilitudes en lugar de las magnitudes exactas, tiene una capacidad mucho mayor para descubrir y visualizar **estructuras no lineales** en los datos. Se adapta a la forma en que las disimilitudes se "escalan" y, por lo tanto, puede ser visto como un método que busca una representación de función global que acomoda la no linealidad inherente en las relaciones de disimilitud.
+
+En resumen, MDS es una herramienta poderosa para revelar la estructura latente en conjuntos de datos basándose en sus disimilitudes, y su variante no métrica es particularmente valiosa cuando se sospecha que las relaciones subyacentes son no lineales. 
+
 
 ```{r, echo = FALSE}
 criterios <- c(
@@ -304,7 +380,26 @@ tabla_mds %>%
          as_raw_html() 
 ```
 
-## Projection Pursuit (PP)  {-}   
+## Projection Pursuit (PP)  {-}    
+
+**Projection Pursuit (PP)** es una técnica de **reducción de dimensionalidad y modelado exploratorio** utilizada para encontrar proyecciones interesantes de datos de alta dimensión en espacios de baja dimensión (típicamente 1D o 2D). La idea fundamental de Projection Pursuit es que, en datos de alta dimensión, las estructuras interesantes (como agrupaciones, frentes, o anomalías) a menudo se ocultan cuando se observan solo las proyecciones marginales de las variables individuales. PP busca **proyecciones "interesantes"** que revelen estas estructuras no gaussianas y no lineales, que podrían pasar desapercibidas con técnicas lineales como PCA.
+
+A diferencia de PCA, que busca las proyecciones que maximizan la varianza (lo cual es óptimo si los datos son elipsoidales o gaussianos), PP busca proyecciones que se desvían de la distribución normal. Esto se logra mediante la definición de una **función de "índice de proyección"** que cuantifica la "interesante" o "no-gaussiana" de una proyección. El algoritmo entonces busca activamente las direcciones que maximizan este índice.
+
+El proceso general de Projection Pursuit es iterativo:
+
+1.  **Definición del Índice de Proyección:** Se elige una función de índice de proyección que penalice la normalidad y recompense las desviaciones (ej., asimetría, curtosis, o medidas basadas en entropía). Por ejemplo, un índice de proyección podría buscar distribuciones multimodales o con colas pesadas.
+2.  **Optimización:** El algoritmo utiliza técnicas de optimización numérica (como descenso de gradiente) para encontrar la dirección de proyección (un vector que define la combinación lineal de las características originales) que maximiza el índice de proyección.
+3.  **Extracción de Componentes:** Una vez que se encuentra una proyección interesante, los datos se proyectan sobre esta dirección. A menudo, el proceso se repite para encontrar proyecciones ortogonales adicionales, cada una revelando diferentes aspectos de la estructura de los datos.
+
+**Aplicaciones de PP:**
+
+* **Visualización de Datos:** Para encontrar proyecciones 1D o 2D que revelen patrones o agrupaciones.
+* **Clasificación y Regresión:** Puede ser una etapa de preprocesamiento para encontrar características más informativas, o incluso puede ser la base para construir modelos (como en **Projection Pursuit Regression - PPR**).
+
+En el contexto del **aprendizaje global vs. local**, Projection Pursuit es una técnica que busca descubrir y modelar estructuras **globales** interesantes en los datos a través de una serie de **proyecciones lineales, pero la combinación de estas proyecciones para capturar la no linealidad es la clave**. Aunque las proyecciones individuales son lineales, el proceso de buscar iterativamente las proyecciones "más interesantes" y luego combinarlas permite a PP descubrir y representar relaciones **no lineales** en el conjunto de datos.
+
+Si los datos no se distribuyen linealmente, PP es una herramienta poderosa porque **no asume linealidad** en la estructura subyacente. En lugar de ello, busca activamente las direcciones que revelan la no linealidad y la no-gaussianidad. Esto es precisamente lo que lo diferencia de PCA. La idea de que "si los datos no se distribuyen linealmente, se puede aplicar el concepto de regresión de manera ponderada localmente" es algo que PPR (una extensión de PP para regresión) aborda. PPR construye un modelo como una suma de funciones suaves no lineales de varias proyecciones uni-dimensionales de los predictores, lo que permite capturar relaciones complejas que no pueden ser modeladas por una regresión lineal simple. Por lo tanto, Projection Pursuit aborda la limitación de que "a veces ningún valor de parámetro puede proporcionar una aproximación suficientemente buena" en modelos lineales o simples, al buscar activamente y explotar las características no lineales y de "interés" en las proyecciones de los datos.
 
 ```{r, echo = FALSE}
 criterios <- c(
@@ -377,7 +472,33 @@ tabla_pp %>%
          as_raw_html() 
 ```
 
-## Principal Component Regression (PCR)  {-}   
+## Principal Component Regression (PCR)  {-}    
+
+**Principal Component Regression (PCR)** es una técnica de **regresión** que aborda el problema de la **multicolinealidad** (altas correlaciones entre las variables predictoras) en la regresión lineal. La idea fundamental de PCR es utilizar el **Análisis de Componentes Principales (PCA)** como un paso previo a la regresión. En lugar de realizar la regresión directamente sobre las variables predictoras originales, PCR primero transforma las variables predictoras en un conjunto de **componentes principales no correlacionados** y luego realiza la regresión sobre un subconjunto de estos componentes.
+
+El proceso de Principal Component Regression consta de los siguientes pasos:
+
+1.  **Análisis de Componentes Principales (PCA) en las Predictoras:**
+    * Primero, se aplica PCA **únicamente a las variables predictoras ($X$)**. Esto genera un nuevo conjunto de variables, los **componentes principales**, que son combinaciones lineales ortogonales de las predictoras originales.
+    * Los componentes principales se ordenan por la cantidad de varianza que explican en las variables $X$. El primer componente explica la mayor varianza, el segundo la siguiente mayor varianza, y así sucesivamente.
+
+2.  **Selección de Componentes Principales:**
+    * Se selecciona un subconjunto de los componentes principales (normalmente los primeros $k$ componentes que explican una gran proporción de la varianza total en $X$, o que se consideran más relevantes). La elección de $k$ es crucial y a menudo se determina mediante validación cruzada.
+    * Es importante destacar que, a diferencia de PLSR (Partial Least Squares Regression), PCA en PCR solo considera la varianza de las variables predictoras, no su relación con la variable de respuesta.
+
+3.  **Regresión Lineal Múltiple:**
+    * Finalmente, se realiza una **regresión lineal múltiple** estándar de la variable de respuesta ($Y$) sobre el subconjunto seleccionado de componentes principales. Dado que los componentes principales son ortogonales (no correlacionados), los problemas de multicolinealidad se eliminan eficazmente.
+
+**Ventajas clave de PCR:**
+
+* **Manejo de Multicolinealidad:** Elimina el problema de la multicolinealidad, lo que lleva a estimaciones de coeficientes más estables y una mejor interpretabilidad en el contexto de los componentes principales.
+* **Reducción de Dimensionalidad:** Puede ser muy útil cuando hay un gran número de variables predictoras, ya que permite trabajar con un conjunto reducido de componentes que capturan la mayor parte de la información.
+* **Reducción de Ruido:** Al centrarse en los componentes que explican la mayor varianza, puede ayudar a reducir el impacto del ruido en las variables predictoras.
+
+En el contexto del **aprendizaje global vs. local**, Principal Component Regression es un método de **aprendizaje global**. PCA (la primera etapa de PCR) busca una transformación lineal **global** de los datos que capture la máxima varianza. La regresión posterior también es un modelo lineal global sobre estos componentes transformados.
+
+Si bien PCR es una mejora sobre la regresión OLS cuando hay multicolinealidad, sigue siendo fundamentalmente un método **lineal**. La idea es que, si los datos no se distribuyen linealmente, PCR, en su forma lineal, **no puede capturar relaciones no lineales complejas** entre las variables originales y la variable de respuesta. Su capacidad para manejar la no linealidad es limitada a lo que puede ser capturado por las combinaciones lineales de las características originales. Precisamente porque busca una relación lineal global en un espacio transformado linealmente, puede enfrentar la situación de que "a veces ningún valor de parámetro puede proporcionar una aproximación suficientemente buena" si la relación subyacente entre las variables predictoras y la variable de respuesta es intrínsecamente no lineal. Para tales casos, se necesitarían métodos de regresión no lineal o algoritmos de *machine learning* que puedan modelar la no linealidad, como los árboles de decisión, SVM con kernels no lineales, o redes neuronales.
+
 
 ```{r, echo = FALSE}
 criterios <- c(
