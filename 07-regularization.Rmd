@@ -14,7 +14,74 @@
 ## Ridge Regression  {-}   
 
 ```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
 
+aplica <- c(
+  "✅ Supervisado (regresión)",
+  "✅ Numérica continua",
+  "✅ Numéricas (requiere estandarización)",
+  "✅ Lineal (como OLS)",
+  "⚠️ Supuesto deseable pero no estricto",
+  "✅ Supuesto necesario",
+  "✅ Supuesto necesario",
+  "⚠️ Puede verse afectado, pero menos que OLS",
+  "✅ Diseñado para mitigarla mediante penalización",
+  "⚠️ Menos interpretable que OLS (coeficientes sesgados)",
+  "✅ Eficiente incluso con muchas variables",
+  "✅ Requiere validación para ajustar parámetro lambda",
+  "❌ Si la relación no es lineal o hay muchas variables irrelevantes"
+)
+
+detalles <- c(
+  "Extensión de la regresión lineal que agrega penalización L2 para reducir sobreajuste y manejar multicolinealidad.",
+  "Se utiliza cuando se desea predecir una variable numérica continua.",
+  "Las variables deben ser numéricas y estar estandarizadas para que la penalización tenga sentido.",
+  "Asume relación lineal entre predictores y variable respuesta, como la regresión lineal.",
+  "La normalidad es deseable para inferencia, pero no indispensable para predicción.",
+  "Se espera independencia entre observaciones para que el modelo sea válido.",
+  "Es importante que los errores tengan varianza constante para predicciones fiables.",
+  "Reduce varianza, pero valores extremos aún pueden afectar los resultados.",
+  "La penalización reduce varianza al achicar coeficientes, útil con predictores correlacionados.",
+  "Coeficientes penalizados dificultan la interpretación directa, pero mejoran estabilidad.",
+  "Rápido y adecuado para problemas con muchas variables; incluso p > n.",
+  "Se usa validación cruzada para elegir el mejor valor de lambda (parámetro de regularización).",
+  "No se recomienda cuando la relación entre variables es no lineal o se requiere interpretación clara."
+)
+
+tabla_ridge <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_ridge %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir ridge",
+             subtitle = "Ridge Regression")  %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
 ```
 
 
