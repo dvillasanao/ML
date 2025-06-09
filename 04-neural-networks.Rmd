@@ -742,5 +742,77 @@ tabla_transformers %>%
 ```
 
 
+## Autoenconder  {-}  
+
+```{r}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica <- c(
+  "❌ No supervisado (aprendizaje no supervisado)",
+  "❌ No aplica (no hay variable respuesta)",
+  "✅ Numéricas (o categóricas codificadas)",
+  "✅ Captura relaciones complejas y no lineales",
+  "❌ No aplica (no es un modelo de regresión)",
+  "❌ No aplica (no hay errores residuales)",
+  "❌ No aplica",
+  "✅ Sí, pueden afectar la reconstrucción",
+  "✅ Puede ayudar a reducir efectos de multicolinealidad",
+  "⚠️ Baja interpretabilidad (representaciones latentes)",
+  "⚠️ Lento en entrenamiento, especialmente con muchas capas o datos",
+  "⚠️ Se puede validar con reconstrucción y autoevaluación",
+  "❌ Datos con mucha dispersión o sin estructura latente clara"
+)
+
+detalles <- c(
+  "Red neuronal no supervisada que aprende a codificar y decodificar los datos para reducir dimensionalidad o detectar anomalías.",
+  "No predice una variable externa, sino que reproduce la entrada como salida.",
+  "Requiere variables numéricas (o una codificación previa en caso de categóricas).",
+  "Es capaz de capturar estructuras complejas y no lineales al comprimir los datos.",
+  "No tiene residuos como un modelo clásico, pero sí errores de reconstrucción.",
+  "No modela errores independientes, ya que no es un modelo predictivo tradicional.",
+  "Tampoco se evalúa homoscedasticidad, ya que no hay predicción como tal.",
+  "Outliers distorsionan el entrenamiento, especialmente si no se normaliza.",
+  "Ayuda a eliminar redundancias en los datos si están correlacionados.",
+  "Las capas internas (representaciones) no son directamente interpretables.",
+  "Requiere entrenamiento con varias iteraciones y puede tardar con arquitecturas grandes.",
+  "Se evalúa con pérdida de reconstrucción o aplicando validación cruzada si se integra en modelos supervisados.",
+  "Pierde eficacia si los datos no tienen una estructura latente útil para codificar."
+)
+
+tabla_autoencoder <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_autoencoder %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir autoencoder",
+             subtitle = "Autoenconder")  %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
+```
 
 

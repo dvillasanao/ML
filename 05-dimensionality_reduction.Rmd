@@ -1015,4 +1015,76 @@ tabla_lda %>%
          as_raw_html() 
 ```
 
+## Uniform Manifold Approximation and Projection (UMAP) {-}  
+
+```{r}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica <- c(
+  "❌ No supervisado (reducción de dimensionalidad)",
+  "❌ No aplica (no hay variable respuesta)",
+  "✅ Numéricas (o categóricas codificadas)",
+  "✅ Captura relaciones no lineales y estructura local/global",
+  "❌ No aplica",
+  "❌ No aplica",
+  "❌ No aplica",
+  "⚠️ Algo sensible a outliers (puede distorsionar estructuras)",
+  "⚠️ No afecta directamente (no hay predictores)",
+  "⚠️ Visual en 2D o 3D; difícil interpretación formal",
+  "✅ Muy rápido incluso en grandes conjuntos de datos",
+  "⚠️ No usa validación cruzada clásica, pero puede evaluarse la estabilidad",
+  "❌ Datos con mucho ruido, escalas mal ajustadas o sin estructura latente clara"
+)
+
+detalles <- c(
+  "Técnica no supervisada de reducción de dimensionalidad que preserva tanto estructura local como global de los datos.",
+  "No busca predecir, sino proyectar observaciones a un espacio de menor dimensión.",
+  "Funciona con datos numéricos; variables categóricas deben ser codificadas antes.",
+  "A diferencia de PCA, puede descubrir relaciones no lineales más complejas.",
+  "No genera residuos; no aplica el supuesto de normalidad.",
+  "No hay modelo de error residual, por lo que no aplica la independencia.",
+  "No es un modelo predictivo, así que no se evalúa homoscedasticidad.",
+  "Outliers pueden influir en el mapa de manera desproporcionada.",
+  "Como es una técnica de reducción, la multicolinealidad no le afecta directamente.",
+  "La interpretación se limita a la distribución visual de puntos.",
+  "UMAP es computacionalmente eficiente y escalable a grandes volúmenes de datos.",
+  "No utiliza validación cruzada directa, pero puede evaluarse la estabilidad de la proyección.",
+  "Cuando no existe una estructura clara en los datos, la proyección puede ser confusa o poco útil."
+)
+
+tabla_umap <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_umap %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir UMAP",
+             subtitle = "Uniform Manifold Approximation and Projection (UMAP)")  %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
+```
 
