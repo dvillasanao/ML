@@ -14,27 +14,295 @@
 ## k - Nearest Neighbour (kNN)  {-}   
 
 ```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
 
+aplica <- c(
+  "✅ Supervisado (clasificación y regresión)",
+  "✅ Numérica (regresión) o categórica (clasificación)",
+  "✅ Numéricas (preferible), aunque puede adaptarse para categóricas",
+  "❌ No asume ninguna forma funcional",
+  "❌ No aplica",
+  "❌ No aplica",
+  "❌ No aplica",
+  "⚠️ Muy sensible a valores atípicos",
+  "⚠️ Problemas si hay predictores muy correlacionados",
+  "⚠️ Difícil de interpretar (modelo basado en instancias)",
+  "❌ Lento con grandes volúmenes (requiere calcular distancias)",
+  "✅ Crucial para elegir el mejor valor de *k*",
+  "❌ No escala bien con datos grandes o con ruido"
+)
+
+detalles <- c(
+  "Modelo no paramétrico que predice en función de la cercanía a ejemplos del conjunto de entrenamiento.",
+  "Se usa tanto para clasificación como para regresión según el tipo de variable objetivo.",
+  "Las variables deben estar en la misma escala; se recomienda estandarizar.",
+  "No asume una relación específica entre variables; se basa en similitud.",
+  "No se ajusta una función, por lo tanto no hay residuos como tal.",
+  "No se estiman errores independientes, ya que no hay función de error explícita.",
+  "No hay regresión residual, por lo tanto este supuesto no aplica.",
+  "Outliers pueden alterar los vecinos más cercanos y afectar la predicción.",
+  "No requiere modelo explícito, pero predictores correlacionados pueden afectar el peso relativo en la distancia.",
+  "Predicción se basa en instancias cercanas, difícil de resumir en una fórmula.",
+  "Requiere calcular distancia para cada predicción → lento con grandes bases.",
+  "Se suele usar validación cruzada para encontrar el número óptimo de vecinos (*k*).",
+  "Alta dimensión, ruido o escalas distintas entre variables afectan el rendimiento del modelo."
+)
+
+tabla_knn <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_knn %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir kNN",
+             subtitle = "k - Nearest Neighbour (kNN)")  %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
 ```
 
 
 ## Learning Vector Quantization (LVQ)  {-}   
 
 ```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
 
+aplica <- c(
+  "✅ Supervisado (clasificación)",
+  "✅ Categórica",
+  "✅ Numéricas (requiere cálculo de distancias)",
+  "❌ No asume relación funcional directa",
+  "❌ No aplica (modelo de clasificación, no regresión)",
+  "❌ No aplica",
+  "❌ No aplica",
+  "⚠️ Sensible a valores extremos (afectan los prototipos)",
+  "⚠️ Variables correlacionadas pueden distorsionar distancias",
+  "⚠️ Intermedio: prototipos ayudan pero no son tan interpretables como reglas",
+  "✅ Rápido después del entrenamiento (dependiendo del número de prototipos)",
+  "✅ Útil para ajustar número y posición de prototipos",
+  "❌ Problemas si los datos no están bien escalados o si hay clases muy desbalanceadas"
+)
+
+detalles <- c(
+  "Técnica supervisada basada en instancias que usa prototipos para representar clases.",
+  "Se usa para tareas de clasificación en donde las clases están etiquetadas.",
+  "Requiere variables numéricas porque se basa en distancias euclidianas para asignación de clases.",
+  "No asume una relación funcional, simplemente asigna una clase basada en el prototipo más cercano.",
+  "No se generan residuos, por tanto la normalidad no se evalúa.",
+  "No hay error estructurado como en modelos de regresión, por lo tanto este supuesto no aplica.",
+  "No se evalúa la varianza de errores ya que no es un modelo de regresión.",
+  "Outliers pueden alterar la posición de los prototipos y generar errores de clasificación.",
+  "Variables altamente correlacionadas pueden sesgar las distancias, lo que afecta la clasificación.",
+  "Aunque los prototipos pueden ofrecer intuición sobre la clase, no son completamente transparentes.",
+  "Después del ajuste de los prototipos, la clasificación es eficiente.",
+  "Es común usar validación cruzada para seleccionar el número y la distribución de los prototipos.",
+  "No es adecuado si las variables están en escalas distintas o si no hay separación clara entre clases."
+)
+
+tabla_lvq <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_lvq %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir LVQ",
+             subtitle = "Learning Vector Quantization (LVQ)")  %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
 ```
 
 
 ## Self - Organizing Map (SOM)  {-} 
 
 ```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
 
+aplica <- c(
+  "❌ No supervisado (reducción de dimensionalidad y clustering)",
+  "❌ No aplica (no hay variable respuesta)",
+  "✅ Numéricas (basado en distancias)",
+  "✅ No lineal (mapea datos de alta dimensión a una grilla)",
+  "❌ No aplica",
+  "❌ No aplica",
+  "❌ No aplica",
+  "⚠️ Puede ser sensible a outliers (afectan la topología de la grilla)",
+  "⚠️ No impacta directamente pero puede distorsionar distancias",
+  "⚠️ Difícil de interpretar (requiere visualizaciones específicas)",
+  "⚠️ Entrenamiento puede ser lento en datasets grandes, luego eficiente",
+  "⚠️ No es tradicional, pero se puede evaluar topología y distorsión",
+  "❌ Mal desempeño si los datos están mal escalados o no hay estructura"
+)
+
+detalles <- c(
+  "Técnica no supervisada que proyecta datos de alta dimensión a una grilla 2D preservando la topología.",
+  "No predice una variable, sino agrupa y organiza datos similares espacialmente.",
+  "Basado en distancias euclidianas entre vectores de características; requiere variables numéricas.",
+  "Preserva relaciones de vecindad: observaciones similares se ubican cerca en la grilla.",
+  "No se generan residuos como en modelos de regresión o clasificación.",
+  "No hay modelo de error; no aplica este supuesto.",
+  "No hay varianza de errores al no haber predicción.",
+  "Outliers pueden alterar las posiciones en la grilla y afectar la interpretación.",
+  "La correlación entre variables puede afectar las distancias y la formación de grupos.",
+  "Interpretación se basa en visualización de mapas de componentes y distancias.",
+  "Entrenamiento iterativo, más lento que PCA pero útil para exploración visual.",
+  "No se usa validación cruzada directa, pero se puede evaluar la topología y mapas de distancia.",
+  "Datos ruidosos, mal escalados o con muchas variables irrelevantes dificultan resultados útiles."
+)
+
+tabla_som <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_som %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir SOM",
+             subtitle = "Self - Organizing Map (SOM)")  %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
 ```
 
 
-## Locally Weigted Learning (LWL)  {-}   
+## Locally Weighted Learning (LWL)  {-}   
 
 ```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
 
+aplica <- c(
+  "✅ Supervisado (regresión o clasificación)",
+  "✅ Numérica o categórica, según tarea",
+  "✅ Numéricas o categóricas (requiere distancias)",
+  "✅ No lineal (ajustes locales en cada predicción)",
+  "⚠️ Depende del modelo local usado (e.g., regresión lineal)",
+  "⚠️ Puede no cumplir si hay dependencia local",
+  "⚠️ Evaluada localmente, varía según vecindario",
+  "✅ Sí, muy sensible a outliers en vecindarios locales",
+  "⚠️ Puede causar inestabilidad en predicciones locales",
+  "⚠️ Difícil de interpretar globalmente, clara localmente",
+  "❌ Lento, necesita recalcular modelo para cada punto",
+  "✅ Sí, especialmente leave-one-out o k-fold por zonas",
+  "❌ Ineficiente con muchos datos o alta dimensión"
+)
+
+detalles <- c(
+  "Modelo supervisado que ajusta un modelo distinto en cada punto de predicción usando los vecinos más cercanos.",
+  "Puede ser regresión (respuesta numérica) o clasificación (respuesta categórica).",
+  "Utiliza variables para calcular distancias a partir de un punto de consulta.",
+  "Ajusta modelos simples en regiones locales, permitiendo capturar relaciones no lineales.",
+  "En regresión local puede requerirse que los residuos sean normales si se desea inferencia.",
+  "Los errores pueden no ser independientes si hay estructuras repetitivas locales.",
+  "La varianza puede cambiar entre zonas del espacio, por lo que se revisa localmente.",
+  "Los valores atípicos pueden sesgar el modelo local si caen cerca del punto de predicción.",
+  "La multicolinealidad puede afectar si el modelo local es lineal, aunque su efecto se restringe localmente.",
+  "La interpretación es clara en zonas locales, pero no se generaliza a toda la muestra.",
+  "Cada predicción entrena un nuevo modelo, lo que es computacionalmente costoso.",
+  "La validación cruzada ayuda a elegir parámetros como el ancho del vecindario (kernel).",
+  "El rendimiento cae en grandes volúmenes de datos o si los datos no presentan estructura local clara."
+)
+
+tabla_lwl <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_lwl %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir LWL",
+             subtitle = "Locally Weighted Learning (LWL)")  %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
 ```
 
