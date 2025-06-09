@@ -1039,7 +1039,7 @@ tabla_rda %>%
 
 ## Uniform Manifold Approximation and Projection (UMAP) {-}  
 
-```{r}
+```{r, echo = FALSE}
 criterios <- c(
   "Tipo de modelo",
   "Variable respuesta",

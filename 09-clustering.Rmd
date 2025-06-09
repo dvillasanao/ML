@@ -11,34 +11,375 @@
 
 ---
 
+## Density-Based Spatial Clustering of Applications with Noise (DBSCAN)  {-}    
+
+```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica <- c(
+  "❌ No supervisado (clustering)",
+  "❌ No aplica (no hay variable respuesta)",
+  "✅ Numéricas (distancias euclidianas u otras métricas)",
+  "✅ Detecta clusters basados en densidad, no forma lineal",
+  "❌ No aplica",
+  "❌ No aplica",
+  "❌ No aplica",
+  "✅ Robusto a outliers (los detecta como ruido)",
+  "⚠️ No afecta directamente (no hay predictores)",
+  "⚠️ Clusters pueden ser arbitrarios, pero es intuitivo identificar ruido",
+  "✅ Razonablemente rápido para conjuntos medianos",
+  "❌ No usa validación cruzada clásica; se evalúa con métricas de clustering",
+  "❌ No funciona bien con clusters de densidades muy diferentes o alta dimensionalidad"
+)
+
+detalles <- c(
+  "Algoritmo de clustering basado en densidad que agrupa puntos cercanos y marca puntos aislados como ruido.",
+  "No busca predecir, sino agrupar observaciones.",
+  "Se basa en distancias; variables numéricas adecuadas; variables categóricas necesitan transformación.",
+  "No asume formas de clusters lineales ni convexas; puede detectar clusters arbitrarios.",
+  "No genera residuos; no aplica normalidad.",
+  "No hay modelo de error residual, no aplica independencia.",
+  "No es un modelo predictivo, no aplica homoscedasticidad.",
+  "Detecta outliers etiquetándolos como ruido, siendo robusto frente a ellos.",
+  "No hay predictores en sentido tradicional, por lo que multicolinealidad no afecta.",
+  "Interpretación basada en grupos densos y puntos aislados (ruido).",
+  "Es eficiente, aunque su rendimiento puede disminuir en alta dimensionalidad.",
+  "No utiliza validación cruzada estándar; evaluación se basa en índices de clustering como Silhouette.",
+  "Dificultades con clusters con diferentes densidades y cuando la dimensionalidad es muy alta."
+)
+
+tabla_dbscan <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_dbscan %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir DBSCAN",
+             subtitle = "Density-Based Spatial Clustering of Applications with Noise (DBSCAN)")  %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
+```
+
+
+## Expectation Maximization (EM) {-}  
+
+```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica <- c(
+  "❌ No supervisado (estimación de parámetros en modelos con datos incompletos o mixtos)",
+  "❌ No aplica directamente (modelo probabilístico)",
+  "✅ Variables numéricas o categóricas según modelo",
+  "✅ Estima parámetros máximos de verosimilitud, puede manejar modelos complejos",
+  "⚠️ Depende del modelo específico usado con EM",
+  "⚠️ Depende del modelo; errores independientes si asume modelo estadístico clásico",
+  "⚠️ Depende del modelo estadístico subyacente",
+  "⚠️ Puede ser sensible a outliers dependiendo del modelo y datos",
+  "⚠️ Depende del modelo y las variables involucradas",
+  "⚠️ La interpretación depende del modelo y parámetros estimados",
+  "❌ Puede ser lento si el modelo es complejo o datos muy grandes",
+  "❌ Validación cruzada depende del modelo, no es intrínseco a EM",
+  "❌ Puede converger a máximos locales; requiere buen punto inicial y modelo adecuado"
+)
+
+detalles <- c(
+  "Algoritmo iterativo para estimar parámetros de modelos estadísticos con datos faltantes o variables latentes.",
+  "No genera predicciones directas, sino estima parámetros para modelos probabilísticos.",
+  "Aplicable a datos numéricos o categóricos dependiendo del modelo (mezcla de Gaussianas, por ejemplo).",
+  "Maximiza la función de verosimilitud de manera iterativa, estimando variables latentes y parámetros.",
+  "La normalidad depende del modelo (por ejemplo, mezcla de Gaussianas asume normalidad).",
+  "Si el modelo asume errores independientes, entonces sí; depende del modelo estadístico usado.",
+  "Homoscedasticidad depende del modelo estadístico subyacente.",
+  "Sensibilidad a outliers varía según la robustez del modelo y datos.",
+  "Multicolinealidad afecta según la estructura del modelo y variables involucradas.",
+  "Interpretación es sobre parámetros estimados y variables latentes, no sobre coeficientes directos.",
+  "Puede requerir muchas iteraciones, afectando velocidad en modelos complejos.",
+  "La validación cruzada depende del modelo aplicado tras la estimación por EM.",
+  "Puede quedarse atrapado en soluciones subóptimas; se recomienda múltiples inicios."
+)
+
+tabla_em <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_em %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir EM",
+             subtitle = "Expectation Maximization (EM)")  %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
+```
+
+## Hierarchical Clustering (hclust) {-}  
+
+```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica <- c(
+  "❌ No supervisado (clustering jerárquico)",
+  "❌ No aplica (no hay variable respuesta)",
+  "✅ Variables numéricas o categóricas (según medida de distancia)",
+  "✅ Agrupa observaciones en base a similitud o distancia",
+  "❌ No aplica",
+  "❌ No aplica",
+  "❌ No aplica",
+  "⚠️ Sensible a valores atípicos que pueden distorsionar distancias",
+  "⚠️ No afecta directamente (no hay predictores ni multicolinealidad)",
+  "✅ Dendrograma facilita interpretación visual de grupos",
+  "⚠️ Puede ser lento en datasets muy grandes",
+  "❌ No se suele usar validación cruzada, pero sí métodos de evaluación interna",
+  "❌ Resultados muy sensibles a elección de distancia y método de enlace"
+)
+
+detalles <- c(
+  "Método no supervisado para agrupar observaciones en una jerarquía basada en distancias.",
+  "No busca predecir, sino identificar grupos o clusters.",
+  "Puede trabajar con variables numéricas y categóricas si se define distancia adecuada.",
+  "Construye dendrograma que muestra agrupamientos sucesivos desde observaciones individuales hasta un solo cluster.",
+  "No genera residuos ni modelo predictivo.",
+  "No hay supuestos de independencia de errores.",
+  "No requiere homoscedasticidad.",
+  "Valores atípicos pueden alterar significativamente la estructura del dendrograma.",
+  "Como es una técnica de agrupamiento, no existe multicolinealidad entre variables predictoras.",
+  "Dendrograma permite interpretar las relaciones y agrupamientos entre observaciones.",
+  "La complejidad aumenta rápido con el número de observaciones (O(n^3)).",
+  "Se evalúan índices de validación de clusters (silhouette, Dunn, etc.) en lugar de CV.",
+  "La elección de métrica de distancia (Euclidiana, Manhattan) y método de enlace (completo, promedio, single) afecta mucho los resultados."
+)
+
+tabla_hclust <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_hclust %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir HClust",
+             subtitle = "Hierarchical Clustering (hclust)")  %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
+```
+
+
 ## k-Means  {-}  
 
 ```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
 
+aplica <- c(
+  "❌ No supervisado (clustering por partición)",
+  "❌ No aplica (no hay variable respuesta)",
+  "✅ Variables numéricas (recomendado estandarizar)",
+  "✅ Agrupa observaciones según distancia a centroides",
+  "❌ No aplica",
+  "❌ No aplica",
+  "❌ No aplica",
+  "⚠️ Sensible a valores atípicos y centroides iniciales",
+  "⚠️ No afecta directamente (no hay predictores ni multicolinealidad)",
+  "✅ Fácil interpretación de clusters y centroides",
+  "✅ Rápido y eficiente para datasets grandes",
+  "❌ No se usa validación cruzada, pero sí índices de cluster (silhouette, etc.)",
+  "❌ No funciona bien con clusters no esféricos o tamaños muy dispares"
+)
+
+detalles <- c(
+  "Método no supervisado que particiona datos en k clusters minimizando suma de cuadrados dentro de clusters.",
+  "No busca predecir, sino encontrar grupos o clusters.",
+  "Requiere variables numéricas; es común estandarizarlas para evitar sesgos por escala.",
+  "Cada observación se asigna al cluster con el centroide más cercano (distancia Euclidiana).",
+  "No genera residuos ni modelo predictivo.",
+  "No hay supuestos de independencia.",
+  "No requiere homoscedasticidad.",
+  "Los outliers pueden mover centroides y distorsionar clusters.",
+  "Como técnica de agrupamiento, no hay multicolinealidad entre variables.",
+  "Centroides y clusters son fáciles de interpretar y visualizar.",
+  "Algoritmo rápido, converge rápido en general.",
+  "Se usan índices externos e internos para evaluar calidad del clustering, no validación cruzada.",
+  "No funciona bien si los clusters tienen formas complejas, tamaños muy distintos o solapamientos."
+)
+
+tabla_kmeans <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)  
+
+tabla_kmeans %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir k-means",
+             subtitle = "K - Means")  %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
 ```
 
 
 ## k-Medians  {-}   
 
 ```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
 
+aplica <- c(
+  "❌ No supervisado (clustering por partición)",
+  "❌ No aplica (no hay variable respuesta)",
+  "✅ Variables numéricas (recomendado estandarizar)",
+  "✅ Agrupa observaciones según distancia a la mediana (Manhattan)",
+  "❌ No aplica",
+  "❌ No aplica",
+  "❌ No aplica",
+  "✅ Más robusto a valores atípicos que k-Means",
+  "⚠️ No afecta directamente (no hay predictores ni multicolinealidad)",
+  "✅ Interpretación clara de clusters y medianas",
+  "⚠️ Algo más lento que k-Means por cálculo de medianas",
+  "❌ No se usa validación cruzada, pero sí índices de cluster (silhouette, etc.)",
+  "❌ No funciona bien con clusters no esféricos o tamaños muy dispares"
+)
+
+detalles <- c(
+  "Método no supervisado que particiona datos en k clusters minimizando suma de distancias absolutas dentro de clusters.",
+  "No busca predecir, sino encontrar grupos o clusters.",
+  "Requiere variables numéricas; se recomienda estandarización para evitar sesgo por escala.",
+  "Cada observación se asigna al cluster con la mediana más cercana usando distancia Manhattan.",
+  "No genera residuos ni modelo predictivo.",
+  "No hay supuestos de independencia.",
+  "No requiere homoscedasticidad.",
+  "Más robusto frente a outliers porque usa medianas en lugar de medias.",
+  "Como técnica de agrupamiento, no hay multicolinealidad entre variables.",
+  "Medianas y clusters son fáciles de interpretar y visualizar.",
+  "Computacionalmente puede ser un poco más lento que k-Means.",
+  "Se usan índices externos e internos para evaluar calidad del clustering, no validación cruzada.",
+  "No funciona bien si los clusters tienen formas complejas, tamaños muy distintos o solapamientos."
+)
+
+tabla_kmedians <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_kmedians %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir k-medians",
+             subtitle = "K - Medians")  %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
 ```
 
-## Expectation Maximization  {-}  
 
-```{r, echo = FALSE}
 
-```
 
-## Hierarchical Clustering  {-}  
-
-```{r, echo = FALSE}
-
-```
-
-## DBSCAN  {-}    
-
-```{r, echo = FALSE}
-
-```
 

@@ -14,42 +14,522 @@
 ## Cubist  {-}  
 
 ```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
 
+aplica <- c(
+  "✅ Supervisado (regresión basada en reglas)",
+  "✅ Numérica (regresión)",
+  "✅ Numéricas y categóricas",
+  "✅ Modelo aditivo basado en reglas y ajustes lineales locales",
+  "⚠️ Requiere análisis de residuos, no siempre normalidad estricta",
+  "⚠️ Asume independencia, como otros modelos supervisados",
+  "⚠️ Puede tener heteroscedasticidad",
+  "⚠️ Moderadamente sensible a outliers",
+  "⚠️ Puede manejar correlación, pero multicolinealidad puede afectar interpretabilidad",
+  "✅ Moderada: reglas explican el modelo, pero menos transparente que modelos lineales",
+  "⚠️ Relativamente rápido, pero depende del número de reglas",
+  "✅ Compatible con validación cruzada para evaluar rendimiento",
+  "❌ No funciona bien con datos muy pequeños o ruido extremo"
+)
+
+detalles <- c(
+  "Combina técnicas de árboles de decisión con modelos lineales locales para predicción precisa.",
+  "Predice variables continuas mediante reglas que dividen el espacio y ajustes lineales en cada región.",
+  "Puede manejar variables predictoras mixtas (numéricas y categóricas).",
+  "Modelo flexible que ajusta múltiples reglas para capturar relaciones no lineales y locales.",
+  "Evaluar residuos para verificar supuestos; no es tan rígido como OLS.",
+  "Como modelo supervisado, se espera independencia entre observaciones.",
+  "Puede tolerar algo de heteroscedasticidad, pero afecta precisión de intervalos.",
+  "Outliers pueden afectar algunas reglas locales y coeficientes.",
+  "Multicolinealidad puede dificultar interpretación de coeficientes locales.",
+  "Las reglas pueden interpretarse, pero el modelo global puede ser complejo.",
+  "La velocidad depende del tamaño del dataset y número de reglas generadas.",
+  "Se usa validación cruzada para seleccionar parámetros y validar modelo.",
+  "No es ideal para datasets muy pequeños o con mucho ruido no estructurado."
+)
+
+tabla_cubist <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_cubist %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir cubist",
+             subtitle = "Cubist")  %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
 ```
 
+## Decision Rules  {-}  
+
+```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica <- c(
+  "✅ Supervisado (clasificación o regresión)",
+  "✅ Numérica o categórica",
+  "✅ Numéricas y categóricas",
+  "✅ Basado en reglas (if-then) que segmentan el espacio predictor",
+  "❌ No aplica directamente (no es un modelo paramétrico)",
+  "⚠️ Asume independencia de observaciones",
+  "❌ No aplica",
+  "⚠️ Moderadamente sensible, outliers pueden crear reglas poco útiles",
+  "⚠️ No afecta directamente, pero reglas redundantes pueden complicar modelo",
+  "✅ Muy interpretable, reglas claras y simples",
+  "✅ Rápido para datasets pequeños y medianos",
+  "✅ Compatible con validación cruzada",
+  "❌ Puede sobreajustar si hay mucho ruido o datos muy complejos"
+)
+
+detalles <- c(
+  "Modelos que usan reglas lógicas para realizar predicciones, fácilmente entendibles.",
+  "Permite predecir tanto clases (clasificación) como valores numéricos (regresión).",
+  "Acepta tanto variables categóricas como numéricas como predictores.",
+  "Segmenta el espacio en regiones mediante reglas que dividen las variables predictoras.",
+  "No genera residuos ni supone distribución de error como modelos paramétricos.",
+  "Las reglas asumen que las observaciones son independientes.",
+  "No aplica homoscedasticidad porque no es un modelo estadístico clásico.",
+  "Outliers pueden influir en la generación de reglas, creando reglas poco generalizables.",
+  "La multicolinealidad no afecta directamente, pero puede generar reglas redundantes.",
+  "La fortaleza es la interpretabilidad clara y sencilla de las reglas obtenidas.",
+  "Generalmente eficiente, pero depende del número de reglas y complejidad del dataset.",
+  "Se recomienda validar con métodos como k-fold para evitar sobreajuste.",
+  "No es ideal para datasets con mucho ruido o cuando la relación es muy compleja o sutil."
+)
+
+tabla_rules <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_rules %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir decision rules",
+             subtitle = "Decision Rules")  %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
+```
+
+
+## Fuzzy Logic {-}
+
+```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica <- c(
+  "✅ Supervisado o no supervisado (depende del sistema)",
+  "✅ Variables de salida pueden ser continuas o categóricas (fuzzy sets)",
+  "✅ Variables numéricas o categóricas, modeladas como grados de pertenencia",
+  "✅ Modela relaciones imprecisas, no binarias, usando lógica difusa",
+  "❌ No aplica (no modelo estadístico tradicional)",
+  "⚠️ Puede asumir independencia pero depende del diseño del sistema",
+  "❌ No aplica",
+  "⚠️ Moderadamente sensible, depende de la función de membresía",
+  "⚠️ No afecta directamente pero variables correlacionadas pueden complicar reglas",
+  "✅ Interpretación basada en reglas lingüísticas y grados de verdad",
+  "⚠️ Puede ser lento con muchos conjuntos difusos y reglas complejas",
+  "⚠️ Validación cruzada posible, pero no estándar en lógica difusa",
+  "❌ No es adecuado si los datos son muy exactos y no presentan incertidumbre"
+)
+
+detalles <- c(
+  "Sistemas que usan lógica difusa para manejar incertidumbre y aproximación en los datos.",
+  "Las variables respuesta pueden ser valores continuos o categorías definidas mediante conjuntos difusos.",
+  "Los predictores se transforman en grados de pertenencia a conjuntos difusos para evaluar reglas.",
+  "Permite modelar relaciones vagamente definidas, imprecisas o con fronteras difusas.",
+  "No se basa en supuestos estadísticos clásicos, por eso no aplica normalidad.",
+  "La independencia depende de cómo se diseñen las reglas y sistemas difusos.",
+  "No es un modelo paramétrico clásico, por eso homoscedasticidad no aplica.",
+  "Outliers pueden afectar las funciones de pertenencia y la lógica aplicada.",
+  "Variables altamente correlacionadas pueden hacer que las reglas sean redundantes o complejas.",
+  "Los resultados se interpretan mediante reglas tipo 'Si... entonces...' con grados de verdad.",
+  "La complejidad crece con número de variables y reglas, afectando velocidad.",
+  "Validar es menos estándar, se usan métodos específicos según la aplicación.",
+  "No es útil para datos precisos donde no existe incertidumbre o imprecisión."
+)
+
+tabla_fuzzy <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_fuzzy %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir decision fuzzy rules",
+             subtitle = "Fuzzy Rules")  %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
+```
 
 
 ## One Rule (OneR)  {-}   
 
 ```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
 
+aplica <- c(
+  "✅ Supervisado (clasificación)",
+  "✅ Variable respuesta categórica (clases)",
+  "✅ Variables predictoras numéricas o categóricas",
+  "✅ Relación simple basada en una sola regla (una variable predictora)",
+  "❌ No aplica (no es modelo estadístico paramétrico)",
+  "❌ No aplica",
+  "❌ No aplica",
+  "⚠️ Puede ser sensible a outliers si afectan la regla",
+  "⚠️ No afecta directamente (usa solo una variable para la regla)",
+  "✅ Muy interpretable: una regla sencilla basada en un solo predictor",
+  "✅ Muy rápido y eficiente, especialmente en datasets pequeños o medianos",
+  "✅ Se puede usar validación cruzada para evaluar rendimiento",
+  "❌ No funciona bien si las relaciones son complejas y requieren múltiples variables"
+)
+
+detalles <- c(
+  "Modelo supervisado para clasificación basado en la regla más simple y efectiva de un solo predictor.",
+  "Predice la clase de salida basándose en el valor de una única variable predictora.",
+  "Acepta variables categóricas o numéricas (estas se discretizan para generar reglas).",
+  "Genera una regla simple: 'Si predictor X tiene valor Y, entonces clase Z'.",
+  "No es un modelo paramétrico ni estadístico tradicional, no evalúa residuos.",
+  "No considera errores ni supuestos de independencia.",
+  "No aplica el supuesto de homoscedasticidad.",
+  "Outliers pueden influir si cambian la regla seleccionada.",
+  "Como usa solo un predictor, la multicolinealidad no es un problema.",
+  "Fácil de entender y explicar, ideal para explicar decisiones simples.",
+  "Muy rápido de entrenar y evaluar, útil para benchmarks o como baseline.",
+  "Se recomienda evaluar mediante validación cruzada para evitar sobreajuste.",
+  "No es útil para problemas que requieren modelar interacciones complejas entre variables."
+)
+
+tabla_oner <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_oner %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir decision OneR",
+             subtitle = "One Rule (OneR)")  %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
+```
+
+## Repeated Incremental Pruning to Produce Error Reduction (RIPPER)  {-} 
+
+```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica <- c(
+  "✅ Supervisado (clasificación)",
+  "✅ Variable respuesta categórica",
+  "✅ Variables predictoras numéricas o categóricas",
+  "✅ Relación no lineal basada en reglas de decisión",
+  "❌ No aplica (no es modelo paramétrico)",
+  "❌ No aplica",
+  "❌ No aplica",
+  "⚠️ Moderadamente sensible a outliers, depende de la calidad de datos",
+  "⚠️ No afecta directamente, pero multicolinealidad puede confundir reglas",
+  "⚠️ Interpretación mediante reglas, más complejas que OneR pero aún legibles",
+  "⚠️ Moderada, puede ser lento en datasets muy grandes",
+  "✅ Se puede validar con métodos de validación cruzada",
+  "❌ No funciona bien si las reglas no separan claramente las clases o en datos muy ruidosos"
+)
+
+detalles <- c(
+  "Algoritmo supervisado para clasificación que genera reglas de decisión con poda incremental para reducir error.",
+  "Predice clases usando conjuntos de reglas de decisión extraídas y podadas iterativamente.",
+  "Soporta variables numéricas y categóricas, con discretización interna si es necesario.",
+  "Captura relaciones no lineales y complejas mediante reglas combinadas.",
+  "No utiliza modelos estadísticos clásicos, por lo que no aplica análisis de residuos.",
+  "No asume independencia entre observaciones.",
+  "No requiere homoscedasticidad ni otros supuestos de regresión.",
+  "Outliers pueden afectar la calidad y la complejidad de las reglas generadas.",
+  "Multicolinealidad no afecta directamente, pero puede inducir reglas redundantes.",
+  "Las reglas generadas son más interpretables que árboles complejos, pero menos simples que OneR.",
+  "El proceso iterativo y poda pueden ser computacionalmente costosos en grandes datasets.",
+  "Validación cruzada es recomendada para evaluar generalización y evitar sobreajuste.",
+  "No es adecuado para datos con ruido elevado o donde no existen reglas claras para separar clases."
+)
+
+tabla_ripper <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+
+tabla_ripper %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir decision RIPPER",
+             subtitle = "Repeated Incremental Pruning to Produce Error Reduction (RIPPER)")  %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
+```
+
+## Rule Fit  {-}   
+
+```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica <- c(
+  "✅ Supervisado (clasificación y regresión)",
+  "✅ Numérica o categórica según el tipo de problema",
+  "✅ Variables numéricas y categóricas",
+  "✅ Modela relaciones no lineales a través de reglas y combinaciones lineales",
+  "❌ No es modelo paramétrico clásico, no se evalúa normalidad",
+  "❌ No aplica directamente",
+  "❌ No aplica",
+  "⚠️ Puede ser sensible a outliers, pero menos que modelos lineales puros",
+  "⚠️ Puede verse afectado, se recomienda análisis previo",
+  "⚠️ Interpretabilidad moderada: combina reglas fáciles con coeficientes lineales",
+  "⚠️ Moderado, depende del número de reglas generadas",
+  "✅ Se puede validar con validación cruzada",
+  "❌ No funciona bien en datasets muy pequeños o con relaciones altamente complejas sin reglas claras"
+)
+
+detalles <- c(
+  "Combina árboles de decisión para generar reglas y luego aplica regresión lineal para asignar pesos a estas reglas.",
+  "Puede usarse para problemas de regresión o clasificación.",
+  "Admite variables categóricas y numéricas sin grandes restricciones.",
+  "Captura tanto efectos lineales como interacciones no lineales vía reglas extraídas.",
+  "No asume distribución normal de errores.",
+  "No requiere independencia estricta entre observaciones.",
+  "No requiere homoscedasticidad.",
+  "Puede mitigar el impacto de outliers mediante regularización.",
+  "Multicolinealidad puede afectar coeficientes pero el modelo regulariza para evitarlo.",
+  "Las reglas extraídas facilitan la interpretación frente a otros modelos complejos.",
+  "La eficiencia depende del número de reglas y tamaño de datos.",
+  "Validación cruzada ayuda a evitar sobreajuste y seleccionar hiperparámetros.",
+  "Puede fallar si las reglas generadas no capturan bien la relación o en datos ruidosos."
+)
+
+tabla_rulefit <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_rulefit %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir decision rule fit",
+             subtitle = "Rule Fit")  %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
 ```
 
 
 ## Zero Rule (ZeroR)  {-}    
 
 ```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
 
+aplica <- c(
+  "✅ Supervisado (clasificación y regresión)",
+  "✅ Categórica (modo) o numérica (media)",
+  "❌ No utiliza predictores",
+  "❌ No considera relaciones, predice constante",
+  "❌ No aplica (no hay residuos de regresión)",
+  "❌ No aplica (no hay modelo estructurado)",
+  "❌ No aplica",
+  "❌ No aplica (no hay influencia de valores atípicos)",
+  "❌ No aplica (no hay predictores)",
+  "✅ Alta, ya que solo predice un valor fijo",
+  "✅ Extremadamente rápido",
+  "⚠️ Se puede usar como baseline en validación",
+  "❌ No debe usarse como modelo final salvo como referencia base"
+)
+
+detalles <- c(
+  "Modelo supervisado trivial que predice el valor más frecuente (clasificación) o promedio (regresión) de la variable respuesta.",
+  "Funciona para variable respuesta categórica (modo) o continua (media).",
+  "No utiliza ninguna variable predictora; solo la respuesta.",
+  "No aprende relaciones, útil solo como línea base de comparación.",
+  "No genera residuos, pues predice una constante.",
+  "No hay estructura de error o modelo que se evalúe.",
+  "No hay dispersión de errores porque no hay ajuste.",
+  "Outliers no afectan porque el modelo predice una constante global.",
+  "No existe relación entre predictores, así que no aplica multicolinealidad.",
+  "Fácil de interpretar: siempre predice lo mismo.",
+  "Modelo extremadamente simple y rápido de calcular.",
+  "Sirve como línea base para comparar modelos más complejos.",
+  "Inútil para hacer predicciones significativas; solo sirve como referencia comparativa."
+)
+
+tabla_zeror <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)  
+
+tabla_zeror %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir decision ZeroR",
+             subtitle = "Zero Rule (ZeroR)")  %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
 ```
 
 
-## Repeated Incremental Pruning to Produce Error Reduction (RIPPER)  {-} 
-
-```{r, echo = FALSE}
-
-```
 
 
-## Rule Fit  {-}   
-
-```{r, echo = FALSE}
-
-```
 
 
-## Decision Rules  {-}  
 
-```{r, echo = FALSE}
-
-```
 

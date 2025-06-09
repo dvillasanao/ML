@@ -14,7 +14,7 @@
 
 ## Autoenconder  {-}  
 
-```{r}
+```{r, echo = FALSE}
 criterios <- c(
   "Tipo de modelo",
   "Variable respuesta",
