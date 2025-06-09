@@ -11,24 +11,7 @@
 
 ---
 
-## Principal Component Analysis (PCA)  {-}   
-
-**Principal Component Analysis (PCA)** es una técnica fundamental de **reducción de dimensionalidad** no supervisada que se utiliza para transformar un conjunto de variables posiblemente correlacionadas en un conjunto de variables no correlacionadas llamadas **componentes principales**. La idea fundamental de PCA es identificar las direcciones (ejes) en el espacio de los datos a lo largo de las cuales la **varianza de los datos es máxima**. Estas nuevas direcciones son ortogonales entre sí y representan la mayor parte de la información (varianza) contenida en el conjunto de datos original con un número reducido de dimensiones.
-
-El proceso de PCA generalmente implica los siguientes pasos:
-
-1.  **Estandarización de los Datos:** Es crucial estandarizar los datos (centrar en cero y escalar a varianza unitaria) antes de aplicar PCA, ya que PCA es sensible a la escala de las variables.
-2.  **Cálculo de la Matriz de Covarianza:** Se calcula la matriz de covarianza de los datos estandarizados, que describe la relación entre cada par de variables.
-3.  **Cálculo de Eigenvalores y Eigenvectores:** Se calculan los **eigenvalores** y **eigenvectores** de la matriz de covarianza.
-    * Los **eigenvectores** representan las **direcciones de los componentes principales** (los nuevos ejes en el espacio de los datos). El primer eigenvector corresponde a la dirección de mayor varianza, el segundo a la segunda mayor varianza, y así sucesivamente.
-    * Los **eigenvalores** corresponden a la **magnitud de la varianza** a lo largo de cada eigenvector. Un eigenvalor más grande indica que el componente principal asociado explica una mayor proporción de la varianza total de los datos.
-4.  **Selección de Componentes Principales:** Se ordenan los eigenvalores de mayor a menor y se seleccionan los $k$ eigenvectores correspondientes a los $k$ eigenvalores más grandes. Estos $k$ eigenvectores forman la nueva base del subespacio dimensional reducido. La elección de $k$ se puede basar en la varianza acumulada deseada o en un gráfico de codo (scree plot).
-5.  **Proyección de Datos:** Finalmente, se proyectan los datos originales sobre estos $k$ componentes principales para obtener un nuevo conjunto de datos con menor dimensionalidad pero que retiene la mayor parte de la varianza original.
-
-En el contexto del **aprendizaje global vs. local**, PCA es inherentemente un método de **aprendizaje global**. Busca una transformación lineal que capture la estructura de varianza **global** de todo el conjunto de datos. No divide el problema en subproblemas locales ni se enfoca en regiones específicas de los datos. La idea es que, si los datos no se distribuyen linealmente, PCA (en su forma lineal) **no puede capturar relaciones no lineales complejas** de manera efectiva. Está limitado a encontrar las direcciones ortogonales de máxima varianza en un espacio lineal.
-
-A diferencia de LOESS, que aplica una forma de regresión ponderada localmente para ajustar curvas suaves en datos no lineales, PCA no está diseñado para eso. Precisamente porque busca una representación lineal global, si la estructura subyacente de los datos es intrínsecamente no lineal, PCA puede no ser capaz de proporcionar una reducción de dimensionalidad suficientemente buena o capturar las relaciones esenciales. En tales casos, se recurre a técnicas de reducción de dimensionalidad no lineal como t-SNE o UMAP, o a variantes de PCA como Kernel PCA. No obstante, PCA sigue siendo una herramienta fundamental y muy útil para la visualización de datos, la reducción de ruido y la preparación de datos para otros algoritmos, especialmente cuando la varianza se explica bien por relaciones lineales o cuando la dimensionalidad es un problema para la eficiencia computacional.
-
+## Flexible Discriminant Analysis (FDA)  {-}  
 
 ```{r, echo = FALSE}
 criterios <- c(
@@ -48,43 +31,43 @@ criterios <- c(
 )
 
 aplica <- c(
-  "⚠️ No supervisado (reducción de dimensiones)",
-  "❌ No aplica (no hay target a predecir)",
-  "✅ Numéricas (requiere escalado), categóricas procesadas como dummies",
-  "✅ Captura correlaciones lineales entre predictores",
-  "❌ No requiere supuestos de distribución en residuos",
-  "⚠️ Ideal si las observaciones son independientes, aunque no crítico",
-  "✅ Deseable (datos homogenizados tras escalado)",
-  "⚠️ Moderado (outliers pueden distorsionar componentes principales)",
-  "✅ Sensible a colinealidad (reduce variables correlacionadas a componentes)",
-  "⚠️ Media (componentes lineales son interpretables, pero combinaciones pueden no serlo)",
-  "✅ Rápido en datasets medianos; escalable con álgebra lineal optimizada",
-  "⚠️ No se aplica CV clásico; se puede usar reconstrucción de error o validación por bloques",
-  "❌ No funciona bien si las relaciones son no lineales o datos muy ruidosos sin preprocesar"
+  "✅ Supervisado (clasificación)",
+  "✅ Categórica (clases)",
+  "✅ Numéricas (puede usar transformaciones)",
+  "✅ No lineal (usa regresión flexible en el espacio transformado)",
+  "❌ No aplica (no es regresión de residuos)",
+  "❌ No aplica directamente",
+  "⚠️ FDA suaviza este supuesto al modelar relaciones no lineales",
+  "⚠️ Puede ser sensible a outliers, dependiendo del método de ajuste",
+  "⚠️ Puede mitigar multicolinealidad si se usa penalización",
+  "⚠️ Menos interpretable que LDA, pero permite mayor flexibilidad",
+  "⚠️ Menor eficiencia que LDA por mayor complejidad computacional",
+  "✅ Validación cruzada útil para seleccionar transformaciones o suavizados",
+  "❌ En datos con pocos casos o ruido excesivo puede sobreajustarse"
 )
 
 detalles <- c(
-  "Método no supervisado para reducir la dimensión del espacio de predictores.",
-  "No predice variables, se centra en variabilidad interna de los datos.",
-  "Todas las variables numéricas deben escalarse; las categóricas convertir a variables indicadoras.",
-  "Busca direcciones (componentes) que maximizan varianza lineal entre predictores.",
-  "No impone supuestos sobre errores; se basa en descomposición de la matriz de covarianza.",
-  "Mejor si las muestras no están correlacionadas en el tiempo o espacialmente.",
-  "Escalar y homogeneizar mejora el cálculo de componentes principales.",
-  "Outliers extremos pueden sesgar la dirección de los componentes principales.",
-  "Reduce colinealidad al combinar variables correlacionadas en componentes ortogonales.",
-  "Componentes iniciales pueden interpretarse mediante pesos, pero componentes posteriores son combinaciones lineales complejas.",
-  "Computación depende de descomposición de matrices (SVD), es eficiente con optimización BLAS.",
-  "Se puede evaluar número óptimo de componentes con validación de reconstrucción o bootstrap de SVD.",
-  "No apto para relaciones no lineales complejas; en tal caso usar Kernel PCA o métodos no lineales."
+  "Extensión de LDA que permite relaciones no lineales entre predictores y clases mediante técnicas como splines o regresión flexible.",
+  "Clasifica observaciones en clases categóricas basándose en predictores transformados.",
+  "Admite variables numéricas, las cuales pueden ser transformadas de forma no lineal.",
+  "Usa regresión no lineal flexible (como splines) para modelar relaciones complejas en el espacio de discriminación.",
+  "No genera residuos como regresión tradicional; es un modelo de clasificación.",
+  "No se enfoca en errores secuenciales o dependientes.",
+  "Relaja la homocedasticidad al no asumir distribución gaussiana estricta.",
+  "Puede verse afectado por valores extremos, según el método de suavizado.",
+  "La transformación flexible puede reducir colinealidad, pero no siempre la elimina.",
+  "Los coeficientes y funciones discriminantes pueden ser difíciles de interpretar si se usan transformaciones complejas.",
+  "Mayor costo computacional que LDA, pero más potente en patrones no lineales.",
+  "Se recomienda CV para evaluar desempeño y evitar overfitting en el proceso de ajuste flexible.",
+  "Si los datos no requieren flexibilidad o el tamaño muestral es bajo, FDA puede ser innecesariamente complejo."
 )
 
-tabla_pca <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+tabla_fda <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
 
-tabla_pca %>%
+tabla_fda %>%
  gt() %>%
-  tab_header(title = "Guía rápida para elegir PCA",
-             subtitle = "Principal Component Analysis (PCA)")  %>%
+  tab_header(title = "Guía rápida para elegir FDA",
+             subtitle = "Flexible Discriminant Analysis (FDA)")  %>%
    tab_footnote(footnote = "Fuente: Elaboración propia") %>%
      tab_options(heading.title.font.size = 14, 
                  heading.subtitle.font.size = 12,
@@ -101,30 +84,11 @@ tabla_pca %>%
          as_raw_html() 
 ```
 
-## Partial Least Squares Regression (PLSR)  {-}    
 
-**Partial Least Squares Regression (PLSR)** es una técnica de **regresión multivariada** que combina características de la **regresión por mínimos cuadrados ordinarios (OLS)** y el **análisis de componentes principales (PCA)**. Se utiliza para modelar la relación entre un conjunto de variables predictoras (X) y uno o más conjuntos de variables de respuesta (Y), siendo particularmente útil en situaciones donde hay un gran número de variables predictoras, **multicolinealidad** (altas correlaciones entre las variables predictoras), o cuando el número de predictoras excede el número de observaciones.
 
-La idea fundamental de PLSR es encontrar un conjunto de **componentes latentes** (también conocidos como "factores" o "variables latentes") tanto en el espacio de las variables X como en el de las variables Y. Estos componentes se construyen de tal manera que **maximizan la covarianza** entre las variables predictoras y las variables de respuesta. A diferencia de PCA, que solo busca componentes que expliquen la máxima varianza en X, PLSR busca componentes que sean relevantes para explicar la varianza en X *y* que también estén altamente correlacionados con Y. Una vez que se extraen estos componentes, se realiza una regresión de mínimos cuadrados ordinarios de Y sobre estos componentes latentes.
-
-El proceso general de PLSR implica:
-
-1.  **Extracción de Componentes Latentes:** PLSR construye iterativamente un conjunto de componentes latentes. En cada paso:
-    * Identifica una combinación lineal de las variables X (un componente de X) y una combinación lineal de las variables Y (un componente de Y) que tienen la mayor covarianza entre sí.
-    * Estos componentes representan las direcciones en el espacio de datos que explican la mayor cantidad de la relación entre X y Y.
-    * Una vez que se extrae un componente, la varianza explicada por ese componente se "deflacta" (se elimina) de las matrices X e Y, y el proceso se repite con los residuos para encontrar el siguiente componente ortogonal.
-2.  **Regresión:** Una vez que se ha determinado el número óptimo de componentes latentes (a menudo a través de validación cruzada), se realiza una regresión lineal estándar de las variables Y sobre estos componentes latentes de X.
-
-**Ventajas clave de PLSR:**
-
-* **Manejo de Multicolinealidad:** Es muy efectivo en la reducción de dimensionalidad y el manejo de predictoras altamente correlacionadas, donde la regresión OLS fallaría o produciría estimaciones inestables.
-* **Manejo de Datos de Alta Dimensionalidad:** Funciona bien cuando el número de variables predictoras es mayor que el número de observaciones.
-* **Enfoque Predictivo:** Se centra en desarrollar modelos con una fuerte capacidad predictiva.
-
-En el contexto del **aprendizaje global vs. local**, PLSR es un algoritmo de **aprendizaje global**. Busca una transformación lineal global de los datos originales en un espacio de componentes latentes, donde se maximiza la covarianza entre los conjuntos de variables predictoras y de respuesta. La relación que modela es una relación lineal global en este espacio transformado.
-
-Si bien PLSR no es un método de **regresión ponderada localmente** como LOESS (que ajusta modelos simples a subconjuntos locales de datos), comparte con ellos el objetivo de modelar relaciones complejas. Sin embargo, lo hace de una manera diferente. En lugar de dividir el espacio de características y aplicar modelos locales, PLSR transforma el espacio de características de forma global para encontrar una representación de menor dimensionalidad que sea óptima para la predicción. Cuando los datos no se distribuyen linealmente, PLSR puede no ser la herramienta más adecuada en su forma lineal básica, ya que sigue siendo una técnica lineal. Sin embargo, al encontrar las direcciones más relevantes en el espacio de los datos, puede capturar aspectos importantes de la estructura de los datos que son útiles incluso si la relación subyacente es no lineal. Para manejar la no linealidad explícitamente, existen extensiones como **Nonlinear Partial Least Squares (NPLS)** o **Kernel PLS (KPLS)**, que introducen funciones kernel para mapear los datos a un espacio de características de mayor dimensión donde la relación podría ser linealmente modelable por PLS.
-
+  
+  
+## Linear Discriminant Analysis (LDA)  {-}   
 
 ```{r, echo = FALSE}
 criterios <- c(
@@ -144,43 +108,43 @@ criterios <- c(
 )
 
 aplica <- c(
-  "⚠️ Supervisado (regresión y clasificación con adaptación)",
-  "✅ Continua (regresión) o Categórica (clasificación si se transforma)",
-  "✅ Numéricas (requiere escalado), categóricas como dummies",
-  "✅ Captura relaciones lineales y reduce dimensiones simultáneamente",
-  "❌ No requiere estrictamente, pero mejora con residuos normales",
-  "✅ Deseable, aunque no crítico",
-  "✅ Deseable para homogeneizar varianza tras escalado",
-  "⚠️ Moderado (outliers pueden influir en componentes latentes)",
-  "✅ Diseñado para alta colinealidad entre predictores",
-  "⚠️ Media (componentes latentes son interpretables, pero relaciones pueden ser complejas)",
-  "⚠️ Moderada (depende de número de componentes y tamaño del dataset)",
-  "✅ Usar k-fold para elegir número de componentes óptimos",
-  "❌ No funciona bien si relaciones son muy no lineales o datos muy ruidosos sin preprocesar"
+  "✅ Supervisado (clasificación)",
+  "✅ Categórica (clases)",
+  "✅ Numéricas (preferentemente)",
+  "✅ Asume relaciones lineales entre variables y clases",
+  "✅ Supone normalidad multivariante de los predictores dentro de cada clase",
+  "✅ Supone independencia entre observaciones",
+  "✅ Asume varianza-covarianza igual entre clases (homocedasticidad)",
+  "⚠️ Sensible a valores atípicos",
+  "⚠️ Puede verse afectado negativamente por alta colinealidad",
+  "✅ Alta, coeficientes discriminantes son interpretables",
+  "✅ Muy eficiente computacionalmente",
+  "✅ Se recomienda para evaluar estabilidad y evitar sobreajuste",
+  "❌ Mal desempeño si no se cumplen supuestos de normalidad y homocedasticidad"
 )
 
 detalles <- c(
-  "Modelo que proyecta predictores y respuesta a espacios latentes para maximizar covarianza.",
-  "PLSR encuentra componentes que explican varianza en X y covarianza con Y.",
-  "Todas las variables numéricas deben escalarse; convertir categóricas en indicadores.",
-  "Combina reducción de dimensión (PCA-like) con regresión en componentes latentes.",
-  "No impone supuestos estrictos, pero residuos normales facilitan inferencia estadística.",
-  "Mejor si muestras son independientes; RLSR en datos correlacionados requiere cuidado.",
-  "Escalar y homogeneizar predictores e incluso respuesta mejora la estabilidad.",
-  "Outliers extremos pueden distorsionar cálculo de componentes; usar robust PLSR para mitigarlo.",
-  "PLSR maneja colinealidad al construir pocas componentes que representan grupos de variables correlacionadas.",
-  "Componentes latentes tienen pesos interpretables, pero interpretar combinaciones puede ser complejo.",
-  "El método usa descomposición de matrices; eficiente con BLAS/LAPACK optimizado.",
-  "Validación cruzada ayuda a determinar el número óptimo de componentes latentes a usar.",
-  "No es adecuado para relaciones puramente no lineales; en ese caso usar Kernel PLSR o métodos no lineales."
+  "Modelo supervisado clásico para clasificación que encuentra combinaciones lineales de predictores que separan clases.",
+  "Requiere una variable categórica como objetivo, con dos o más clases.",
+  "Mejor con predictores numéricos continuos; categóricos requieren codificación previa.",
+  "Calcula funciones discriminantes lineales que maximizan la separación entre clases.",
+  "Cada grupo debe seguir una distribución normal multivariante para resultados óptimos.",
+  "Las observaciones deben ser independientes para validez de inferencia.",
+  "Supone igual matriz de covarianzas entre grupos; si no se cumple, usar QDA.",
+  "Outliers influyen en la media y la varianza estimada, distorsionando fronteras.",
+  "Multicolinealidad puede hacer que los coeficientes discriminantes sean inestables.",
+  "Las funciones discriminantes se interpretan como direcciones de máxima separación.",
+  "Requiere bajo costo computacional y se entrena rápidamente.",
+  "Se puede usar validación cruzada para elegir el número de componentes o verificar precisión.",
+  "Cuando los datos no cumplen normalidad ni homocedasticidad, el modelo pierde precisión."
 )
 
-tabla_plsr <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+tabla_lda <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
 
-tabla_plsr %>%
+tabla_lda %>%
  gt() %>%
-  tab_header(title = "Guía rápida para elegir PLSR",
-             subtitle = "Partial Least Squares Regression (PLSR)")  %>%
+  tab_header(title = "Guía rápida para elegir LDA",
+             subtitle = "Linear Discriminant Analysis (LDA)")  %>%
    tab_footnote(footnote = "Fuente: Elaboración propia") %>%
      tab_options(heading.title.font.size = 14, 
                  heading.subtitle.font.size = 12,
@@ -197,22 +161,9 @@ tabla_plsr %>%
          as_raw_html() 
 ```
 
-## Sammon Mapping  {-}   
-
-**Sammon Mapping**, también conocida como **Sammon's Nonlinear Mapping (NLM)**, es una técnica de **reducción de dimensionalidad no lineal** utilizada principalmente para **visualización de datos**. La idea fundamental de Sammon Mapping es proyectar un conjunto de datos de un espacio de alta dimensión a un espacio de menor dimensión (típicamente 2D o 3D) de tal manera que se preserve lo mejor posible la **estructura de las distancias entre los puntos** del espacio original. Es decir, si dos puntos estaban cerca en el espacio de alta dimensión, se espera que también estén cerca en el espacio de baja dimensión, y viceversa.
-
-A diferencia de técnicas lineales como PCA, que se enfocan en preservar la varianza o la covarianza, Sammon Mapping se centra en preservar las **distancias por pares** entre los puntos. Para lograr esto, utiliza un algoritmo iterativo que busca minimizar una **función de error de Sammon**. Esta función mide la diferencia entre las distancias por pares en el espacio de alta dimensión y las distancias correspondientes en el espacio de baja dimensión, ponderando más los errores para los puntos que están más cerca en el espacio original. Esto significa que Sammon Mapping presta especial atención a preservar la estructura local del conjunto de datos.
-
-La función de error de Sammon ($E$) se define como:
-$$E = \frac{1}{\sum_{i < j} d_{ij}^* } \sum_{i < j} \frac{(d_{ij}^* - d_{ij})^2}{d_{ij}^*}$$
-Donde:
-* $d_{ij}^*$ es la distancia euclidiana entre el punto $i$ y el punto $j$ en el espacio de alta dimensión.
-* $d_{ij}$ es la distancia euclidiana entre el punto $i$ y el punto $j$ en el espacio de baja dimensión.
-
-El algoritmo busca iterativamente las coordenadas de los puntos en el espacio de baja dimensión que minimizan esta función de error, utilizando un método de **descenso de gradiente**.
-
-En el contexto del **aprendizaje global vs. local**, Sammon Mapping es una técnica que busca un compromiso entre la preservación de la estructura **local** y **global** de los datos. Sin embargo, su énfasis en ponderar los errores de las distancias pequeñas (puntos cercanos) hace que sea más sensible a la **estructura local** del conjunto de datos. La idea es que, si los datos no se distribuyen linealmente, Sammon Mapping puede generar una representación en baja dimensión que revele agrupaciones y patrones que no serían evidentes con técnicas lineales como PCA. A diferencia de un método de regresión ponderada localmente como LOESS, que se enfoca en ajustar una curva, Sammon Mapping se dedica a la visualización de la estructura de similitud. Al intentar preservar las relaciones de distancia no lineales, aborda directamente la desventaja de que "a veces ningún valor de parámetro puede proporcionar una aproximación suficientemente buena" en las proyecciones lineales, ya que se adapta a la curvatura y la estructura intrínseca no lineal de los datos para ofrecer una visualización más fiel. Aunque puede ser computacionalmente intensivo para conjuntos de datos muy grandes, es una herramienta valiosa para explorar la estructura oculta en datos complejos.
-
+   
+   
+## Mixture Discriminant Analysis (MDA)  {-}  
 
 ```{r, echo = FALSE}
 criterios <- c(
@@ -232,44 +183,43 @@ criterios <- c(
 )
 
 aplica <- c(
-  "❌ No supervisado (reducción de dimensionalidad)",
-  "❌ No aplica (no hay variable respuesta)",
-  "✅ Numéricas (distancias euclidianas)",
-  "✅ No lineal, mantiene distancias entre puntos",
-  "❌ No aplica",
-  "❌ No aplica",
-  "❌ No aplica",
-  "⚠️ Sí, es sensible a valores atípicos",
-  "⚠️ No afecta directamente (no hay predictores)",
-  "⚠️ Interpretación visual en 2D o 3D; no en componentes",
-  "❌ Lento para conjuntos grandes (algoritmo iterativo)",
-  "⚠️ Se puede validar visualmente o con estrés",
-  "❌ Mal desempeño en datos ruidosos o de alta dimensión sin estructura"
-
+  "✅ Supervisado (clasificación)",
+  "✅ Categórica (clases)",
+  "✅ Numéricas",
+  "✅ No lineal (usa mezclas de gaussianas para modelar clases)",
+  "❌ No aplica como en regresión",
+  "❌ No se evalúa como en regresión",
+  "⚠️ Supone varianza homogénea dentro de componentes, pero puede variar entre clases",
+  "⚠️ Puede ser sensible a outliers (afectan las medias y covarianzas)",
+  "⚠️ Puede verse afectado, aunque usa reducción dimensional",
+  "⚠️ Moderadamente interpretable (depende de componentes gaussianos)",
+  "⚠️ Más lento que LDA/QDA, pero más flexible",
+  "✅ Recomendable para elegir número de componentes y evitar sobreajuste",
+  "❌ Mal desempeño si la distribución dentro de clases no es bien modelada por gaussianas"
 )
 
 detalles <- c(
-  "Método no supervisado para proyectar datos de alta dimensión en espacios de menor dimensión preservando distancias.",
-  "No busca predecir, sino representar relaciones de cercanía entre observaciones.",
-  "Usa distancias entre puntos; solo variables numéricas tienen sentido.",
-  "A diferencia de PCA, Sammon busca preservar distancias relativas entre puntos originales y proyectados.",
-  "No genera residuos como un modelo predictivo, por lo tanto no se aplica la normalidad.",
-  "No hay modelo de error porque no hay predicción.",
-  "No aplica el supuesto de homoscedasticidad.",
-  "Valores extremos alteran las distancias y distorsionan el mapa resultante.",
-  "Como es una técnica de reducción, no le afecta multicolinealidad directamente.",
-  "El mapa resultante puede interpretarse en términos de proximidad, no de pesos o coeficientes.",
-  "Implementación clásica es iterativa y costosa computacionalmente en datasets grandes.",
-  "Puede usarse estrés (error entre distancias originales y proyectadas) como métrica de calidad.",
-  "Si las distancias no reflejan bien la estructura real (por ruido o dimensiones irrelevantes), el método falla en representar datos útiles."
+  "Modelo supervisado de clasificación que combina regresión discriminante con mezclas gaussianas dentro de cada clase.",
+  "Se usa para clasificar observaciones en grupos definidos por una variable categórica.",
+  "Requiere predictores numéricos para ajustar distribuciones normales multivariadas.",
+  "Modela cada clase como una combinación de distribuciones gaussianas, permitiendo formas no lineales.",
+  "No hay residuos como en regresión, ya que se trata de una tarea de clasificación.",
+  "No evalúa independencia clásica de errores; se enfoca en estimar la densidad condicional.",
+  "Permite varianza distinta entre componentes, pero se puede ajustar homogeneidad según implementación.",
+  "Outliers pueden afectar las medias y varianzas estimadas de las mezclas gaussianas.",
+  "La multicolinealidad puede dificultar la estimación de matrices de covarianza.",
+  "Interpretar los componentes internos (medias y pesos) puede ser complejo, pero ofrece buena visualización.",
+  "Es más lento que LDA o QDA por su naturaleza iterativa y uso de EM (Expectation-Maximization).",
+  "Se puede usar validación cruzada para seleccionar el número óptimo de mezclas por clase.",
+  "Si las clases no se ajustan bien a combinaciones de gaussianas, el modelo pierde precisión."
 )
 
-tabla_sammon <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+tabla_mda <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
 
-tabla_sammon %>%
+tabla_mda %>%
  gt() %>%
-  tab_header(title = "Guía rápida para elegir sammon mapping",
-             subtitle = "Sammon Mapping")  %>%
+  tab_header(title = "Guía rápida para elegir MDA",
+             subtitle = "Mixture Discriminant Analysis (MDA)")  %>%
    tab_footnote(footnote = "Fuente: Elaboración propia") %>%
      tab_options(heading.title.font.size = 14, 
                  heading.subtitle.font.size = 12,
@@ -285,6 +235,10 @@ tabla_sammon %>%
                    everything() ~ px(200)) %>%
          as_raw_html() 
 ```
+
+
+
+
 
 ## Multidimensional Scaling (MDS)  {-}    
 
@@ -380,26 +334,8 @@ tabla_mds %>%
          as_raw_html() 
 ```
 
-## Projection Pursuit (PP)  {-}    
 
-**Projection Pursuit (PP)** es una técnica de **reducción de dimensionalidad y modelado exploratorio** utilizada para encontrar proyecciones interesantes de datos de alta dimensión en espacios de baja dimensión (típicamente 1D o 2D). La idea fundamental de Projection Pursuit es que, en datos de alta dimensión, las estructuras interesantes (como agrupaciones, frentes, o anomalías) a menudo se ocultan cuando se observan solo las proyecciones marginales de las variables individuales. PP busca **proyecciones "interesantes"** que revelen estas estructuras no gaussianas y no lineales, que podrían pasar desapercibidas con técnicas lineales como PCA.
-
-A diferencia de PCA, que busca las proyecciones que maximizan la varianza (lo cual es óptimo si los datos son elipsoidales o gaussianos), PP busca proyecciones que se desvían de la distribución normal. Esto se logra mediante la definición de una **función de "índice de proyección"** que cuantifica la "interesante" o "no-gaussiana" de una proyección. El algoritmo entonces busca activamente las direcciones que maximizan este índice.
-
-El proceso general de Projection Pursuit es iterativo:
-
-1.  **Definición del Índice de Proyección:** Se elige una función de índice de proyección que penalice la normalidad y recompense las desviaciones (ej., asimetría, curtosis, o medidas basadas en entropía). Por ejemplo, un índice de proyección podría buscar distribuciones multimodales o con colas pesadas.
-2.  **Optimización:** El algoritmo utiliza técnicas de optimización numérica (como descenso de gradiente) para encontrar la dirección de proyección (un vector que define la combinación lineal de las características originales) que maximiza el índice de proyección.
-3.  **Extracción de Componentes:** Una vez que se encuentra una proyección interesante, los datos se proyectan sobre esta dirección. A menudo, el proceso se repite para encontrar proyecciones ortogonales adicionales, cada una revelando diferentes aspectos de la estructura de los datos.
-
-**Aplicaciones de PP:**
-
-* **Visualización de Datos:** Para encontrar proyecciones 1D o 2D que revelen patrones o agrupaciones.
-* **Clasificación y Regresión:** Puede ser una etapa de preprocesamiento para encontrar características más informativas, o incluso puede ser la base para construir modelos (como en **Projection Pursuit Regression - PPR**).
-
-En el contexto del **aprendizaje global vs. local**, Projection Pursuit es una técnica que busca descubrir y modelar estructuras **globales** interesantes en los datos a través de una serie de **proyecciones lineales, pero la combinación de estas proyecciones para capturar la no linealidad es la clave**. Aunque las proyecciones individuales son lineales, el proceso de buscar iterativamente las proyecciones "más interesantes" y luego combinarlas permite a PP descubrir y representar relaciones **no lineales** en el conjunto de datos.
-
-Si los datos no se distribuyen linealmente, PP es una herramienta poderosa porque **no asume linealidad** en la estructura subyacente. En lugar de ello, busca activamente las direcciones que revelan la no linealidad y la no-gaussianidad. Esto es precisamente lo que lo diferencia de PCA. La idea de que "si los datos no se distribuyen linealmente, se puede aplicar el concepto de regresión de manera ponderada localmente" es algo que PPR (una extensión de PP para regresión) aborda. PPR construye un modelo como una suma de funciones suaves no lineales de varias proyecciones uni-dimensionales de los predictores, lo que permite capturar relaciones complejas que no pueden ser modeladas por una regresión lineal simple. Por lo tanto, Projection Pursuit aborda la limitación de que "a veces ningún valor de parámetro puede proporcionar una aproximación suficientemente buena" en modelos lineales o simples, al buscar activamente y explotar las características no lineales y de "interés" en las proyecciones de los datos.
+## Quadratic Discriminant Analysis (QDA) {-}  
 
 ```{r, echo = FALSE}
 criterios <- c(
@@ -419,43 +355,43 @@ criterios <- c(
 )
 
 aplica <- c(
-  "❌ No supervisado (reducción de dimensionalidad)",
-  "❌ No aplica (no hay variable respuesta)",
-  "✅ Numéricas (requiere matriz de datos)",
-  "✅ Detecta proyecciones no lineales con estructura interesante",
-  "❌ No aplica",
-  "❌ No aplica",
-  "❌ No aplica",
-  "⚠️ Puede ser sensible a valores extremos",
-  "⚠️ Puede verse afectado si hay alta redundancia",
-  "⚠️ Interpretación más difícil que PCA; proyecciones no son ortogonales",
-  "❌ Puede ser lento por búsqueda iterativa de proyecciones",
-  "⚠️ Validación subjetiva o basada en heurísticas de interés",
-  "❌ No útil si no hay estructuras no gaussianas en los datos"
+  "✅ Supervisado (clasificación)",
+  "✅ Categórica (clases)",
+  "✅ Numéricas",
+  "✅ Modela separación cuadrática entre clases",
+  "❌ No aplica (clasificación, no regresión)",
+  "❌ No aplica (se asume independencia dentro de clases)",
+  "❌ No se asume homoscedasticidad (cada clase tiene su propia matriz de covarianza)",
+  "⚠️ Puede ser muy sensible a outliers (afectan las matrices de covarianza)",
+  "⚠️ Puede verse afectado, especialmente si hay pocos datos",
+  "✅ Relativamente interpretable (fronteras no lineales entre clases)",
+  "⚠️ Más costoso que LDA; ineficiente con pocos datos o muchas variables",
+  "✅ Recomendado para evitar overfitting, especialmente con pocos datos",
+  "❌ Si hay pocos datos por clase, estimar matrices de covarianza es inestable"
 )
 
 detalles <- c(
-  "Método no supervisado que busca proyecciones de los datos donde se maximice cierta 'interesantitud' (varianza no gaussiana, agrupamientos, etc.).",
-  "No está diseñado para predicción, sino para exploración visual o estructural.",
-  "Se aplica a datos numéricos, generalmente estandarizados, buscando direcciones relevantes.",
-  "A diferencia del PCA (que busca máxima varianza), PP busca patrones como colas pesadas, clusters, o distribuciones no normales.",
-  "No es un modelo predictivo, por tanto no se calculan residuos.",
-  "No se modela el error; se enfoca en la estructura interna de los datos.",
-  "No tiene varianzas residuales, por lo que no aplica homoscedasticidad.",
-  "Proyecciones pueden verse distorsionadas por valores extremos.",
-  "Variables muy correlacionadas pueden dominar las proyecciones si no se controlan.",
-  "Proyecciones son difíciles de interpretar directamente; pueden requerir análisis posterior.",
-  "Requiere métodos numéricos iterativos para encontrar direcciones de interés, lo que lo vuelve computacionalmente intensivo.",
-  "Puede usarse validación visual (por ejemplo, si se detectan agrupamientos) o criterios como 'kurtosis'.",
-  "Si los datos son gaussianos y no contienen patrones relevantes, PP no encuentra proyecciones útiles."
+  "Modelo supervisado de clasificación que permite que cada clase tenga su propia matriz de covarianza.",
+  "Se utiliza para predecir a qué clase pertenece una observación con base en sus características.",
+  "Requiere predictores numéricos continuos, ya que calcula medias y covarianzas.",
+  "A diferencia de LDA, permite fronteras no lineales al no asumir varianzas iguales entre clases.",
+  "No tiene residuos como en regresión, por lo que el supuesto de normalidad de errores no aplica.",
+  "No aplica el supuesto de independencia de errores; se enfoca en la distribución conjunta por clase.",
+  "Cada clase tiene su propia varianza y covarianza, lo que lo hace más flexible que LDA.",
+  "Valores extremos pueden distorsionar la estimación de medias y covarianzas de cada clase.",
+  "Multicolinealidad puede dificultar la inversión de la matriz de covarianza en clases pequeñas.",
+  "Los coeficientes y decisiones son interpretables en términos de separaciones estadísticas entre clases.",
+  "Más lento y costoso computacionalmente que LDA, especialmente con muchas variables.",
+  "La validación cruzada ayuda a prevenir sobreajuste y a seleccionar características relevantes.",
+  "Con clases poco representadas o muchas variables, las matrices de covarianza pueden volverse inestables."
 )
 
-tabla_pp <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+tabla_qda <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles) 
 
-tabla_pp %>%
+tabla_qda %>%
  gt() %>%
-  tab_header(title = "Guía rápida para elegir PP",
-             subtitle = "Projection Pursuit (PP) ")  %>%
+  tab_header(title = "Guía rápida para elegir QDA",
+             subtitle = "Quadratic Discriminant Analysis (QDA)")  %>%
    tab_footnote(footnote = "Fuente: Elaboración propia") %>%
      tab_options(heading.title.font.size = 14, 
                  heading.subtitle.font.size = 12,
@@ -471,6 +407,271 @@ tabla_pp %>%
                    everything() ~ px(200)) %>%
          as_raw_html() 
 ```
+
+  
+  
+## Partial Least Squares Regression (PLSR)  {-}    
+
+**Partial Least Squares Regression (PLSR)** es una técnica de **regresión multivariada** que combina características de la **regresión por mínimos cuadrados ordinarios (OLS)** y el **análisis de componentes principales (PCA)**. Se utiliza para modelar la relación entre un conjunto de variables predictoras (X) y uno o más conjuntos de variables de respuesta (Y), siendo particularmente útil en situaciones donde hay un gran número de variables predictoras, **multicolinealidad** (altas correlaciones entre las variables predictoras), o cuando el número de predictoras excede el número de observaciones.
+
+La idea fundamental de PLSR es encontrar un conjunto de **componentes latentes** (también conocidos como "factores" o "variables latentes") tanto en el espacio de las variables X como en el de las variables Y. Estos componentes se construyen de tal manera que **maximizan la covarianza** entre las variables predictoras y las variables de respuesta. A diferencia de PCA, que solo busca componentes que expliquen la máxima varianza en X, PLSR busca componentes que sean relevantes para explicar la varianza en X *y* que también estén altamente correlacionados con Y. Una vez que se extraen estos componentes, se realiza una regresión de mínimos cuadrados ordinarios de Y sobre estos componentes latentes.
+
+El proceso general de PLSR implica:
+
+1.  **Extracción de Componentes Latentes:** PLSR construye iterativamente un conjunto de componentes latentes. En cada paso:
+    * Identifica una combinación lineal de las variables X (un componente de X) y una combinación lineal de las variables Y (un componente de Y) que tienen la mayor covarianza entre sí.
+    * Estos componentes representan las direcciones en el espacio de datos que explican la mayor cantidad de la relación entre X y Y.
+    * Una vez que se extrae un componente, la varianza explicada por ese componente se "deflacta" (se elimina) de las matrices X e Y, y el proceso se repite con los residuos para encontrar el siguiente componente ortogonal.
+2.  **Regresión:** Una vez que se ha determinado el número óptimo de componentes latentes (a menudo a través de validación cruzada), se realiza una regresión lineal estándar de las variables Y sobre estos componentes latentes de X.
+
+**Ventajas clave de PLSR:**
+
+* **Manejo de Multicolinealidad:** Es muy efectivo en la reducción de dimensionalidad y el manejo de predictoras altamente correlacionadas, donde la regresión OLS fallaría o produciría estimaciones inestables.
+* **Manejo de Datos de Alta Dimensionalidad:** Funciona bien cuando el número de variables predictoras es mayor que el número de observaciones.
+* **Enfoque Predictivo:** Se centra en desarrollar modelos con una fuerte capacidad predictiva.
+
+En el contexto del **aprendizaje global vs. local**, PLSR es un algoritmo de **aprendizaje global**. Busca una transformación lineal global de los datos originales en un espacio de componentes latentes, donde se maximiza la covarianza entre los conjuntos de variables predictoras y de respuesta. La relación que modela es una relación lineal global en este espacio transformado.
+
+Si bien PLSR no es un método de **regresión ponderada localmente** como LOESS (que ajusta modelos simples a subconjuntos locales de datos), comparte con ellos el objetivo de modelar relaciones complejas. Sin embargo, lo hace de una manera diferente. En lugar de dividir el espacio de características y aplicar modelos locales, PLSR transforma el espacio de características de forma global para encontrar una representación de menor dimensionalidad que sea óptima para la predicción. Cuando los datos no se distribuyen linealmente, PLSR puede no ser la herramienta más adecuada en su forma lineal básica, ya que sigue siendo una técnica lineal. Sin embargo, al encontrar las direcciones más relevantes en el espacio de los datos, puede capturar aspectos importantes de la estructura de los datos que son útiles incluso si la relación subyacente es no lineal. Para manejar la no linealidad explícitamente, existen extensiones como **Nonlinear Partial Least Squares (NPLS)** o **Kernel PLS (KPLS)**, que introducen funciones kernel para mapear los datos a un espacio de características de mayor dimensión donde la relación podría ser linealmente modelable por PLS.
+
+
+```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica <- c(
+  "⚠️ Supervisado (regresión y clasificación con adaptación)",
+  "✅ Continua (regresión) o Categórica (clasificación si se transforma)",
+  "✅ Numéricas (requiere escalado), categóricas como dummies",
+  "✅ Captura relaciones lineales y reduce dimensiones simultáneamente",
+  "❌ No requiere estrictamente, pero mejora con residuos normales",
+  "✅ Deseable, aunque no crítico",
+  "✅ Deseable para homogeneizar varianza tras escalado",
+  "⚠️ Moderado (outliers pueden influir en componentes latentes)",
+  "✅ Diseñado para alta colinealidad entre predictores",
+  "⚠️ Media (componentes latentes son interpretables, pero relaciones pueden ser complejas)",
+  "⚠️ Moderada (depende de número de componentes y tamaño del dataset)",
+  "✅ Usar k-fold para elegir número de componentes óptimos",
+  "❌ No funciona bien si relaciones son muy no lineales o datos muy ruidosos sin preprocesar"
+)
+
+detalles <- c(
+  "Modelo que proyecta predictores y respuesta a espacios latentes para maximizar covarianza.",
+  "PLSR encuentra componentes que explican varianza en X y covarianza con Y.",
+  "Todas las variables numéricas deben escalarse; convertir categóricas en indicadores.",
+  "Combina reducción de dimensión (PCA-like) con regresión en componentes latentes.",
+  "No impone supuestos estrictos, pero residuos normales facilitan inferencia estadística.",
+  "Mejor si muestras son independientes; RLSR en datos correlacionados requiere cuidado.",
+  "Escalar y homogeneizar predictores e incluso respuesta mejora la estabilidad.",
+  "Outliers extremos pueden distorsionar cálculo de componentes; usar robust PLSR para mitigarlo.",
+  "PLSR maneja colinealidad al construir pocas componentes que representan grupos de variables correlacionadas.",
+  "Componentes latentes tienen pesos interpretables, pero interpretar combinaciones puede ser complejo.",
+  "El método usa descomposición de matrices; eficiente con BLAS/LAPACK optimizado.",
+  "Validación cruzada ayuda a determinar el número óptimo de componentes latentes a usar.",
+  "No es adecuado para relaciones puramente no lineales; en ese caso usar Kernel PLSR o métodos no lineales."
+)
+
+tabla_plsr <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_plsr %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir PLSR",
+             subtitle = "Partial Least Squares Regression (PLSR)")  %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
+``` 
+
+
+## Partial Least Squares Discriminant Analysis (PLSDA)  {-}  
+
+```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica <- c(
+  "✅ Supervisado (clasificación)",
+  "✅ Categórica (binaria o multicategoría)",
+  "✅ Numéricas (se proyectan a componentes)",
+  "✅ Captura relaciones lineales y no lineales a través de proyecciones",
+  "❌ No aplica directamente (modelo de clasificación)",
+  "❌ No aplica como en regresión clásica",
+  "❌ No se evalúa como en modelos de regresión",
+  "⚠️ Algo sensible a outliers (pueden influir en componentes)",
+  "✅ Muy útil si hay multicolinealidad",
+  "⚠️ Menos interpretable que modelos clásicos; depende de componentes",
+  "✅ Eficiente, especialmente con datos de alta dimensión",
+  "✅ Se recomienda usar validación cruzada para elegir el número de componentes",
+  "❌ Si las proyecciones no separan bien las clases o hay mucho ruido"
+)
+
+detalles <- c(
+  "Modelo supervisado de clasificación basado en PLS (Partial Least Squares) que proyecta los datos para maximizar la separación entre clases.",
+  "Se requiere que la variable dependiente sea categórica. PLS-DA funciona bien con 2 o más clases.",
+  "Las variables predictoras deben ser numéricas para que el modelo pueda proyectarlas en componentes latentes.",
+  "El modelo encuentra combinaciones de predictores que mejor separan las clases en el espacio proyectado.",
+  "No se evalúa normalidad de residuos como en modelos de regresión; la salida es de clasificación.",
+  "Tampoco aplica la independencia clásica de errores ya que se clasifican observaciones.",
+  "El supuesto de homoscedasticidad no es relevante aquí.",
+  "Outliers pueden afectar la construcción de componentes, distorsionando la separación de clases.",
+  "PLS-DA es útil cuando los predictores están altamente correlacionados, ya que crea componentes ortogonales.",
+  "Los componentes no son directamente interpretables como las variables originales, aunque se pueden analizar los pesos de carga.",
+  "Es un algoritmo relativamente eficiente, especialmente para conjuntos con muchas variables.",
+  "La validación cruzada es crítica para seleccionar el número óptimo de componentes y evitar overfitting.",
+  "No funciona bien si las clases no están bien separadas en el espacio proyectado o si hay demasiado ruido en los datos."
+)
+
+tabla_plsda <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_plsda %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir PLSDA",
+             subtitle = "Partial Least Squares Discriminant Analysis (PLSDA)")  %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
+```
+
+
+
+## Principal Component Analysis (PCA)  {-}   
+
+**Principal Component Analysis (PCA)** es una técnica fundamental de **reducción de dimensionalidad** no supervisada que se utiliza para transformar un conjunto de variables posiblemente correlacionadas en un conjunto de variables no correlacionadas llamadas **componentes principales**. La idea fundamental de PCA es identificar las direcciones (ejes) en el espacio de los datos a lo largo de las cuales la **varianza de los datos es máxima**. Estas nuevas direcciones son ortogonales entre sí y representan la mayor parte de la información (varianza) contenida en el conjunto de datos original con un número reducido de dimensiones.
+
+El proceso de PCA generalmente implica los siguientes pasos:
+
+1.  **Estandarización de los Datos:** Es crucial estandarizar los datos (centrar en cero y escalar a varianza unitaria) antes de aplicar PCA, ya que PCA es sensible a la escala de las variables.
+2.  **Cálculo de la Matriz de Covarianza:** Se calcula la matriz de covarianza de los datos estandarizados, que describe la relación entre cada par de variables.
+3.  **Cálculo de Eigenvalores y Eigenvectores:** Se calculan los **eigenvalores** y **eigenvectores** de la matriz de covarianza.
+    * Los **eigenvectores** representan las **direcciones de los componentes principales** (los nuevos ejes en el espacio de los datos). El primer eigenvector corresponde a la dirección de mayor varianza, el segundo a la segunda mayor varianza, y así sucesivamente.
+    * Los **eigenvalores** corresponden a la **magnitud de la varianza** a lo largo de cada eigenvector. Un eigenvalor más grande indica que el componente principal asociado explica una mayor proporción de la varianza total de los datos.
+4.  **Selección de Componentes Principales:** Se ordenan los eigenvalores de mayor a menor y se seleccionan los $k$ eigenvectores correspondientes a los $k$ eigenvalores más grandes. Estos $k$ eigenvectores forman la nueva base del subespacio dimensional reducido. La elección de $k$ se puede basar en la varianza acumulada deseada o en un gráfico de codo (scree plot).
+5.  **Proyección de Datos:** Finalmente, se proyectan los datos originales sobre estos $k$ componentes principales para obtener un nuevo conjunto de datos con menor dimensionalidad pero que retiene la mayor parte de la varianza original.
+
+En el contexto del **aprendizaje global vs. local**, PCA es inherentemente un método de **aprendizaje global**. Busca una transformación lineal que capture la estructura de varianza **global** de todo el conjunto de datos. No divide el problema en subproblemas locales ni se enfoca en regiones específicas de los datos. La idea es que, si los datos no se distribuyen linealmente, PCA (en su forma lineal) **no puede capturar relaciones no lineales complejas** de manera efectiva. Está limitado a encontrar las direcciones ortogonales de máxima varianza en un espacio lineal.
+
+A diferencia de LOESS, que aplica una forma de regresión ponderada localmente para ajustar curvas suaves en datos no lineales, PCA no está diseñado para eso. Precisamente porque busca una representación lineal global, si la estructura subyacente de los datos es intrínsecamente no lineal, PCA puede no ser capaz de proporcionar una reducción de dimensionalidad suficientemente buena o capturar las relaciones esenciales. En tales casos, se recurre a técnicas de reducción de dimensionalidad no lineal como t-SNE o UMAP, o a variantes de PCA como Kernel PCA. No obstante, PCA sigue siendo una herramienta fundamental y muy útil para la visualización de datos, la reducción de ruido y la preparación de datos para otros algoritmos, especialmente cuando la varianza se explica bien por relaciones lineales o cuando la dimensionalidad es un problema para la eficiencia computacional.
+
+
+```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica <- c(
+  "⚠️ No supervisado (reducción de dimensiones)",
+  "❌ No aplica (no hay target a predecir)",
+  "✅ Numéricas (requiere escalado), categóricas procesadas como dummies",
+  "✅ Captura correlaciones lineales entre predictores",
+  "❌ No requiere supuestos de distribución en residuos",
+  "⚠️ Ideal si las observaciones son independientes, aunque no crítico",
+  "✅ Deseable (datos homogenizados tras escalado)",
+  "⚠️ Moderado (outliers pueden distorsionar componentes principales)",
+  "✅ Sensible a colinealidad (reduce variables correlacionadas a componentes)",
+  "⚠️ Media (componentes lineales son interpretables, pero combinaciones pueden no serlo)",
+  "✅ Rápido en datasets medianos; escalable con álgebra lineal optimizada",
+  "⚠️ No se aplica CV clásico; se puede usar reconstrucción de error o validación por bloques",
+  "❌ No funciona bien si las relaciones son no lineales o datos muy ruidosos sin preprocesar"
+)
+
+detalles <- c(
+  "Método no supervisado para reducir la dimensión del espacio de predictores.",
+  "No predice variables, se centra en variabilidad interna de los datos.",
+  "Todas las variables numéricas deben escalarse; las categóricas convertir a variables indicadoras.",
+  "Busca direcciones (componentes) que maximizan varianza lineal entre predictores.",
+  "No impone supuestos sobre errores; se basa en descomposición de la matriz de covarianza.",
+  "Mejor si las muestras no están correlacionadas en el tiempo o espacialmente.",
+  "Escalar y homogeneizar mejora el cálculo de componentes principales.",
+  "Outliers extremos pueden sesgar la dirección de los componentes principales.",
+  "Reduce colinealidad al combinar variables correlacionadas en componentes ortogonales.",
+  "Componentes iniciales pueden interpretarse mediante pesos, pero componentes posteriores son combinaciones lineales complejas.",
+  "Computación depende de descomposición de matrices (SVD), es eficiente con optimización BLAS.",
+  "Se puede evaluar número óptimo de componentes con validación de reconstrucción o bootstrap de SVD.",
+  "No apto para relaciones no lineales complejas; en tal caso usar Kernel PCA o métodos no lineales."
+)
+
+tabla_pca <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_pca %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir PCA",
+             subtitle = "Principal Component Analysis (PCA)")  %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
+```
+
 
 ## Principal Component Regression (PCR)  {-}    
 
@@ -571,7 +772,28 @@ tabla_pcr %>%
          as_raw_html() 
 ```
 
-## Partial Least Squares Discriminant Analysis (PLSDA)  {-}  
+
+
+## Projection Pursuit (PP)  {-}    
+
+**Projection Pursuit (PP)** es una técnica de **reducción de dimensionalidad y modelado exploratorio** utilizada para encontrar proyecciones interesantes de datos de alta dimensión en espacios de baja dimensión (típicamente 1D o 2D). La idea fundamental de Projection Pursuit es que, en datos de alta dimensión, las estructuras interesantes (como agrupaciones, frentes, o anomalías) a menudo se ocultan cuando se observan solo las proyecciones marginales de las variables individuales. PP busca **proyecciones "interesantes"** que revelen estas estructuras no gaussianas y no lineales, que podrían pasar desapercibidas con técnicas lineales como PCA.
+
+A diferencia de PCA, que busca las proyecciones que maximizan la varianza (lo cual es óptimo si los datos son elipsoidales o gaussianos), PP busca proyecciones que se desvían de la distribución normal. Esto se logra mediante la definición de una **función de "índice de proyección"** que cuantifica la "interesante" o "no-gaussiana" de una proyección. El algoritmo entonces busca activamente las direcciones que maximizan este índice.
+
+El proceso general de Projection Pursuit es iterativo:
+
+1.  **Definición del Índice de Proyección:** Se elige una función de índice de proyección que penalice la normalidad y recompense las desviaciones (ej., asimetría, curtosis, o medidas basadas en entropía). Por ejemplo, un índice de proyección podría buscar distribuciones multimodales o con colas pesadas.
+2.  **Optimización:** El algoritmo utiliza técnicas de optimización numérica (como descenso de gradiente) para encontrar la dirección de proyección (un vector que define la combinación lineal de las características originales) que maximiza el índice de proyección.
+3.  **Extracción de Componentes:** Una vez que se encuentra una proyección interesante, los datos se proyectan sobre esta dirección. A menudo, el proceso se repite para encontrar proyecciones ortogonales adicionales, cada una revelando diferentes aspectos de la estructura de los datos.
+
+**Aplicaciones de PP:**
+
+* **Visualización de Datos:** Para encontrar proyecciones 1D o 2D que revelen patrones o agrupaciones.
+* **Clasificación y Regresión:** Puede ser una etapa de preprocesamiento para encontrar características más informativas, o incluso puede ser la base para construir modelos (como en **Projection Pursuit Regression - PPR**).
+
+En el contexto del **aprendizaje global vs. local**, Projection Pursuit es una técnica que busca descubrir y modelar estructuras **globales** interesantes en los datos a través de una serie de **proyecciones lineales, pero la combinación de estas proyecciones para capturar la no linealidad es la clave**. Aunque las proyecciones individuales son lineales, el proceso de buscar iterativamente las proyecciones "más interesantes" y luego combinarlas permite a PP descubrir y representar relaciones **no lineales** en el conjunto de datos.
+
+Si los datos no se distribuyen linealmente, PP es una herramienta poderosa porque **no asume linealidad** en la estructura subyacente. En lugar de ello, busca activamente las direcciones que revelan la no linealidad y la no-gaussianidad. Esto es precisamente lo que lo diferencia de PCA. La idea de que "si los datos no se distribuyen linealmente, se puede aplicar el concepto de regresión de manera ponderada localmente" es algo que PPR (una extensión de PP para regresión) aborda. PPR construye un modelo como una suma de funciones suaves no lineales de varias proyecciones uni-dimensionales de los predictores, lo que permite capturar relaciones complejas que no pueden ser modeladas por una regresión lineal simple. Por lo tanto, Projection Pursuit aborda la limitación de que "a veces ningún valor de parámetro puede proporcionar una aproximación suficientemente buena" en modelos lineales o simples, al buscar activamente y explotar las características no lineales y de "interés" en las proyecciones de los datos.
 
 ```{r, echo = FALSE}
 criterios <- c(
@@ -591,43 +813,43 @@ criterios <- c(
 )
 
 aplica <- c(
-  "✅ Supervisado (clasificación)",
-  "✅ Categórica (binaria o multicategoría)",
-  "✅ Numéricas (se proyectan a componentes)",
-  "✅ Captura relaciones lineales y no lineales a través de proyecciones",
-  "❌ No aplica directamente (modelo de clasificación)",
-  "❌ No aplica como en regresión clásica",
-  "❌ No se evalúa como en modelos de regresión",
-  "⚠️ Algo sensible a outliers (pueden influir en componentes)",
-  "✅ Muy útil si hay multicolinealidad",
-  "⚠️ Menos interpretable que modelos clásicos; depende de componentes",
-  "✅ Eficiente, especialmente con datos de alta dimensión",
-  "✅ Se recomienda usar validación cruzada para elegir el número de componentes",
-  "❌ Si las proyecciones no separan bien las clases o hay mucho ruido"
+  "❌ No supervisado (reducción de dimensionalidad)",
+  "❌ No aplica (no hay variable respuesta)",
+  "✅ Numéricas (requiere matriz de datos)",
+  "✅ Detecta proyecciones no lineales con estructura interesante",
+  "❌ No aplica",
+  "❌ No aplica",
+  "❌ No aplica",
+  "⚠️ Puede ser sensible a valores extremos",
+  "⚠️ Puede verse afectado si hay alta redundancia",
+  "⚠️ Interpretación más difícil que PCA; proyecciones no son ortogonales",
+  "❌ Puede ser lento por búsqueda iterativa de proyecciones",
+  "⚠️ Validación subjetiva o basada en heurísticas de interés",
+  "❌ No útil si no hay estructuras no gaussianas en los datos"
 )
 
 detalles <- c(
-  "Modelo supervisado de clasificación basado en PLS (Partial Least Squares) que proyecta los datos para maximizar la separación entre clases.",
-  "Se requiere que la variable dependiente sea categórica. PLS-DA funciona bien con 2 o más clases.",
-  "Las variables predictoras deben ser numéricas para que el modelo pueda proyectarlas en componentes latentes.",
-  "El modelo encuentra combinaciones de predictores que mejor separan las clases en el espacio proyectado.",
-  "No se evalúa normalidad de residuos como en modelos de regresión; la salida es de clasificación.",
-  "Tampoco aplica la independencia clásica de errores ya que se clasifican observaciones.",
-  "El supuesto de homoscedasticidad no es relevante aquí.",
-  "Outliers pueden afectar la construcción de componentes, distorsionando la separación de clases.",
-  "PLS-DA es útil cuando los predictores están altamente correlacionados, ya que crea componentes ortogonales.",
-  "Los componentes no son directamente interpretables como las variables originales, aunque se pueden analizar los pesos de carga.",
-  "Es un algoritmo relativamente eficiente, especialmente para conjuntos con muchas variables.",
-  "La validación cruzada es crítica para seleccionar el número óptimo de componentes y evitar overfitting.",
-  "No funciona bien si las clases no están bien separadas en el espacio proyectado o si hay demasiado ruido en los datos."
+  "Método no supervisado que busca proyecciones de los datos donde se maximice cierta 'interesantitud' (varianza no gaussiana, agrupamientos, etc.).",
+  "No está diseñado para predicción, sino para exploración visual o estructural.",
+  "Se aplica a datos numéricos, generalmente estandarizados, buscando direcciones relevantes.",
+  "A diferencia del PCA (que busca máxima varianza), PP busca patrones como colas pesadas, clusters, o distribuciones no normales.",
+  "No es un modelo predictivo, por tanto no se calculan residuos.",
+  "No se modela el error; se enfoca en la estructura interna de los datos.",
+  "No tiene varianzas residuales, por lo que no aplica homoscedasticidad.",
+  "Proyecciones pueden verse distorsionadas por valores extremos.",
+  "Variables muy correlacionadas pueden dominar las proyecciones si no se controlan.",
+  "Proyecciones son difíciles de interpretar directamente; pueden requerir análisis posterior.",
+  "Requiere métodos numéricos iterativos para encontrar direcciones de interés, lo que lo vuelve computacionalmente intensivo.",
+  "Puede usarse validación visual (por ejemplo, si se detectan agrupamientos) o criterios como 'kurtosis'.",
+  "Si los datos son gaussianos y no contienen patrones relevantes, PP no encuentra proyecciones útiles."
 )
 
-tabla_plsda <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+tabla_pp <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
 
-tabla_plsda %>%
+tabla_pp %>%
  gt() %>%
-  tab_header(title = "Guía rápida para elegir PLSDA",
-             subtitle = "Partial Least Squares Discriminant Analysis (PLSDA)")  %>%
+  tab_header(title = "Guía rápida para elegir PP",
+             subtitle = "Projection Pursuit (PP) ")  %>%
    tab_footnote(footnote = "Fuente: Elaboración propia") %>%
      tab_options(heading.title.font.size = 14, 
                  heading.subtitle.font.size = 12,
@@ -644,7 +866,24 @@ tabla_plsda %>%
          as_raw_html() 
 ```
 
-## Mixture Discriminant Analysis (MDA)  {-}  
+
+
+## Sammon Mapping  {-}   
+
+**Sammon Mapping**, también conocida como **Sammon's Nonlinear Mapping (NLM)**, es una técnica de **reducción de dimensionalidad no lineal** utilizada principalmente para **visualización de datos**. La idea fundamental de Sammon Mapping es proyectar un conjunto de datos de un espacio de alta dimensión a un espacio de menor dimensión (típicamente 2D o 3D) de tal manera que se preserve lo mejor posible la **estructura de las distancias entre los puntos** del espacio original. Es decir, si dos puntos estaban cerca en el espacio de alta dimensión, se espera que también estén cerca en el espacio de baja dimensión, y viceversa.
+
+A diferencia de técnicas lineales como PCA, que se enfocan en preservar la varianza o la covarianza, Sammon Mapping se centra en preservar las **distancias por pares** entre los puntos. Para lograr esto, utiliza un algoritmo iterativo que busca minimizar una **función de error de Sammon**. Esta función mide la diferencia entre las distancias por pares en el espacio de alta dimensión y las distancias correspondientes en el espacio de baja dimensión, ponderando más los errores para los puntos que están más cerca en el espacio original. Esto significa que Sammon Mapping presta especial atención a preservar la estructura local del conjunto de datos.
+
+La función de error de Sammon ($E$) se define como:
+$$E = \frac{1}{\sum_{i < j} d_{ij}^* } \sum_{i < j} \frac{(d_{ij}^* - d_{ij})^2}{d_{ij}^*}$$
+Donde:
+* $d_{ij}^*$ es la distancia euclidiana entre el punto $i$ y el punto $j$ en el espacio de alta dimensión.
+* $d_{ij}$ es la distancia euclidiana entre el punto $i$ y el punto $j$ en el espacio de baja dimensión.
+
+El algoritmo busca iterativamente las coordenadas de los puntos en el espacio de baja dimensión que minimizan esta función de error, utilizando un método de **descenso de gradiente**.
+
+En el contexto del **aprendizaje global vs. local**, Sammon Mapping es una técnica que busca un compromiso entre la preservación de la estructura **local** y **global** de los datos. Sin embargo, su énfasis en ponderar los errores de las distancias pequeñas (puntos cercanos) hace que sea más sensible a la **estructura local** del conjunto de datos. La idea es que, si los datos no se distribuyen linealmente, Sammon Mapping puede generar una representación en baja dimensión que revele agrupaciones y patrones que no serían evidentes con técnicas lineales como PCA. A diferencia de un método de regresión ponderada localmente como LOESS, que se enfoca en ajustar una curva, Sammon Mapping se dedica a la visualización de la estructura de similitud. Al intentar preservar las relaciones de distancia no lineales, aborda directamente la desventaja de que "a veces ningún valor de parámetro puede proporcionar una aproximación suficientemente buena" en las proyecciones lineales, ya que se adapta a la curvatura y la estructura intrínseca no lineal de los datos para ofrecer una visualización más fiel. Aunque puede ser computacionalmente intensivo para conjuntos de datos muy grandes, es una herramienta valiosa para explorar la estructura oculta en datos complejos.
+
 
 ```{r, echo = FALSE}
 criterios <- c(
@@ -664,43 +903,44 @@ criterios <- c(
 )
 
 aplica <- c(
-  "✅ Supervisado (clasificación)",
-  "✅ Categórica (clases)",
-  "✅ Numéricas",
-  "✅ No lineal (usa mezclas de gaussianas para modelar clases)",
-  "❌ No aplica como en regresión",
-  "❌ No se evalúa como en regresión",
-  "⚠️ Supone varianza homogénea dentro de componentes, pero puede variar entre clases",
-  "⚠️ Puede ser sensible a outliers (afectan las medias y covarianzas)",
-  "⚠️ Puede verse afectado, aunque usa reducción dimensional",
-  "⚠️ Moderadamente interpretable (depende de componentes gaussianos)",
-  "⚠️ Más lento que LDA/QDA, pero más flexible",
-  "✅ Recomendable para elegir número de componentes y evitar sobreajuste",
-  "❌ Mal desempeño si la distribución dentro de clases no es bien modelada por gaussianas"
+  "❌ No supervisado (reducción de dimensionalidad)",
+  "❌ No aplica (no hay variable respuesta)",
+  "✅ Numéricas (distancias euclidianas)",
+  "✅ No lineal, mantiene distancias entre puntos",
+  "❌ No aplica",
+  "❌ No aplica",
+  "❌ No aplica",
+  "⚠️ Sí, es sensible a valores atípicos",
+  "⚠️ No afecta directamente (no hay predictores)",
+  "⚠️ Interpretación visual en 2D o 3D; no en componentes",
+  "❌ Lento para conjuntos grandes (algoritmo iterativo)",
+  "⚠️ Se puede validar visualmente o con estrés",
+  "❌ Mal desempeño en datos ruidosos o de alta dimensión sin estructura"
+
 )
 
 detalles <- c(
-  "Modelo supervisado de clasificación que combina regresión discriminante con mezclas gaussianas dentro de cada clase.",
-  "Se usa para clasificar observaciones en grupos definidos por una variable categórica.",
-  "Requiere predictores numéricos para ajustar distribuciones normales multivariadas.",
-  "Modela cada clase como una combinación de distribuciones gaussianas, permitiendo formas no lineales.",
-  "No hay residuos como en regresión, ya que se trata de una tarea de clasificación.",
-  "No evalúa independencia clásica de errores; se enfoca en estimar la densidad condicional.",
-  "Permite varianza distinta entre componentes, pero se puede ajustar homogeneidad según implementación.",
-  "Outliers pueden afectar las medias y varianzas estimadas de las mezclas gaussianas.",
-  "La multicolinealidad puede dificultar la estimación de matrices de covarianza.",
-  "Interpretar los componentes internos (medias y pesos) puede ser complejo, pero ofrece buena visualización.",
-  "Es más lento que LDA o QDA por su naturaleza iterativa y uso de EM (Expectation-Maximization).",
-  "Se puede usar validación cruzada para seleccionar el número óptimo de mezclas por clase.",
-  "Si las clases no se ajustan bien a combinaciones de gaussianas, el modelo pierde precisión."
+  "Método no supervisado para proyectar datos de alta dimensión en espacios de menor dimensión preservando distancias.",
+  "No busca predecir, sino representar relaciones de cercanía entre observaciones.",
+  "Usa distancias entre puntos; solo variables numéricas tienen sentido.",
+  "A diferencia de PCA, Sammon busca preservar distancias relativas entre puntos originales y proyectados.",
+  "No genera residuos como un modelo predictivo, por lo tanto no se aplica la normalidad.",
+  "No hay modelo de error porque no hay predicción.",
+  "No aplica el supuesto de homoscedasticidad.",
+  "Valores extremos alteran las distancias y distorsionan el mapa resultante.",
+  "Como es una técnica de reducción, no le afecta multicolinealidad directamente.",
+  "El mapa resultante puede interpretarse en términos de proximidad, no de pesos o coeficientes.",
+  "Implementación clásica es iterativa y costosa computacionalmente en datasets grandes.",
+  "Puede usarse estrés (error entre distancias originales y proyectadas) como métrica de calidad.",
+  "Si las distancias no reflejan bien la estructura real (por ruido o dimensiones irrelevantes), el método falla en representar datos útiles."
 )
 
-tabla_mda <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+tabla_sammon <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
 
-tabla_mda %>%
+tabla_sammon %>%
  gt() %>%
-  tab_header(title = "Guía rápida para elegir MDA",
-             subtitle = "Mixture Discriminant Analysis (MDA)")  %>%
+  tab_header(title = "Guía rápida para elegir sammon mapping",
+             subtitle = "Sammon Mapping")  %>%
    tab_footnote(footnote = "Fuente: Elaboración propia") %>%
      tab_options(heading.title.font.size = 14, 
                  heading.subtitle.font.size = 12,
@@ -718,78 +958,7 @@ tabla_mda %>%
 ```
 
 
-## Quadratic Discriminant Analysis (QDA) {-}  
 
-```{r, echo = FALSE}
-criterios <- c(
-  "Tipo de modelo",
-  "Variable respuesta",
-  "Variables predictoras",
-  "Relación entre variables",
-  "Normalidad de residuos",
-  "Independencia de errores",
-  "Homoscedasticidad",
-  "Sensible a outliers",
-  "Multicolinealidad entre predictores",
-  "Interpretabilidad",
-  "Velocidad y eficiencia",
-  "Validación cruzada",
-  "No funciona bien si..."
-)
-
-aplica <- c(
-  "✅ Supervisado (clasificación)",
-  "✅ Categórica (clases)",
-  "✅ Numéricas",
-  "✅ Modela separación cuadrática entre clases",
-  "❌ No aplica (clasificación, no regresión)",
-  "❌ No aplica (se asume independencia dentro de clases)",
-  "❌ No se asume homoscedasticidad (cada clase tiene su propia matriz de covarianza)",
-  "⚠️ Puede ser muy sensible a outliers (afectan las matrices de covarianza)",
-  "⚠️ Puede verse afectado, especialmente si hay pocos datos",
-  "✅ Relativamente interpretable (fronteras no lineales entre clases)",
-  "⚠️ Más costoso que LDA; ineficiente con pocos datos o muchas variables",
-  "✅ Recomendado para evitar overfitting, especialmente con pocos datos",
-  "❌ Si hay pocos datos por clase, estimar matrices de covarianza es inestable"
-)
-
-detalles <- c(
-  "Modelo supervisado de clasificación que permite que cada clase tenga su propia matriz de covarianza.",
-  "Se utiliza para predecir a qué clase pertenece una observación con base en sus características.",
-  "Requiere predictores numéricos continuos, ya que calcula medias y covarianzas.",
-  "A diferencia de LDA, permite fronteras no lineales al no asumir varianzas iguales entre clases.",
-  "No tiene residuos como en regresión, por lo que el supuesto de normalidad de errores no aplica.",
-  "No aplica el supuesto de independencia de errores; se enfoca en la distribución conjunta por clase.",
-  "Cada clase tiene su propia varianza y covarianza, lo que lo hace más flexible que LDA.",
-  "Valores extremos pueden distorsionar la estimación de medias y covarianzas de cada clase.",
-  "Multicolinealidad puede dificultar la inversión de la matriz de covarianza en clases pequeñas.",
-  "Los coeficientes y decisiones son interpretables en términos de separaciones estadísticas entre clases.",
-  "Más lento y costoso computacionalmente que LDA, especialmente con muchas variables.",
-  "La validación cruzada ayuda a prevenir sobreajuste y a seleccionar características relevantes.",
-  "Con clases poco representadas o muchas variables, las matrices de covarianza pueden volverse inestables."
-)
-
-tabla_qda <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles) 
-
-tabla_qda %>%
- gt() %>%
-  tab_header(title = "Guía rápida para elegir QDA",
-             subtitle = "Quadratic Discriminant Analysis (QDA)")  %>%
-   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
-     tab_options(heading.title.font.size = 14, 
-                 heading.subtitle.font.size = 12,
-                 table.font.names = "Century Gothic",
-                 table.font.size = 10,
-                 data_row.padding = px(1)) %>%
-      tab_style(style = list(cell_text(align = "left",
-                                       weight = 'bold')),
-                locations = list(cells_title(groups = c("title")))) %>%
-       tab_style(style = list(cell_text(align = "left")),
-                 locations = list(cells_title(groups = c("subtitle")))) %>%
-        cols_width(starts_with("Detalles") ~ px(500),
-                   everything() ~ px(200)) %>%
-         as_raw_html() 
-```
 
 ## Regularized Discriminant Analysis (RDA)  {-}   
 
@@ -867,153 +1036,6 @@ tabla_rda %>%
 
 
 
-## Flexible Discriminant Analysis (FDA)  {-}  
-
-```{r, echo = FALSE}
-criterios <- c(
-  "Tipo de modelo",
-  "Variable respuesta",
-  "Variables predictoras",
-  "Relación entre variables",
-  "Normalidad de residuos",
-  "Independencia de errores",
-  "Homoscedasticidad",
-  "Sensible a outliers",
-  "Multicolinealidad entre predictores",
-  "Interpretabilidad",
-  "Velocidad y eficiencia",
-  "Validación cruzada",
-  "No funciona bien si..."
-)
-
-aplica <- c(
-  "✅ Supervisado (clasificación)",
-  "✅ Categórica (clases)",
-  "✅ Numéricas (puede usar transformaciones)",
-  "✅ No lineal (usa regresión flexible en el espacio transformado)",
-  "❌ No aplica (no es regresión de residuos)",
-  "❌ No aplica directamente",
-  "⚠️ FDA suaviza este supuesto al modelar relaciones no lineales",
-  "⚠️ Puede ser sensible a outliers, dependiendo del método de ajuste",
-  "⚠️ Puede mitigar multicolinealidad si se usa penalización",
-  "⚠️ Menos interpretable que LDA, pero permite mayor flexibilidad",
-  "⚠️ Menor eficiencia que LDA por mayor complejidad computacional",
-  "✅ Validación cruzada útil para seleccionar transformaciones o suavizados",
-  "❌ En datos con pocos casos o ruido excesivo puede sobreajustarse"
-)
-
-detalles <- c(
-  "Extensión de LDA que permite relaciones no lineales entre predictores y clases mediante técnicas como splines o regresión flexible.",
-  "Clasifica observaciones en clases categóricas basándose en predictores transformados.",
-  "Admite variables numéricas, las cuales pueden ser transformadas de forma no lineal.",
-  "Usa regresión no lineal flexible (como splines) para modelar relaciones complejas en el espacio de discriminación.",
-  "No genera residuos como regresión tradicional; es un modelo de clasificación.",
-  "No se enfoca en errores secuenciales o dependientes.",
-  "Relaja la homocedasticidad al no asumir distribución gaussiana estricta.",
-  "Puede verse afectado por valores extremos, según el método de suavizado.",
-  "La transformación flexible puede reducir colinealidad, pero no siempre la elimina.",
-  "Los coeficientes y funciones discriminantes pueden ser difíciles de interpretar si se usan transformaciones complejas.",
-  "Mayor costo computacional que LDA, pero más potente en patrones no lineales.",
-  "Se recomienda CV para evaluar desempeño y evitar overfitting en el proceso de ajuste flexible.",
-  "Si los datos no requieren flexibilidad o el tamaño muestral es bajo, FDA puede ser innecesariamente complejo."
-)
-
-tabla_fda <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
-
-tabla_fda %>%
- gt() %>%
-  tab_header(title = "Guía rápida para elegir FDA",
-             subtitle = "Flexible Discriminant Analysis (FDA)")  %>%
-   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
-     tab_options(heading.title.font.size = 14, 
-                 heading.subtitle.font.size = 12,
-                 table.font.names = "Century Gothic",
-                 table.font.size = 10,
-                 data_row.padding = px(1)) %>%
-      tab_style(style = list(cell_text(align = "left",
-                                       weight = 'bold')),
-                locations = list(cells_title(groups = c("title")))) %>%
-       tab_style(style = list(cell_text(align = "left")),
-                 locations = list(cells_title(groups = c("subtitle")))) %>%
-        cols_width(starts_with("Detalles") ~ px(500),
-                   everything() ~ px(200)) %>%
-         as_raw_html() 
-```
-
-
-
-## Linear Discriminant Analysis (LDA)  {-}   
-
-```{r, echo = FALSE}
-criterios <- c(
-  "Tipo de modelo",
-  "Variable respuesta",
-  "Variables predictoras",
-  "Relación entre variables",
-  "Normalidad de residuos",
-  "Independencia de errores",
-  "Homoscedasticidad",
-  "Sensible a outliers",
-  "Multicolinealidad entre predictores",
-  "Interpretabilidad",
-  "Velocidad y eficiencia",
-  "Validación cruzada",
-  "No funciona bien si..."
-)
-
-aplica <- c(
-  "✅ Supervisado (clasificación)",
-  "✅ Categórica (clases)",
-  "✅ Numéricas (preferentemente)",
-  "✅ Asume relaciones lineales entre variables y clases",
-  "✅ Supone normalidad multivariante de los predictores dentro de cada clase",
-  "✅ Supone independencia entre observaciones",
-  "✅ Asume varianza-covarianza igual entre clases (homocedasticidad)",
-  "⚠️ Sensible a valores atípicos",
-  "⚠️ Puede verse afectado negativamente por alta colinealidad",
-  "✅ Alta, coeficientes discriminantes son interpretables",
-  "✅ Muy eficiente computacionalmente",
-  "✅ Se recomienda para evaluar estabilidad y evitar sobreajuste",
-  "❌ Mal desempeño si no se cumplen supuestos de normalidad y homocedasticidad"
-)
-
-detalles <- c(
-  "Modelo supervisado clásico para clasificación que encuentra combinaciones lineales de predictores que separan clases.",
-  "Requiere una variable categórica como objetivo, con dos o más clases.",
-  "Mejor con predictores numéricos continuos; categóricos requieren codificación previa.",
-  "Calcula funciones discriminantes lineales que maximizan la separación entre clases.",
-  "Cada grupo debe seguir una distribución normal multivariante para resultados óptimos.",
-  "Las observaciones deben ser independientes para validez de inferencia.",
-  "Supone igual matriz de covarianzas entre grupos; si no se cumple, usar QDA.",
-  "Outliers influyen en la media y la varianza estimada, distorsionando fronteras.",
-  "Multicolinealidad puede hacer que los coeficientes discriminantes sean inestables.",
-  "Las funciones discriminantes se interpretan como direcciones de máxima separación.",
-  "Requiere bajo costo computacional y se entrena rápidamente.",
-  "Se puede usar validación cruzada para elegir el número de componentes o verificar precisión.",
-  "Cuando los datos no cumplen normalidad ni homocedasticidad, el modelo pierde precisión."
-)
-
-tabla_lda <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
-
-tabla_lda %>%
- gt() %>%
-  tab_header(title = "Guía rápida para elegir LDA",
-             subtitle = "Linear Discriminant Analysis (LDA)")  %>%
-   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
-     tab_options(heading.title.font.size = 14, 
-                 heading.subtitle.font.size = 12,
-                 table.font.names = "Century Gothic",
-                 table.font.size = 10,
-                 data_row.padding = px(1)) %>%
-      tab_style(style = list(cell_text(align = "left",
-                                       weight = 'bold')),
-                locations = list(cells_title(groups = c("title")))) %>%
-       tab_style(style = list(cell_text(align = "left")),
-                 locations = list(cells_title(groups = c("subtitle")))) %>%
-        cols_width(starts_with("Detalles") ~ px(500),
-                   everything() ~ px(200)) %>%
-         as_raw_html() 
-```
 
 ## Uniform Manifold Approximation and Projection (UMAP) {-}  
 

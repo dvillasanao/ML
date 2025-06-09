@@ -12,26 +12,9 @@
 ---
 
 
-## Radial Basis Function Network (RBFN)  {-}      
+## Autoenconder  {-}  
 
-**Radial Basis Function Network (RBFN)** es un tipo de **red neuronal artificial** que se utiliza tanto para tareas de **clasificación** como de **regresión**. A diferencia de las redes neuronales multicapa perceptrón tradicionales que utilizan funciones de activación sigmoide o ReLU, las RBFN emplean **funciones de base radial** como sus funciones de activación en la capa oculta. Su estructura es típicamente más simple que un perceptrón multicapa, consistiendo generalmente en tres capas: una capa de entrada, una capa oculta con neuronas de base radial, y una capa de salida.
-
-La idea fundamental de una RBFN radica en su capacidad para modelar relaciones no lineales al mapear datos de entrada a un espacio de características de mayor dimensión donde pueden ser **linealmente separables** (para clasificación) o donde una **función lineal** puede aproximar la relación (para regresión). Esto se logra a través de las neuronas de la capa oculta, cada una de las cuales representa un "centro" en el espacio de características.
-
-El funcionamiento de una RBFN implica:
-
-1.  **Capa de Entrada:** Recibe las características de entrada.
-2.  **Capa Oculta (Neuronas de Base Radial):** Cada neurona en esta capa tiene un **centro** ($c_i$) y un **radio (o desviación estándar, $\sigma_i$)**. La función de activación de estas neuronas (comúnmente una **función Gaussiana**) calcula la **distancia** entre el vector de entrada ($x$) y el centro de la neurona ($c_i$), y luego aplica la función de base radial. Cuanto más cerca esté la entrada del centro de la neurona, mayor será la activación de esa neurona.
-    $$\phi_i(x) = \exp\left(-\frac{\|x - c_i\|^2}{2\sigma_i^2}\right)$$
-    Donde $\phi_i(x)$ es la salida de la neurona $i$, $\|x - c_i\|$ es la distancia euclidiana entre la entrada $x$ y el centro $c_i$, y $\sigma_i$ es el radio (ancho) de la función Gaussiana.
-3.  **Capa de Salida:** Las salidas de las neuronas de la capa oculta se combinan linealmente (ponderadas por unos coeficientes, $w_{ij}$) para producir la salida final de la red. Para regresión, es una suma ponderada; para clasificación, a menudo se usa una función de activación softmax.
-    $$y_j = \sum_{i=1}^{M} w_{ij}\phi_i(x)$$
-    Donde $y_j$ es la salida $j$, $M$ es el número de neuronas ocultas, y $w_{ij}$ son los pesos de la capa de salida.
-
-En el contexto del **aprendizaje global vs. local**, las RBFN son intrínsecamente sistemas de **aprendizaje local**. Cada neurona de la capa oculta es sensible a una **región específica** del espacio de entrada, definida por su centro y su radio. La red como un todo es una combinación de estas respuestas locales. Si los datos no se distribuyen linealmente, el concepto de regresión (o clasificación) se aplica de forma muy eficaz mediante esta naturaleza de **regresión ponderada localmente**. Las RBFN pueden aproximar cualquier función continua con la suficiente cantidad de neuronas de base radial. Esto aborda directamente la desventaja de que "a veces ningún valor de parámetro puede proporcionar una aproximación suficientemente buena" en un solo modelo global, ya que la red puede adaptarse localmente a las características de diferentes regiones del espacio de datos. Son particularmente útiles para problemas de aproximación de funciones, series de tiempo y reconocimiento de patrones.
-
-
-```{r, echo = FALSE}
+```{r}
 criterios <- c(
   "Tipo de modelo",
   "Variable respuesta",
@@ -49,43 +32,43 @@ criterios <- c(
 )
 
 aplica <- c(
-  "✅ Supervisado",
-  "✅ Continua (regresión) o Categórica (clasificación)",
-  "✅ Numéricas (requiere normalización), Categóricas como dummies",
-  "✅ Captura no linealidades mediante funciones base radiales",
-  "❌ No requiere supuestos de normalidad",
-  "✅ Deseable, pero no obligatorio (mejor si muestras i.i.d.)",
-  "❌ No asume varianza constante",
-  "⚠️ Moderadamente (centros pueden verse alterados por outliers)",
-  "⚠️ Puede influir en la selección de centros, pero no tan crítico como en OLS",
-  "⚠️ Baja (la capa oculta con RBF es difícil de interpretar)",
-  "⚠️ Moderada (depende de número de centros y dimensiones)",
-  "✅ Recomendable para ajustar número de bases y spread",
-  "❌ Datos muy grandes o alta dimensionalidad sin reducción, mucho ruido"
+  "❌ No supervisado (aprendizaje no supervisado)",
+  "❌ No aplica (no hay variable respuesta)",
+  "✅ Numéricas (o categóricas codificadas)",
+  "✅ Captura relaciones complejas y no lineales",
+  "❌ No aplica (no es un modelo de regresión)",
+  "❌ No aplica (no hay errores residuales)",
+  "❌ No aplica",
+  "✅ Sí, pueden afectar la reconstrucción",
+  "✅ Puede ayudar a reducir efectos de multicolinealidad",
+  "⚠️ Baja interpretabilidad (representaciones latentes)",
+  "⚠️ Lento en entrenamiento, especialmente con muchas capas o datos",
+  "⚠️ Se puede validar con reconstrucción y autoevaluación",
+  "❌ Datos con mucha dispersión o sin estructura latente clara"
 )
 
 detalles <- c(
-  "Red neuronal de una capa oculta con funciones radial basis como activación.",
-  "Para regresión predice un valor continuo; para clasificación usa votación o softmax sobre salidas.",
-  "Requiere que las características numéricas estén escaladas; las categóricas deben convertirse a variables indicadoras.",
-  "Cada neurona oculta calcula una función gaussiana (u otra RBF) centrada en un punto, captando curvas suaves.",
-  "No impone distribución normal en los errores, pues optimiza en función de mínimos cuadrados o cross-entropy.",
-  "Funciona mejor si las observaciones son independientes; sensible a estructuras de dependencia sin modelar.",
-  "No requiere homocedasticidad ya que no se basa en un modelo paramétrico de error con varianza fija.",
-  "Los valores extremos pueden desplazar los centros de las RBF, afectando la forma del modelo.",
-  "La colinealidad puede dificultar la determinación de centros óptimos, pero no invalida el ajuste.",
-  "Las neuronas ocultas representan combinaciones complejas de características, por lo que el modelo es tipo 'caja negra'.",
-  "El entrenamiento implica fijar o aprender centros y spreads; para muchos centros o dimensiones altas, el costo crece rápido.",
-  "Se usa CV para elegir el número de bases (centros) y el parámetro de ancho (`sigma` o `spread`) para evitar sobreajuste.",
-  "No conviene cuando hay decenas de miles de características sin reducción previa o cuando el ruido es muy alto."
+  "Red neuronal no supervisada que aprende a codificar y decodificar los datos para reducir dimensionalidad o detectar anomalías.",
+  "No predice una variable externa, sino que reproduce la entrada como salida.",
+  "Requiere variables numéricas (o una codificación previa en caso de categóricas).",
+  "Es capaz de capturar estructuras complejas y no lineales al comprimir los datos.",
+  "No tiene residuos como un modelo clásico, pero sí errores de reconstrucción.",
+  "No modela errores independientes, ya que no es un modelo predictivo tradicional.",
+  "Tampoco se evalúa homoscedasticidad, ya que no hay predicción como tal.",
+  "Outliers distorsionan el entrenamiento, especialmente si no se normaliza.",
+  "Ayuda a eliminar redundancias en los datos si están correlacionados.",
+  "Las capas internas (representaciones) no son directamente interpretables.",
+  "Requiere entrenamiento con varias iteraciones y puede tardar con arquitecturas grandes.",
+  "Se evalúa con pérdida de reconstrucción o aplicando validación cruzada si se integra en modelos supervisados.",
+  "Pierde eficacia si los datos no tienen una estructura latente útil para codificar."
 )
 
-tabla_rbfn <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+tabla_autoencoder <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
 
-tabla_rbfn %>%
+tabla_autoencoder %>%
  gt() %>%
-  tab_header(title = "Guía rápida para elegir RBFN",
-             subtitle = "Radial Basis Function Network (RBFN)")  %>%
+  tab_header(title = "Guía rápida para elegir autoencoder",
+             subtitle = "Autoenconder")  %>%
    tab_footnote(footnote = "Fuente: Elaboración propia") %>%
      tab_options(heading.title.font.size = 14, 
                  heading.subtitle.font.size = 12,
@@ -102,96 +85,6 @@ tabla_rbfn %>%
          as_raw_html() 
 ```
 
-## Perceptron  {-}     
-
-El **Perceptron** es el algoritmo de **aprendizaje supervisado** más simple y uno de los primeros modelos de **redes neuronales artificiales**, propuesto por Frank Rosenblatt en 1957. Está diseñado para tareas de **clasificación binaria**, es decir, para decidir si una entrada pertenece a una de dos clases posibles. Su idea fundamental es modelar cómo una neurona biológica podría tomar decisiones.
-
-El funcionamiento de un Perceptron es bastante directo:
-
-1.  **Entradas y Pesos:** Recibe múltiples **entradas** (características) y a cada entrada se le asigna un **peso**. Estos pesos representan la importancia de cada característica.
-2.  **Suma Ponderada:** Las entradas se multiplican por sus respectivos pesos y se suman. A esta suma se le añade un **término de sesgo (bias)**.
-    $$z = \sum_{i=1}^{n} w_i x_i + b$$
-    Donde $x_i$ son las entradas, $w_i$ son los pesos, $b$ es el sesgo, y $n$ es el número de entradas.
-3.  **Función de Activación:** El resultado de la suma ponderada ($z$) se pasa a través de una **función de activación** (generalmente una función escalón o *step function*). Esta función decide la salida final, que es 1 si la suma excede un umbral (o 0 si no lo excede). Para el Perceptron original, la salida es binaria.
-    $$\text{salida} = \begin{cases} 1 & \text{si } z \geq \text{umbral} \\ 0 & \text{si } z < \text{umbral} \end{cases}$$
-4.  **Aprendizaje (Regla de Perceptron):** El Perceptron aprende ajustando sus pesos de forma iterativa. Si la predicción es incorrecta, los pesos se actualizan para reducir el error en la siguiente iteración. La regla de actualización de pesos es:
-    $$w_i^{\text{nuevo}} = w_i^{\text{anterior}} + \alpha \cdot (y - \hat{y}) \cdot x_i$$
-    Donde $\alpha$ es la tasa de aprendizaje, $y$ es el valor real, y $\hat{y}$ es la predicción del Perceptron.
-
-En el contexto del **aprendizaje global vs. local**, el Perceptron es un sistema de **aprendizaje global** por naturaleza. Busca encontrar un **hiperplano de separación lineal** único que divida el espacio de características en dos regiones. La idea es que, si los datos son **linealmente separables** (es decir, si existe una línea, plano o hiperplano que puede separar perfectamente las dos clases), el Perceptron está garantizado para converger y encontrar esa solución.
-
-Sin embargo, precisamente porque busca una solución lineal global, si los datos no se distribuyen linealmente (es decir, no son linealmente separables), el Perceptron **no puede encontrar una solución convergente** y no puede aprender la relación. Esto ilustra la desventaja de que "a veces ningún valor de parámetro puede proporcionar una aproximación suficientemente buena" cuando se busca una solución global rígida. El Perceptron original no puede aplicar el concepto de regresión ponderada localmente ni adaptarse a complejidades no lineales, a diferencia de modelos posteriores como las redes neuronales multicapa con funciones de activación no lineales o los algoritmos de árboles de decisión. A pesar de esta limitación, el Perceptron sentó las bases para el desarrollo posterior de redes neuronales más complejas.
-
-```{r, echo = FALSE}
-criterios <- c(
-  "Tipo de modelo",
-  "Variable respuesta",
-  "Variables predictoras",
-  "Relación entre variables",
-  "Normalidad de residuos",
-  "Independencia de errores",
-  "Homoscedasticidad",
-  "Sensible a outliers",
-  "Multicolinealidad entre predictores",
-  "Interpretabilidad",
-  "Velocidad y eficiencia",
-  "Validación cruzada",
-  "No funciona bien si..."
-)
-
-aplica <- c(
-  "✅ Supervisado",
-  "✅ Categórica binaria (0/1)",
-  "✅ Numéricas (requiere normalizar), Categóricas como dummies",
-  "⚠️ Aprendizaje lineal: separabilidad lineal requerida",
-  "❌ No requiere",
-  "✅ Deseable, pero no obligatorio (mejor si muestras i.i.d.)",
-  "❌ No se asume homoscedasticidad",
-  "⚠️ Moderado (outliers pueden cambiar el hiperplano)",
-  "⚠️ Afecta la convergencia si está muy alta",
-  "⚠️ Baja (modelo básico de una capa sin capas ocultas)",
-  "✅ Muy rápido para datasets medianos",
-  "✅ Útil para evaluar margen de separación",
-  "❌ No sirve si las clases no son linealmente separables"
-)
-
-detalles <- c(
-  "Red neuronal de una sola capa que ajusta un hiperplano separador.",
-  "Diseñado para clasificación binaria; no predice valores continuos.",
-  "Todas las features deben ser numéricas y escaladas; las categóricas deben convertirse en indicadores.",
-  "Busca maximizar el margen de separación lineal entre dos clases; no captura no linealidades.",
-  "No exige distribución normal de errores ya que optimiza con perceptrón simple.",
-  "Funciona mejor si las instancias son independientes; sensible a dependencias temporales sin ajuste.",
-  "No se basa en varianza de errores; el algoritmo actualiza pesos sin supuestos de varianza.",
-  "Los valores extremos cercanos al margen pueden forzar ajustes bruscos de pesos.",
-  "La colinealidad puede ralentizar la convergencia, aunque no impide la definición de hiperplano.",
-  "Fácil de entender: el peso de cada característica indica dirección del hiperplano.",
-  "Entrenamiento rápido usando regla de aprendizaje por error; escalable a datos medianos.",
-  "Se usa CV para ajustar tasa de aprendizaje y número de épocas para evitar bajo/sobreajuste.",
-  "Inútil si las clases no se pueden separar linealmente; requiere extensiones (por ejemplo, kernel) para no linealidad."
-)
-
-tabla_perceptron <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
-
-tabla_perceptron %>%
- gt() %>%
-  tab_header(title = "Guía rápida para elegir perceptron",
-             subtitle = "Perceptron")  %>%
-   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
-     tab_options(heading.title.font.size = 14, 
-                 heading.subtitle.font.size = 12,
-                 table.font.names = "Century Gothic",
-                 table.font.size = 10,
-                 data_row.padding = px(1)) %>%
-      tab_style(style = list(cell_text(align = "left",
-                                       weight = 'bold')),
-                locations = list(cells_title(groups = c("title")))) %>%
-       tab_style(style = list(cell_text(align = "left")),
-                 locations = list(cells_title(groups = c("subtitle")))) %>%
-        cols_width(starts_with("Detalles") ~ px(500),
-                   everything() ~ px(200)) %>%
-         as_raw_html() 
-```
 
 ## Back - Propagation  {-}  
 
@@ -286,6 +179,92 @@ tabla_backprop %>%
                    everything() ~ px(200)) %>%
          as_raw_html()  
 ```
+
+## Convolutional Neural Network (CNN)  {-}   
+
+**Convolutional Neural Networks (CNNs)**, también conocidas como **ConvNets**, son una clase especializada de **redes neuronales profundas** que han demostrado ser excepcionalmente efectivas en tareas de **visión por computadora** (como clasificación de imágenes, detección de objetos, reconocimiento facial) y, más recientemente, en procesamiento de lenguaje natural. La idea fundamental de una CNN es imitar el funcionamiento del córtex visual en el cerebro humano, utilizando **capas de convolución** para detectar automáticamente patrones y características jerárquicas directamente de los datos de entrada sin necesidad de una extracción manual de características.
+
+A diferencia de los Multilayer Perceptrons (MLPs) que conectan cada neurona de una capa con cada neurona de la siguiente capa (lo que resulta en una enorme cantidad de parámetros para datos de alta dimensión como imágenes), las CNNs aprovechan tres ideas arquitectónicas clave:
+
+1.  **Capas de Convolución:** Estas capas aplican un pequeño conjunto de **filtros (kernels)** a la entrada (ej., una imagen). Cada filtro "se desliza" por la entrada (operación de convolución) y calcula un producto punto entre sus valores y los valores de la región de la entrada que está cubriendo. Esto genera un **mapa de características** que resalta la presencia de patrones específicos (bordes, texturas, formas) en diferentes ubicaciones de la entrada. La ventaja es que los mismos filtros se aplican en múltiples ubicaciones, lo que reduce drásticamente el número de parámetros y captura la **localidad** de los patrones y la **invarianza traslacional**.
+2.  **Capas de Pooling (Submuestreo):** Estas capas se insertan periódicamente entre las capas convolucionales. Su función es reducir la dimensionalidad espacial de los mapas de características (ej., reduciendo el número de píxeles), lo que ayuda a hacer que el modelo sea más robusto a pequeñas variaciones o distorsiones en la posición de las características. Las operaciones comunes son el **max pooling** (tomar el valor máximo de una región) o el **average pooling** (tomar el promedio).
+3.  **Capas Totalmente Conectadas (Dense):** Después de varias capas convolucionales y de pooling, los mapas de características finales se aplanan en un vector y se conectan a una o más capas totalmente conectadas (similares a las de un MLP). Estas capas finales realizan la clasificación o regresión basándose en las características de alto nivel extraídas por las capas anteriores.
+
+El entrenamiento de una CNN se realiza utilizando el algoritmo de **Back-Propagation** y descenso de gradiente (con sus variantes como SGD, Adam, etc.), ajustando los pesos de los filtros y las conexiones de las capas densas para minimizar una función de pérdida.
+
+En el contexto del **aprendizaje global vs. local**, las CNNs son un ejemplo sobresaliente de un sistema de **aprendizaje global** que, en sus capas iniciales, se beneficia de la detección de patrones **locales**. Cada filtro de convolución aprende a detectar un patrón local específico (un borde vertical, una esquina, etc.) que se repite en diferentes partes de la imagen (lo que es una forma de "regresión ponderada localmente" en el sentido de que el filtro "aplica" su conocimiento local a diferentes ventanas de entrada). Sin embargo, la combinación jerárquica de múltiples capas convolucionales y de pooling, seguida de capas totalmente conectadas, permite que la red construya representaciones cada vez más abstractas y globales del contenido de la imagen. Esto significa que si los datos no se distribuyen linealmente, las CNNs pueden aprender a modelar relaciones extremadamente complejas y no lineales al componer características locales en representaciones globales. La arquitectura de CNNs resuelve la limitación de que "a veces ningún valor de parámetro puede proporcionar una aproximación suficientemente buena" en modelos más simples al permitir que la red aprenda características relevantes de forma automática y jerárquica, adaptándose a las complejidades inherentes de datos como imágenes y videos.
+
+```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica <- c(
+  "✅ Supervisado",
+  "✅ Continua (regresión) o Categórica (clasificación)",
+  "✅ Imágenes (matrices de píxeles) y datos con estructura espacial",
+  "✅ Captura relaciones locales y espaciales mediante filtros convolucionales",
+  "❌ No requiere supuestos de normalidad en residuos",
+  "✅ Deseable, aunque no obligatorio (mejor si instancias son independientes)",
+  "❌ No se asume homoscedasticidad",
+  "⚠️ Moderadamente (artefactos o ruido en imágenes puede afectar)",
+  "⚠️ No se evalúa colinealidad de predictores, maneja correlaciones espaciales",
+  "⚠️ Baja (modelo tipo ‘caja negra’, usar técnicas como Grad-CAM para interpretación)",
+  "⚠️ Lento sin GPU, entrenamiento intensivo en cómputo",
+  "✅ Robusto si se aplica k-fold o validación en conjunto de imágenes",
+  "❌ No funciona bien con pocos datos o sin estructura espacial significativa"
+)
+
+detalles <- c(
+  "Red neuronal profunda especializada en procesar datos con estructura de grilla (ej. imágenes).",
+  "En clasificación utiliza softmax; en regresión, capa lineal para valores continuos.",
+  "Requiere tensores de entrada (canales, altura, ancho); funciones de preprocesamiento para imágenes.",
+  "Filtros convolucionales extraen características locales, max-pooling disminuye dimensionalidad manteniendo información relevante.",
+  "No impone ninguna distribución en los errores, optimiza función de pérdida directamente.",
+  "Ideal si las muestras son independientes; sensible a dependencias temporales o espaciales no modeladas.",
+  "No requiere varianza constante pues se basa en convoluciones y pooling, no en un modelo paramétrico de error.",
+  "Ruido o artefactos en píxeles pueden alterar el aprendizaje de filtros, es importante usar técnicas de regularización.",
+  "La red aprende filtros que capturan patrones locales, por lo que no es necesario verificar colinealidad explícitamente.",
+  "Difícil de interpretar cada filtro y capa; se utilizan mapas de activación o Grad-CAM para entender qué regiones influyen en la predicción.",
+  "El entrenamiento con múltiples capas convolucionales y millones de parámetros es intensivo en GPU/TPU.",
+  "Validación cruzada o separación de conjuntos (train/validation/test) ayuda a evitar overfitting.",
+  "No es apropiado para datasets muy pequeños sin aumentar datos (data augmentation) o sin información espacial clara."
+)
+
+tabla_cnn <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles) 
+
+tabla_mp %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir CNN",
+             subtitle = "Convolutional Neural Network (CNN)")  %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html()  
+```
+
 
 ## Hopfield Network  {-}   
 
@@ -467,19 +446,116 @@ tabla_mp %>%
          as_raw_html()  
 ```
 
-## Convolutional Neural Network (CNN)  {-}   
+## Perceptron  {-}     
 
-**Convolutional Neural Networks (CNNs)**, también conocidas como **ConvNets**, son una clase especializada de **redes neuronales profundas** que han demostrado ser excepcionalmente efectivas en tareas de **visión por computadora** (como clasificación de imágenes, detección de objetos, reconocimiento facial) y, más recientemente, en procesamiento de lenguaje natural. La idea fundamental de una CNN es imitar el funcionamiento del córtex visual en el cerebro humano, utilizando **capas de convolución** para detectar automáticamente patrones y características jerárquicas directamente de los datos de entrada sin necesidad de una extracción manual de características.
+El **Perceptron** es el algoritmo de **aprendizaje supervisado** más simple y uno de los primeros modelos de **redes neuronales artificiales**, propuesto por Frank Rosenblatt en 1957. Está diseñado para tareas de **clasificación binaria**, es decir, para decidir si una entrada pertenece a una de dos clases posibles. Su idea fundamental es modelar cómo una neurona biológica podría tomar decisiones.
 
-A diferencia de los Multilayer Perceptrons (MLPs) que conectan cada neurona de una capa con cada neurona de la siguiente capa (lo que resulta en una enorme cantidad de parámetros para datos de alta dimensión como imágenes), las CNNs aprovechan tres ideas arquitectónicas clave:
+El funcionamiento de un Perceptron es bastante directo:
 
-1.  **Capas de Convolución:** Estas capas aplican un pequeño conjunto de **filtros (kernels)** a la entrada (ej., una imagen). Cada filtro "se desliza" por la entrada (operación de convolución) y calcula un producto punto entre sus valores y los valores de la región de la entrada que está cubriendo. Esto genera un **mapa de características** que resalta la presencia de patrones específicos (bordes, texturas, formas) en diferentes ubicaciones de la entrada. La ventaja es que los mismos filtros se aplican en múltiples ubicaciones, lo que reduce drásticamente el número de parámetros y captura la **localidad** de los patrones y la **invarianza traslacional**.
-2.  **Capas de Pooling (Submuestreo):** Estas capas se insertan periódicamente entre las capas convolucionales. Su función es reducir la dimensionalidad espacial de los mapas de características (ej., reduciendo el número de píxeles), lo que ayuda a hacer que el modelo sea más robusto a pequeñas variaciones o distorsiones en la posición de las características. Las operaciones comunes son el **max pooling** (tomar el valor máximo de una región) o el **average pooling** (tomar el promedio).
-3.  **Capas Totalmente Conectadas (Dense):** Después de varias capas convolucionales y de pooling, los mapas de características finales se aplanan en un vector y se conectan a una o más capas totalmente conectadas (similares a las de un MLP). Estas capas finales realizan la clasificación o regresión basándose en las características de alto nivel extraídas por las capas anteriores.
+1.  **Entradas y Pesos:** Recibe múltiples **entradas** (características) y a cada entrada se le asigna un **peso**. Estos pesos representan la importancia de cada característica.
+2.  **Suma Ponderada:** Las entradas se multiplican por sus respectivos pesos y se suman. A esta suma se le añade un **término de sesgo (bias)**.
+    $$z = \sum_{i=1}^{n} w_i x_i + b$$
+    Donde $x_i$ son las entradas, $w_i$ son los pesos, $b$ es el sesgo, y $n$ es el número de entradas.
+3.  **Función de Activación:** El resultado de la suma ponderada ($z$) se pasa a través de una **función de activación** (generalmente una función escalón o *step function*). Esta función decide la salida final, que es 1 si la suma excede un umbral (o 0 si no lo excede). Para el Perceptron original, la salida es binaria.
+    $$\text{salida} = \begin{cases} 1 & \text{si } z \geq \text{umbral} \\ 0 & \text{si } z < \text{umbral} \end{cases}$$
+4.  **Aprendizaje (Regla de Perceptron):** El Perceptron aprende ajustando sus pesos de forma iterativa. Si la predicción es incorrecta, los pesos se actualizan para reducir el error en la siguiente iteración. La regla de actualización de pesos es:
+    $$w_i^{\text{nuevo}} = w_i^{\text{anterior}} + \alpha \cdot (y - \hat{y}) \cdot x_i$$
+    Donde $\alpha$ es la tasa de aprendizaje, $y$ es el valor real, y $\hat{y}$ es la predicción del Perceptron.
 
-El entrenamiento de una CNN se realiza utilizando el algoritmo de **Back-Propagation** y descenso de gradiente (con sus variantes como SGD, Adam, etc.), ajustando los pesos de los filtros y las conexiones de las capas densas para minimizar una función de pérdida.
+En el contexto del **aprendizaje global vs. local**, el Perceptron es un sistema de **aprendizaje global** por naturaleza. Busca encontrar un **hiperplano de separación lineal** único que divida el espacio de características en dos regiones. La idea es que, si los datos son **linealmente separables** (es decir, si existe una línea, plano o hiperplano que puede separar perfectamente las dos clases), el Perceptron está garantizado para converger y encontrar esa solución.
 
-En el contexto del **aprendizaje global vs. local**, las CNNs son un ejemplo sobresaliente de un sistema de **aprendizaje global** que, en sus capas iniciales, se beneficia de la detección de patrones **locales**. Cada filtro de convolución aprende a detectar un patrón local específico (un borde vertical, una esquina, etc.) que se repite en diferentes partes de la imagen (lo que es una forma de "regresión ponderada localmente" en el sentido de que el filtro "aplica" su conocimiento local a diferentes ventanas de entrada). Sin embargo, la combinación jerárquica de múltiples capas convolucionales y de pooling, seguida de capas totalmente conectadas, permite que la red construya representaciones cada vez más abstractas y globales del contenido de la imagen. Esto significa que si los datos no se distribuyen linealmente, las CNNs pueden aprender a modelar relaciones extremadamente complejas y no lineales al componer características locales en representaciones globales. La arquitectura de CNNs resuelve la limitación de que "a veces ningún valor de parámetro puede proporcionar una aproximación suficientemente buena" en modelos más simples al permitir que la red aprenda características relevantes de forma automática y jerárquica, adaptándose a las complejidades inherentes de datos como imágenes y videos.
+Sin embargo, precisamente porque busca una solución lineal global, si los datos no se distribuyen linealmente (es decir, no son linealmente separables), el Perceptron **no puede encontrar una solución convergente** y no puede aprender la relación. Esto ilustra la desventaja de que "a veces ningún valor de parámetro puede proporcionar una aproximación suficientemente buena" cuando se busca una solución global rígida. El Perceptron original no puede aplicar el concepto de regresión ponderada localmente ni adaptarse a complejidades no lineales, a diferencia de modelos posteriores como las redes neuronales multicapa con funciones de activación no lineales o los algoritmos de árboles de decisión. A pesar de esta limitación, el Perceptron sentó las bases para el desarrollo posterior de redes neuronales más complejas.
+
+```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica <- c(
+  "✅ Supervisado",
+  "✅ Categórica binaria (0/1)",
+  "✅ Numéricas (requiere normalizar), Categóricas como dummies",
+  "⚠️ Aprendizaje lineal: separabilidad lineal requerida",
+  "❌ No requiere",
+  "✅ Deseable, pero no obligatorio (mejor si muestras i.i.d.)",
+  "❌ No se asume homoscedasticidad",
+  "⚠️ Moderado (outliers pueden cambiar el hiperplano)",
+  "⚠️ Afecta la convergencia si está muy alta",
+  "⚠️ Baja (modelo básico de una capa sin capas ocultas)",
+  "✅ Muy rápido para datasets medianos",
+  "✅ Útil para evaluar margen de separación",
+  "❌ No sirve si las clases no son linealmente separables"
+)
+
+detalles <- c(
+  "Red neuronal de una sola capa que ajusta un hiperplano separador.",
+  "Diseñado para clasificación binaria; no predice valores continuos.",
+  "Todas las features deben ser numéricas y escaladas; las categóricas deben convertirse en indicadores.",
+  "Busca maximizar el margen de separación lineal entre dos clases; no captura no linealidades.",
+  "No exige distribución normal de errores ya que optimiza con perceptrón simple.",
+  "Funciona mejor si las instancias son independientes; sensible a dependencias temporales sin ajuste.",
+  "No se basa en varianza de errores; el algoritmo actualiza pesos sin supuestos de varianza.",
+  "Los valores extremos cercanos al margen pueden forzar ajustes bruscos de pesos.",
+  "La colinealidad puede ralentizar la convergencia, aunque no impide la definición de hiperplano.",
+  "Fácil de entender: el peso de cada característica indica dirección del hiperplano.",
+  "Entrenamiento rápido usando regla de aprendizaje por error; escalable a datos medianos.",
+  "Se usa CV para ajustar tasa de aprendizaje y número de épocas para evitar bajo/sobreajuste.",
+  "Inútil si las clases no se pueden separar linealmente; requiere extensiones (por ejemplo, kernel) para no linealidad."
+)
+
+tabla_perceptron <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_perceptron %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir perceptron",
+             subtitle = "Perceptron")  %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
+```
+
+
+## Radial Basis Function Network (RBFN)  {-}      
+
+**Radial Basis Function Network (RBFN)** es un tipo de **red neuronal artificial** que se utiliza tanto para tareas de **clasificación** como de **regresión**. A diferencia de las redes neuronales multicapa perceptrón tradicionales que utilizan funciones de activación sigmoide o ReLU, las RBFN emplean **funciones de base radial** como sus funciones de activación en la capa oculta. Su estructura es típicamente más simple que un perceptrón multicapa, consistiendo generalmente en tres capas: una capa de entrada, una capa oculta con neuronas de base radial, y una capa de salida.
+
+La idea fundamental de una RBFN radica en su capacidad para modelar relaciones no lineales al mapear datos de entrada a un espacio de características de mayor dimensión donde pueden ser **linealmente separables** (para clasificación) o donde una **función lineal** puede aproximar la relación (para regresión). Esto se logra a través de las neuronas de la capa oculta, cada una de las cuales representa un "centro" en el espacio de características.
+
+El funcionamiento de una RBFN implica:
+
+1.  **Capa de Entrada:** Recibe las características de entrada.
+2.  **Capa Oculta (Neuronas de Base Radial):** Cada neurona en esta capa tiene un **centro** ($c_i$) y un **radio (o desviación estándar, $\sigma_i$)**. La función de activación de estas neuronas (comúnmente una **función Gaussiana**) calcula la **distancia** entre el vector de entrada ($x$) y el centro de la neurona ($c_i$), y luego aplica la función de base radial. Cuanto más cerca esté la entrada del centro de la neurona, mayor será la activación de esa neurona.
+    $$\phi_i(x) = \exp\left(-\frac{\|x - c_i\|^2}{2\sigma_i^2}\right)$$
+    Donde $\phi_i(x)$ es la salida de la neurona $i$, $\|x - c_i\|$ es la distancia euclidiana entre la entrada $x$ y el centro $c_i$, y $\sigma_i$ es el radio (ancho) de la función Gaussiana.
+3.  **Capa de Salida:** Las salidas de las neuronas de la capa oculta se combinan linealmente (ponderadas por unos coeficientes, $w_{ij}$) para producir la salida final de la red. Para regresión, es una suma ponderada; para clasificación, a menudo se usa una función de activación softmax.
+    $$y_j = \sum_{i=1}^{M} w_{ij}\phi_i(x)$$
+    Donde $y_j$ es la salida $j$, $M$ es el número de neuronas ocultas, y $w_{ij}$ son los pesos de la capa de salida.
+
+En el contexto del **aprendizaje global vs. local**, las RBFN son intrínsecamente sistemas de **aprendizaje local**. Cada neurona de la capa oculta es sensible a una **región específica** del espacio de entrada, definida por su centro y su radio. La red como un todo es una combinación de estas respuestas locales. Si los datos no se distribuyen linealmente, el concepto de regresión (o clasificación) se aplica de forma muy eficaz mediante esta naturaleza de **regresión ponderada localmente**. Las RBFN pueden aproximar cualquier función continua con la suficiente cantidad de neuronas de base radial. Esto aborda directamente la desventaja de que "a veces ningún valor de parámetro puede proporcionar una aproximación suficientemente buena" en un solo modelo global, ya que la red puede adaptarse localmente a las características de diferentes regiones del espacio de datos. Son particularmente útiles para problemas de aproximación de funciones, series de tiempo y reconocimiento de patrones.
+
 
 ```{r, echo = FALSE}
 criterios <- c(
@@ -501,41 +577,41 @@ criterios <- c(
 aplica <- c(
   "✅ Supervisado",
   "✅ Continua (regresión) o Categórica (clasificación)",
-  "✅ Imágenes (matrices de píxeles) y datos con estructura espacial",
-  "✅ Captura relaciones locales y espaciales mediante filtros convolucionales",
-  "❌ No requiere supuestos de normalidad en residuos",
-  "✅ Deseable, aunque no obligatorio (mejor si instancias son independientes)",
-  "❌ No se asume homoscedasticidad",
-  "⚠️ Moderadamente (artefactos o ruido en imágenes puede afectar)",
-  "⚠️ No se evalúa colinealidad de predictores, maneja correlaciones espaciales",
-  "⚠️ Baja (modelo tipo ‘caja negra’, usar técnicas como Grad-CAM para interpretación)",
-  "⚠️ Lento sin GPU, entrenamiento intensivo en cómputo",
-  "✅ Robusto si se aplica k-fold o validación en conjunto de imágenes",
-  "❌ No funciona bien con pocos datos o sin estructura espacial significativa"
+  "✅ Numéricas (requiere normalización), Categóricas como dummies",
+  "✅ Captura no linealidades mediante funciones base radiales",
+  "❌ No requiere supuestos de normalidad",
+  "✅ Deseable, pero no obligatorio (mejor si muestras i.i.d.)",
+  "❌ No asume varianza constante",
+  "⚠️ Moderadamente (centros pueden verse alterados por outliers)",
+  "⚠️ Puede influir en la selección de centros, pero no tan crítico como en OLS",
+  "⚠️ Baja (la capa oculta con RBF es difícil de interpretar)",
+  "⚠️ Moderada (depende de número de centros y dimensiones)",
+  "✅ Recomendable para ajustar número de bases y spread",
+  "❌ Datos muy grandes o alta dimensionalidad sin reducción, mucho ruido"
 )
 
 detalles <- c(
-  "Red neuronal profunda especializada en procesar datos con estructura de grilla (ej. imágenes).",
-  "En clasificación utiliza softmax; en regresión, capa lineal para valores continuos.",
-  "Requiere tensores de entrada (canales, altura, ancho); funciones de preprocesamiento para imágenes.",
-  "Filtros convolucionales extraen características locales, max-pooling disminuye dimensionalidad manteniendo información relevante.",
-  "No impone ninguna distribución en los errores, optimiza función de pérdida directamente.",
-  "Ideal si las muestras son independientes; sensible a dependencias temporales o espaciales no modeladas.",
-  "No requiere varianza constante pues se basa en convoluciones y pooling, no en un modelo paramétrico de error.",
-  "Ruido o artefactos en píxeles pueden alterar el aprendizaje de filtros, es importante usar técnicas de regularización.",
-  "La red aprende filtros que capturan patrones locales, por lo que no es necesario verificar colinealidad explícitamente.",
-  "Difícil de interpretar cada filtro y capa; se utilizan mapas de activación o Grad-CAM para entender qué regiones influyen en la predicción.",
-  "El entrenamiento con múltiples capas convolucionales y millones de parámetros es intensivo en GPU/TPU.",
-  "Validación cruzada o separación de conjuntos (train/validation/test) ayuda a evitar overfitting.",
-  "No es apropiado para datasets muy pequeños sin aumentar datos (data augmentation) o sin información espacial clara."
+  "Red neuronal de una capa oculta con funciones radial basis como activación.",
+  "Para regresión predice un valor continuo; para clasificación usa votación o softmax sobre salidas.",
+  "Requiere que las características numéricas estén escaladas; las categóricas deben convertirse a variables indicadoras.",
+  "Cada neurona oculta calcula una función gaussiana (u otra RBF) centrada en un punto, captando curvas suaves.",
+  "No impone distribución normal en los errores, pues optimiza en función de mínimos cuadrados o cross-entropy.",
+  "Funciona mejor si las observaciones son independientes; sensible a estructuras de dependencia sin modelar.",
+  "No requiere homocedasticidad ya que no se basa en un modelo paramétrico de error con varianza fija.",
+  "Los valores extremos pueden desplazar los centros de las RBF, afectando la forma del modelo.",
+  "La colinealidad puede dificultar la determinación de centros óptimos, pero no invalida el ajuste.",
+  "Las neuronas ocultas representan combinaciones complejas de características, por lo que el modelo es tipo 'caja negra'.",
+  "El entrenamiento implica fijar o aprender centros y spreads; para muchos centros o dimensiones altas, el costo crece rápido.",
+  "Se usa CV para elegir el número de bases (centros) y el parámetro de ancho (`sigma` o `spread`) para evitar sobreajuste.",
+  "No conviene cuando hay decenas de miles de características sin reducción previa o cuando el ruido es muy alto."
 )
 
-tabla_cnn <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles) 
+tabla_rbfn <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
 
-tabla_mp %>%
+tabla_rbfn %>%
  gt() %>%
-  tab_header(title = "Guía rápida para elegir CNN",
-             subtitle = "Convolutional Neural Network (CNN)")  %>%
+  tab_header(title = "Guía rápida para elegir RBFN",
+             subtitle = "Radial Basis Function Network (RBFN)")  %>%
    tab_footnote(footnote = "Fuente: Elaboración propia") %>%
      tab_options(heading.title.font.size = 14, 
                  heading.subtitle.font.size = 12,
@@ -549,7 +625,7 @@ tabla_mp %>%
                  locations = list(cells_title(groups = c("subtitle")))) %>%
         cols_width(starts_with("Detalles") ~ px(500),
                    everything() ~ px(200)) %>%
-         as_raw_html()  
+         as_raw_html() 
 ```
 
 ## Recurrent Neural Networks (RNNs) {-}   
@@ -645,6 +721,9 @@ tabla_rnn %>%
                    everything() ~ px(200)) %>%
          as_raw_html() 
 ```
+
+
+
 
 ## Transformers  {-}  
 
@@ -742,77 +821,5 @@ tabla_transformers %>%
 ```
 
 
-## Autoenconder  {-}  
-
-```{r}
-criterios <- c(
-  "Tipo de modelo",
-  "Variable respuesta",
-  "Variables predictoras",
-  "Relación entre variables",
-  "Normalidad de residuos",
-  "Independencia de errores",
-  "Homoscedasticidad",
-  "Sensible a outliers",
-  "Multicolinealidad entre predictores",
-  "Interpretabilidad",
-  "Velocidad y eficiencia",
-  "Validación cruzada",
-  "No funciona bien si..."
-)
-
-aplica <- c(
-  "❌ No supervisado (aprendizaje no supervisado)",
-  "❌ No aplica (no hay variable respuesta)",
-  "✅ Numéricas (o categóricas codificadas)",
-  "✅ Captura relaciones complejas y no lineales",
-  "❌ No aplica (no es un modelo de regresión)",
-  "❌ No aplica (no hay errores residuales)",
-  "❌ No aplica",
-  "✅ Sí, pueden afectar la reconstrucción",
-  "✅ Puede ayudar a reducir efectos de multicolinealidad",
-  "⚠️ Baja interpretabilidad (representaciones latentes)",
-  "⚠️ Lento en entrenamiento, especialmente con muchas capas o datos",
-  "⚠️ Se puede validar con reconstrucción y autoevaluación",
-  "❌ Datos con mucha dispersión o sin estructura latente clara"
-)
-
-detalles <- c(
-  "Red neuronal no supervisada que aprende a codificar y decodificar los datos para reducir dimensionalidad o detectar anomalías.",
-  "No predice una variable externa, sino que reproduce la entrada como salida.",
-  "Requiere variables numéricas (o una codificación previa en caso de categóricas).",
-  "Es capaz de capturar estructuras complejas y no lineales al comprimir los datos.",
-  "No tiene residuos como un modelo clásico, pero sí errores de reconstrucción.",
-  "No modela errores independientes, ya que no es un modelo predictivo tradicional.",
-  "Tampoco se evalúa homoscedasticidad, ya que no hay predicción como tal.",
-  "Outliers distorsionan el entrenamiento, especialmente si no se normaliza.",
-  "Ayuda a eliminar redundancias en los datos si están correlacionados.",
-  "Las capas internas (representaciones) no son directamente interpretables.",
-  "Requiere entrenamiento con varias iteraciones y puede tardar con arquitecturas grandes.",
-  "Se evalúa con pérdida de reconstrucción o aplicando validación cruzada si se integra en modelos supervisados.",
-  "Pierde eficacia si los datos no tienen una estructura latente útil para codificar."
-)
-
-tabla_autoencoder <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
-
-tabla_autoencoder %>%
- gt() %>%
-  tab_header(title = "Guía rápida para elegir autoencoder",
-             subtitle = "Autoenconder")  %>%
-   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
-     tab_options(heading.title.font.size = 14, 
-                 heading.subtitle.font.size = 12,
-                 table.font.names = "Century Gothic",
-                 table.font.size = 10,
-                 data_row.padding = px(1)) %>%
-      tab_style(style = list(cell_text(align = "left",
-                                       weight = 'bold')),
-                locations = list(cells_title(groups = c("title")))) %>%
-       tab_style(style = list(cell_text(align = "left")),
-                 locations = list(cells_title(groups = c("subtitle")))) %>%
-        cols_width(starts_with("Detalles") ~ px(500),
-                   everything() ~ px(200)) %>%
-         as_raw_html() 
-```
 
 

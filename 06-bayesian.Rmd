@@ -11,80 +11,6 @@
 
 ---
 
-## Naive Bayes (NB) {-}  
-
-```{r, echo = FALSE}
-criterios <- c(
-  "Tipo de modelo",
-  "Variable respuesta",
-  "Variables predictoras",
-  "Relación entre variables",
-  "Normalidad de residuos",
-  "Independencia de errores",
-  "Homoscedasticidad",
-  "Sensible a outliers",
-  "Multicolinealidad entre predictores",
-  "Interpretabilidad",
-  "Velocidad y eficiencia",
-  "Validación cruzada",
-  "No funciona bien si..."
-)
-
-aplica <- c(
-  "✅ Supervisado (clasificación)",
-  "✅ Categórica (clases)",
-  "✅ Categóricas o numéricas (según variante del modelo)",
-  "❌ Asume independencia condicional entre predictores",
-  "❌ No aplica (no es regresión)",
-  "✅ Observaciones deben ser independientes",
-  "❌ No se requiere homocedasticidad",
-  "⚠️ Puede ser sensible si se usa con predictores numéricos y hay valores extremos",
-  "✅ No afectado por multicolinealidad debido a suponer independencia",
-  "✅ Alta, se pueden interpretar probabilidades y efectos de cada variable",
-  "✅ Muy rápido incluso con grandes conjuntos de datos",
-  "✅ Puede usarse para afinar y evaluar desempeño del modelo",
-  "❌ Bajo rendimiento si los predictores no son realmente independientes o las distribuciones asumidas no se cumplen"
-)
-
-detalles <- c(
-  "Clasificador probabilístico basado en el teorema de Bayes con asunción de independencia condicional entre predictores.",
-  "Funciona para clasificación en múltiples clases categóricas.",
-  "Puede trabajar con variables categóricas (Multinomial NB) o numéricas (Gaussian NB).",
-  "Supone que las variables predictoras son independientes entre sí dentro de cada clase.",
-  "No genera residuos en el sentido clásico porque no es un modelo de regresión.",
-  "Las observaciones deben ser independientes para que las probabilidades se combinen correctamente.",
-  "No requiere igualdad de varianzas; Gaussian NB asume varianza igual por clase pero se puede ajustar.",
-  "Los valores atípicos pueden distorsionar la estimación de probabilidades si hay predictores numéricos.",
-  "La independencia entre predictores hace que la multicolinealidad no sea problema.",
-  "Los resultados pueden interpretarse en términos de probabilidades a posteriori por clase.",
-  "Muy eficiente para entrenamiento y predicción, incluso con muchos atributos.",
-  "Puede validarse usando k-fold o leave-one-out para asegurar estabilidad del modelo.",
-  "El supuesto fuerte de independencia condicional rara vez se cumple completamente, lo que puede afectar la precisión."
-)
-
-tabla_nb <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
-
-tabla_nb %>%
- gt() %>%
-  tab_header(title = "Guía rápida para elegir NB",
-             subtitle = "Naive Bayes (NB)")  %>%
-   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
-     tab_options(heading.title.font.size = 14, 
-                 heading.subtitle.font.size = 12,
-                 table.font.names = "Century Gothic",
-                 table.font.size = 10,
-                 data_row.padding = px(1)) %>%
-      tab_style(style = list(cell_text(align = "left",
-                                       weight = 'bold')),
-                locations = list(cells_title(groups = c("title")))) %>%
-       tab_style(style = list(cell_text(align = "left")),
-                 locations = list(cells_title(groups = c("subtitle")))) %>%
-        cols_width(starts_with("Detalles") ~ px(500),
-                   everything() ~ px(200)) %>%
-         as_raw_html() 
-```
-
-
 ## Averaged One - Dependence Estimators (AODE)  {-}   
 
 ```{r, echo = FALSE}
@@ -157,6 +83,83 @@ tabla_aode %>%
                    everything() ~ px(200)) %>%
          as_raw_html() 
 ```
+
+
+
+
+## Bayesian Network (BN)  {-}   
+
+```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica <- c(
+  "✅ Supervisado o no supervisado",
+  "✅ Categórica o continua (depende del tipo de red)",
+  "✅ Categóricas y/o continuas",
+  "✅ Modela relaciones condicionales entre variables (estructura dirigida)",
+  "❌ No aplica (no hay residuos típicos)",
+  "⚠️ Depende de la estructura de la red",
+  "❌ No aplica como en regresión clásica",
+  "⚠️ Puede ser sensible si afecta las probabilidades condicionales",
+  "⚠️ Puede causar redundancia si no se ajusta bien la estructura",
+  "✅ Muy interpretables si se visualiza la red y se conocen las dependencias",
+  "⚠️ Aprendizaje de estructura puede ser computacionalmente costoso",
+  "✅ Puede usarse validación cruzada para evaluar rendimiento predictivo",
+  "❌ Cuando hay muchas variables y poca información para definir relaciones"
+)
+
+detalles <- c(
+  "Modelo probabilístico que representa relaciones condicionales entre variables mediante un grafo dirigido acíclico (DAG).",
+  "Puede predecir una variable (modo supervisado) o descubrir estructura entre variables (modo no supervisado).",
+  "Acepta variables mixtas, aunque muchas implementaciones requieren discretización.",
+  "Cada nodo representa una variable y las conexiones modelan dependencias condicionales.",
+  "No genera residuos como los modelos de regresión, por lo que no aplica este supuesto.",
+  "Algunas estructuras pueden implicar independencia condicional; otras no.",
+  "No se evalúa homoscedasticidad, pues no hay predicción de error numérico.",
+  "Valores atípicos pueden sesgar las probabilidades estimadas si no se controlan.",
+  "Si hay variables redundantes o fuertemente correlacionadas, se debe ajustar la estructura de la red para evitar errores.",
+  "La red permite interpretar cómo influyen unas variables sobre otras, ideal para razonamiento causal.",
+  "El ajuste de parámetros es eficiente, pero aprender la estructura de la red puede ser lento.",
+  "Puede evaluarse el desempeño con k-fold o validación simple en tareas supervisadas.",
+  "Cuando no se tiene información previa o datos suficientes, la red puede no capturar relaciones reales."
+)
+
+tabla_bn <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_bn %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir BN",
+             subtitle = "Bayesian Network (BN)")  %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
+```
+
 
 
 ## Bayesian Belief Network (BBN)  {-}  
@@ -233,6 +236,7 @@ tabla_bbn %>%
 ```
 
 
+
 ## Gaussian Naive Bayes (GNB) {-}    
 
 ```{r, echo = FALSE}
@@ -305,6 +309,7 @@ tabla_gnb %>%
                    everything() ~ px(200)) %>%
          as_raw_html() 
 ```
+
 
 
 
@@ -383,7 +388,8 @@ tabla_mnb %>%
 
 
 
-## Bayesian Network (BN)  {-}   
+
+## Naive Bayes (NB) {-}  
 
 ```{r, echo = FALSE}
 criterios <- c(
@@ -403,43 +409,43 @@ criterios <- c(
 )
 
 aplica <- c(
-  "✅ Supervisado o no supervisado",
-  "✅ Categórica o continua (depende del tipo de red)",
-  "✅ Categóricas y/o continuas",
-  "✅ Modela relaciones condicionales entre variables (estructura dirigida)",
-  "❌ No aplica (no hay residuos típicos)",
-  "⚠️ Depende de la estructura de la red",
-  "❌ No aplica como en regresión clásica",
-  "⚠️ Puede ser sensible si afecta las probabilidades condicionales",
-  "⚠️ Puede causar redundancia si no se ajusta bien la estructura",
-  "✅ Muy interpretables si se visualiza la red y se conocen las dependencias",
-  "⚠️ Aprendizaje de estructura puede ser computacionalmente costoso",
-  "✅ Puede usarse validación cruzada para evaluar rendimiento predictivo",
-  "❌ Cuando hay muchas variables y poca información para definir relaciones"
+  "✅ Supervisado (clasificación)",
+  "✅ Categórica (clases)",
+  "✅ Categóricas o numéricas (según variante del modelo)",
+  "❌ Asume independencia condicional entre predictores",
+  "❌ No aplica (no es regresión)",
+  "✅ Observaciones deben ser independientes",
+  "❌ No se requiere homocedasticidad",
+  "⚠️ Puede ser sensible si se usa con predictores numéricos y hay valores extremos",
+  "✅ No afectado por multicolinealidad debido a suponer independencia",
+  "✅ Alta, se pueden interpretar probabilidades y efectos de cada variable",
+  "✅ Muy rápido incluso con grandes conjuntos de datos",
+  "✅ Puede usarse para afinar y evaluar desempeño del modelo",
+  "❌ Bajo rendimiento si los predictores no son realmente independientes o las distribuciones asumidas no se cumplen"
 )
 
 detalles <- c(
-  "Modelo probabilístico que representa relaciones condicionales entre variables mediante un grafo dirigido acíclico (DAG).",
-  "Puede predecir una variable (modo supervisado) o descubrir estructura entre variables (modo no supervisado).",
-  "Acepta variables mixtas, aunque muchas implementaciones requieren discretización.",
-  "Cada nodo representa una variable y las conexiones modelan dependencias condicionales.",
-  "No genera residuos como los modelos de regresión, por lo que no aplica este supuesto.",
-  "Algunas estructuras pueden implicar independencia condicional; otras no.",
-  "No se evalúa homoscedasticidad, pues no hay predicción de error numérico.",
-  "Valores atípicos pueden sesgar las probabilidades estimadas si no se controlan.",
-  "Si hay variables redundantes o fuertemente correlacionadas, se debe ajustar la estructura de la red para evitar errores.",
-  "La red permite interpretar cómo influyen unas variables sobre otras, ideal para razonamiento causal.",
-  "El ajuste de parámetros es eficiente, pero aprender la estructura de la red puede ser lento.",
-  "Puede evaluarse el desempeño con k-fold o validación simple en tareas supervisadas.",
-  "Cuando no se tiene información previa o datos suficientes, la red puede no capturar relaciones reales."
+  "Clasificador probabilístico basado en el teorema de Bayes con asunción de independencia condicional entre predictores.",
+  "Funciona para clasificación en múltiples clases categóricas.",
+  "Puede trabajar con variables categóricas (Multinomial NB) o numéricas (Gaussian NB).",
+  "Supone que las variables predictoras son independientes entre sí dentro de cada clase.",
+  "No genera residuos en el sentido clásico porque no es un modelo de regresión.",
+  "Las observaciones deben ser independientes para que las probabilidades se combinen correctamente.",
+  "No requiere igualdad de varianzas; Gaussian NB asume varianza igual por clase pero se puede ajustar.",
+  "Los valores atípicos pueden distorsionar la estimación de probabilidades si hay predictores numéricos.",
+  "La independencia entre predictores hace que la multicolinealidad no sea problema.",
+  "Los resultados pueden interpretarse en términos de probabilidades a posteriori por clase.",
+  "Muy eficiente para entrenamiento y predicción, incluso con muchos atributos.",
+  "Puede validarse usando k-fold o leave-one-out para asegurar estabilidad del modelo.",
+  "El supuesto fuerte de independencia condicional rara vez se cumple completamente, lo que puede afectar la precisión."
 )
 
-tabla_bn <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+tabla_nb <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
 
-tabla_bn %>%
+tabla_nb %>%
  gt() %>%
-  tab_header(title = "Guía rápida para elegir BN",
-             subtitle = "Bayesian Network (BN)")  %>%
+  tab_header(title = "Guía rápida para elegir NB",
+             subtitle = "Naive Bayes (NB)")  %>%
    tab_footnote(footnote = "Fuente: Elaboración propia") %>%
      tab_options(heading.title.font.size = 14, 
                  heading.subtitle.font.size = 12,
@@ -455,5 +461,6 @@ tabla_bn %>%
                    everything() ~ px(200)) %>%
          as_raw_html() 
 ```
+
 
 

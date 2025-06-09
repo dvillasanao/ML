@@ -11,6 +11,82 @@
 
 ---
 
+## Elastic Net  {-}  
+
+```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica <- c(
+  "✅ Supervisado (regresión)",
+  "✅ Numérica continua",
+  "✅ Numéricas (requiere estandarización)",
+  "✅ Lineal (como OLS)",
+  "⚠️ Deseable, pero no esencial",
+  "✅ Supuesto importante",
+  "✅ Requiere homoscedasticidad",
+  "⚠️ Afectado por outliers (no tan robusto)",
+  "✅ Ideal para multicolinealidad alta (mejor que LASSO)",
+  "⚠️ Puede ser menos interpretable que LASSO si hay muchas variables seleccionadas",
+  "✅ Rápido incluso con datos grandes",
+  "✅ Requiere validar los hiperparámetros `lambda` y `alpha`",
+  "❌ Relación no lineal, o pocos datos con muchas variables no relevantes"
+)
+
+detalles <- c(
+  "Modelo de regresión penalizada que combina LASSO (L1) y Ridge (L2) en un solo modelo.",
+  "Predice una variable continua a partir de variables independientes numéricas.",
+  "Las variables deben estar estandarizadas para evitar que la penalización sesgue los coeficientes.",
+  "Asume que la relación entre variables es lineal.",
+  "La normalidad ayuda para inferencia, pero no es crítica para predicción.",
+  "Errores deben ser independientes para que los coeficientes sean válidos.",
+  "Varianza constante de los errores es un supuesto clave.",
+  "Aunque regulariza, no es inmune a valores atípicos.",
+  "Funciona bien cuando hay muchas variables correlacionadas entre sí.",
+  "Mezcla selección de variables (L1) y regularización (L2), lo cual puede dificultar la interpretación directa.",
+  "A pesar de usar dos penalizaciones, sigue siendo eficiente con librerías como `glmnet`.",
+  "Validación cruzada se usa para seleccionar los mejores valores de `lambda` y `alpha`.",
+  "Puede tener bajo rendimiento si no hay una relación lineal o si las variables relevantes no están presentes en el conjunto."
+)
+
+tabla_elastic_net <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_elastic_net %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir elastic net",
+             subtitle = "Elastic Net")  %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
+```
+
+
+
+
 ## Ridge Regression  {-}   
 
 ```{r, echo = FALSE}
@@ -83,6 +159,7 @@ tabla_ridge %>%
                    everything() ~ px(200)) %>%
          as_raw_html() 
 ```
+
 
 
 ## Least Absolute Shrinkage and Selection Operator (LASSO)  {-}  
@@ -159,78 +236,7 @@ tabla_lasso %>%
 ```
 
 
-## Elastic Net  {-}  
 
-```{r, echo = FALSE}
-criterios <- c(
-  "Tipo de modelo",
-  "Variable respuesta",
-  "Variables predictoras",
-  "Relación entre variables",
-  "Normalidad de residuos",
-  "Independencia de errores",
-  "Homoscedasticidad",
-  "Sensible a outliers",
-  "Multicolinealidad entre predictores",
-  "Interpretabilidad",
-  "Velocidad y eficiencia",
-  "Validación cruzada",
-  "No funciona bien si..."
-)
-
-aplica <- c(
-  "✅ Supervisado (regresión)",
-  "✅ Numérica continua",
-  "✅ Numéricas (requiere estandarización)",
-  "✅ Lineal (como OLS)",
-  "⚠️ Deseable, pero no esencial",
-  "✅ Supuesto importante",
-  "✅ Requiere homoscedasticidad",
-  "⚠️ Afectado por outliers (no tan robusto)",
-  "✅ Ideal para multicolinealidad alta (mejor que LASSO)",
-  "⚠️ Puede ser menos interpretable que LASSO si hay muchas variables seleccionadas",
-  "✅ Rápido incluso con datos grandes",
-  "✅ Requiere validar los hiperparámetros `lambda` y `alpha`",
-  "❌ Relación no lineal, o pocos datos con muchas variables no relevantes"
-)
-
-detalles <- c(
-  "Modelo de regresión penalizada que combina LASSO (L1) y Ridge (L2) en un solo modelo.",
-  "Predice una variable continua a partir de variables independientes numéricas.",
-  "Las variables deben estar estandarizadas para evitar que la penalización sesgue los coeficientes.",
-  "Asume que la relación entre variables es lineal.",
-  "La normalidad ayuda para inferencia, pero no es crítica para predicción.",
-  "Errores deben ser independientes para que los coeficientes sean válidos.",
-  "Varianza constante de los errores es un supuesto clave.",
-  "Aunque regulariza, no es inmune a valores atípicos.",
-  "Funciona bien cuando hay muchas variables correlacionadas entre sí.",
-  "Mezcla selección de variables (L1) y regularización (L2), lo cual puede dificultar la interpretación directa.",
-  "A pesar de usar dos penalizaciones, sigue siendo eficiente con librerías como `glmnet`.",
-  "Validación cruzada se usa para seleccionar los mejores valores de `lambda` y `alpha`.",
-  "Puede tener bajo rendimiento si no hay una relación lineal o si las variables relevantes no están presentes en el conjunto."
-)
-
-tabla_elastic_net <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
-
-tabla_elastic_net %>%
- gt() %>%
-  tab_header(title = "Guía rápida para elegir elastic net",
-             subtitle = "Elastic Net")  %>%
-   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
-     tab_options(heading.title.font.size = 14, 
-                 heading.subtitle.font.size = 12,
-                 table.font.names = "Century Gothic",
-                 table.font.size = 10,
-                 data_row.padding = px(1)) %>%
-      tab_style(style = list(cell_text(align = "left",
-                                       weight = 'bold')),
-                locations = list(cells_title(groups = c("title")))) %>%
-       tab_style(style = list(cell_text(align = "left")),
-                 locations = list(cells_title(groups = c("subtitle")))) %>%
-        cols_width(starts_with("Detalles") ~ px(500),
-                   everything() ~ px(200)) %>%
-         as_raw_html() 
-```
 
 
 ## Least Angle Regression (LARS)  {-}   

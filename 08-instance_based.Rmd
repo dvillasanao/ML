@@ -85,6 +85,7 @@ tabla_knn %>%
 ```
 
 
+
 ## Learning Vector Quantization (LVQ)  {-}   
 
 ```{r, echo = FALSE}
@@ -157,6 +158,83 @@ tabla_lvq %>%
                    everything() ~ px(200)) %>%
          as_raw_html() 
 ```
+
+
+
+## Locally Weighted Learning (LWL)  {-}   
+
+```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica <- c(
+  "✅ Supervisado (regresión o clasificación)",
+  "✅ Numérica o categórica, según tarea",
+  "✅ Numéricas o categóricas (requiere distancias)",
+  "✅ No lineal (ajustes locales en cada predicción)",
+  "⚠️ Depende del modelo local usado (e.g., regresión lineal)",
+  "⚠️ Puede no cumplir si hay dependencia local",
+  "⚠️ Evaluada localmente, varía según vecindario",
+  "✅ Sí, muy sensible a outliers en vecindarios locales",
+  "⚠️ Puede causar inestabilidad en predicciones locales",
+  "⚠️ Difícil de interpretar globalmente, clara localmente",
+  "❌ Lento, necesita recalcular modelo para cada punto",
+  "✅ Sí, especialmente leave-one-out o k-fold por zonas",
+  "❌ Ineficiente con muchos datos o alta dimensión"
+)
+
+detalles <- c(
+  "Modelo supervisado que ajusta un modelo distinto en cada punto de predicción usando los vecinos más cercanos.",
+  "Puede ser regresión (respuesta numérica) o clasificación (respuesta categórica).",
+  "Utiliza variables para calcular distancias a partir de un punto de consulta.",
+  "Ajusta modelos simples en regiones locales, permitiendo capturar relaciones no lineales.",
+  "En regresión local puede requerirse que los residuos sean normales si se desea inferencia.",
+  "Los errores pueden no ser independientes si hay estructuras repetitivas locales.",
+  "La varianza puede cambiar entre zonas del espacio, por lo que se revisa localmente.",
+  "Los valores atípicos pueden sesgar el modelo local si caen cerca del punto de predicción.",
+  "La multicolinealidad puede afectar si el modelo local es lineal, aunque su efecto se restringe localmente.",
+  "La interpretación es clara en zonas locales, pero no se generaliza a toda la muestra.",
+  "Cada predicción entrena un nuevo modelo, lo que es computacionalmente costoso.",
+  "La validación cruzada ayuda a elegir parámetros como el ancho del vecindario (kernel).",
+  "El rendimiento cae en grandes volúmenes de datos o si los datos no presentan estructura local clara."
+)
+
+tabla_lwl <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_lwl %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir LWL",
+             subtitle = "Locally Weighted Learning (LWL)")  %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
+```
+
+
 
 
 ## Self - Organizing Map (SOM)  {-} 
@@ -233,76 +311,4 @@ tabla_som %>%
 ```
 
 
-## Locally Weighted Learning (LWL)  {-}   
-
-```{r, echo = FALSE}
-criterios <- c(
-  "Tipo de modelo",
-  "Variable respuesta",
-  "Variables predictoras",
-  "Relación entre variables",
-  "Normalidad de residuos",
-  "Independencia de errores",
-  "Homoscedasticidad",
-  "Sensible a outliers",
-  "Multicolinealidad entre predictores",
-  "Interpretabilidad",
-  "Velocidad y eficiencia",
-  "Validación cruzada",
-  "No funciona bien si..."
-)
-
-aplica <- c(
-  "✅ Supervisado (regresión o clasificación)",
-  "✅ Numérica o categórica, según tarea",
-  "✅ Numéricas o categóricas (requiere distancias)",
-  "✅ No lineal (ajustes locales en cada predicción)",
-  "⚠️ Depende del modelo local usado (e.g., regresión lineal)",
-  "⚠️ Puede no cumplir si hay dependencia local",
-  "⚠️ Evaluada localmente, varía según vecindario",
-  "✅ Sí, muy sensible a outliers en vecindarios locales",
-  "⚠️ Puede causar inestabilidad en predicciones locales",
-  "⚠️ Difícil de interpretar globalmente, clara localmente",
-  "❌ Lento, necesita recalcular modelo para cada punto",
-  "✅ Sí, especialmente leave-one-out o k-fold por zonas",
-  "❌ Ineficiente con muchos datos o alta dimensión"
-)
-
-detalles <- c(
-  "Modelo supervisado que ajusta un modelo distinto en cada punto de predicción usando los vecinos más cercanos.",
-  "Puede ser regresión (respuesta numérica) o clasificación (respuesta categórica).",
-  "Utiliza variables para calcular distancias a partir de un punto de consulta.",
-  "Ajusta modelos simples en regiones locales, permitiendo capturar relaciones no lineales.",
-  "En regresión local puede requerirse que los residuos sean normales si se desea inferencia.",
-  "Los errores pueden no ser independientes si hay estructuras repetitivas locales.",
-  "La varianza puede cambiar entre zonas del espacio, por lo que se revisa localmente.",
-  "Los valores atípicos pueden sesgar el modelo local si caen cerca del punto de predicción.",
-  "La multicolinealidad puede afectar si el modelo local es lineal, aunque su efecto se restringe localmente.",
-  "La interpretación es clara en zonas locales, pero no se generaliza a toda la muestra.",
-  "Cada predicción entrena un nuevo modelo, lo que es computacionalmente costoso.",
-  "La validación cruzada ayuda a elegir parámetros como el ancho del vecindario (kernel).",
-  "El rendimiento cae en grandes volúmenes de datos o si los datos no presentan estructura local clara."
-)
-
-tabla_lwl <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
-
-tabla_lwl %>%
- gt() %>%
-  tab_header(title = "Guía rápida para elegir LWL",
-             subtitle = "Locally Weighted Learning (LWL)")  %>%
-   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
-     tab_options(heading.title.font.size = 14, 
-                 heading.subtitle.font.size = 12,
-                 table.font.names = "Century Gothic",
-                 table.font.size = 10,
-                 data_row.padding = px(1)) %>%
-      tab_style(style = list(cell_text(align = "left",
-                                       weight = 'bold')),
-                locations = list(cells_title(groups = c("title")))) %>%
-       tab_style(style = list(cell_text(align = "left")),
-                 locations = list(cells_title(groups = c("subtitle")))) %>%
-        cols_width(starts_with("Detalles") ~ px(500),
-                   everything() ~ px(200)) %>%
-         as_raw_html() 
-```
 

@@ -11,19 +11,20 @@
 
 ---
 
-## Random Forest  {-}   
+## Adaptive Boosting (AdaBoost)  {-}  
 
-**Random Forest** es un algoritmo de **aprendizaje conjunto (ensemble learning)** altamente popular y potente, utilizado tanto para tareas de **clasificación** como de **regresión**. Fue desarrollado por Leo Breiman en 2001 y se basa en la idea de combinar las predicciones de múltiples **árboles de decisión** para lograr una mayor precisión y robustez que un solo árbol. La fuerza de Random Forest reside en dos conceptos clave: **bagging (bootstrap aggregation)** y la **aleatoriedad en la selección de características**.
+**AdaBoost (Adaptive Boosting)** es uno de los algoritmos de **boosting** más influyentes y el primero en ser propuesto con éxito, desarrollado por Yoav Freund y Robert Schapire en 1995. Es una técnica de **aprendizaje conjunto (ensemble learning)** utilizada principalmente para **clasificación**, aunque sus principios pueden extenderse a la regresión. La idea fundamental de AdaBoost es construir un modelo fuerte combinando secuencialmente las predicciones de múltiples **clasificadores "débiles" o "base"**, y lo hace prestando más atención a los ejemplos que los modelos anteriores clasificaron incorrectamente.
 
-La idea fundamental detrás de Random Forest es construir un "bosque" de árboles de decisión de una manera específica:
+El funcionamiento de AdaBoost se basa en un sistema de **re-ponderación de datos** en cada iteración:
 
-1.  **Bagging (Bootstrap Aggregation):** En lugar de entrenar un solo árbol en todo el conjunto de datos, Random Forest entrena cada árbol en una **muestra de arranque (bootstrap sample)** diferente. Una muestra de arranque es un subconjunto del conjunto de datos original, muestreado con reemplazo. Esto significa que algunos puntos de datos pueden aparecer varias veces en una muestra, mientras que otros pueden no aparecer en absoluto. Este muestreo genera diversidad entre los árboles.
+1.  **Inicialización de Pesos:** Se asigna un peso inicial igual a cada ejemplo de entrenamiento.
+2.  **Entrenamiento del Clasificador Débil:** En cada iteración, se entrena un clasificador débil (a menudo un **Decision Stump**, que es un árbol de decisión de un solo nivel) en el conjunto de datos actual. Este clasificador se enfoca en minimizar el error ponderado.
+3.  **Cálculo del Error Ponderado:** Se calcula el error del clasificador débil, teniendo en cuenta los pesos de los ejemplos. Los ejemplos mal clasificados tienen un mayor impacto en este error.
+4.  **Actualización de Pesos de Datos:** Los pesos de los ejemplos mal clasificados por el clasificador actual son **aumentados**, mientras que los pesos de los ejemplos correctamente clasificados son **disminuidos**. Esto asegura que el siguiente clasificador débil se enfoque más en los ejemplos que son difíciles de clasificar.
+5.  **Cálculo del Peso del Clasificador:** Se asigna un peso (o "contribución") al clasificador débil actual en función de su precisión. Los clasificadores más precisos reciben un peso mayor en la predicción final del conjunto.
+6.  **Combinación de Predicciones:** Las predicciones finales del modelo AdaBoost se obtienen mediante una **suma ponderada** de las predicciones de todos los clasificadores débiles.
 
-2.  **Aleatoriedad en la Selección de Características:** Cuando cada árbol se construye, en cada paso de división (nodo), Random Forest no considera todas las características disponibles. En cambio, solo considera un **subconjunto aleatorio de características** para encontrar la mejor división. Esta aleatoriedad adicional (además del muestreo de arranque) descorrelaciona aún más los árboles, lo que es crucial para el rendimiento del algoritmo. Si los árboles estuvieran altamente correlacionados, el error de un árbol promedio no se reduciría al promediar.
-
-Una vez que se han construido numerosos árboles (típicamente cientos o miles), las predicciones se combinan: para **clasificación**, se utiliza la **votación por mayoría** (la clase más votada por los árboles individuales); para **regresión**, se calcula el **promedio** de las predicciones de todos los árboles.
-
-En el contexto del **aprendizaje global vs. local**, Random Forest se puede considerar como un sistema de **aprendizaje global** que se construye a partir de componentes de **aprendizaje local**. Cada árbol individual en el bosque es un sistema de aprendizaje local (como CART, que divide el problema en subproblemas más pequeños). Sin embargo, al combinar las predicciones de muchos de estos árboles, Random Forest logra una **aproximación de función global** muy robusta y flexible. La ventaja es que, si los datos no se distribuyen linealmente, el algoritmo aplica el concepto de regresión (o clasificación) mediante una forma sofisticada de **regresión ponderada localmente**. La combinación de árboles diversos y descorrelacionados mitiga la desventaja de que "a veces ningún valor de parámetro puede proporcionar una aproximación suficientemente buena" en un solo modelo. Random Forest sobresale en capturar relaciones complejas y no lineales, manejar grandes conjuntos de datos con muchas características y es menos propenso al sobreajuste que un solo árbol de decisión grande.
+En el contexto del **aprendizaje global vs. local**, AdaBoost es un sistema de **aprendizaje global** que se construye de manera iterativa a partir de componentes de **aprendizaje local**. Cada clasificador débil que se entrena en una iteración puede verse como una forma de **regresión ponderada localmente** (o, más precisamente, clasificación ponderada localmente), ya que ajusta su enfoque basándose en los ejemplos que el modelo combinado anterior no pudo clasificar bien. Al iterar y ajustar los pesos de los datos, AdaBoost se enfoca progresivamente en las regiones del espacio de características donde el modelo actual tiene un rendimiento deficiente. Si los datos no se distribuyen linealmente, el algoritmo aplica el concepto de clasificación (y por extensión, las ideas de regresión) de manera altamente adaptativa. La capacidad de AdaBoost para concentrarse en los "errores" más difíciles aborda directamente la desventaja de que "a veces ningún valor de parámetro puede proporcionar una aproximación suficientemente buena" en un solo modelo. El resultado es un clasificador global muy preciso y robusto, capaz de modelar relaciones complejas y no lineales, que es una combinación ponderada de muchas decisiones locales.
 
 
 ```{r, echo = FALSE}
@@ -45,42 +46,42 @@ criterios <- c(
 
 aplica <- c(
   "✅ Supervisado",
-  "✅ Categórica o Continua",
-  "✅ Numéricas y categóricas (requiere codificación)",
-  "✅ Captura relaciones no lineales e interacciones complejas",
-  "❌ No requiere",
-  "✅ Deseable pero no obligatorio",
-  "❌ No se asume homoscedasticidad",
-  "✅ Robusto a outliers (por agregación)",
-  "✅ Robusto (selecciona subconjuntos aleatorios)",
-  "⚠️ Moderada (difícil interpretar cientos de árboles)",
-  "⚠️ Lento con muchos árboles o datos grandes",
-  "✅ Recomendado usar k-fold",
-  "❌ Puede sobreajustar si no se ajustan hiperparámetros (e.g. profundidad, número de árboles)"
+  "✅ Categórica (clasificación) o Continua (regresión adaptada)",
+  "✅ Numéricas y categóricas (requiere codificación para algunas implementaciones)",
+  "✅ Captura no linealidades e interacciones mediante reponderación iterativa",
+  "❌ No requiere supuestos de normalidad en los residuos",
+  "✅ Deseable, aunque no obligatorio (mejor si instancias independientes)",
+  "❌ No asume homoscedasticidad",
+  "⚠️ Moderadamente (outliers pueden obtener demasiado peso durante iteraciones)",
+  "✅ Robusto (reduce colinealidad al iterar sobre subconjuntos ponderados)",
+  "⚠️ Baja (modelo resultante es especie de ’caja negra’)",
+  "⚠️ Lento con muchas iteraciones o datos grandes",
+  "✅ Recomendable para ajustar tasa de aprendizaje y número de iteraciones",
+  "❌ No es ideal con datos muy ruidosos o clases extremadamente desbalanceadas sin técnicas adicionales"
 )
 
 detalles <- c(
-  "Ensamble de árboles de decisión, cada uno entrenado en una muestra bootstrap y usando un subconjunto aleatorio de predictores.",
-  "En clasificación predice la clase mayoritaria entre árboles; en regresión, el promedio de predicciones.",
-  "Acepta muchas variables y selecciona automáticamente las más relevantes por importancia.",
-  "Al generar múltiples árboles, capta interacciones no lineales sin necesidad de especificarlas.",
-  "No hay supuestos sobre la distribución de los errores.",
-  "Los árboles individuales pueden manejar correlación leve; el ensamble mitiga la dependencia.",
-  "No necesita homogeneidad de varianza en los errores residuales.",
-  "Cada árbol es poco sensible a outliers, y la agregación mejora robustez.",
-  "Reduce el problema de colinealidad al seleccionar subconjuntos de variables por árbol.",
-  "Es difícil de explicar, aunque se pueden usar métricas de importancia de variables.",
-  "Puede volverse lento si se entrenan miles de árboles en datasets muy grandes.",
-  "Cross-validation ayuda a evitar overfitting y evaluar generalización.",
-  "No es ideal si el interpretabilidad es crítica o el tiempo computacional es limitado."
+  "Ensamble supervisado que combina varios modelos débiles (ej. árboles simples) ajustando pesos según errores anteriores.",
+  "En clasificación ajusta pesos para mal clasificados; en regresión, adapta predicción por minimización de pérdida.",
+  "Puede trabajar con datos mixtos; para variables categóricas suele usar codificación de dummies.",
+  "Cada iteración repondera observaciones difíciles, enfocándose en patrones que previos modelos no capturaron.",
+  "No impone distribución de errores; se basa en función de pérdida, no en supuestos paramétricos.",
+  "Funciona mejor si cada observación es independiente; sensible a dependencias temporales si no se corrige.",
+  "No requiere varianza constante, ya que funciona sobre el error iterativo en lugar de residuos tradicionales.",
+  "Outliers difíciles de clasificar tienden a recibir mayor peso, lo que puede sesgar el ensamble si no se controla el learning rate.",
+  "La reponderación de muestras atenúa el efecto de predictores correlacionados, pues cada iteración puede focalizarse en subconjuntos distintos.",
+  "Es complejo desentrañar la contribución de cada modelo débil; se pueden usar métricas de importancia o SHAP para interpretación.",
+  "Cada iteración entrena un modelo débil; muchas iteraciones o modelos complejos pueden ralentizar el entrenamiento.",
+  "K-fold o repeated CV ayudan a elegir tasa de aprendizaje (learning rate) y número de iteraciones (trials).",
+  "No conviene con instancias altamente ruidosas: se puede sobreajustar rápidamente si la tasa de aprendizaje es alta o no se regula iteraciones."
 )
 
-tabla_rf <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+tabla_adaboost <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)  
 
-tabla_rf %>%
+tabla_adaboost %>%
  gt() %>%
-  tab_header(title = "Guía rápida para elegir random forest",
-             subtitle = "Random Forest") %>%
+  tab_header(title = "Guía rápida para elegir adaboost",
+             subtitle = "AdaBoost") %>%
    tab_footnote(footnote = "Fuente: Elaboración propia") %>%
      tab_options(heading.title.font.size = 14, 
                  heading.subtitle.font.size = 12,
@@ -95,94 +96,6 @@ tabla_rf %>%
         cols_width(starts_with("Detalles") ~ px(500),
                    everything() ~ px(200)) %>%
          as_raw_html() 
-```
-
-## Gradient Boosting Machines (GBM)  {-}   
-
-**Gradient Boosting Machines (GBM)** es un algoritmo de **aprendizaje conjunto (ensemble learning)** extremadamente potente y versátil, utilizado para **clasificación**, **regresión** y otras tareas predictivas. A diferencia de Random Forest que construye árboles de forma independiente en paralelo (bagging), GBM construye los árboles de forma **secuencial** y aditiva. La idea central es que cada nuevo árbol en el conjunto intenta corregir los errores residuales (residuos) del conjunto de árboles construidos previamente.
-
-El concepto fundamental detrás de GBM es el **impulso (boosting)**, donde los modelos "débiles" (generalmente árboles de decisión, a menudo árboles poco profundos o "stumps") se combinan para formar un modelo "fuerte". GBM logra esto de una manera específica:
-
-1.  **Modelo Inicial:** Comienza con una predicción inicial para todos los datos (por ejemplo, el valor promedio para regresión o la probabilidad logarítmica para clasificación).
-2.  **Cálculo de Residuos (Pseudo-residuos):** En cada iteración, el algoritmo calcula los **residuos** (o más precisamente, los "pseudo-residuos" o gradientes negativos de la función de pérdida) entre los valores reales y las predicciones actuales del modelo. Estos residuos representan los "errores" que el modelo actual no ha podido capturar.
-3.  **Entrenamiento de un Nuevo Árbol:** Se entrena un nuevo árbol de decisión para **predecir estos residuos**. Este árbol es típicamente pequeño y débil, diseñado para centrarse en las áreas donde el modelo actual tiene los mayores errores.
-4.  **Actualización del Modelo:** La predicción de este nuevo árbol se añade a la predicción acumulada del modelo existente, multiplicada por una **tasa de aprendizaje (learning rate)**. Esta tasa de aprendizaje controla el tamaño del paso de cada árbol, evitando que el modelo se sobreajuste rápidamente.
-5.  **Iteración:** Este proceso se repite para un número predefinido de iteraciones, o hasta que una métrica de rendimiento deje de mejorar. Cada nuevo árbol contribuye a reducir los errores restantes.
-
-En el contexto del **aprendizaje global vs. local**, GBM es un sistema de **aprendizaje global** que se construye de manera iterativa a partir de componentes de **aprendizaje local**. Cada árbol individual en el proceso de boosting es un sistema de aprendizaje local (como los *decision stumps* o árboles poco profundos) que se enfoca en una parte específica del error. Sin embargo, la combinación aditiva y secuencial de estos modelos "débiles" produce un modelo predictivo global altamente sofisticado y preciso. Si los datos no se distribuyen linealmente, GBM aplica el concepto de regresión (o clasificación) mediante una forma incremental y adaptativa de **regresión ponderada localmente**. Al centrarse en los errores residuales, GBM aborda directamente la desventaja de que "a veces ningún valor de parámetro puede proporcionar una aproximación suficientemente buena" en un solo modelo. Su capacidad para minimizar la función de pérdida de forma gradual y dirigida lo hace excepcionalmente eficaz para modelar relaciones complejas y no lineales, a menudo logrando un rendimiento superior en muchos problemas del mundo real.
-
-
-```{r, echo = FALSE}
-
-criterios <- c(
-  "Tipo de modelo",
-  "Variable respuesta",
-  "Variables predictoras",
-  "Relación entre variables",
-  "Normalidad de residuos",
-  "Independencia de errores",
-  "Homoscedasticidad",
-  "Sensible a outliers",
-  "Multicolinealidad entre predictores",
-  "Interpretabilidad",
-  "Velocidad y eficiencia",
-  "Validación cruzada",
-  "No funciona bien si..."
-)
-
-aplica <- c(
-  "✅ Supervisado",
-  "✅ Categórica o Continua",
-  "✅ Numéricas y categóricas (requiere codificación)",
-  "✅ Captura no linealidades e interacciones complejas vía boosting",
-  "❌ No requiere",
-  "✅ Deseable pero no obligatorio",
-  "❌ No se asume homoscedasticidad",
-  "⚠️ Moderadamente (los outliers pueden influir en árboles individuales)",
-  "✅ Robusto (los arboles manejan colinealidad localmente)",
-  "⚠️ Baja (modelo de tipo caja negra con varios árboles secuenciales)",
-  "⚠️ Lento con muchos árboles, datos grandes o parámetros altos",
-  "✅ Recomendable con k-fold o repeated CV para ajuste de hiperparámetros",
-  "❌ Si se tienen pocos datos, muchas categorías o ruido alto"
-)
-
-detalles <- c(
-  "Ensamble de árboles secuenciales donde cada árbol corrige errores del anterior.",
-  "En clasificación se combinan probabilidades; en regresión se promedian predicciones.",
-  "Funciona con muchas variables y aprende la importancia automáticamente.",
-  "Construye árboles débiles que se enfocan en los errores residuales previos.",
-  "No impone supuestos en la distribución de los errores.",
-  "Los datos deben ser observaciones independientes; sensible a dependencias temporales.",
-  "No requiere varianza constante puesto que se basa en árboles.",
-  "Los outliers pueden exagerar los gradientes y forzar ajustes extremos en árboles individuales.",
-  "Los árboles reducen impacto de colinealidad, pero múltiples árboles pueden still complicarla.",
-  "Difícil de interpretar el conjunto; se pueden usar importance plots o SHAP para explicación.",
-  "La construcción secuencial de cientos de árboles puede ser costosa en tiempo y memoria.",
-  "La validación cruzada ayuda a determinar tasa de aprendizaje, número de árboles y profundidad.",
-  "No es ideal cuando se tienen muy pocos datos o categorías con pocos ejemplos."
-)
-
-tabla_gbm <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)  
-
-tabla_gbm %>%
- gt() %>%
-  tab_header(title = "Guía rápida para elegir GBM",
-             subtitle = "Gradient Boosting Machines (GBM)") %>%
-   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
-     tab_options(heading.title.font.size = 14, 
-                 heading.subtitle.font.size = 12,
-                 table.font.names = "Century Gothic",
-                 table.font.size = 10,
-                 data_row.padding = px(1)) %>%
-      tab_style(style = list(cell_text(align = "left",
-                                       weight = 'bold')),
-                locations = list(cells_title(groups = c("title")))) %>%
-       tab_style(style = list(cell_text(align = "left")),
-                 locations = list(cells_title(groups = c("subtitle")))) %>%
-        cols_width(starts_with("Detalles") ~ px(500),
-                   everything() ~ px(200)) %>%
-         as_raw_html() 
-
 ```
 
 ## Boosting  {-}   
@@ -355,20 +268,20 @@ tabla_bagging %>%
          as_raw_html() 
 ```
 
-## Adaptive Boosting (AdaBoost)  {-}  
+## Extreme Gradient Boosting (XGBoost)  {-}    
 
-**AdaBoost (Adaptive Boosting)** es uno de los algoritmos de **boosting** más influyentes y el primero en ser propuesto con éxito, desarrollado por Yoav Freund y Robert Schapire en 1995. Es una técnica de **aprendizaje conjunto (ensemble learning)** utilizada principalmente para **clasificación**, aunque sus principios pueden extenderse a la regresión. La idea fundamental de AdaBoost es construir un modelo fuerte combinando secuencialmente las predicciones de múltiples **clasificadores "débiles" o "base"**, y lo hace prestando más atención a los ejemplos que los modelos anteriores clasificaron incorrectamente.
+**XGBoost (Extreme Gradient Boosting)** es una implementación optimizada y altamente eficiente del algoritmo de **Gradient Boosting Machines (GBM)**, ampliamente reconocida por su **velocidad**, **rendimiento** y **escalabilidad** en problemas de **clasificación** y **regresión**. Ganó una inmensa popularidad debido a su éxito en numerosas competiciones de *machine learning* (como Kaggle). Aunque se basa en los principios de GBM, XGBoost introduce varias mejoras clave que lo hacen superior en muchos escenarios.
 
-El funcionamiento de AdaBoost se basa en un sistema de **re-ponderación de datos** en cada iteración:
+La idea fundamental de XGBoost, al igual que GBM, es construir un modelo aditivo de forma **secuencial**, donde cada nuevo árbol intenta corregir los errores residuales del conjunto de árboles previos. Sin embargo, XGBoost optimiza este proceso con las siguientes características:
 
-1.  **Inicialización de Pesos:** Se asigna un peso inicial igual a cada ejemplo de entrenamiento.
-2.  **Entrenamiento del Clasificador Débil:** En cada iteración, se entrena un clasificador débil (a menudo un **Decision Stump**, que es un árbol de decisión de un solo nivel) en el conjunto de datos actual. Este clasificador se enfoca en minimizar el error ponderado.
-3.  **Cálculo del Error Ponderado:** Se calcula el error del clasificador débil, teniendo en cuenta los pesos de los ejemplos. Los ejemplos mal clasificados tienen un mayor impacto en este error.
-4.  **Actualización de Pesos de Datos:** Los pesos de los ejemplos mal clasificados por el clasificador actual son **aumentados**, mientras que los pesos de los ejemplos correctamente clasificados son **disminuidos**. Esto asegura que el siguiente clasificador débil se enfoque más en los ejemplos que son difíciles de clasificar.
-5.  **Cálculo del Peso del Clasificador:** Se asigna un peso (o "contribución") al clasificador débil actual en función de su precisión. Los clasificadores más precisos reciben un peso mayor en la predicción final del conjunto.
-6.  **Combinación de Predicciones:** Las predicciones finales del modelo AdaBoost se obtienen mediante una **suma ponderada** de las predicciones de todos los clasificadores débiles.
+1.  **Paralelización:** Aunque el *boosting* es inherentemente secuencial, XGBoost permite la paralelización de la construcción de los árboles individuales. Por ejemplo, en el paso de búsqueda de la mejor división, puede evaluar las posibles divisiones en paralelo a través de múltiples núcleos de CPU.
+2.  **Regularización:** Incorpora términos de **regularización L1 (Lasso)** y **L2 (Ridge)** en la función de costo para controlar la complejidad del modelo y evitar el sobreajuste. Esto es crucial para la generalización.
+3.  **Manejo de Valores Faltantes:** Tiene una capacidad incorporada para manejar valores faltantes en los datos, permitiendo al algoritmo aprender la mejor dirección para los valores ausentes.
+4.  **Poda por Profundidad (Depth-First Search):** A diferencia de muchos algoritmos de árboles que crecen nivel por nivel, XGBoost puede usar un enfoque de poda por profundidad, lo que a menudo resulta en árboles más eficientes.
+5.  **Caché-Aware Computing:** Optimiza el acceso a la memoria para manejar grandes conjuntos de datos de manera eficiente.
+6.  **Flexibilidad de Función de Pérdida:** Permite el uso de funciones de pérdida personalizadas, lo que lo hace adaptable a una amplia gama de problemas.
 
-En el contexto del **aprendizaje global vs. local**, AdaBoost es un sistema de **aprendizaje global** que se construye de manera iterativa a partir de componentes de **aprendizaje local**. Cada clasificador débil que se entrena en una iteración puede verse como una forma de **regresión ponderada localmente** (o, más precisamente, clasificación ponderada localmente), ya que ajusta su enfoque basándose en los ejemplos que el modelo combinado anterior no pudo clasificar bien. Al iterar y ajustar los pesos de los datos, AdaBoost se enfoca progresivamente en las regiones del espacio de características donde el modelo actual tiene un rendimiento deficiente. Si los datos no se distribuyen linealmente, el algoritmo aplica el concepto de clasificación (y por extensión, las ideas de regresión) de manera altamente adaptativa. La capacidad de AdaBoost para concentrarse en los "errores" más difíciles aborda directamente la desventaja de que "a veces ningún valor de parámetro puede proporcionar una aproximación suficientemente buena" en un solo modelo. El resultado es un clasificador global muy preciso y robusto, capaz de modelar relaciones complejas y no lineales, que es una combinación ponderada de muchas decisiones locales.
+En el contexto del **aprendizaje global vs. local**, XGBoost es una poderosa estrategia de **aprendizaje global** que se construye iterativamente a partir de componentes de **aprendizaje local**. Cada árbol de regresión (o clasificación) individual es un "aprendiz débil" que se enfoca en las deficiencias del modelo acumulado. Si los datos no se distribuyen linealmente, el algoritmo aplica el concepto de regresión (o clasificación) de manera altamente sofisticada mediante esta **regresión ponderada localmente**. Al centrarse en los errores residuales y optimizar el proceso de manera rigurosa, XGBoost aborda de manera excepcional la desventaja de que "a veces ningún valor de parámetro puede proporcionar una aproximación suficientemente buena" en un solo modelo. Su combinación de precisión, velocidad y capacidad para manejar grandes conjuntos de datos lo ha convertido en uno de los algoritmos más populares y efectivos en la práctica del *machine learning*.
 
 
 ```{r, echo = FALSE}
@@ -390,42 +303,42 @@ criterios <- c(
 
 aplica <- c(
   "✅ Supervisado",
-  "✅ Categórica (clasificación) o Continua (regresión adaptada)",
-  "✅ Numéricas y categóricas (requiere codificación para algunas implementaciones)",
-  "✅ Captura no linealidades e interacciones mediante reponderación iterativa",
-  "❌ No requiere supuestos de normalidad en los residuos",
+  "✅ Continua (regresión) o Categórica (clasificación)",
+  "✅ Numéricas y categóricas (requiere codificación para dummies o label encoding)",
+  "✅ Captura no linealidades e interacciones complejas vía árboles en boosting",
+  "❌ No requiere supuestos de normalidad",
   "✅ Deseable, aunque no obligatorio (mejor si instancias independientes)",
   "❌ No asume homoscedasticidad",
-  "⚠️ Moderadamente (outliers pueden obtener demasiado peso durante iteraciones)",
-  "✅ Robusto (reduce colinealidad al iterar sobre subconjuntos ponderados)",
-  "⚠️ Baja (modelo resultante es especie de ’caja negra’)",
-  "⚠️ Lento con muchas iteraciones o datos grandes",
-  "✅ Recomendable para ajustar tasa de aprendizaje y número de iteraciones",
-  "❌ No es ideal con datos muy ruidosos o clases extremadamente desbalanceadas sin técnicas adicionales"
+  "⚠️ Moderadamente (puede sobreajustar a outliers si no regula)",
+  "✅ Robusto (reduce efecto de colinealidad al usar árboles secuenciales)",
+  "⚠️ Baja (modelo complejo y tipo ’caja negra’)",
+  "✅ Muy rápido y escalable (implementación optimizada, paralelizable)",
+  "✅ Recomendable usar k-fold o repeated CV para ajustar hiperparámetros",
+  "❌ No es ideal con datos muy pequeños, ruido alto o target extremadamente desbalanceado sin ajuste"
 )
 
 detalles <- c(
-  "Ensamble supervisado que combina varios modelos débiles (ej. árboles simples) ajustando pesos según errores anteriores.",
-  "En clasificación ajusta pesos para mal clasificados; en regresión, adapta predicción por minimización de pérdida.",
-  "Puede trabajar con datos mixtos; para variables categóricas suele usar codificación de dummies.",
-  "Cada iteración repondera observaciones difíciles, enfocándose en patrones que previos modelos no capturaron.",
-  "No impone distribución de errores; se basa en función de pérdida, no en supuestos paramétricos.",
-  "Funciona mejor si cada observación es independiente; sensible a dependencias temporales si no se corrige.",
-  "No requiere varianza constante, ya que funciona sobre el error iterativo en lugar de residuos tradicionales.",
-  "Outliers difíciles de clasificar tienden a recibir mayor peso, lo que puede sesgar el ensamble si no se controla el learning rate.",
-  "La reponderación de muestras atenúa el efecto de predictores correlacionados, pues cada iteración puede focalizarse en subconjuntos distintos.",
-  "Es complejo desentrañar la contribución de cada modelo débil; se pueden usar métricas de importancia o SHAP para interpretación.",
-  "Cada iteración entrena un modelo débil; muchas iteraciones o modelos complejos pueden ralentizar el entrenamiento.",
-  "K-fold o repeated CV ayudan a elegir tasa de aprendizaje (learning rate) y número de iteraciones (trials).",
-  "No conviene con instancias altamente ruidosas: se puede sobreajustar rápidamente si la tasa de aprendizaje es alta o no se regula iteraciones."
+  "Ensamble supervisado que combina múltiples árboles débiles optimizados con gradiente descendente acelerado.",
+  "En regresión predice valores continuos; en clasificación combina probabilidades o clases mediante log-loss o multiclass objectives.",
+  "Acepta variables mixtas; las categóricas deben convertirse a formatos compatibles (p. ej. factor numerico, one-hot encoding).",
+  "Cada iteración ajusta un nuevo árbol enfocándose en los residuos del modelo anterior, capturando patrones complejos.",
+  "No impone distribución paramétrica de errores, ya que optimiza funciones de pérdida directamente.",
+  "Funciona mejor si cada muestra es independiente; sensible a series de tiempo sin preparación apropiada.",
+  "No requiere varianza constante, porque basa la optimización en gradientes del loss, no en supuestos de error.",
+  "Los outliers difíciles de predecir pueden recibir demasiado peso en iteraciones sucesivas; usar _learning_rate_ bajo y _max_depth_ pequeño para regular.",
+  "Los árboles reducen el impacto de variables altamente correlacionadas, aunque múltiples iteraciones pueden aún privilegiar características correlacionadas.",
+  "Difícil interpretar directamente cada árbol; se utilizan métricas de importancia, SHAP values o partial dependence plots para explicación.",
+  "Implementación en C++ altamente optimizada (CPU/GPU), permite entrenamiento muy rápido incluso con millones de filas.",
+  "Validación cruzada anidada o simple ayuda a elegir hiperparámetros como `eta` (learning_rate), `nrounds` (número de árboles), `max_depth`, `subsample`, `colsample_bytree`.",
+  "No conviene con datasets muy pequeños, ya que puede sobreajustar; tampoco si el ruido es muy alto y no se regula bien la complejidad."
 )
 
-tabla_adaboost <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)  
+tabla_xgboost <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
 
-tabla_adaboost %>%
+tabla_xgboost %>%
  gt() %>%
-  tab_header(title = "Guía rápida para elegir adaboost",
-             subtitle = "AdaBoost") %>%
+  tab_header(title = "Guía rápida para elegir xgboost",
+             subtitle = "XGBoost")  %>%
    tab_footnote(footnote = "Fuente: Elaboración propia") %>%
      tab_options(heading.title.font.size = 14, 
                  heading.subtitle.font.size = 12,
@@ -443,24 +356,23 @@ tabla_adaboost %>%
 ```
 
 
-## Stacked Generlization (Blending) {-}   
+## Gradient Boosting Machines (GBM)  {-}   
 
-**Stacked Generalization**, comúnmente conocido como **Stacking**, y su variante **Blending**, son técnicas avanzadas de **aprendizaje conjunto (ensemble learning)** que buscan combinar las predicciones de múltiples modelos de aprendizaje automático para obtener un rendimiento predictivo superior al de cualquier modelo individual. La idea fundamental es que, en lugar de simplemente promediar o votar las predicciones, se entrena un **modelo de segundo nivel (meta-modelo)** para aprender a combinar óptimamente las predicciones de los modelos de primer nivel (modelos base).
+**Gradient Boosting Machines (GBM)** es un algoritmo de **aprendizaje conjunto (ensemble learning)** extremadamente potente y versátil, utilizado para **clasificación**, **regresión** y otras tareas predictivas. A diferencia de Random Forest que construye árboles de forma independiente en paralelo (bagging), GBM construye los árboles de forma **secuencial** y aditiva. La idea central es que cada nuevo árbol en el conjunto intenta corregir los errores residuales (residuos) del conjunto de árboles construidos previamente.
 
-El proceso de Stacking generalmente implica dos o más "capas" de modelos:
+El concepto fundamental detrás de GBM es el **impulso (boosting)**, donde los modelos "débiles" (generalmente árboles de decisión, a menudo árboles poco profundos o "stumps") se combinan para formar un modelo "fuerte". GBM logra esto de una manera específica:
 
-1.  **Modelos Base (Nivel 0):** En la primera capa, se entrenan múltiples modelos de aprendizaje automático diversos (pueden ser de diferentes tipos, como árboles de decisión, máquinas de vectores de soporte, redes neuronales, etc.). Estos modelos base se entrenan sobre el conjunto de datos de entrenamiento original (o en particiones del mismo).
+1.  **Modelo Inicial:** Comienza con una predicción inicial para todos los datos (por ejemplo, el valor promedio para regresión o la probabilidad logarítmica para clasificación).
+2.  **Cálculo de Residuos (Pseudo-residuos):** En cada iteración, el algoritmo calcula los **residuos** (o más precisamente, los "pseudo-residuos" o gradientes negativos de la función de pérdida) entre los valores reales y las predicciones actuales del modelo. Estos residuos representan los "errores" que el modelo actual no ha podido capturar.
+3.  **Entrenamiento de un Nuevo Árbol:** Se entrena un nuevo árbol de decisión para **predecir estos residuos**. Este árbol es típicamente pequeño y débil, diseñado para centrarse en las áreas donde el modelo actual tiene los mayores errores.
+4.  **Actualización del Modelo:** La predicción de este nuevo árbol se añade a la predicción acumulada del modelo existente, multiplicada por una **tasa de aprendizaje (learning rate)**. Esta tasa de aprendizaje controla el tamaño del paso de cada árbol, evitando que el modelo se sobreajuste rápidamente.
+5.  **Iteración:** Este proceso se repite para un número predefinido de iteraciones, o hasta que una métrica de rendimiento deje de mejorar. Cada nuevo árbol contribuye a reducir los errores restantes.
 
-2.  **Generación de Meta-Características:** Las predicciones generadas por estos modelos base sobre un conjunto de datos "fuera de muestra" (que no se usó para entrenar los modelos base, típicamente a través de validación cruzada k-fold) se utilizan como **nuevas características** o "meta-características". Estas meta-características, junto con la variable objetivo original, forman un nuevo conjunto de datos de entrenamiento para el meta-modelo.
-
-3.  **Meta-Modelo (Nivel 1):** En la segunda capa, se entrena un **meta-modelo** (a menudo un modelo más simple, como regresión lineal, regresión logística o un árbol de decisión poco profundo) utilizando estas meta-características como entrada y la variable objetivo original como salida. El meta-modelo aprende la relación entre las predicciones de los modelos base y la respuesta verdadera, y por lo tanto, cómo "pesar" o "combinar" esas predicciones de la mejor manera.
-
-**Blending** es una variación más sencilla de Stacking. La principal diferencia es cómo se generan las meta-características para el meta-modelo. En Blending, se reserva una **subdivisión de validación (holdout set)** del conjunto de entrenamiento original. Los modelos base se entrenan en la parte restante del conjunto de entrenamiento, y luego sus predicciones sobre este conjunto de validación se utilizan directamente como meta-características para entrenar el meta-modelo. Esto simplifica el proceso de validación cruzada, pero el meta-modelo se entrena con menos datos.
-
-En el contexto del **aprendizaje global vs. local**, Stacking/Blending es una estrategia de **aprendizaje global** que explota el poder de múltiples **aproximaciones de función local** (los modelos base) para construir un modelo final altamente sofisticado. Cada modelo base, dependiendo de su naturaleza, puede ser un sistema de aprendizaje local que descubre patrones en subregiones de datos. Sin embargo, el meta-modelo aprende una función de combinación global sobre las predicciones de estos modelos base. Si los datos no se distribuyen linealmente, Stacking/Blending aplica el concepto de regresión (o clasificación) de una manera muy flexible. Al permitir que un modelo de segundo nivel aprenda a combinar las predicciones de diversos modelos, supera la limitación de que "a veces ningún valor de parámetro puede proporcionar una aproximación suficientemente buena" en un solo modelo. Es particularmente eficaz en competiciones de machine learning donde se busca el máximo rendimiento, ya que aprovecha las fortalezas complementarias de diferentes algoritmos. Sin embargo, puede ser computacionalmente intensivo y más difícil de interpretar que los modelos individuales.
+En el contexto del **aprendizaje global vs. local**, GBM es un sistema de **aprendizaje global** que se construye de manera iterativa a partir de componentes de **aprendizaje local**. Cada árbol individual en el proceso de boosting es un sistema de aprendizaje local (como los *decision stumps* o árboles poco profundos) que se enfoca en una parte específica del error. Sin embargo, la combinación aditiva y secuencial de estos modelos "débiles" produce un modelo predictivo global altamente sofisticado y preciso. Si los datos no se distribuyen linealmente, GBM aplica el concepto de regresión (o clasificación) mediante una forma incremental y adaptativa de **regresión ponderada localmente**. Al centrarse en los errores residuales, GBM aborda directamente la desventaja de que "a veces ningún valor de parámetro puede proporcionar una aproximación suficientemente buena" en un solo modelo. Su capacidad para minimizar la función de pérdida de forma gradual y dirigida lo hace excepcionalmente eficaz para modelar relaciones complejas y no lineales, a menudo logrando un rendimiento superior en muchos problemas del mundo real.
 
 
 ```{r, echo = FALSE}
+
 criterios <- c(
   "Tipo de modelo",
   "Variable respuesta",
@@ -479,43 +391,42 @@ criterios <- c(
 
 aplica <- c(
   "✅ Supervisado",
-  "✅ Categórica o Continua (depende de los modelos base)",
-  "✅ Numéricas y/o categóricas (codificación según modelos base)",
-  "✅ Captura relaciones complejas vía combinación de modelos base",
-  "❌ No exige supuestos de normalidad en residuos",
-  "✅ Deseable, pero no obligatorio (mejor si observaciones independientes)",
+  "✅ Categórica o Continua",
+  "✅ Numéricas y categóricas (requiere codificación)",
+  "✅ Captura no linealidades e interacciones complejas vía boosting",
+  "❌ No requiere",
+  "✅ Deseable pero no obligatorio",
   "❌ No se asume homoscedasticidad",
-  "⚠️ Moderadamente (outliers afectan modelos base individuales)",
-  "⚠️ Puede verse afectado (depende de base learners y correlated features)",
-  "⚠️ Baja (modelo meta difícil de interpretar directamente)",
-  "⚠️ Lento en entrenamiento y predicción, según número de base learners",
-  "✅ Esencial (usar CV anidada para entrenar meta-modelo)",
-  "❌ Si datos muy escasos o muy ruidosos, riesgo de sobreajuste"
+  "⚠️ Moderadamente (los outliers pueden influir en árboles individuales)",
+  "✅ Robusto (los arboles manejan colinealidad localmente)",
+  "⚠️ Baja (modelo de tipo caja negra con varios árboles secuenciales)",
+  "⚠️ Lento con muchos árboles, datos grandes o parámetros altos",
+  "✅ Recomendable con k-fold o repeated CV para ajuste de hiperparámetros",
+  "❌ Si se tienen pocos datos, muchas categorías o ruido alto"
 )
 
 detalles <- c(
-  "Ensamble supervisado que combina varias predicciones (base learners) mediante un modelo meta.",
-  "El meta-modelo acepta la salida de modelos base; puede predecir clases o valores continuos.",
-  "Usa predictores originales para los base learners; algunos requieren dummies, otros no.",
-  "Aprende patrones no lineales e interacciones complejas a través de múltiples capas.",
-  "No impone distribución normal: cada base learner tiene sus propios supuestos.",
-  "Ideal si cada muestra es independiente; sensibles a dependencias en validaciones cruzadas.",
-  "No requiere varianza constante, ya que se basa en agregación de predicciones.",
-  "Modelos base (p. ej. ARBOTS, SVM) pueden verse influenciados por valores extremos;",
-  "Modelos base diversificados reducen colinealidad, pero meta-modelo puede verse afectado.",
-  "Difícil atribuir importancia directa; se pueden usar técnicas como SHAP para interpretación.",
-  "Entrenamiento de múltiples base learners y meta-modelo incrementa tiempo; predicción también más lenta.",
-  "Usar validación cruzada anidada: inner folds para entrenar base learners y stacking, outer folds para evaluar.",
-  "No recomendable si hay muy pocos datos (stacking requiere dividir en folds) o si los base learners no aportan diversidad."
+  "Ensamble de árboles secuenciales donde cada árbol corrige errores del anterior.",
+  "En clasificación se combinan probabilidades; en regresión se promedian predicciones.",
+  "Funciona con muchas variables y aprende la importancia automáticamente.",
+  "Construye árboles débiles que se enfocan en los errores residuales previos.",
+  "No impone supuestos en la distribución de los errores.",
+  "Los datos deben ser observaciones independientes; sensible a dependencias temporales.",
+  "No requiere varianza constante puesto que se basa en árboles.",
+  "Los outliers pueden exagerar los gradientes y forzar ajustes extremos en árboles individuales.",
+  "Los árboles reducen impacto de colinealidad, pero múltiples árboles pueden still complicarla.",
+  "Difícil de interpretar el conjunto; se pueden usar importance plots o SHAP para explicación.",
+  "La construcción secuencial de cientos de árboles puede ser costosa en tiempo y memoria.",
+  "La validación cruzada ayuda a determinar tasa de aprendizaje, número de árboles y profundidad.",
+  "No es ideal cuando se tienen muy pocos datos o categorías con pocos ejemplos."
 )
 
-tabla_stacking <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+tabla_gbm <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)  
 
-
-tabla_stacking %>%
+tabla_gbm %>%
  gt() %>%
-  tab_header(title = "Guía rápida para elegir blending",
-             subtitle = "Stacked Generlizaation (Blending)")  %>%
+  tab_header(title = "Guía rápida para elegir GBM",
+             subtitle = "Gradient Boosting Machines (GBM)") %>%
    tab_footnote(footnote = "Fuente: Elaboración propia") %>%
      tab_options(heading.title.font.size = 14, 
                  heading.subtitle.font.size = 12,
@@ -530,6 +441,7 @@ tabla_stacking %>%
         cols_width(starts_with("Detalles") ~ px(500),
                    everything() ~ px(200)) %>%
          as_raw_html() 
+
 ```
 
 
@@ -603,94 +515,6 @@ tabla_gbrt %>%
  gt() %>%
   tab_header(title = "Guía rápida para elegir GBRT",
              subtitle = "Gradient Boosted Regression Trees (GBRT)")  %>%
-   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
-     tab_options(heading.title.font.size = 14, 
-                 heading.subtitle.font.size = 12,
-                 table.font.names = "Century Gothic",
-                 table.font.size = 10,
-                 data_row.padding = px(1)) %>%
-      tab_style(style = list(cell_text(align = "left",
-                                       weight = 'bold')),
-                locations = list(cells_title(groups = c("title")))) %>%
-       tab_style(style = list(cell_text(align = "left")),
-                 locations = list(cells_title(groups = c("subtitle")))) %>%
-        cols_width(starts_with("Detalles") ~ px(500),
-                   everything() ~ px(200)) %>%
-         as_raw_html() 
-```
-
-
-## Extreme Gradient Boosting (XGBoost)  {-}    
-
-**XGBoost (Extreme Gradient Boosting)** es una implementación optimizada y altamente eficiente del algoritmo de **Gradient Boosting Machines (GBM)**, ampliamente reconocida por su **velocidad**, **rendimiento** y **escalabilidad** en problemas de **clasificación** y **regresión**. Ganó una inmensa popularidad debido a su éxito en numerosas competiciones de *machine learning* (como Kaggle). Aunque se basa en los principios de GBM, XGBoost introduce varias mejoras clave que lo hacen superior en muchos escenarios.
-
-La idea fundamental de XGBoost, al igual que GBM, es construir un modelo aditivo de forma **secuencial**, donde cada nuevo árbol intenta corregir los errores residuales del conjunto de árboles previos. Sin embargo, XGBoost optimiza este proceso con las siguientes características:
-
-1.  **Paralelización:** Aunque el *boosting* es inherentemente secuencial, XGBoost permite la paralelización de la construcción de los árboles individuales. Por ejemplo, en el paso de búsqueda de la mejor división, puede evaluar las posibles divisiones en paralelo a través de múltiples núcleos de CPU.
-2.  **Regularización:** Incorpora términos de **regularización L1 (Lasso)** y **L2 (Ridge)** en la función de costo para controlar la complejidad del modelo y evitar el sobreajuste. Esto es crucial para la generalización.
-3.  **Manejo de Valores Faltantes:** Tiene una capacidad incorporada para manejar valores faltantes en los datos, permitiendo al algoritmo aprender la mejor dirección para los valores ausentes.
-4.  **Poda por Profundidad (Depth-First Search):** A diferencia de muchos algoritmos de árboles que crecen nivel por nivel, XGBoost puede usar un enfoque de poda por profundidad, lo que a menudo resulta en árboles más eficientes.
-5.  **Caché-Aware Computing:** Optimiza el acceso a la memoria para manejar grandes conjuntos de datos de manera eficiente.
-6.  **Flexibilidad de Función de Pérdida:** Permite el uso de funciones de pérdida personalizadas, lo que lo hace adaptable a una amplia gama de problemas.
-
-En el contexto del **aprendizaje global vs. local**, XGBoost es una poderosa estrategia de **aprendizaje global** que se construye iterativamente a partir de componentes de **aprendizaje local**. Cada árbol de regresión (o clasificación) individual es un "aprendiz débil" que se enfoca en las deficiencias del modelo acumulado. Si los datos no se distribuyen linealmente, el algoritmo aplica el concepto de regresión (o clasificación) de manera altamente sofisticada mediante esta **regresión ponderada localmente**. Al centrarse en los errores residuales y optimizar el proceso de manera rigurosa, XGBoost aborda de manera excepcional la desventaja de que "a veces ningún valor de parámetro puede proporcionar una aproximación suficientemente buena" en un solo modelo. Su combinación de precisión, velocidad y capacidad para manejar grandes conjuntos de datos lo ha convertido en uno de los algoritmos más populares y efectivos en la práctica del *machine learning*.
-
-
-```{r, echo = FALSE}
-criterios <- c(
-  "Tipo de modelo",
-  "Variable respuesta",
-  "Variables predictoras",
-  "Relación entre variables",
-  "Normalidad de residuos",
-  "Independencia de errores",
-  "Homoscedasticidad",
-  "Sensible a outliers",
-  "Multicolinealidad entre predictores",
-  "Interpretabilidad",
-  "Velocidad y eficiencia",
-  "Validación cruzada",
-  "No funciona bien si..."
-)
-
-aplica <- c(
-  "✅ Supervisado",
-  "✅ Continua (regresión) o Categórica (clasificación)",
-  "✅ Numéricas y categóricas (requiere codificación para dummies o label encoding)",
-  "✅ Captura no linealidades e interacciones complejas vía árboles en boosting",
-  "❌ No requiere supuestos de normalidad",
-  "✅ Deseable, aunque no obligatorio (mejor si instancias independientes)",
-  "❌ No asume homoscedasticidad",
-  "⚠️ Moderadamente (puede sobreajustar a outliers si no regula)",
-  "✅ Robusto (reduce efecto de colinealidad al usar árboles secuenciales)",
-  "⚠️ Baja (modelo complejo y tipo ’caja negra’)",
-  "✅ Muy rápido y escalable (implementación optimizada, paralelizable)",
-  "✅ Recomendable usar k-fold o repeated CV para ajustar hiperparámetros",
-  "❌ No es ideal con datos muy pequeños, ruido alto o target extremadamente desbalanceado sin ajuste"
-)
-
-detalles <- c(
-  "Ensamble supervisado que combina múltiples árboles débiles optimizados con gradiente descendente acelerado.",
-  "En regresión predice valores continuos; en clasificación combina probabilidades o clases mediante log-loss o multiclass objectives.",
-  "Acepta variables mixtas; las categóricas deben convertirse a formatos compatibles (p. ej. factor numerico, one-hot encoding).",
-  "Cada iteración ajusta un nuevo árbol enfocándose en los residuos del modelo anterior, capturando patrones complejos.",
-  "No impone distribución paramétrica de errores, ya que optimiza funciones de pérdida directamente.",
-  "Funciona mejor si cada muestra es independiente; sensible a series de tiempo sin preparación apropiada.",
-  "No requiere varianza constante, porque basa la optimización en gradientes del loss, no en supuestos de error.",
-  "Los outliers difíciles de predecir pueden recibir demasiado peso en iteraciones sucesivas; usar _learning_rate_ bajo y _max_depth_ pequeño para regular.",
-  "Los árboles reducen el impacto de variables altamente correlacionadas, aunque múltiples iteraciones pueden aún privilegiar características correlacionadas.",
-  "Difícil interpretar directamente cada árbol; se utilizan métricas de importancia, SHAP values o partial dependence plots para explicación.",
-  "Implementación en C++ altamente optimizada (CPU/GPU), permite entrenamiento muy rápido incluso con millones de filas.",
-  "Validación cruzada anidada o simple ayuda a elegir hiperparámetros como `eta` (learning_rate), `nrounds` (número de árboles), `max_depth`, `subsample`, `colsample_bytree`.",
-  "No conviene con datasets muy pequeños, ya que puede sobreajustar; tampoco si el ruido es muy alto y no se regula bien la complejidad."
-)
-
-tabla_xgboost <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
-
-tabla_xgboost %>%
- gt() %>%
-  tab_header(title = "Guía rápida para elegir xgboost",
-             subtitle = "XGBoost")  %>%
    tab_footnote(footnote = "Fuente: Elaboración propia") %>%
      tab_options(heading.title.font.size = 14, 
                  heading.subtitle.font.size = 12,
@@ -792,4 +616,184 @@ tabla_lightgbm %>%
                    everything() ~ px(200)) %>%
          as_raw_html() 
 ```
+
+## Random Forest  {-}   
+
+**Random Forest** es un algoritmo de **aprendizaje conjunto (ensemble learning)** altamente popular y potente, utilizado tanto para tareas de **clasificación** como de **regresión**. Fue desarrollado por Leo Breiman en 2001 y se basa en la idea de combinar las predicciones de múltiples **árboles de decisión** para lograr una mayor precisión y robustez que un solo árbol. La fuerza de Random Forest reside en dos conceptos clave: **bagging (bootstrap aggregation)** y la **aleatoriedad en la selección de características**.
+
+La idea fundamental detrás de Random Forest es construir un "bosque" de árboles de decisión de una manera específica:
+
+1.  **Bagging (Bootstrap Aggregation):** En lugar de entrenar un solo árbol en todo el conjunto de datos, Random Forest entrena cada árbol en una **muestra de arranque (bootstrap sample)** diferente. Una muestra de arranque es un subconjunto del conjunto de datos original, muestreado con reemplazo. Esto significa que algunos puntos de datos pueden aparecer varias veces en una muestra, mientras que otros pueden no aparecer en absoluto. Este muestreo genera diversidad entre los árboles.
+
+2.  **Aleatoriedad en la Selección de Características:** Cuando cada árbol se construye, en cada paso de división (nodo), Random Forest no considera todas las características disponibles. En cambio, solo considera un **subconjunto aleatorio de características** para encontrar la mejor división. Esta aleatoriedad adicional (además del muestreo de arranque) descorrelaciona aún más los árboles, lo que es crucial para el rendimiento del algoritmo. Si los árboles estuvieran altamente correlacionados, el error de un árbol promedio no se reduciría al promediar.
+
+Una vez que se han construido numerosos árboles (típicamente cientos o miles), las predicciones se combinan: para **clasificación**, se utiliza la **votación por mayoría** (la clase más votada por los árboles individuales); para **regresión**, se calcula el **promedio** de las predicciones de todos los árboles.
+
+En el contexto del **aprendizaje global vs. local**, Random Forest se puede considerar como un sistema de **aprendizaje global** que se construye a partir de componentes de **aprendizaje local**. Cada árbol individual en el bosque es un sistema de aprendizaje local (como CART, que divide el problema en subproblemas más pequeños). Sin embargo, al combinar las predicciones de muchos de estos árboles, Random Forest logra una **aproximación de función global** muy robusta y flexible. La ventaja es que, si los datos no se distribuyen linealmente, el algoritmo aplica el concepto de regresión (o clasificación) mediante una forma sofisticada de **regresión ponderada localmente**. La combinación de árboles diversos y descorrelacionados mitiga la desventaja de que "a veces ningún valor de parámetro puede proporcionar una aproximación suficientemente buena" en un solo modelo. Random Forest sobresale en capturar relaciones complejas y no lineales, manejar grandes conjuntos de datos con muchas características y es menos propenso al sobreajuste que un solo árbol de decisión grande.
+
+
+```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica <- c(
+  "✅ Supervisado",
+  "✅ Categórica o Continua",
+  "✅ Numéricas y categóricas (requiere codificación)",
+  "✅ Captura relaciones no lineales e interacciones complejas",
+  "❌ No requiere",
+  "✅ Deseable pero no obligatorio",
+  "❌ No se asume homoscedasticidad",
+  "✅ Robusto a outliers (por agregación)",
+  "✅ Robusto (selecciona subconjuntos aleatorios)",
+  "⚠️ Moderada (difícil interpretar cientos de árboles)",
+  "⚠️ Lento con muchos árboles o datos grandes",
+  "✅ Recomendado usar k-fold",
+  "❌ Puede sobreajustar si no se ajustan hiperparámetros (e.g. profundidad, número de árboles)"
+)
+
+detalles <- c(
+  "Ensamble de árboles de decisión, cada uno entrenado en una muestra bootstrap y usando un subconjunto aleatorio de predictores.",
+  "En clasificación predice la clase mayoritaria entre árboles; en regresión, el promedio de predicciones.",
+  "Acepta muchas variables y selecciona automáticamente las más relevantes por importancia.",
+  "Al generar múltiples árboles, capta interacciones no lineales sin necesidad de especificarlas.",
+  "No hay supuestos sobre la distribución de los errores.",
+  "Los árboles individuales pueden manejar correlación leve; el ensamble mitiga la dependencia.",
+  "No necesita homogeneidad de varianza en los errores residuales.",
+  "Cada árbol es poco sensible a outliers, y la agregación mejora robustez.",
+  "Reduce el problema de colinealidad al seleccionar subconjuntos de variables por árbol.",
+  "Es difícil de explicar, aunque se pueden usar métricas de importancia de variables.",
+  "Puede volverse lento si se entrenan miles de árboles en datasets muy grandes.",
+  "Cross-validation ayuda a evitar overfitting y evaluar generalización.",
+  "No es ideal si el interpretabilidad es crítica o el tiempo computacional es limitado."
+)
+
+tabla_rf <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_rf %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir random forest",
+             subtitle = "Random Forest") %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
+```
+
+## Stacked Generlization (Blending) {-}   
+
+**Stacked Generalization**, comúnmente conocido como **Stacking**, y su variante **Blending**, son técnicas avanzadas de **aprendizaje conjunto (ensemble learning)** que buscan combinar las predicciones de múltiples modelos de aprendizaje automático para obtener un rendimiento predictivo superior al de cualquier modelo individual. La idea fundamental es que, en lugar de simplemente promediar o votar las predicciones, se entrena un **modelo de segundo nivel (meta-modelo)** para aprender a combinar óptimamente las predicciones de los modelos de primer nivel (modelos base).
+
+El proceso de Stacking generalmente implica dos o más "capas" de modelos:
+
+1.  **Modelos Base (Nivel 0):** En la primera capa, se entrenan múltiples modelos de aprendizaje automático diversos (pueden ser de diferentes tipos, como árboles de decisión, máquinas de vectores de soporte, redes neuronales, etc.). Estos modelos base se entrenan sobre el conjunto de datos de entrenamiento original (o en particiones del mismo).
+
+2.  **Generación de Meta-Características:** Las predicciones generadas por estos modelos base sobre un conjunto de datos "fuera de muestra" (que no se usó para entrenar los modelos base, típicamente a través de validación cruzada k-fold) se utilizan como **nuevas características** o "meta-características". Estas meta-características, junto con la variable objetivo original, forman un nuevo conjunto de datos de entrenamiento para el meta-modelo.
+
+3.  **Meta-Modelo (Nivel 1):** En la segunda capa, se entrena un **meta-modelo** (a menudo un modelo más simple, como regresión lineal, regresión logística o un árbol de decisión poco profundo) utilizando estas meta-características como entrada y la variable objetivo original como salida. El meta-modelo aprende la relación entre las predicciones de los modelos base y la respuesta verdadera, y por lo tanto, cómo "pesar" o "combinar" esas predicciones de la mejor manera.
+
+**Blending** es una variación más sencilla de Stacking. La principal diferencia es cómo se generan las meta-características para el meta-modelo. En Blending, se reserva una **subdivisión de validación (holdout set)** del conjunto de entrenamiento original. Los modelos base se entrenan en la parte restante del conjunto de entrenamiento, y luego sus predicciones sobre este conjunto de validación se utilizan directamente como meta-características para entrenar el meta-modelo. Esto simplifica el proceso de validación cruzada, pero el meta-modelo se entrena con menos datos.
+
+En el contexto del **aprendizaje global vs. local**, Stacking/Blending es una estrategia de **aprendizaje global** que explota el poder de múltiples **aproximaciones de función local** (los modelos base) para construir un modelo final altamente sofisticado. Cada modelo base, dependiendo de su naturaleza, puede ser un sistema de aprendizaje local que descubre patrones en subregiones de datos. Sin embargo, el meta-modelo aprende una función de combinación global sobre las predicciones de estos modelos base. Si los datos no se distribuyen linealmente, Stacking/Blending aplica el concepto de regresión (o clasificación) de una manera muy flexible. Al permitir que un modelo de segundo nivel aprenda a combinar las predicciones de diversos modelos, supera la limitación de que "a veces ningún valor de parámetro puede proporcionar una aproximación suficientemente buena" en un solo modelo. Es particularmente eficaz en competiciones de machine learning donde se busca el máximo rendimiento, ya que aprovecha las fortalezas complementarias de diferentes algoritmos. Sin embargo, puede ser computacionalmente intensivo y más difícil de interpretar que los modelos individuales.
+
+
+```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica <- c(
+  "✅ Supervisado",
+  "✅ Categórica o Continua (depende de los modelos base)",
+  "✅ Numéricas y/o categóricas (codificación según modelos base)",
+  "✅ Captura relaciones complejas vía combinación de modelos base",
+  "❌ No exige supuestos de normalidad en residuos",
+  "✅ Deseable, pero no obligatorio (mejor si observaciones independientes)",
+  "❌ No se asume homoscedasticidad",
+  "⚠️ Moderadamente (outliers afectan modelos base individuales)",
+  "⚠️ Puede verse afectado (depende de base learners y correlated features)",
+  "⚠️ Baja (modelo meta difícil de interpretar directamente)",
+  "⚠️ Lento en entrenamiento y predicción, según número de base learners",
+  "✅ Esencial (usar CV anidada para entrenar meta-modelo)",
+  "❌ Si datos muy escasos o muy ruidosos, riesgo de sobreajuste"
+)
+
+detalles <- c(
+  "Ensamble supervisado que combina varias predicciones (base learners) mediante un modelo meta.",
+  "El meta-modelo acepta la salida de modelos base; puede predecir clases o valores continuos.",
+  "Usa predictores originales para los base learners; algunos requieren dummies, otros no.",
+  "Aprende patrones no lineales e interacciones complejas a través de múltiples capas.",
+  "No impone distribución normal: cada base learner tiene sus propios supuestos.",
+  "Ideal si cada muestra es independiente; sensibles a dependencias en validaciones cruzadas.",
+  "No requiere varianza constante, ya que se basa en agregación de predicciones.",
+  "Modelos base (p. ej. ARBOTS, SVM) pueden verse influenciados por valores extremos;",
+  "Modelos base diversificados reducen colinealidad, pero meta-modelo puede verse afectado.",
+  "Difícil atribuir importancia directa; se pueden usar técnicas como SHAP para interpretación.",
+  "Entrenamiento de múltiples base learners y meta-modelo incrementa tiempo; predicción también más lenta.",
+  "Usar validación cruzada anidada: inner folds para entrenar base learners y stacking, outer folds para evaluar.",
+  "No recomendable si hay muy pocos datos (stacking requiere dividir en folds) o si los base learners no aportan diversidad."
+)
+
+tabla_stacking <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+
+tabla_stacking %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir blending",
+             subtitle = "Stacked Generlizaation (Blending)")  %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
+```
+
+
+
+
+
 

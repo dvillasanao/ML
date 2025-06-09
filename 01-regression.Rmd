@@ -171,10 +171,82 @@ tabla_logit %>%
          as_raw_html() 
 ```
 
+## Locally Estimated Scatterplot Smoothing (`LOESS`) {-} 
 
-## Stepwise Regression {-} 
+**Locally Estimated Scatterplot Smoothing (`LOESS`)**: un método para ajustar una curva suave entre dos variables o una superficie  entre un resultado y hasta cuatro variables predictoras. La idea es que, si los datos no se distribuyen linealmente, se puede aplicar el concepto de regresión. Se puede aplicar regresión, lo que se denomina regresión ponderada localmente. Se puede aplicar LOESS cuando la relación entre las variables independientes y dependientes no es lineal. Hoy en día, la mayoría de los algoritmos (como las redes neuronales de propagación hacia adelante clásicas, las máquinas de vectores de soporte, los algoritmos del vecino más cercano, etc.) son sistemas de aprendizaje global que se utilizan para minimizar las funciones de pérdida globales (por ejemplo, el error cuadrático medio). Por el contrario, los sistemas de aprendizaje local dividen el problema de aprendizaje global en múltiples problemas de aprendizaje más pequeños y simples. Esto generalmente se logra dividiendo la función de costo en múltiples funciones de costo locales independientes. Una de las desventajas de los métodos globales es que, a veces, ningún valor de parámetro puede proporcionar una aproximación suficientemente buena. Pero entonces surge LOESS, una alternativa a la aproximación de funciones globales.   
 
-**Regresión por pasos** : añade características al modelo una a una hasta encontrar la puntuación óptima para tu conjunto de características. La selección por pasos alterna entre el avance y el retroceso, incorporando y eliminando variables que cumplen los criterios de entrada o eliminación, hasta alcanzar un conjunto estable de variables.  
+
+```{r, echo = FALSE} 
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica <- c(
+  "✅ Supervisado",
+  "✅ Continua",
+  "✅ Numéricas (usualmente 1 o 2 predictores)",
+  "✅ No lineal y suave",
+  "❌ No necesaria",
+  "✅ Deseable",
+  "✅ Deseable",
+  "⚠️ Muy sensible",
+  "❌ No aplica (pocos predictores)",
+  "✅ Muy interpretable gráficamente",
+  "⚠️ Lento en grandes volúmenes de datos",
+  "✅ Puede usarse para elegir 'span'",
+  "❌ Datos grandes o con ruido fuerte"
+)
+
+detalles <- c(
+  "Modelo no paramétrico local",
+  "Regresión para valores continuos",
+  "Generalmente 1 o 2 variables numéricas",
+  "Ajuste por vecindad, suaviza la curva",
+  "No asume distribución específica",
+  "Supuesto deseable si hay dependencias temporales",
+  "Ideal si la varianza no cambia mucho localmente",
+  "Altamente afectado por outliers locales",
+  "No es una técnica multivariable compleja",
+  "La curva ajustada se interpreta visualmente",
+  "Computacionalmente costoso con datos grandes",
+  "Ayuda a seleccionar el mejor 'span'",
+  "Poco eficaz en alta dimensión o datos muy dispersos"
+)
+
+tabla_loess <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_loess %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir LOESS",
+             subtitle = "Locally Estimated Scatterplot Smoothing (LOESS)") %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
+```
+
 
 ## Multivariate Adaptive Regression Splines (`MARS`) {-} 
 
@@ -254,80 +326,12 @@ tabla_mars %>%
 ```
 
 
-## Locally Estimated Scatterplot Smoothing (`LOESS`) {-} 
 
-**Locally Estimated Scatterplot Smoothing (`LOESS`)**: un método para ajustar una curva suave entre dos variables o una superficie  entre un resultado y hasta cuatro variables predictoras. La idea es que, si los datos no se distribuyen linealmente, se puede aplicar el concepto de regresión. Se puede aplicar regresión, lo que se denomina regresión ponderada localmente. Se puede aplicar LOESS cuando la relación entre las variables independientes y dependientes no es lineal. Hoy en día, la mayoría de los algoritmos (como las redes neuronales de propagación hacia adelante clásicas, las máquinas de vectores de soporte, los algoritmos del vecino más cercano, etc.) son sistemas de aprendizaje global que se utilizan para minimizar las funciones de pérdida globales (por ejemplo, el error cuadrático medio). Por el contrario, los sistemas de aprendizaje local dividen el problema de aprendizaje global en múltiples problemas de aprendizaje más pequeños y simples. Esto generalmente se logra dividiendo la función de costo en múltiples funciones de costo locales independientes. Una de las desventajas de los métodos globales es que, a veces, ningún valor de parámetro puede proporcionar una aproximación suficientemente buena. Pero entonces surge LOESS, una alternativa a la aproximación de funciones globales.   
+## Stepwise Regression {-} 
+
+**Regresión por pasos** : añade características al modelo una a una hasta encontrar la puntuación óptima para tu conjunto de características. La selección por pasos alterna entre el avance y el retroceso, incorporando y eliminando variables que cumplen los criterios de entrada o eliminación, hasta alcanzar un conjunto estable de variables.  
 
 
-```{r, echo = FALSE} 
-criterios <- c(
-  "Tipo de modelo",
-  "Variable respuesta",
-  "Variables predictoras",
-  "Relación entre variables",
-  "Normalidad de residuos",
-  "Independencia de errores",
-  "Homoscedasticidad",
-  "Sensible a outliers",
-  "Multicolinealidad entre predictores",
-  "Interpretabilidad",
-  "Velocidad y eficiencia",
-  "Validación cruzada",
-  "No funciona bien si..."
-)
 
-aplica <- c(
-  "✅ Supervisado",
-  "✅ Continua",
-  "✅ Numéricas (usualmente 1 o 2 predictores)",
-  "✅ No lineal y suave",
-  "❌ No necesaria",
-  "✅ Deseable",
-  "✅ Deseable",
-  "⚠️ Muy sensible",
-  "❌ No aplica (pocos predictores)",
-  "✅ Muy interpretable gráficamente",
-  "⚠️ Lento en grandes volúmenes de datos",
-  "✅ Puede usarse para elegir 'span'",
-  "❌ Datos grandes o con ruido fuerte"
-)
-
-detalles <- c(
-  "Modelo no paramétrico local",
-  "Regresión para valores continuos",
-  "Generalmente 1 o 2 variables numéricas",
-  "Ajuste por vecindad, suaviza la curva",
-  "No asume distribución específica",
-  "Supuesto deseable si hay dependencias temporales",
-  "Ideal si la varianza no cambia mucho localmente",
-  "Altamente afectado por outliers locales",
-  "No es una técnica multivariable compleja",
-  "La curva ajustada se interpreta visualmente",
-  "Computacionalmente costoso con datos grandes",
-  "Ayuda a seleccionar el mejor 'span'",
-  "Poco eficaz en alta dimensión o datos muy dispersos"
-)
-
-tabla_loess <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
-
-tabla_loess %>%
- gt() %>%
-  tab_header(title = "Guía rápida para elegir LOESS",
-             subtitle = "Locally Estimated Scatterplot Smoothing (LOESS)") %>%
-   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
-     tab_options(heading.title.font.size = 14, 
-                 heading.subtitle.font.size = 12,
-                 table.font.names = "Century Gothic",
-                 table.font.size = 10,
-                 data_row.padding = px(1)) %>%
-      tab_style(style = list(cell_text(align = "left",
-                                       weight = 'bold')),
-                locations = list(cells_title(groups = c("title")))) %>%
-       tab_style(style = list(cell_text(align = "left")),
-                 locations = list(cells_title(groups = c("subtitle")))) %>%
-        cols_width(starts_with("Detalles") ~ px(500),
-                   everything() ~ px(200)) %>%
-         as_raw_html() 
-```
 
 
