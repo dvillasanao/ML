@@ -185,6 +185,7 @@ tabla_c50 %>%
 
 ``` 
 
+
 ## Classification and Regression Tree (CART)  {-} 
 
 **Classification and Regression Tree (CART)** es un método no paramétrico que se utiliza para construir **árboles de decisión** tanto para problemas de **clasificación** como de **regresión**. La idea central es dividir recursivamente el espacio de las características en regiones más pequeñas y manejables, creando así un modelo con forma de árbol que es fácil de interpretar.
@@ -688,89 +689,6 @@ tabla_m5 %>%
          as_raw_html() 
 ```
 
-
-## Support Vector Machine (SVM) {-}  
-
-**Support Vector Machine (SVM)** es un potente método de **aprendizaje supervisado** utilizado para tareas de **clasificación** y **regresión**, aunque es más conocido y aplicado en problemas de clasificación. La idea fundamental detrás de SVM es encontrar el **hiperplano óptimo** que mejor separe las clases de datos en un espacio de características.
-
-A diferencia de otros algoritmos que podrían intentar ajustar una curva o superficie a todos los datos, SVM se enfoca en los **vectores de soporte**: los puntos de datos que están más cerca del hiperplano de decisión y que, por lo tanto, son los más difíciles de clasificar. Estos vectores de soporte son los que definen el margen de separación entre las clases. El objetivo de SVM es maximizar este **margen** entre el hiperplano y los vectores de soporte más cercanos, lo que generalmente conduce a una mejor **generalización** y menor riesgo de sobreajuste.
-
-Mientras que algunos algoritmos buscan una aproximación de función global única que minimice una función de pérdida (como el error cuadrático medio), SVM puede ser visto como un sistema de **aprendizaje global** que busca optimizar un criterio global: el margen. Sin embargo, su capacidad para trabajar con **kernels** (como el kernel lineal, polinomial, de base radial (RBF) o sigmoide) le permite mapear los datos a un espacio de dimensiones superiores donde pueden ser linealmente separables, incluso si no lo son en el espacio original. Esta "transformación" a través de la función kernel permite a SVM manejar relaciones complejas y no lineales entre las variables independientes y dependientes, lo que lo convierte en una alternativa robusta a la aproximación de funciones globales simples. Si los datos no se distribuyen linealmente, el concepto de regresión (o clasificación) se puede aplicar eficazmente utilizando esta capacidad de mapeo para encontrar una separación óptima.
-
-
-
-```{r, echo = FALSE}
-criterios <- c(
-  "Tipo de modelo",
-  "Variable respuesta",
-  "Variables predictoras",
-  "Relación entre variables",
-  "Normalidad de residuos",
-  "Independencia de errores",
-  "Homoscedasticidad",
-  "Sensible a outliers",
-  "Multicolinealidad entre predictores",
-  "Interpretabilidad",
-  "Velocidad y eficiencia",
-  "Validación cruzada",
-  "No funciona bien si..."
-)
-
-aplica <- c(
-  "✅ Supervisado",
-  "✅ Categórica o Continua",
-  "✅ Numéricas (categorías deben codificarse)",
-  "✅ Capta relaciones no lineales (kernel)",
-  "❌ No requiere",
-  "✅ Idealmente sí",
-  "❌ No es requisito",
-  "⚠️ Sí, especialmente sin margen amplio",
-  "✅ Puede manejarla bien",
-  "❌ Baja (modelo es una caja negra)",
-  "⚠️ Lento con muchos datos o predictores",
-  "✅ Esencial para elegir kernel y parámetros",
-  "❌ Datos con mucho ruido o solapamiento entre clases"
-)
-
-detalles <- c(
-  "Modelo supervisado que maximiza el margen entre clases",
-  "Clasificación binaria, multiclase o regresión (SVR)",
-  "Requiere escalar o estandarizar las variables numéricas",
-  "Puede usar kernel para resolver problemas no lineales",
-  "No requiere supuestos clásicos como normalidad",
-  "Mejor si los datos son independientes",
-  "Puede usarse aunque haya heterocedasticidad",
-  "Los outliers cercanos al margen afectan el modelo",
-  "Los kernels pueden reducir el efecto de multicolinealidad",
-  "Difícil de explicar; es un modelo de tipo caja negra",
-  "Puede ser costoso computacionalmente con datos grandes",
-  "Parámetros como C y gamma se ajustan vía validación cruzada",
-  "No es ideal si hay ruido o datos mal etiquetados"
-)
-
-tabla_svm <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
-
-require(gt) 
-
-tabla_svm %>%
- gt() %>%
-  tab_header(title = "Guía rápida para elegir SVM",
-             subtitle = "Support Vector Machine (SVM) ") %>%
-   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
-     tab_options(heading.title.font.size = 14, 
-                 heading.subtitle.font.size = 12,
-                 table.font.names = "Century Gothic",
-                 table.font.size = 10,
-                 data_row.padding = px(1)) %>%
-      tab_style(style = list(cell_text(align = "left",
-                                       weight = 'bold')),
-                locations = list(cells_title(groups = c("title")))) %>%
-       tab_style(style = list(cell_text(align = "left")),
-                 locations = list(cells_title(groups = c("subtitle")))) %>%
-        cols_width(starts_with("Detalles") ~ px(500),
-                   everything() ~ px(200)) %>%
-         as_raw_html() 
-```
 
 
 
