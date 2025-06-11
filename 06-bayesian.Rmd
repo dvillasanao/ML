@@ -11,7 +11,28 @@
 
 ---
 
-## Averaged One - Dependence Estimators (AODE)  {-}   
+## Averaged One - Dependence Estimators (AODE)  {-}    
+
+**Averaged One-Dependence Estimators (AODE)** es un algoritmo de **clasificación supervisada** que pertenece a la familia de los clasificadores basados en **modelos bayesianos**. Es una mejora sobre el clásico **Naive Bayes (NB)**, diseñado para superar la limitación clave de NB: la **asunción de independencia condicional** estricta entre las variables predictoras (atributos) dado el valor de la clase. Esta suposición, aunque simplifica mucho el cálculo y permite a Naive Bayes ser muy eficiente, rara vez se cumple en la realidad y puede llevar a una pérdida de precisión.
+
+AODE relaja parcialmente la suposición de independencia de Naive Bayes al considerar que **cada atributo es dependiente, como máximo, de un solo otro atributo** (además de la variable de clase). En lugar de construir un único modelo de árbol de dependencia (como en el Árbol de Dependencia de Atributos - ADTree), AODE construye una **colección de clasificadores "One-Dependence" (ODE)** y luego **promedia sus predicciones**.
+
+El funcionamiento de AODE se puede resumir así:
+
+1.  **Generación de Clasificadores ODE:** Para cada atributo predictivo $A_i$ en el conjunto de datos (que cumpla ciertos criterios, como tener suficientes instancias), AODE construye un clasificador ODE. Este clasificador asume que todos los demás atributos son condicionalmente independientes de $A_i$ dado la clase. En otras palabras, se estima la probabilidad condicional de cada atributo $A_j$ dado la clase $C$ y el atributo $A_i$: $P(A_j | C, A_i)$.
+2.  **Ponderación y Promedio:** Cuando se hace una predicción para una nueva instancia, AODE calcula la probabilidad de cada clase para cada uno de los clasificadores ODE generados. Luego, estas probabilidades se combinan (típicamente promediando) para obtener una predicción final.
+
+Al promediar las predicciones de múltiples modelos ODE, AODE logra mitigar el sesgo introducido por la suposición de independencia estricta de Naive Bayes, a menudo obteniendo un mejor rendimiento sin incurrir en una complejidad computacional excesiva.
+
+
+**Aprendizaje Global vs. Local:**
+
+Averaged One-Dependence Estimators (AODE) es un modelo que se clasifica como de **aprendizaje global**, aunque con una estructura que busca capturar dependencias que tienen una naturaleza más "local" en el contexto de las relaciones entre atributos.
+
+* **Aspecto Global:** AODE construye un conjunto de modelos (los ODEs) que son entrenados sobre la **totalidad del conjunto de datos** para estimar las probabilidades condicionales. La combinación de estas probabilidades (el promedio) para llegar a una predicción final es una regla que se aplica de manera consistente a cualquier nueva observación. Los parámetros de cada clasificador ODE (las probabilidades condicionales) se estiman de manera global a partir de las frecuencias observadas en todo el conjunto de entrenamiento.
+
+* **Matiz (Captura de Dependencias Locales):** Aunque el enfoque general es global, la razón por la que AODE es más potente que Naive Bayes radica en su capacidad para modelar **dependencias entre atributos**. Cada clasificador ODE considera que un atributo específico tiene una dependencia directa de otro atributo, lo que es una forma de capturar una relación "local" entre un par de atributos dado el contexto de la clase. Al promediar sobre estos múltiples modelos que capturan diferentes dependencias de "un solo par", AODE puede adaptarse mejor a las complejidades de los datos donde las relaciones no son puramente independientes y no se distribuyen linealmente, sin la necesidad de dividir el espacio de características en regiones discretas como los árboles de decisión. Sin embargo, la solución final de promediado es un clasificador global que se aplica a toda la instancia de entrada.
+
 
 ```{r, echo = FALSE}
 criterios <- c(
@@ -87,7 +108,28 @@ tabla_aode %>%
 
 
 
-## Bayesian Network (BN)  {-}   
+## Bayesian Network (BN)  {-}    
+
+Una **Red Bayesiana (BN)**, también conocida como **Red Bayesiana Causal** o **Modelo Gráfico Dirigido Acíclico (DAG)**, es un modelo probabilístico que representa un conjunto de **variables y sus relaciones de dependencia condicional** utilizando un **grafo dirigido acíclico**. En este grafo:
+
+* **Nodos:** Representan las variables aleatorias (pueden ser discretas o continuas).
+* **Arcos (flechas):** Representan las dependencias condicionales entre las variables. Una flecha de A a B significa que B depende directamente de A (A es "padre" de B). La ausencia de un arco entre dos nodos indica una independencia condicional.
+
+La estructura del grafo de una Red Bayesiana permite visualizar y comprender las relaciones de causa y efecto (o asociación) entre las variables. Junto con la estructura del grafo, una BN también especifica las **distribuciones de probabilidad condicional (CPDs)** para cada nodo, dadas las combinaciones de estados de sus nodos padre. Por ejemplo, si un nodo tiene padres, se define la probabilidad de sus valores para cada combinación de valores de sus padres.
+
+Las Redes Bayesianas son potentes para:
+* **Modelado de Conocimiento:** Codificar el conocimiento experto o aprendido de los datos sobre cómo interactúan las variables.
+* **Inferencia Probabilística:** Calcular la probabilidad de que una variable tome un valor específico, dadas las observaciones de otras variables (evidencia). Esto puede incluir diagnóstico (inferir causas a partir de efectos) o predicción (inferir efectos a partir de causas).
+* **Aprendizaje de Estructura y Parámetros:** Aprender la estructura del grafo (las dependencias) y las CPDs a partir de datos.
+
+**Aprendizaje Global vs. Local:**
+
+Una Red Bayesiana (BN) es fundamentalmente un modelo de **aprendizaje global** en su estructura general, pero con una fuerte base en el **aprendizaje local** de las dependencias.
+
+* **Aspecto Global:** La **estructura del grafo** y el conjunto de **tablas de probabilidad condicional (CPDs)** forman un **modelo probabilístico coherente y global** de la distribución de probabilidad conjunta de todas las variables. Este modelo global puede ser utilizado para realizar inferencias sobre cualquier combinación de variables en cualquier parte del espacio de datos. La red define cómo la información fluye y cómo las probabilidades se propagan a través de todas las variables, dando una visión holística de las interacciones del sistema.
+
+* **Aspecto Local (Dependencias y Parametrización):** Donde la BN tiene un fuerte componente local es en la **definición de las dependencias y la parametrización de las CPDs**. Cada nodo solo necesita conocer las probabilidades condicionales dadas sus **padres directos**. Esto es un principio de **independencia condicional local**: una variable es independiente de sus no-descendientes dado sus padres. Esto descompone un problema complejo de modelado de la distribución conjunta en problemas más pequeños y manejables de modelar las dependencias locales. Por ejemplo, para estimar $P(X_i | Padres(X_i))$, solo se necesita información local relacionada con $X_i$ y sus padres, no con todas las demás variables en la red. Esta capacidad de modelar dependencias de forma localizada, y luego ensamblarlas en un modelo global, permite a las BNs manejar relaciones no lineales y complejas de una manera estructurada y probabilística. Si los datos no se distribuyen linealmente, la estructura de la BN puede adaptarse para reflejar las relaciones no lineales entre las variables a través de sus arcos y CPDs.
+
 
 ```{r, echo = FALSE}
 criterios <- c(
@@ -164,6 +206,26 @@ tabla_bn %>%
 
 ## Bayesian Belief Network (BBN)  {-}  
 
+Una **Red de Creencia Bayesiana (BBN)** es simplemente **otro término para una Red Bayesiana (BN)**. No hay una diferencia fundamental entre ambos nombres; ambos se refieren al mismo tipo de modelo probabilístico. La terminología "Red de Creencia" a menudo enfatiza la capacidad del modelo para representar y actualizar "creencias" (probabilidades) sobre el estado de variables inciertas a medida que se introduce nueva evidencia.
+
+Como ya se describió, una BBN (o BN) es un **modelo gráfico probabilístico dirigido acíclico (DAG)** que representa un conjunto de **variables aleatorias** como **nodos** y sus **relaciones de dependencia condicional** como **arcos (flechas)**. La ausencia de un arco entre dos nodos indica una independencia condicional. Cada nodo está asociado con una **distribución de probabilidad condicional (CPD)** que cuantifica la relación de ese nodo con sus padres.
+
+Las BBNs son herramientas poderosas para:
+* **Modelar el conocimiento incierto:** Permiten representar cómo diferentes factores interactúan bajo incertidumbre.
+* **Inferencia probabilística:** Dada alguna evidencia (observaciones de algunas variables), la red puede calcular las probabilidades actualizadas de las otras variables. Esto es fundamental para el diagnóstico, la predicción y la toma de decisiones bajo incertidumbre.
+* **Aprendizaje a partir de datos:** Las BBNs pueden ser aprendidas tanto en su estructura (cómo se conectan los nodos) como en sus parámetros (las CPDs) a partir de conjuntos de datos.
+
+
+**Aprendizaje Global vs. Local:**
+
+Al igual que una Red Bayesiana, una Red de Creencia Bayesiana es fundamentalmente un modelo de **aprendizaje global** en su formulación general, pero se basa en la **especificación local** de las dependencias probabilísticas.
+
+* **Aspecto Global:** La BBN como un todo representa la **distribución de probabilidad conjunta global** de todas las variables en el sistema. Una vez que la estructura y las CPDs están definidas, la red puede usarse para calcular cualquier probabilidad marginal o condicional de interés, proporcionando una visión probabilística completa y coherente del dominio. Es una función que mapea el espacio de todas las posibles combinaciones de variables a sus probabilidades, y se aplica de manera consistente en todo el espacio.
+
+* **Aspecto Local (Definición de Dependencias):** La fortaleza y eficiencia de las BBNs radica en el principio de **independencia condicional local**. Cada variable (nodo) solo necesita tener su distribución de probabilidad condicionada a sus **padres directos** en el grafo. No es necesario especificar las dependencias con todas las demás variables en la red. Esta factorización de la distribución conjunta en componentes locales (las CPDs) es lo que hace que las BBNs sean computacionalmente manejables y permite que el modelo capture **relaciones no lineales y complejas** entre las variables de una manera estructurada. Al modelar estas dependencias "locales" de forma explícita, la BBN puede representar con precisión cómo la probabilidad de un evento cambia en función de los eventos directamente relacionados, incluso si la relación no es lineal.
+
+En resumen, las Redes de Creencia Bayesianas son modelos globales que permiten modelar relaciones probabilísticas complejas y no lineales al especificar dependencias de manera local entre las variables. Son herramientas poderosas para el razonamiento bajo incertidumbre y la toma de decisiones.
+
 ```{r, echo = FALSE}
 criterios <- c(
   "Tipo de modelo",
@@ -237,7 +299,25 @@ tabla_bbn %>%
 
 
 
-## Gaussian Naive Bayes (GNB) {-}    
+## Gaussian Naive Bayes (GNB) {-}     
+
+**Gaussian Naive Bayes (GNB)** es una variante del popular algoritmo **Naive Bayes (NB)**, utilizado para tareas de **clasificación supervisada**. Es particularmente adecuado cuando las **variables predictoras (atributos) son de tipo continuo**. Al igual que todos los clasificadores Naive Bayes, GNB se basa en el **Teorema de Bayes** y, fundamentalmente, en la **suposición de independencia condicional** entre las variables predictoras, dado el valor de la clase.
+
+La diferencia clave entre GNB y otras variantes de Naive Bayes (como Multinomial Naive Bayes o Bernoulli Naive Bayes) es la forma en que modela la **probabilidad de los atributos continuos**. Específicamente:
+
+1.  **Suposición de Distribución Gaussiana:** GNB asume que los valores de cada atributo continuo, *dada una clase específica*, siguen una **distribución normal (Gaussiana)**. Es decir, para cada clase y cada atributo, se estima la media ($\mu$) y la desviación estándar ($\sigma$) de los valores de ese atributo dentro de esa clase.
+2.  **Cálculo de Probabilidades:** Cuando se necesita clasificar una nueva observación, GNB utiliza las funciones de densidad de probabilidad (PDF) de estas distribuciones Gaussianas para calcular la probabilidad de observar el valor del atributo para cada clase.
+3.  **Aplicación del Teorema de Bayes:** Finalmente, utiliza el Teorema de Bayes para calcular la probabilidad posterior de cada clase, dadas las probabilidades de los atributos, y asigna la observación a la clase con la probabilidad posterior más alta.
+
+A pesar de su suposición de independencia (que rara vez se cumple perfectamente en la práctica), GNB a menudo funciona sorprendentemente bien, especialmente en conjuntos de datos grandes o cuando las características son ruidosas. Su simplicidad y eficiencia computacional lo hacen un buen punto de partida para muchos problemas de clasificación.
+
+**Aprendizaje Global vs. Local:**
+
+Gaussian Naive Bayes (GNB) es un modelo de **aprendizaje global**.
+
+* **Aspecto Global:** GNB construye un **modelo probabilístico global** de la relación entre las características y las clases. Las medias y desviaciones estándar de las distribuciones Gaussianas para cada atributo dentro de cada clase se estiman a partir de **todos los datos de entrenamiento**. La regla de clasificación final, que asigna una nueva instancia a la clase más probable, se basa en estas distribuciones paramétricas globales y en el Teorema de Bayes, aplicándose de manera uniforme en todo el espacio de características. No se ajustan modelos locales para diferentes vecindarios de datos.
+
+* **Impacto de la Asunción de Independencia:** La suposición de independencia condicional (que los atributos son independientes entre sí dado la clase) significa que GNB no intenta capturar interacciones complejas o no lineales entre las variables predictoras. Si bien esto simplifica drásticamente el modelo y lo hace eficiente, también implica que su capacidad para modelar relaciones no lineales entre *predictores* es limitada. Si los datos no se distribuyen linealmente y las interacciones entre los predictores son cruciales para la clasificación, GNB podría no ser el modelo más flexible. Sin embargo, su robustez ante la violación de suposiciones y su velocidad lo mantienen como una opción valiosa en muchos escenarios.
 
 ```{r, echo = FALSE}
 criterios <- c(
@@ -313,7 +393,25 @@ tabla_gnb %>%
 
 
 
-## Multinomial Naive Bayes (MNB) {-}  
+## Multinomial Naive Bayes (MNB) {-}   
+
+**Multinomial Naive Bayes (MNB)** es una variante del algoritmo **Naive Bayes** diseñada específicamente para la **clasificación de datos discretos**, y es particularmente popular en tareas de **procesamiento de lenguaje natural (NLP)**, como la clasificación de texto (ej., spam/no spam, clasificación de documentos por tema). Al igual que otras formas de Naive Bayes, se basa en el **Teorema de Bayes** y la **suposición clave de independencia condicional** entre las características, dado el valor de la clase.
+
+La diferencia fundamental de MNB radica en que asume que las características (como el recuento de palabras en un documento de texto) provienen de una **distribución multinomial**. Esto significa que:
+
+1.  **Características de Recuento:** MNB es ideal para características que representan **frecuencias o recuentos** (ej., el número de veces que aparece una palabra en un documento, el número de veces que ocurre un evento).
+2.  **Modelado de Probabilidades:** Para cada clase, MNB calcula la probabilidad de observar cada característica (ej., cada palabra del vocabulario) dado que la instancia pertenece a esa clase. Estas probabilidades se estiman a menudo utilizando **suavizado Laplace (o aditivo)** para evitar probabilidades de cero para palabras no vistas durante el entrenamiento.
+3.  **Aplicación del Teorema de Bayes:** Luego, para clasificar una nueva instancia, multiplica las probabilidades de las características (asumiendo independencia) por la probabilidad previa de cada clase, y elige la clase que tiene la probabilidad posterior más alta.
+
+MNB es altamente eficiente, escalable para grandes conjuntos de datos y a menudo sorprendentemente efectivo a pesar de su ingenua suposición de independencia, lo que lo convierte en una línea base sólida para muchos problemas de clasificación de texto.
+
+**Aprendizaje Global vs. Local:**
+
+Multinomial Naive Bayes (MNB) es un modelo de **aprendizaje global**.
+
+* **Aspecto Global:** MNB construye un **modelo probabilístico global** para la relación entre las características discretas (como recuentos de palabras) y las clases. Las probabilidades de las características dadas las clases (y las probabilidades previas de las clases) se estiman a partir de **todos los datos de entrenamiento**. La regla de clasificación final, basada en el Teorema de Bayes, se aplica de manera uniforme a cualquier nueva instancia en el espacio de características. No se ajustan modelos locales para diferentes vecindarios de datos; en su lugar, se utilizan las mismas probabilidades estimadas globalmente para todas las predicciones.
+
+* **Impacto de la Asunción de Independencia:** La suposición de independencia condicional entre las características (ej., que la presencia de una palabra no influye en la probabilidad de otra palabra dada la categoría del documento) es una simplificación global. Si bien esta simplicidad permite que MNB sea muy eficiente y robusto a veces, también significa que no puede capturar interacciones complejas o dependencias no lineales entre las características en el mismo sentido que modelos más avanzados. Sin embargo, en muchas aplicaciones como la clasificación de texto, donde la frecuencia individual de las palabras es muy informativa, esta suposición es lo suficientemente robusta para un buen rendimiento. Es un modelo que asume una estructura de probabilidad global y la aplica consistentemente.
 
 ```{r, echo = FALSE}
 criterios <- c(
@@ -389,7 +487,27 @@ tabla_mnb %>%
 
 
 
-## Naive Bayes (NB) {-}  
+## Naive Bayes (NB) {-}   
+
+**Naive Bayes (NB)** es un algoritmo de **clasificación supervisada** popular y computacionalmente eficiente, basado en el **Teorema de Bayes** y una **fuerte (o "ingenua") suposición de independencia condicional** entre las características (variables predictoras) dado el valor de la clase. Esta suposición significa que el modelo asume que la presencia o ausencia de una característica particular no afecta la presencia o ausencia de otra característica, una vez que se conoce la clase.
+
+A pesar de que esta suposición rara vez se cumple perfectamente en problemas del mundo real, Naive Bayes a menudo ofrece un **rendimiento sorprendentemente bueno**, especialmente en tareas de clasificación de texto y con grandes conjuntos de datos. Su simplicidad y velocidad lo convierten en un excelente algoritmo de línea base.
+
+El funcionamiento básico de Naive Bayes es el siguiente:
+
+1.  **Cálculo de Probabilidades Previas:** Estima la probabilidad de cada clase en el conjunto de entrenamiento (ej., P(Clase A), P(Clase B)).
+2.  **Cálculo de Probabilidades de Verosimilitud:** Para cada característica y cada clase, calcula la probabilidad de que la característica tome un valor específico, dado que la instancia pertenece a esa clase (ej., P(Característica X | Clase A)). Aquí es donde entran las diferentes variantes de Naive Bayes (Gaussian para características continuas, Multinomial para recuentos, Bernoulli para características binarias).
+3.  **Aplicación del Teorema de Bayes:** Para clasificar una nueva instancia, utiliza el Teorema de Bayes para combinar estas probabilidades y calcular la probabilidad posterior de cada clase, dadas las características de la nueva instancia. Finalmente, asigna la instancia a la clase con la probabilidad posterior más alta.
+
+
+**Aprendizaje Global vs. Local:**
+
+Naive Bayes (NB) es un modelo de **aprendizaje puramente global**.
+
+* **Aspecto Global:** Naive Bayes construye un **modelo probabilístico global** que describe la relación entre las características y las clases para todo el conjunto de datos. Las probabilidades previas de las clases y las probabilidades condicionales de las características dadas las clases se estiman a partir de **todos los datos de entrenamiento**. La regla de clasificación resultante se aplica de manera uniforme a cualquier nueva instancia en el espacio de características, sin ajustar modelos locales para diferentes vecindarios de datos. El modelo aprende una distribución de probabilidad que se asume válida para todo el dominio.
+
+* **Impacto de la Suposición de Independencia:** La "ingenuidad" del modelo, es decir, la suposición de independencia entre las características, es una simplificación global. No intenta capturar interacciones complejas o no lineales entre las características en sí. Si bien esto puede ser una limitación cuando las relaciones entre las características son muy intrincadas y no lineales, es precisamente esta suposición la que le otorga su eficiencia y robustez en muchos escenarios prácticos. Es un modelo que asume una estructura de probabilidad global y la aplica de manera consistente.
+
 
 ```{r, echo = FALSE}
 criterios <- c(
