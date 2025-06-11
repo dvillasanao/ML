@@ -14,6 +14,28 @@
 
 ## Autoenconder  {-}  
 
+Un **Autoencoder** es un tipo de **red neuronal artificial** diseñado para aprender una **representación (o codificación) eficiente y comprimida** de los datos de entrada, sin supervisión humana. Su objetivo principal es la **reducción de dimensionalidad** o el **aprendizaje de características**, lo que lo hace útil para tareas como la detección de anomalías, la denoising de imágenes, o la generación de datos.
+
+La arquitectura básica de un Autoencoder se compone de dos partes principales:
+
+1.  **Encoder (Codificador):** Esta parte de la red toma los datos de entrada y los transforma en una representación de menor dimensión, a menudo llamada **código, representación latente, o cuello de botella (bottleneck)**. Es decir, comprime la información esencial de la entrada.
+2.  **Decoder (Decodificador):** Esta parte toma la representación comprimida (el código) del encoder y la reconstruye de nuevo a la dimensión original de los datos de entrada.
+
+El Autoencoder se entrena para **minimizar la diferencia entre la entrada original y su reconstrucción** generada por el decoder. Esta diferencia se mide a través de una **función de pérdida de reconstrucción** (como el error cuadrático medio para datos continuos o la entropía cruzada para datos binarios). Al forzar a la red a reconstruir su propia entrada a partir de una representación comprimida, el Autoencoder aprende las características más salientes y útiles de los datos de forma no supervisada.
+
+Existen varias variantes de Autoencoders, como los **Autoencoders Denoising** (que aprenden a reconstruir datos limpios a partir de datos con ruido), los **Autoencoders Variacionales (VAEs)** (que aprenden una distribución probabilística de la representación latente, útiles para la generación de datos), y los **Autoencoders Convolucionales** (que usan capas convolucionales, ideales para imágenes).
+
+
+**Aprendizaje Global vs. Local:**
+
+Un Autoencoder se considera principalmente un modelo de **aprendizaje global**, aunque con una perspectiva única debido a su naturaleza de compresión y reconstrucción.
+
+* **Aspecto Global:** Un Autoencoder aprende una **transformación global** de los datos. El encoder aprende a mapear todo el espacio de entrada a un espacio de representación latente, y el decoder aprende a mapear ese espacio latente de vuelta al espacio de salida. Las ponderaciones y sesgos de la red se ajustan para encontrar esta transformación que funciona de manera óptima para todo el conjunto de datos de entrenamiento, permitiendo la reconstrucción más fiel posible en general. La **función de pérdida de reconstrucción** se minimiza a nivel de todo el conjunto de datos, no solo en vecindarios específicos.
+
+* **Representación Local vs. Reconstrucción Global:** Aunque el objetivo final es una reconstrucción global de la entrada, la **representación latente (el código)** puede verse como una forma de capturar **características o patrones importantes** que, en cierto sentido, resumen la información "local" o particular de cada instancia de datos de una manera comprimida. Sin embargo, la forma en que estas características se aprenden y se utilizan para la reconstrucción se rige por un conjunto global de parámetros de la red. No se entrena un modelo separado para cada vecindario de datos, sino una única red que aprende una función de mapeo para todo el dominio.
+
+En resumen, el Autoencoder aprende una representación eficiente y una capacidad de reconstrucción que se aplica de manera consistente a todos los datos, lo que lo clasifica como un modelo de aprendizaje global que busca una solución unificada para el problema de la codificación y decodificación de datos. 
+
 ```{r, echo = FALSE}
 criterios <- c(
   "Tipo de modelo",
@@ -245,7 +267,7 @@ detalles <- c(
 
 tabla_cnn <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles) 
 
-tabla_mp %>%
+tabla_cnn %>%
  gt() %>%
   tab_header(title = "Guía rápida para elegir CNN",
              subtitle = "Convolutional Neural Network (CNN)")  %>%

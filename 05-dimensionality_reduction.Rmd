@@ -11,7 +11,23 @@
 
 ---
 
-## Flexible Discriminant Analysis (FDA)  {-}  
+## Flexible Discriminant Analysis (FDA)  {-}   
+
+**Flexible Discriminant Analysis (FDA)** es un método de **clasificación** que generaliza el Análisis Discriminante Lineal (LDA) para manejar **relaciones no lineales** entre las variables predictoras y las clases. A diferencia de LDA, que asume límites de decisión lineales y distribuciones gaussianas con matrices de covarianza iguales, FDA es mucho más adaptable.
+
+FDA logra esta flexibilidad al combinar dos conceptos:
+1.  **Optimal Scoring:** Transforma las variables de respuesta categóricas en valores numéricos (scores óptimos) de manera que las clases sean más fácilmente separables linealmente.
+2.  **Modelos de Regresión No Paramétricos:** En lugar de usar una regresión lineal simple (como en LDA), FDA utiliza métodos de regresión no paramétricos más flexibles, como las **Multivariate Adaptive Regression Splines (MARS)**. Esto permite que la relación entre las variables transformadas y los scores óptimos sea no lineal, lo que a su vez se traduce en fronteras de decisión no lineales en el espacio original de los datos.
+
+Es decir, FDA toma los datos, los transforma de una manera inteligente para que sean más fáciles de separar, y luego aplica una discriminación lineal en ese espacio transformado, lo que resulta en una frontera de decisión compleja y flexible en el espacio original.
+
+En el contexto del **aprendizaje global vs. local**, FDA se considera un modelo que **integra aspectos de ambos**.
+
+* **Aspecto Global:** El objetivo final de FDA es encontrar una **función discriminante global** que separe las clases en el espacio transformado. Los scores óptimos y las funciones base del método de regresión (como MARS) se aprenden considerando la estructura general de los datos para lograr la mejor separación a nivel global. El modelo resultante es una función que se aplica de manera consistente a cualquier nueva observación.
+
+* **Aspecto Local (debido al uso de modelos no paramétricos como MARS):** La flexibilidad de FDA proviene de su uso de métodos como MARS, que dividen el espacio de las características en **regiones locales** y ajustan relaciones simples dentro de cada una. Esto permite que el modelo se adapte a no linealidades y a cambios en la relación entre las variables en diferentes partes del espacio de datos. Así, si los datos no se distribuyen linealmente, FDA puede construir fronteras de decisión que capturan esas complejidades al "localizar" las relaciones importantes.
+
+
 
 ```{r, echo = FALSE}
 criterios <- c(
@@ -88,7 +104,23 @@ tabla_fda %>%
 
   
   
-## Linear Discriminant Analysis (LDA)  {-}   
+## Linear Discriminant Analysis (LDA)  {-}    
+
+El **Análisis Discriminante Lineal (LDA)** es un método de **clasificación** y **reducción de dimensionalidad** utilizado para encontrar una combinación lineal de características que mejor separe dos o más clases de objetos o eventos. Su objetivo principal es modelar la diferencia entre las clases, lo que lo hace muy útil para tareas de clasificación supervisada.
+
+LDA funciona proyectando los puntos de datos a un espacio de menor dimensión (generalmente una o pocas dimensiones) de tal manera que las clases estén lo más separadas posible. Para lograr esto, busca una dirección (un eje) que maximice la **separación entre las medias de las clases** (varianza entre clases) mientras minimiza la **varianza dentro de cada clase** (varianza intraclase). En un problema de clasificación binaria, esto significa encontrar la línea óptima para proyectar los datos de modo que las dos clases se superpongan lo menos posible.
+
+A diferencia de modelos como la Regresión Logística, que buscan modelar la probabilidad de pertenencia a una clase, LDA modela directamente la distribución de los datos dentro de cada clase y luego utiliza el Teorema de Bayes para asignar una nueva observación a la clase más probable. LDA asume que las **varianzas (o matrices de covarianza) de las clases son iguales** y que los datos están distribuidos normalmente.
+
+**Aprendizaje Global vs. Local:**
+
+El Análisis Discriminante Lineal (LDA) es un modelo de **aprendizaje puramente global**.
+
+* **Aspecto Global:** LDA busca una **única transformación lineal** o un conjunto de direcciones (ejes) que se aplican a **todos los datos** para lograr la máxima separación entre las clases en un espacio de menor dimensión. La frontera de decisión que resulta de LDA es siempre **lineal** y se define globalmente a partir de las medias y las varianzas combinadas (asumidas como iguales) de todas las clases. El modelo es "fijo" y se aplica uniformemente a cualquier nueva observación, sin importar su ubicación específica en el espacio de características. No se ajustan modelos diferentes para distintos vecindarios de datos, sino que se aprende una regla de separación que es válida para todo el dominio.
+
+Por lo tanto, si los datos no se distribuyen linealmente o las fronteras de decisión entre las clases son inherentemente no lineales (por ejemplo, si una clase rodea a otra), LDA puede no ser el método más adecuado. En esos escenarios, modelos de aprendizaje local o más flexibles (como los árboles de decisión, SVM con kernels no lineales, o FDA que extiende LDA para no linealidades) suelen ofrecer un mejor rendimiento.
+
+
 
 ```{r, echo = FALSE}
 criterios <- c(
@@ -163,7 +195,25 @@ tabla_lda %>%
 
    
    
-## Mixture Discriminant Analysis (MDA)  {-}  
+## Mixture Discriminant Analysis (MDA)  {-}   
+
+El **Análisis Discriminante de Mezclas (MDA)** es una extensión del Análisis Discriminante Lineal (LDA) y del Análisis Discriminante Cuadrático (QDA) que aborda la limitación de que estas técnicas asumen que cada clase proviene de una única distribución normal (o gaussiana). MDA relaja esta suposición al permitir que **cada clase sea modelada como una mezcla de múltiples distribuciones gaussianas**. Esto le otorga una capacidad significativamente mayor para manejar clases con formas complejas o multimodales, que no pueden ser descritas adecuadamente por una sola distribución normal.
+
+MDA funciona de la siguiente manera:
+1.  **Modelado por Componentes de Mezcla:** Para cada clase, MDA estima los parámetros (media y matriz de covarianza) de varias distribuciones gaussianas ("componentes de mezcla") en lugar de solo una. Es similar al proceso de agrupamiento de mezclas gaussianas (Gaussian Mixture Models - GMM) aplicado dentro de cada clase.
+2.  **Asignación a la Clase:** Una vez que se han modelado las distribuciones de mezcla para cada clase, para una nueva observación, MDA calcula la probabilidad de que esa observación pertenezca a cada componente de mezcla en cada clase. Luego, asigna la observación a la clase que maximiza la probabilidad posterior, es decir, la clase que es más probable que haya generado esa observación.
+3.  **Fronteras de Decisión Flexibles:** Al modelar cada clase como una mezcla de gaussianas, MDA puede generar fronteras de decisión que son mucho más flexibles y no lineales que las de LDA (que son lineales) o QDA (que son cuadráticas). Esto le permite adaptarse a clases con estructuras complejas, que pueden tener "agrupaciones" internas o formas irregulares.
+
+Los parámetros del modelo (las medias, covarianzas y pesos de los componentes de mezcla para cada clase) se suelen estimar utilizando un algoritmo iterativo como la **Maximización de Expectativas (Expectation-Maximization - EM)**.
+
+**Aprendizaje Global vs. Local:**
+
+El Análisis Discriminante de Mezclas (MDA) se encuentra en un punto intermedio, inclinándose hacia un modelo que **combina aspectos de aprendizaje global y local**, con una mayor flexibilidad para capturar la estructura local de los datos en comparación con LDA o QDA.
+
+* **Aspecto Global:** Al igual que LDA, el objetivo final de MDA es crear un **clasificador global** que pueda asignar cualquier nueva observación a una de las clases. Las distribuciones de mezcla para cada clase se aprenden a partir de todo el conjunto de datos de entrenamiento para esas clases, y el clasificador resultante se aplica de manera consistente en todo el espacio de características. La regla de decisión final es una función que se deriva de las distribuciones aprendidas para todas las clases.
+
+* **Aspecto Local:** La "flexibilidad" de MDA y su capacidad para manejar no linealidades proviene de su suposición de que cada clase puede estar compuesta por **múltiples componentes gaussianos**. Esto significa que, dentro de una misma clase, puede haber sub-agrupaciones o densidades locales que son modeladas individualmente. Al permitir estas múltiples distribuciones gaussianas dentro de cada clase, MDA puede adaptarse mejor a las características y densidades de los datos en diferentes **vecindarios o subregiones** del espacio de características. Si los datos no se distribuyen linealmente y tienen formas complejas (como clusters separados dentro de una clase), MDA puede "localizar" y modelar estas estructuras, llevando a fronteras de decisión mucho más complejas y no lineales que se ajustan mejor a la forma real de las clases.
+
 
 ```{r, echo = FALSE}
 criterios <- c(
@@ -242,25 +292,26 @@ tabla_mda %>%
 
 ## Multidimensional Scaling (MDS)  {-}    
 
+El **Escalamiento Multidimensional (MDS)** es una técnica de **reducción de dimensionalidad** utilizada para visualizar y explorar las **similitudes o disimilitudes** entre un conjunto de objetos. Su objetivo principal es tomar datos de alta dimensión, donde las relaciones entre los puntos pueden ser difíciles de entender, y representarlos en un **espacio de menor dimensión** (típicamente 2D o 3D) de tal manera que las **distancias entre los puntos en el nuevo espacio reflejen lo más fielmente posible las distancias (o disimilitudes) originales** entre los objetos.
 
-**Multidimensional Scaling (MDS)** es una técnica de **reducción de dimensionalidad** utilizada principalmente para la **visualización de datos** y el análisis exploratorio. La idea fundamental de MDS es representar un conjunto de objetos (puntos de datos) en un espacio de baja dimensión (típicamente 2D o 3D) de tal manera que las **distancias o disimilitudes entre los objetos en el espacio de baja dimensión reflejen lo más fielmente posible sus distancias o disimilitudes originales** en el espacio de alta dimensión o en función de una matriz de disimilitudes dada.
+Imagina que tienes una tabla de distancias de viaje entre varias ciudades. MDS intentaría dibujar un mapa de esas ciudades donde las distancias en el mapa se correspondieran lo más posible con las distancias de la tabla.
 
-A diferencia de PCA, que opera directamente sobre una matriz de datos original (variables x observaciones), MDS típicamente toma como entrada una **matriz de disimilitud** (o similitud) entre cada par de objetos. Esta matriz de disimilitud puede ser calculada a partir de las características de los objetos (ej., distancia euclidiana, distancia de Manhattan) o puede ser una medida subjetiva de disimilitud (ej., juicios humanos sobre la similitud entre productos).
+El proceso general de MDS implica:
 
-Existen varias variantes de MDS, pero las más comunes son:
+1.  **Matriz de Disimilitud:** Se necesita una matriz que contenga las disimilitudes (distancias) entre cada par de objetos. Estas disimilitudes pueden ser distancias euclidianas, correlaciones, o cualquier otra medida de qué tan diferentes (o similares) son dos objetos.
+2.  **Optimización:** El algoritmo busca una configuración de puntos en el espacio de menor dimensión que minimice una **función de "estrés" o "ajuste"**. Esta función mide qué tan bien las distancias en el espacio reducido se corresponden con las disimilitudes originales. Una función de estrés baja indica un buen ajuste.
+3.  **Visualización:** Los puntos resultantes en el espacio de menor dimensión pueden ser graficados para revelar patrones, clusters o la estructura subyacente de los datos que no eran evidentes en las dimensiones originales.
 
-1.  **MDS Clásico (PCoA - Principal Coordinates Analysis):** Es la forma más básica de MDS. Asume que las disimilitudes son distancias euclidianas y es matemáticamente equivalente a PCA cuando se trabaja con una matriz de covarianza derivada de datos centrados. Sin embargo, su input es una matriz de disimilitudes, no directamente los datos originales.
-2.  **MDS Métrica:** Minimiza una función de costo que mide la diferencia entre las disimilitudes observadas y las distancias en el espacio de baja dimensión. Utiliza una métrica de distancia específica (ej., euclidiana).
-3.  **MDS No Métrica:** Es más flexible y se utiliza cuando las disimilitudes originales son solo de naturaleza ordinal (es decir, solo sabemos que un par es "más disímil" que otro, pero no la magnitud exacta de la diferencia). En lugar de preservar las distancias exactas, intenta preservar el **orden de las disimilitudes**. Minimiza una función de costo que mide la monotonía de la relación entre las disimilitudes originales y las distancias en el espacio de baja dimensión.
+Existen varias variantes de MDS, como el **MDS Clásico (o Métrica)**, que asume que las disimilitudes son distancias euclidianas y busca una solución analítica, y el **MDS No-Métrico**, que solo busca preservar el **orden** de las disimilitudes (es decir, si A es más diferente de B que de C, esa relación se mantendrá en el espacio reducido, sin que las distancias exactas tengan que ser iguales).
 
-El algoritmo MDS busca iterativamente las coordenadas de los puntos en el espacio de baja dimensión que minimizan una **función de estrés (stress function)** o **función de ajuste (badness-of-fit function)**. Esta función cuantifica qué tan bien las distancias en la representación de baja dimensión se ajustan a las disimilitudes originales.
 
-En el contexto del **aprendizaje global vs. local**, MDS es un sistema que busca una representación **global** de la estructura de las distancias. A diferencia de LOESS, que ajusta modelos a subconjuntos locales de datos, MDS intenta preservar la totalidad de las relaciones de disimilitud en una proyección de menor dimensión. Sin embargo, su capacidad para manejar la no linealidad depende de la variante:
+**Aprendizaje Global vs. Local:**
 
-* **MDS Clásico/Métrico** son esencialmente métodos **lineales** en cuanto a la forma en que proyectan las distancias. Si los datos no se distribuyen linealmente y sus disimilitudes no son bien representadas por distancias euclidianas en un espacio de baja dimensión lineal, estos métodos pueden no proporcionar una buena visualización de la estructura intrínseca. En este sentido, "a veces ningún valor de parámetro puede proporcionar una aproximación suficientemente buena" si la relación subyacente es fuertemente no lineal.
-* **MDS No Métrica**, al preservar el orden de las disimilitudes en lugar de las magnitudes exactas, tiene una capacidad mucho mayor para descubrir y visualizar **estructuras no lineales** en los datos. Se adapta a la forma en que las disimilitudes se "escalan" y, por lo tanto, puede ser visto como un método que busca una representación de función global que acomoda la no linealidad inherente en las relaciones de disimilitud.
+El Escalamiento Multidimensional (MDS) se considera predominantemente una técnica de **aprendizaje global**.
 
-En resumen, MDS es una herramienta poderosa para revelar la estructura latente en conjuntos de datos basándose en sus disimilitudes, y su variante no métrica es particularmente valiosa cuando se sospecha que las relaciones subyacentes son no lineales. 
+* **Aspecto Global:** MDS busca una **configuración única de puntos** en el espacio de baja dimensión que optimice el ajuste de **todas las disimilitudes** en el conjunto de datos de manera simultánea. La función de estrés que se minimiza considera las distancias entre *todos* los pares de puntos, buscando una solución que sea globalmente la mejor representación de esas relaciones. El objetivo es preservar la estructura general de las distancias en el conjunto de datos completo, no solo las relaciones en vecindarios específicos. La solución que se encuentra es una "vista aérea" o un "mapa" de las relaciones de todo el conjunto de datos.
+
+Aunque las disimilitudes originales son "locales" en el sentido de que son medidas entre pares de puntos, la forma en que MDS utiliza todas estas medidas para construir un mapa coherente y de baja dimensión es un proceso global de optimización. No se ajustan modelos separados para diferentes subconjuntos de datos; en su lugar, se busca una representación unificada que capture la estructura general de similaridad/disimilitud de todos los datos. Por lo tanto, si los datos tienen una estructura global bien definida basada en distancias, MDS es una herramienta efectiva para revelar esa estructura. 
 
 
 ```{r, echo = FALSE}
@@ -336,6 +387,27 @@ tabla_mds %>%
 
 
 ## Quadratic Discriminant Analysis (QDA) {-}  
+
+
+El **Análisis Discriminante Cuadrático (QDA)** es un método de **clasificación** que, al igual que el Análisis Discriminante Lineal (LDA), modela la distribución de cada clase para clasificar nuevas observaciones. Sin embargo, QDA es una extensión de LDA que relaja una de sus suposiciones clave: mientras que LDA asume que todas las clases comparten la misma matriz de covarianza (es decir, las distribuciones tienen la misma "forma" o "orientación"), **QDA permite que cada clase tenga su propia matriz de covarianza distinta**.
+
+Esta diferencia es fundamental:
+* **LDA:** Asume que la variación de los datos es la misma en todas las clases, lo que resulta en **fronteras de decisión lineales** entre las clases.
+* **QDA:** Permite que la variación de los datos sea diferente para cada clase, lo que resulta en **fronteras de decisión cuadráticas** entre las clases. Esto significa que las fronteras de decisión pueden ser curvas (elipsoides, parábolas, hipérbolas), lo que permite a QDA modelar relaciones más complejas y no lineales entre las variables y las clases.
+
+El funcionamiento de QDA implica:
+1.  **Modelado de Distribuciones:** Para cada clase, QDA estima la media y la matriz de covarianza específicas de esa clase, asumiendo una distribución normal multivariada.
+2.  **Clasificación:** Para una nueva observación, QDA calcula la probabilidad de que esa observación provenga de cada clase, utilizando las distribuciones normales modeladas para cada clase. Luego, asigna la observación a la clase con la probabilidad posterior más alta (aplicando el Teorema de Bayes).
+
+**Aprendizaje Global vs. Local:**
+
+El Análisis Discriminante Cuadrático (QDA) es, al igual que LDA, un modelo de **aprendizaje global**.
+
+* **Aspecto Global:** QDA construye un **clasificador global** basado en las distribuciones de probabilidad aprendidas para cada clase. Las medias y las matrices de covarianza se estiman a partir de todo el conjunto de datos de entrenamiento para cada clase, y estos parámetros definen una función discriminante que se aplica de manera uniforme a cualquier nueva observación en el espacio de características. La frontera de decisión, aunque cuadrática y no lineal, es una única función matemática definida a nivel global por los parámetros del modelo. No se ajustan modelos separados para diferentes vecindarios de datos.
+
+* **Mayor Flexibilidad Globalmente:** Aunque sigue siendo un modelo global, la capacidad de QDA para tener matrices de covarianza separadas para cada clase le otorga una **mayor flexibilidad para adaptarse a formas de clase más diversas** en comparación con LDA. Esto significa que QDA puede modelar situaciones donde las clases tienen diferentes orientaciones o dispersiones en el espacio de características, lo que resulta en fronteras de decisión que pueden capturar ciertas no linealidades de manera global. Sin embargo, sigue asumiendo distribuciones gaussianas para cada clase y una forma cuadrática para las fronteras, lo que puede ser una limitación si la verdadera complejidad de los datos es aún mayor o no se ajusta a estas suposiciones.
+
+
 
 ```{r, echo = FALSE}
 criterios <- c(
@@ -430,7 +502,11 @@ El proceso general de PLSR implica:
 * **Manejo de Datos de Alta Dimensionalidad:** Funciona bien cuando el número de variables predictoras es mayor que el número de observaciones.
 * **Enfoque Predictivo:** Se centra en desarrollar modelos con una fuerte capacidad predictiva.
 
-En el contexto del **aprendizaje global vs. local**, PLSR es un algoritmo de **aprendizaje global**. Busca una transformación lineal global de los datos originales en un espacio de componentes latentes, donde se maximiza la covarianza entre los conjuntos de variables predictoras y de respuesta. La relación que modela es una relación lineal global en este espacio transformado.
+**Aprendizaje Global vs. Local:**
+  
+La Regresión por Mínimos Cuadrados Parciales (PLSR) se considera un modelo de **aprendizaje global**.
+
+* **Aspecto Global:** PLSR construye un **modelo lineal global** que relaciona las variables predictoras con la variable de respuesta a través de sus componentes latentes. Los componentes PLS se derivan de la estructura de covarianza de **todas las variables** (tanto predictoras como de respuesta) en el conjunto de datos completo, y el modelo de regresión final se ajusta sobre estos componentes, generando una ecuación que se aplica de manera consistente a cualquier nueva observación. No se ajustan modelos separados para diferentes vecindarios de datos; en cambio, se busca una transformación global de los datos que facilite la predicción.
 
 Si bien PLSR no es un método de **regresión ponderada localmente** como LOESS (que ajusta modelos simples a subconjuntos locales de datos), comparte con ellos el objetivo de modelar relaciones complejas. Sin embargo, lo hace de una manera diferente. En lugar de dividir el espacio de características y aplicar modelos locales, PLSR transforma el espacio de características de forma global para encontrar una representación de menor dimensionalidad que sea óptima para la predicción. Cuando los datos no se distribuyen linealmente, PLSR puede no ser la herramienta más adecuada en su forma lineal básica, ya que sigue siendo una técnica lineal. Sin embargo, al encontrar las direcciones más relevantes en el espacio de los datos, puede capturar aspectos importantes de la estructura de los datos que son útiles incluso si la relación subyacente es no lineal. Para manejar la no linealidad explícitamente, existen extensiones como **Nonlinear Partial Least Squares (NPLS)** o **Kernel PLS (KPLS)**, que introducen funciones kernel para mapear los datos a un espacio de características de mayor dimensión donde la relación podría ser linealmente modelable por PLS.
 
@@ -507,7 +583,26 @@ tabla_plsr %>%
 ``` 
 
 
-## Partial Least Squares Discriminant Analysis (PLSDA)  {-}  
+## Partial Least Squares Discriminant Analysis (PLSDA)  {-}   
+
+El **Análisis Discriminante de Mínimos Cuadrados Parciales (PLSDA)** es una extensión del algoritmo de **Regresión por Mínimos Cuadrados Parciales (PLSR)**, adaptada para problemas de **clasificación**. Al igual que PLSR, PLSDA es particularmente útil cuando se tienen muchas **variables predictoras (X)** y estas están **altamente correlacionadas (multicolinealidad)**, situaciones comunes en campos como la metabolómica, la proteómica o la espectroscopia.
+
+En esencia, PLSDA transforma un problema de clasificación en un problema de regresión. Esto se logra de la siguiente manera:
+
+1.  **Codificación de la Variable de Clase:** La variable de respuesta categórica (la clase a la que pertenece una observación) se transforma en una o más variables numéricas. Por ejemplo, en un problema de clasificación binaria, una clase puede codificarse como '0' y la otra como '1'. Para múltiples clases, se puede usar una codificación "one-hot encoding" (ej., [1,0,0] para Clase A, [0,1,0] para Clase B, etc.).
+2.  **Extracción de Componentes Latentes:** Similar a PLSR, PLSDA construye componentes latentes (factores PLS) que son combinaciones lineales de las variables predictoras. Estos componentes se eligen para maximizar la covarianza entre las variables predictoras y las variables de respuesta codificadas. Esto asegura que los componentes capturen la varianza en X que es relevante para la separación de clases en Y.
+3.  **Clasificación:** Una vez que se han obtenido los componentes PLS y se ha realizado la regresión sobre ellos para predecir los valores codificados de la clase, se aplica una regla de decisión (por ejemplo, un umbral o un clasificador lineal simple) a las predicciones para asignar cada observación a una clase. Si se usa codificación one-hot, la observación se asigna a la clase con el valor predicho más alto.
+
+PLSDA es ventajoso porque puede manejar conjuntos de datos con muchas más variables que observaciones (problemas $p \gg n$), y es robusto a la multicolinealidad.
+
+
+**Aprendizaje Global vs. Local:**
+
+El Análisis Discriminante de Mínimos Cuadrados Parciales (PLSDA) es un modelo de **aprendizaje global**.
+
+* **Aspecto Global:** PLSDA busca una **transformación lineal global** de las variables predictoras a componentes latentes, y luego una **relación lineal global** entre esos componentes y la variable de respuesta codificada (clase). Los componentes PLS se derivan de la estructura de covarianza de todo el conjunto de datos, y el modelo de regresión final (que se usa para la clasificación) se aplica de manera consistente a cualquier nueva observación. La frontera de decisión implícita en PLSDA es típicamente lineal en el espacio de los componentes PLS (y por lo tanto lineal o una combinación lineal de las variables originales), lo que resulta en un clasificador que opera globalmente en el espacio de características.
+
+* **Enfoque en la Relevancia Global:** Aunque reduce la dimensionalidad y selecciona componentes que son relevantes para la respuesta, la solución final es un mapeo y una regla de decisión que son válidos para todo el dominio de los datos. No ajusta modelos locales para diferentes regiones del espacio de características. Por lo tanto, PLSDA es una técnica eficiente para encontrar patrones globales de separación de clases en presencia de alta dimensionalidad y multicolinealidad, pero si las relaciones entre las variables y las clases son inherentemente no lineales o tienen estructuras muy complejas que no pueden ser capturadas por una transformación lineal, su capacidad puede ser limitada.
 
 ```{r, echo = FALSE}
 criterios <- c(
@@ -584,21 +679,24 @@ tabla_plsda %>%
 
 ## Principal Component Analysis (PCA)  {-}   
 
-**Principal Component Analysis (PCA)** es una técnica fundamental de **reducción de dimensionalidad** no supervisada que se utiliza para transformar un conjunto de variables posiblemente correlacionadas en un conjunto de variables no correlacionadas llamadas **componentes principales**. La idea fundamental de PCA es identificar las direcciones (ejes) en el espacio de los datos a lo largo de las cuales la **varianza de los datos es máxima**. Estas nuevas direcciones son ortogonales entre sí y representan la mayor parte de la información (varianza) contenida en el conjunto de datos original con un número reducido de dimensiones.
+El **Análisis de Componentes Principales (PCA)** es una técnica fundamental de **reducción de dimensionalidad** no supervisada. Su objetivo principal es simplificar conjuntos de datos complejos con muchas variables, transformándolos en un conjunto más pequeño de nuevas variables, llamadas **componentes principales**, sin perder demasiada información. Estos componentes principales son combinaciones lineales de las variables originales y son **ortogonales (no correlacionados)** entre sí.
 
-El proceso de PCA generalmente implica los siguientes pasos:
+PCA funciona identificando las direcciones en el espacio de datos donde la **varianza es máxima**. La primera componente principal (PC1) captura la mayor cantidad de varianza posible en los datos. La segunda componente principal (PC2) captura la mayor varianza restante, sujeta a ser ortogonal a la primera, y así sucesivamente. De esta manera, PCA organiza la varianza en los datos en un conjunto jerárquico de componentes.
 
-1.  **Estandarización de los Datos:** Es crucial estandarizar los datos (centrar en cero y escalar a varianza unitaria) antes de aplicar PCA, ya que PCA es sensible a la escala de las variables.
-2.  **Cálculo de la Matriz de Covarianza:** Se calcula la matriz de covarianza de los datos estandarizados, que describe la relación entre cada par de variables.
-3.  **Cálculo de Eigenvalores y Eigenvectores:** Se calculan los **eigenvalores** y **eigenvectores** de la matriz de covarianza.
-    * Los **eigenvectores** representan las **direcciones de los componentes principales** (los nuevos ejes en el espacio de los datos). El primer eigenvector corresponde a la dirección de mayor varianza, el segundo a la segunda mayor varianza, y así sucesivamente.
-    * Los **eigenvalores** corresponden a la **magnitud de la varianza** a lo largo de cada eigenvector. Un eigenvalor más grande indica que el componente principal asociado explica una mayor proporción de la varianza total de los datos.
-4.  **Selección de Componentes Principales:** Se ordenan los eigenvalores de mayor a menor y se seleccionan los $k$ eigenvectores correspondientes a los $k$ eigenvalores más grandes. Estos $k$ eigenvectores forman la nueva base del subespacio dimensional reducido. La elección de $k$ se puede basar en la varianza acumulada deseada o en un gráfico de codo (scree plot).
-5.  **Proyección de Datos:** Finalmente, se proyectan los datos originales sobre estos $k$ componentes principales para obtener un nuevo conjunto de datos con menor dimensionalidad pero que retiene la mayor parte de la varianza original.
+Los usos comunes de PCA incluyen:
+* **Reducción de dimensionalidad:** Disminuir el número de variables en un dataset, lo que puede acelerar los algoritmos de Machine Learning y reducir el riesgo de sobreajuste.
+* **Visualización de datos:** Proyectar datos de alta dimensión en 2D o 3D para facilitar su visualización y la identificación de patrones, clusters o outliers.
+* **Denoising:** Eliminar el ruido de los datos al retener solo los componentes principales que capturan la señal real.
 
-En el contexto del **aprendizaje global vs. local**, PCA es inherentemente un método de **aprendizaje global**. Busca una transformación lineal que capture la estructura de varianza **global** de todo el conjunto de datos. No divide el problema en subproblemas locales ni se enfoca en regiones específicas de los datos. La idea es que, si los datos no se distribuyen linealmente, PCA (en su forma lineal) **no puede capturar relaciones no lineales complejas** de manera efectiva. Está limitado a encontrar las direcciones ortogonales de máxima varianza en un espacio lineal.
 
-A diferencia de LOESS, que aplica una forma de regresión ponderada localmente para ajustar curvas suaves en datos no lineales, PCA no está diseñado para eso. Precisamente porque busca una representación lineal global, si la estructura subyacente de los datos es intrínsecamente no lineal, PCA puede no ser capaz de proporcionar una reducción de dimensionalidad suficientemente buena o capturar las relaciones esenciales. En tales casos, se recurre a técnicas de reducción de dimensionalidad no lineal como t-SNE o UMAP, o a variantes de PCA como Kernel PCA. No obstante, PCA sigue siendo una herramienta fundamental y muy útil para la visualización de datos, la reducción de ruido y la preparación de datos para otros algoritmos, especialmente cuando la varianza se explica bien por relaciones lineales o cuando la dimensionalidad es un problema para la eficiencia computacional.
+**Aprendizaje Global vs. Local:**
+
+El Análisis de Componentes Principales (PCA) es un modelo de **aprendizaje puramente global**.
+
+* **Aspecto Global:** PCA busca una **transformación lineal global** del espacio de características. Los componentes principales se derivan de la matriz de covarianza (o correlación) de **todo el conjunto de datos**. Esto significa que las direcciones de máxima varianza se determinan considerando la estructura de dispersión general de todos los puntos de datos. El conjunto de componentes principales que se obtiene es un sistema de coordenadas global al que se proyecta cualquier punto de datos. No se ajustan diferentes transformaciones para distintas regiones o vecindarios de datos; en su lugar, se aprende una única proyección que se aplica uniformemente a todo el dominio.
+
+Por lo tanto, si la estructura de los datos es consistentemente lineal o tiene relaciones de varianza que se extienden linealmente a lo largo del espacio, PCA funcionará muy bien. Sin embargo, si los datos tienen estructuras no lineales complejas (por ejemplo, datos que forman una espiral o una esfera), PCA puede tener limitaciones para capturar estas relaciones, ya que solo busca direcciones lineales de máxima varianza.
+
 
 
 ```{r, echo = FALSE}
@@ -675,30 +773,24 @@ tabla_pca %>%
 
 ## Principal Component Regression (PCR)  {-}    
 
-**Principal Component Regression (PCR)** es una técnica de **regresión** que aborda el problema de la **multicolinealidad** (altas correlaciones entre las variables predictoras) en la regresión lineal. La idea fundamental de PCR es utilizar el **Análisis de Componentes Principales (PCA)** como un paso previo a la regresión. En lugar de realizar la regresión directamente sobre las variables predictoras originales, PCR primero transforma las variables predictoras en un conjunto de **componentes principales no correlacionados** y luego realiza la regresión sobre un subconjunto de estos componentes.
+La **Regresión de Componentes Principales (PCR)** es un método de **regresión** que combina el **Análisis de Componentes Principales (PCA)** con la **Regresión por Mínimos Cuadrados Ordinarios (OLS)**. Su principal utilidad radica en situaciones donde se tienen muchas **variables predictoras (X)** y existe una **alta multicolinealidad** (fuerte correlación entre ellas), lo que puede hacer que los modelos de regresión OLS sean inestables o ineficientes.
 
-El proceso de Principal Component Regression consta de los siguientes pasos:
+El proceso de PCR consta de dos pasos principales:
 
-1.  **Análisis de Componentes Principales (PCA) en las Predictoras:**
-    * Primero, se aplica PCA **únicamente a las variables predictoras ($X$)**. Esto genera un nuevo conjunto de variables, los **componentes principales**, que son combinaciones lineales ortogonales de las predictoras originales.
-    * Los componentes principales se ordenan por la cantidad de varianza que explican en las variables $X$. El primer componente explica la mayor varianza, el segundo la siguiente mayor varianza, y así sucesivamente.
+1.  **Reducción de Dimensionalidad con PCA:** Primero, se aplica PCA a las variables predictoras (X) para transformarlas en un conjunto más pequeño de **componentes principales**. Estos componentes son combinaciones lineales no correlacionadas de las variables originales y capturan la mayor parte de la varianza en las variables X. Se selecciona un subconjunto de estos componentes principales (aquellos que explican la mayor parte de la varianza total) para retener. Es importante destacar que, en este paso, PCA no tiene conocimiento de la variable de respuesta (Y); solo se enfoca en la estructura de las variables X.
+2.  **Regresión OLS sobre Componentes:** Una vez que se han obtenido los componentes principales seleccionados, se realiza una regresión lineal estándar (OLS) de la variable de respuesta (Y) sobre estos componentes. Como los componentes principales son ortogonales, la multicolinealidad ya no es un problema en este paso de regresión.
 
-2.  **Selección de Componentes Principales:**
-    * Se selecciona un subconjunto de los componentes principales (normalmente los primeros $k$ componentes que explican una gran proporción de la varianza total en $X$, o que se consideran más relevantes). La elección de $k$ es crucial y a menudo se determina mediante validación cruzada.
-    * Es importante destacar que, a diferencia de PLSR (Partial Least Squares Regression), PCA en PCR solo considera la varianza de las variables predictoras, no su relación con la variable de respuesta.
+El beneficio de PCR es que permite construir un modelo de regresión en escenarios con multicolinealidad severa, reduciendo el número de variables a un conjunto más manejable y estable, mientras se intenta preservar la mayor cantidad de información de las variables predictoras.
 
-3.  **Regresión Lineal Múltiple:**
-    * Finalmente, se realiza una **regresión lineal múltiple** estándar de la variable de respuesta ($Y$) sobre el subconjunto seleccionado de componentes principales. Dado que los componentes principales son ortogonales (no correlacionados), los problemas de multicolinealidad se eliminan eficazmente.
+**Aprendizaje Global vs. Local:**
 
-**Ventajas clave de PCR:**
+La Regresión de Componentes Principales (PCR) es un modelo de **aprendizaje global**.
 
-* **Manejo de Multicolinealidad:** Elimina el problema de la multicolinealidad, lo que lleva a estimaciones de coeficientes más estables y una mejor interpretabilidad en el contexto de los componentes principales.
-* **Reducción de Dimensionalidad:** Puede ser muy útil cuando hay un gran número de variables predictoras, ya que permite trabajar con un conjunto reducido de componentes que capturan la mayor parte de la información.
-* **Reducción de Ruido:** Al centrarse en los componentes que explican la mayor varianza, puede ayudar a reducir el impacto del ruido en las variables predictoras.
+* **Aspecto Global:** Ambos pasos de PCR son intrínsecamente globales.
+    1.  **PCA (Paso Global):** Como se mencionó anteriormente, PCA es una técnica global que encuentra una transformación lineal de los datos que se aplica de manera uniforme a todo el espacio de características. Los componentes principales se derivan de la estructura de varianza global de las variables predictoras.
+    2.  **OLS (Paso Global):** La regresión realizada sobre los componentes principales es un modelo OLS estándar, que también es una técnica global. Busca una única relación lineal que se aplica a todos los datos transformados.
 
-En el contexto del **aprendizaje global vs. local**, Principal Component Regression es un método de **aprendizaje global**. PCA (la primera etapa de PCR) busca una transformación lineal **global** de los datos que capture la máxima varianza. La regresión posterior también es un modelo lineal global sobre estos componentes transformados.
-
-Si bien PCR es una mejora sobre la regresión OLS cuando hay multicolinealidad, sigue siendo fundamentalmente un método **lineal**. La idea es que, si los datos no se distribuyen linealmente, PCR, en su forma lineal, **no puede capturar relaciones no lineales complejas** entre las variables originales y la variable de respuesta. Su capacidad para manejar la no linealidad es limitada a lo que puede ser capturado por las combinaciones lineales de las características originales. Precisamente porque busca una relación lineal global en un espacio transformado linealmente, puede enfrentar la situación de que "a veces ningún valor de parámetro puede proporcionar una aproximación suficientemente buena" si la relación subyacente entre las variables predictoras y la variable de respuesta es intrínsecamente no lineal. Para tales casos, se necesitarían métodos de regresión no lineal o algoritmos de *machine learning* que puedan modelar la no linealidad, como los árboles de decisión, SVM con kernels no lineales, o redes neuronales.
+En conjunto, PCR construye una **función de regresión global** que mapea el espacio de características original (transformado a componentes principales) a la variable de respuesta. La solución resultante es una ecuación que se aplica de manera consistente para todas las observaciones, sin ajustar modelos diferentes para subconjuntos locales de datos. Esto significa que si la relación entre las variables predictoras y la respuesta es no lineal o cambia drásticamente en diferentes regiones del espacio de características, PCR podría no ser la opción más flexible, ya que se basa en transformaciones y regresiones lineales globales.
 
 
 ```{r, echo = FALSE}
@@ -774,26 +866,27 @@ tabla_pcr %>%
 
 
 
-## Projection Pursuit (PP)  {-}    
+## Projection Pursuit (PP)  {-}     
 
-**Projection Pursuit (PP)** es una técnica de **reducción de dimensionalidad y modelado exploratorio** utilizada para encontrar proyecciones interesantes de datos de alta dimensión en espacios de baja dimensión (típicamente 1D o 2D). La idea fundamental de Projection Pursuit es que, en datos de alta dimensión, las estructuras interesantes (como agrupaciones, frentes, o anomalías) a menudo se ocultan cuando se observan solo las proyecciones marginales de las variables individuales. PP busca **proyecciones "interesantes"** que revelen estas estructuras no gaussianas y no lineales, que podrían pasar desapercibidas con técnicas lineales como PCA.
+**Projection Pursuit (PP)** es una técnica estadística de **reducción de dimensionalidad y análisis exploratorio de datos** utilizada para encontrar las proyecciones "más interesantes" de datos multivariados de alta dimensión en un espacio de menor dimensión (generalmente 1D o 2D). La clave de PP es que las proyecciones "interesantes" son aquellas que **se desvían más de una distribución normal (gaussiana)**, ya que las estructuras como agrupaciones, valores atípicos, o formas inusuales tienden a ser más evidentes en proyecciones no gaussianas.
 
-A diferencia de PCA, que busca las proyecciones que maximizan la varianza (lo cual es óptimo si los datos son elipsoidales o gaussianos), PP busca proyecciones que se desvían de la distribución normal. Esto se logra mediante la definición de una **función de "índice de proyección"** que cuantifica la "interesante" o "no-gaussiana" de una proyección. El algoritmo entonces busca activamente las direcciones que maximizan este índice.
+El algoritmo de PP no busca simplemente la mayor varianza (como PCA), sino que intenta encontrar direcciones de proyección que revelen la estructura subyacente y las características no lineales de los datos. Lo hace **maximizando un "índice de proyección"** que mide la "interesante" o la "no-gaussianidad" de la proyección. Diferentes índices pueden enfocarse en diferentes aspectos, como la asimetría, la curtosis, o la presencia de múltiples modos (grupos).
 
-El proceso general de Projection Pursuit es iterativo:
+Existen variantes de PP para diferentes propósitos, como:
+* **Exploratory Projection Pursuit (EPP):** Para visualización y detección de estructuras.
+* **Projection Pursuit Regression (PPR):** Para construir modelos de regresión no lineales.
+* **Projection Pursuit Classification (PPC):** Para tareas de clasificación.
 
-1.  **Definición del Índice de Proyección:** Se elige una función de índice de proyección que penalice la normalidad y recompense las desviaciones (ej., asimetría, curtosis, o medidas basadas en entropía). Por ejemplo, un índice de proyección podría buscar distribuciones multimodales o con colas pesadas.
-2.  **Optimización:** El algoritmo utiliza técnicas de optimización numérica (como descenso de gradiente) para encontrar la dirección de proyección (un vector que define la combinación lineal de las características originales) que maximiza el índice de proyección.
-3.  **Extracción de Componentes:** Una vez que se encuentra una proyección interesante, los datos se proyectan sobre esta dirección. A menudo, el proceso se repite para encontrar proyecciones ortogonales adicionales, cada una revelando diferentes aspectos de la estructura de los datos.
+**Aprendizaje Global vs. Local:**
 
-**Aplicaciones de PP:**
+Projection Pursuit (PP) se puede considerar como un modelo que **combina aspectos de aprendizaje global y local**, con un fuerte énfasis en la detección de características locales en un contexto global.
 
-* **Visualización de Datos:** Para encontrar proyecciones 1D o 2D que revelen patrones o agrupaciones.
-* **Clasificación y Regresión:** Puede ser una etapa de preprocesamiento para encontrar características más informativas, o incluso puede ser la base para construir modelos (como en **Projection Pursuit Regression - PPR**).
+* **Aspecto Global:** PP busca una **transformación lineal global** (la dirección de proyección) que se aplica a todo el conjunto de datos para encontrar las proyecciones "más interesantes". La optimización del índice de proyección se realiza sobre todo el espacio de características para identificar estas direcciones. Las funciones resultantes (como en PPR o PPC) son combinaciones de funciones no lineales aplicadas a estas proyecciones globales.
 
-En el contexto del **aprendizaje global vs. local**, Projection Pursuit es una técnica que busca descubrir y modelar estructuras **globales** interesantes en los datos a través de una serie de **proyecciones lineales, pero la combinación de estas proyecciones para capturar la no linealidad es la clave**. Aunque las proyecciones individuales son lineales, el proceso de buscar iterativamente las proyecciones "más interesantes" y luego combinarlas permite a PP descubrir y representar relaciones **no lineales** en el conjunto de datos.
+* **Aspecto Local (al revelar estructuras):** Donde PP exhibe un carácter "local" es en su capacidad para **resaltar estructuras que son intrínsecamente locales** (como clusters o valores atípicos) que podrían estar ocultas en las altas dimensiones o en proyecciones puramente globales (como PCA). Al buscar desviaciones de la normalidad, PP es capaz de "perseguir" (de ahí "pursuit") las direcciones que exponen agrupaciones densas o huecos en los datos, que son fenómenos locales. La idea es que si los datos no se distribuyen linealmente o tienen estructuras complejas, PP puede encontrar proyecciones donde la "densidad" o "forma" local de los datos es más informativa, permitiendo al usuario o a un algoritmo posterior identificar estas estructuras que son una forma de "regresión ponderada localmente" o un análisis local de patrones.
 
-Si los datos no se distribuyen linealmente, PP es una herramienta poderosa porque **no asume linealidad** en la estructura subyacente. En lugar de ello, busca activamente las direcciones que revelan la no linealidad y la no-gaussianidad. Esto es precisamente lo que lo diferencia de PCA. La idea de que "si los datos no se distribuyen linealmente, se puede aplicar el concepto de regresión de manera ponderada localmente" es algo que PPR (una extensión de PP para regresión) aborda. PPR construye un modelo como una suma de funciones suaves no lineales de varias proyecciones uni-dimensionales de los predictores, lo que permite capturar relaciones complejas que no pueden ser modeladas por una regresión lineal simple. Por lo tanto, Projection Pursuit aborda la limitación de que "a veces ningún valor de parámetro puede proporcionar una aproximación suficientemente buena" en modelos lineales o simples, al buscar activamente y explotar las características no lineales y de "interés" en las proyecciones de los datos.
+En resumen, PP es una técnica potente para explorar la estructura de datos de alta dimensión, especialmente cuando las relaciones son no lineales o complejas. Si bien el proceso de búsqueda de proyecciones es global, el "interés" de estas proyecciones a menudo radica en su capacidad para revelar características locales y no gaussianas que son cruciales para entender los datos.
+
 
 ```{r, echo = FALSE}
 criterios <- c(
@@ -870,19 +963,22 @@ tabla_pp %>%
 
 ## Sammon Mapping  {-}   
 
-**Sammon Mapping**, también conocida como **Sammon's Nonlinear Mapping (NLM)**, es una técnica de **reducción de dimensionalidad no lineal** utilizada principalmente para **visualización de datos**. La idea fundamental de Sammon Mapping es proyectar un conjunto de datos de un espacio de alta dimensión a un espacio de menor dimensión (típicamente 2D o 3D) de tal manera que se preserve lo mejor posible la **estructura de las distancias entre los puntos** del espacio original. Es decir, si dos puntos estaban cerca en el espacio de alta dimensión, se espera que también estén cerca en el espacio de baja dimensión, y viceversa.
+**Sammon Mapping** es una técnica de **reducción de dimensionalidad no lineal** que se utiliza para visualizar datos de alta dimensión en un espacio de menor dimensión (generalmente 2D o 3D). Su principal objetivo es **preservar la estructura de distancia local** de los datos originales en la representación de menor dimensión.
 
-A diferencia de técnicas lineales como PCA, que se enfocan en preservar la varianza o la covarianza, Sammon Mapping se centra en preservar las **distancias por pares** entre los puntos. Para lograr esto, utiliza un algoritmo iterativo que busca minimizar una **función de error de Sammon**. Esta función mide la diferencia entre las distancias por pares en el espacio de alta dimensión y las distancias correspondientes en el espacio de baja dimensión, ponderando más los errores para los puntos que están más cerca en el espacio original. Esto significa que Sammon Mapping presta especial atención a preservar la estructura local del conjunto de datos.
+A diferencia de técnicas como PCA que buscan preservar la varianza global (y por lo tanto las distancias euclidianas globales), Sammon Mapping se enfoca en que las **distancias pequeñas** (entre puntos cercanos) en el espacio original sean representadas con **mayor fidelidad** en el espacio reducido que las distancias grandes. Esto lo hace particularmente bueno para revelar agrupaciones o clusters que podrían estar ocultos en proyecciones lineales o en otras técnicas de reducción de dimensionalidad que no priorizan las distancias locales.
 
-La función de error de Sammon ($E$) se define como:
-$$E = \frac{1}{\sum_{i < j} d_{ij}^* } \sum_{i < j} \frac{(d_{ij}^* - d_{ij})^2}{d_{ij}^*}$$
-Donde:
-* $d_{ij}^*$ es la distancia euclidiana entre el punto $i$ y el punto $j$ en el espacio de alta dimensión.
-* $d_{ij}$ es la distancia euclidiana entre el punto $i$ y el punto $j$ en el espacio de baja dimensión.
+El algoritmo de Sammon Mapping funciona minimizando una **función de "error" o "estrés"** específica, conocida como el **"estrés de Sammon"**. Esta función penaliza más fuertemente las grandes discrepancias en las distancias pequeñas que las grandes discrepancias en las distancias grandes. La minimización de esta función se realiza mediante un proceso iterativo de descenso de gradiente.
 
-El algoritmo busca iterativamente las coordenadas de los puntos en el espacio de baja dimensión que minimizan esta función de error, utilizando un método de **descenso de gradiente**.
+**Aprendizaje Global vs. Local:**
 
-En el contexto del **aprendizaje global vs. local**, Sammon Mapping es una técnica que busca un compromiso entre la preservación de la estructura **local** y **global** de los datos. Sin embargo, su énfasis en ponderar los errores de las distancias pequeñas (puntos cercanos) hace que sea más sensible a la **estructura local** del conjunto de datos. La idea es que, si los datos no se distribuyen linealmente, Sammon Mapping puede generar una representación en baja dimensión que revele agrupaciones y patrones que no serían evidentes con técnicas lineales como PCA. A diferencia de un método de regresión ponderada localmente como LOESS, que se enfoca en ajustar una curva, Sammon Mapping se dedica a la visualización de la estructura de similitud. Al intentar preservar las relaciones de distancia no lineales, aborda directamente la desventaja de que "a veces ningún valor de parámetro puede proporcionar una aproximación suficientemente buena" en las proyecciones lineales, ya que se adapta a la curvatura y la estructura intrínseca no lineal de los datos para ofrecer una visualización más fiel. Aunque puede ser computacionalmente intensivo para conjuntos de datos muy grandes, es una herramienta valiosa para explorar la estructura oculta en datos complejos.
+Sammon Mapping es un modelo que exhibe un fuerte carácter de **aprendizaje local**, aunque la optimización se realiza sobre la totalidad de los datos.
+
+* **Aspecto Local:** La característica distintiva de Sammon Mapping es su énfasis en la **preservación de las distancias locales**. Al penalizar más las distancias pequeñas que se deforman en la proyección, el algoritmo se esfuerza por mantener a los puntos que estaban cerca en el espacio original, cerca en el espacio de menor dimensión. Esto es crucial para revelar la **estructura local y las agrupaciones** dentro de los datos. Es como si el algoritmo estuviera haciendo una serie de "regresiones ponderadas localmente" para cada vecindario de puntos, ajustando las posiciones en el mapa de baja dimensión para que las relaciones cercanas se mantengan. Esta prioridad en las relaciones de vecindad es una marca del aprendizaje local.
+
+* **Optimización Global:** A pesar de su enfoque local, la función de estrés de Sammon se calcula y se minimiza sobre **todos los pares de puntos** en el conjunto de datos. La solución final es una configuración global de puntos en el espacio de baja dimensión. Por lo tanto, el proceso de optimización es global, pero su criterio de "mejor ajuste" da una importancia desproporcionada a la preservación de las relaciones locales.
+
+En resumen, Sammon Mapping es una técnica poderosa para visualizar datos de alta dimensión, especialmente cuando los clusters o las estructuras locales son importantes. Si los datos no se distribuyen linealmente y lo que se busca es entender cómo se agrupan los puntos en sus vecindarios, Sammon Mapping ofrece una representación donde las relaciones locales son el foco principal, lo que lo convierte en una excelente herramienta para la exploración de estructuras no lineales y la detección de agrupaciones.
+
 
 
 ```{r, echo = FALSE}
@@ -960,7 +1056,32 @@ tabla_sammon %>%
 
 
 
-## Regularized Discriminant Analysis (RDA)  {-}   
+## Regularized Discriminant Analysis (RDA)  {-}    
+
+El **Análisis Discriminante Regularizado (RDA)** es un método de **clasificación** que actúa como un **intermedio flexible entre el Análisis Discriminante Lineal (LDA) y el Análisis Discriminante Cuadrático (QDA)**. Fue desarrollado por Jerome Friedman para abordar las limitaciones de LDA (que asume covarianzas iguales para todas las clases, lo que resulta en fronteras lineales) y QDA (que permite covarianzas separadas pero puede ser inestable con pocos datos o muchas variables).
+
+RDA introduce dos **parámetros de regularización**, $\alpha$ y $\gamma$, que controlan la flexibilidad del modelo y su capacidad para adaptarse a los datos:
+
+1.  **Parámetro $\alpha$ (alpha):** Controla el grado en que la matriz de covarianza de cada clase se **contrae hacia una matriz de covarianza común** (como en LDA).
+    * Si $\alpha = 0$, RDA se comporta como **QDA** (cada clase tiene su propia matriz de covarianza).
+    * Si $\alpha = 1$, RDA se comporta como **LDA** (todas las clases comparten una matriz de covarianza común).
+    * Para valores entre 0 y 1, RDA utiliza un promedio ponderado de la matriz de covarianza específica de la clase y la matriz de covarianza común. Esto ayuda a estabilizar las estimaciones de covarianza en QDA, especialmente cuando los tamaños de muestra son pequeños o el número de variables es grande.
+
+2.  **Parámetro $\gamma$ (gamma):** Controla el grado en que la matriz de covarianza (ya sea común o específica de la clase, dependiendo de $\alpha$) se **contrae hacia una matriz diagonal**.
+    * Si $\gamma = 0$, no hay contracción diagonal adicional.
+    * Si $\gamma = 1$, la matriz de covarianza se contrae completamente a una matriz diagonal (lo que implica independencia entre las variables).
+    * Para valores entre 0 y 1, se aplica una contracción hacia la diagonal, lo que puede ser útil cuando hay multicolinealidad.
+
+Al sintonizar estos dos parámetros (generalmente mediante validación cruzada), RDA puede encontrar un equilibrio óptimo entre la simplicidad de LDA y la flexibilidad de QDA, adaptándose mejor a la estructura de covarianza real de los datos y mejorando la estabilidad del modelo.
+
+**Aprendizaje Global vs. Local:**
+
+El Análisis Discriminante Regularizado (RDA) es un modelo de **aprendizaje global** que incorpora un grado de **adaptación local** a través de su regularización.
+
+* **Aspecto Global:** Al igual que LDA y QDA, RDA construye un **clasificador global** basado en las distribuciones de probabilidad modeladas para cada clase. Las matrices de covarianza regularizadas y las medias de las clases se estiman a partir de todo el conjunto de datos de entrenamiento, y la regla de clasificación resultante se aplica de manera consistente en todo el espacio de características. La frontera de decisión que RDA define es una función global (que puede ser lineal o cuadrática, o una combinación de ambas, dependiendo de los parámetros de regularización).
+
+* **Adaptación Local (a través de la regularización de covarianza):** La flexibilidad de RDA para ajustarse mejor a los datos que LDA o QDA proviene de su capacidad para modelar las **estructuras de covarianza de las clases de una manera más matizada**. Al permitir una contracción parcial de las matrices de covarianza hacia una común (parámetro $\alpha$) o hacia una diagonal (parámetro $\gamma$), RDA puede adaptar las formas de las distribuciones de las clases. Esto permite que el modelo capture mejor las características de dispersión de los datos en diferentes regiones, lo que en última instancia se traduce en fronteras de decisión más adaptables que pueden manejar cierto grado de no linealidad o formas complejas de clase. No es un ajuste local en el sentido de LOESS, sino una forma de adaptar la complejidad del modelo global a la estructura de covarianza percibida de cada clase.
+
 
 ```{r, echo = FALSE}
 criterios <- c(
@@ -1037,7 +1158,30 @@ tabla_rda %>%
 
 
 
-## Uniform Manifold Approximation and Projection (UMAP) {-}  
+## Uniform Manifold Approximation and Projection (UMAP) {-}   
+
+**Uniform Manifold Approximation and Projection (UMAP)** es una técnica de **reducción de dimensionalidad no lineal** de vanguardia, utilizada principalmente para la **visualización de datos** de alta dimensión y para el **aprendizaje de características (feature learning)**. Fue desarrollada por Leland McInnes, John Healy y James Melville. UMAP es una alternativa más reciente y a menudo más rápida y escalable a t-SNE (t-Distributed Stochastic Neighbor Embedding), manteniendo su capacidad para preservar la estructura local y global de los datos.
+
+La idea central de UMAP se basa en la **teoría de los conjuntos difusos (fuzzy set theory)** y la **geometría riemanniana**. Intenta construir una representación de baja dimensión de los datos asumiendo que los datos de alta dimensión residen en una **variedad (manifold) subyacente de baja dimensión**. El algoritmo opera en dos fases:
+
+1.  **Construcción del Grafo de Vecindad Difusa:**
+    * Primero, UMAP construye un **grafo ponderado difuso** en el espacio de alta dimensión. Los nodos del grafo son los puntos de datos y los pesos de las aristas representan la probabilidad de que dos puntos estén conectados (es decir, qué tan similares o cercanos son).
+    * Para ello, UMAP estima las distancias entre los puntos en el manifold subyacente y luego convierte estas distancias en probabilidades de conectividad. Esto es crucial porque le permite adaptarse a la densidad local de los datos (puntos en regiones densas pueden estar cerca incluso con distancias euclidianas grandes, y viceversa en regiones dispersas).
+
+2.  **Optimización del Diseño en Baja Dimensión:**
+    * Luego, UMAP optimiza el diseño de los puntos en un espacio de baja dimensión (ej., 2D) para que la **estructura del grafo construido en alta dimensión sea lo más similar posible** al grafo construido en baja dimensión.
+    * Esto se logra minimizando una función de costo que intenta hacer que las probabilidades de conectividad en el espacio de baja dimensión coincidan con las probabilidades de conectividad del grafo de alta dimensión.
+
+UMAP es valorado por su velocidad, escalabilidad a grandes conjuntos de datos, y su capacidad para preservar simultáneamente la **estructura local y global** de los datos, lo que lo hace ideal para visualizar agrupaciones y relaciones complejas.
+
+**Aprendizaje Global vs. Local:**
+
+UMAP es un excelente ejemplo de un modelo que logra un equilibrio sofisticado entre el **aprendizaje local y global**.
+
+* **Aspecto Local:** UMAP pone un fuerte énfasis en la **preservación de la estructura local**. Al construir el grafo de vecindad difusa, se enfoca en las relaciones de los vecinos más cercanos de cada punto (controlado por el parámetro `n_neighbors`). La forma en que calcula las probabilidades de conectividad se adapta a la densidad local de los datos, asegurando que los clústeres y las agrupaciones cercanas se mantengan cohesivos en la representación de baja dimensión. Las relaciones "locales" son las que definen el "manifold" en primera instancia. Esto significa que si los datos no se distribuyen linealmente y tienen estructuras complejas con vecindarios distintos (como diferentes clusters o ramas en una estructura), UMAP es capaz de capturarlas con alta fidelidad, de forma similar a como una "regresión ponderada localmente" operaría en cada vecindario.
+
+* **Aspecto Global:** A pesar de su énfasis local, UMAP también hace un esfuerzo consciente por preservar la **estructura global** de los datos. Al minimizar la función de costo para que la estructura del grafo se mantenga en el espacio de baja dimensión, UMAP no solo se asegura de que los puntos cercanos permanezcan cercanos, sino que también intenta que los grupos de puntos que estaban globalmente separados en la alta dimensión permanezcan separados en la baja dimensión. El parámetro `min_dist` ayuda a controlar cuán compactos deben ser los clústeres, lo que influye en la separación global. Esta capacidad de equilibrar ambos aspectos es una de las principales ventajas de UMAP sobre técnicas que a veces sacrifican la estructura global (como t-SNE, que puede "romper" grandes clústeres).
+
 
 ```{r, echo = FALSE}
 criterios <- c(

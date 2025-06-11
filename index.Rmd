@@ -15,6 +15,12 @@ biblio-style: apalike
 csl: chicago-fullnote-bibliography.csl
 ---
 
+
+```{r, echo = FALSE, include = FALSE}
+require(dplyr)
+require(gt)
+```
+
 # Machine Learning {-}
 
 
