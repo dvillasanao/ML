@@ -11,7 +11,34 @@
 
 ---
 
-## Elastic Net  {-}  
+## Elastic Net  {-}   
+
+**Elastic Net** es un método de **regresión lineal regularizada** que combina las penalizaciones de **Ridge Regression (regresión L2)** y **Lasso Regression (regresión L1)**. Fue desarrollado para superar las limitaciones de Lasso, que puede tener problemas cuando hay un gran número de variables predictoras o cuando estas variables están altamente correlacionadas (multicolinealidad). Elastic Net es una herramienta muy versátil para la **selección de características**, la **reducción de sobreajuste** y el manejo de **datos de alta dimensión**.
+
+La función de costo de Elastic Net añade dos términos de penalización a la suma de los errores cuadrados de los residuos (como en la regresión OLS):
+
+1.  **Penalización L1 (Lasso):** La suma del valor absoluto de los coeficientes. Esta penalización tiende a **reducir los coeficientes de las variables menos importantes a cero**, realizando así una **selección automática de características**.
+2.  **Penalización L2 (Ridge):** La suma del cuadrado de los coeficientes. Esta penalización **encoge los coeficientes** hacia cero, pero no los fuerza a ser exactamente cero. Es particularmente útil para manejar la **multicolinealidad**, ya que tiende a distribuir la influencia de las variables correlacionadas de manera más equitativa.
+
+Elastic Net utiliza dos hiperparámetros de sintonización:
+
+* **$\alpha$ (alpha):** Controla el **balance entre las penalizaciones L1 y L2**.
+    * Si $\alpha = 0$, Elastic Net se convierte en **Ridge Regression**.
+    * Si $\alpha = 1$, Elastic Net se convierte en **Lasso Regression**.
+    * Para valores entre 0 y 1, es una mezcla de ambas.
+* **$\lambda$ (lambda):** Controla la **fuerza general de la regularización**. Un $\lambda$ más grande implica una mayor penalización y, por lo tanto, coeficientes más pequeños.
+
+Al combinar L1 y L2, Elastic Net logra lo mejor de ambos mundos: realiza selección de características como Lasso y maneja la multicolinealidad y la estabilidad de los coeficientes como Ridge. Esto lo hace muy robusto en escenarios donde hay muchas variables correlacionadas.
+
+
+**Aprendizaje Global vs. Local:**
+
+Elastic Net es un modelo de **aprendizaje global**.
+
+* **Aspecto Global:** Elastic Net construye un **modelo lineal global** que se aplica a todo el conjunto de datos. Los coeficientes de la regresión se estiman optimizando una función de costo que considera todos los puntos de datos simultáneamente. La penalización se aplica a todos los coeficientes de manera uniforme, lo que busca una solución que minimice el error de predicción y controle la complejidad del modelo a nivel global. La ecuación de regresión final es una función que se aplica de manera consistente a cualquier nueva observación, sin importar su ubicación en el espacio de características.
+
+* **Influencia de la Regularización:** Aunque la regresión en sí es global, las penalizaciones de regularización pueden tener un efecto que podríamos considerar "adaptativo" en el sentido de que ajustan la influencia de las variables en función de su relación con otras variables y la respuesta. Por ejemplo, la penalización L1 puede "localizar" las variables más importantes al poner otras a cero, y la L2 puede distribuir la importancia entre variables correlacionadas. Sin embargo, estas son propiedades de la optimización global del modelo, no de ajustar modelos separados para diferentes subregiones del espacio de datos. La Elastic Net, al igual que OLS, Ridge y Lasso, busca una única relación lineal que describa la tendencia general de los datos.
+
 
 ```{r, echo = FALSE}
 criterios <- c(
@@ -87,7 +114,35 @@ tabla_elastic_net %>%
 
 
 
-## Ridge Regression  {-}   
+## Ridge Regression  {-}    
+
+**Ridge Regression (Regresión Ridge)** es un método de **regresión lineal regularizada** que se utiliza para mejorar la estimación de los coeficientes en modelos lineales, especialmente cuando existe **multicolinealidad** (alta correlación entre las variables predictoras) o cuando el número de predictores es grande en relación con el número de observaciones. Ridge Regression fue una de las primeras técnicas de regularización y es fundamental para comprender métodos más avanzados como Lasso o Elastic Net.
+
+La Regresión Ridge aborda los problemas de la regresión por mínimos cuadrados ordinarios (OLS) al añadir un **término de penalización L2** a la función de costo de los mínimos cuadrados. La función de costo que minimiza Ridge Regression es:
+
+$\text{RSS} + \lambda \sum_{j=1}^{p} \beta_j^2$
+
+Donde:
+* $\text{RSS}$ es la suma de los errores cuadrados de los residuos (Residual Sum of Squares), que es lo que minimiza OLS.
+* $\lambda$ (lambda) es un **parámetro de sintonización (hiperparámetro)** no negativo. Este parámetro controla la **fuerza de la penalización**.
+* $\sum_{j=1}^{p} \beta_j^2$ es la **penalización L2**, que es la suma de los cuadrados de los coeficientes de regresión (excluyendo el intercepto).
+
+**Efecto de la Penalización L2:**
+* **Encogimiento de Coeficientes:** La penalización L2 **encoge los coeficientes** hacia cero. Cuanto mayor sea el valor de $\lambda$, mayor será el encogimiento y más pequeños serán los coeficientes.
+* **Reducción de Varianza:** Este encogimiento reduce la varianza de las estimaciones de los coeficientes, haciéndolos más estables y menos sensibles a pequeñas variaciones en los datos de entrenamiento. Esto ayuda a **reducir el sobreajuste**.
+* **Manejo de Multicolinealidad:** En presencia de multicolinealidad, OLS puede asignar grandes valores a los coeficientes de variables correlacionadas. Ridge Regression distribuye la influencia entre las variables correlacionadas de manera más uniforme y reduce la magnitud de estos coeficientes, lo que resulta en un modelo más robusto.
+* **No realiza selección de características:** A diferencia de Lasso, Ridge Regression encoge los coeficientes, pero **rara vez los fuerza a ser exactamente cero**. Esto significa que todas las variables predictoras (o casi todas) seguirán en el modelo.
+
+El valor óptimo de $\lambda$ se selecciona típicamente mediante técnicas de validación cruzada.
+
+**Aprendizaje Global vs. Local:**
+
+Ridge Regression es un modelo de **aprendizaje global**.
+
+* **Aspecto Global:** Ridge Regression construye un **modelo lineal global** que se aplica a todo el conjunto de datos. Los coeficientes se estiman optimizando una función de costo que considera todos los puntos de datos simultáneamente. La penalización L2 se aplica a todos los coeficientes para controlar la complejidad y la estabilidad del modelo a nivel global. La ecuación de regresión resultante es una función única que se aplica de manera consistente a cualquier nueva observación, sin importar su ubicación específica en el espacio de características.
+
+* **Estabilización Global:** Aunque la regularización L2 mejora la estabilidad de las estimaciones de los coeficientes y ayuda a manejar la multicolinealidad, lo hace como parte de una optimización global. No implica la creación de múltiples modelos locales o la adaptación a subregiones específicas de los datos. La Regresión Ridge busca una relación lineal subyacente que sea la mejor aproximación para el conjunto de datos completo, penalizando la complejidad para mejorar la generalización global.
+
 
 ```{r, echo = FALSE}
 criterios <- c(
@@ -163,6 +218,35 @@ tabla_ridge %>%
 
 
 ## Least Absolute Shrinkage and Selection Operator (LASSO)  {-}  
+
+
+**LASSO (Least Absolute Shrinkage and Selection Operator)** es un método de **regresión lineal regularizada** que, al igual que Ridge Regression, se utiliza para mejorar la estimación de los coeficientes en modelos lineales y para abordar el **sobreajuste**, especialmente en escenarios con un gran número de variables predictoras o cuando algunas de ellas son irrelevantes. LASSO es particularmente famoso por su capacidad para realizar **selección automática de características**.
+
+LASSO logra esto añadiendo un **término de penalización L1** a la función de costo de los mínimos cuadrados. La función de costo que minimiza LASSO es:
+
+$\text{RSS} + \lambda \sum_{j=1}^{p} |\beta_j|$
+
+Donde:
+* $\text{RSS}$ es la suma de los errores cuadrados de los residuos.
+* $\lambda$ (lambda) es un **parámetro de sintonización (hiperparámetro)** no negativo que controla la **fuerza de la penalización**.
+* $\sum_{j=1}^{p} |\beta_j|$ es la **penalización L1**, que es la suma del valor absoluto de los coeficientes de regresión (excluyendo el intercepto).
+
+**Efecto de la Penalización L1:**
+* **Encogimiento de Coeficientes:** Similar a Ridge, la penalización L1 encoge los coeficientes hacia cero.
+* **Selección de Características:** La característica distintiva de LASSO es que, debido a la naturaleza de la penalización L1 (la suma de los valores absolutos), **puede forzar los coeficientes de las variables menos importantes a ser exactamente cero**. Esto significa que LASSO no solo encoge los coeficientes, sino que también **realiza una selección automática de características**, eliminando efectivamente las variables irrelevantes del modelo. Esto resulta en modelos más simples y fáciles de interpretar.
+* **Manejo de Multicolinealidad (con cuidado):** Aunque LASSO puede manejar la multicolinealidad, tiende a seleccionar arbitrariamente una de las variables correlacionadas y poner a cero las demás, lo que puede ser una desventaja en comparación con Ridge (que distribuye la influencia). Elastic Net surgió para abordar esto.
+
+El valor óptimo de $\lambda$ se selecciona típicamente mediante técnicas de validación cruzada.
+
+
+**Aprendizaje Global vs. Local:**
+
+LASSO es un modelo de **aprendizaje global**.
+
+* **Aspecto Global:** LASSO construye un **modelo lineal global** que se aplica a todo el conjunto de datos. Los coeficientes se estiman optimizando una función de costo que considera todos los puntos de datos simultáneamente. La penalización L1 se aplica a todos los coeficientes para controlar la complejidad y realizar la selección de características a nivel global. La ecuación de regresión final es una función única que se aplica de manera consistente a cualquier nueva observación, sin importar su ubicación en el espacio de características.
+
+* **Selección Global de Características:** Aunque LASSO puede "localizar" qué variables son importantes al reducir sus coeficientes a cero, esto se hace como parte de un proceso de optimización global que evalúa la contribución de cada variable a la predicción general del modelo. No implica la creación de múltiples modelos locales o la adaptación a subregiones específicas de los datos. LASSO busca la relación lineal más parsimoniosa que mejor se ajuste al conjunto de datos completo.
+
 
 ```{r, echo = FALSE}
 criterios <- c(
@@ -240,6 +324,34 @@ tabla_lasso %>%
 
 
 ## Least Angle Regression (LARS)  {-}   
+
+**Least Angle Regression (LARS)** es un algoritmo de **regresión lineal** desarrollado por Bradley Efron, Trevor Hastie, Iain Johnstone y Robert Tibshirani. Es particularmente interesante porque puede considerarse como una **versión más eficiente y paso a paso de LASSO** (Least Absolute Shrinkage and Selection Operator) y es útil para **seleccionar características** y manejar datos de alta dimensión.
+
+A diferencia de OLS, que calcula todos los coeficientes de una vez, o de Lasso, que requiere optimización más compleja, LARS opera de manera incremental. Su idea central es avanzar los coeficientes de forma que su ángulo con el vector de residuos sea siempre el mismo y que sea el "más pequeño" posible.
+
+El proceso de LARS se puede resumir así:
+
+1.  **Inicio:** Todos los coeficientes se inicializan en cero.
+2.  **Identificación del Predictor más Correlacionado:** El algoritmo encuentra la variable predictora que está más correlacionada con la variable de respuesta (o con el residuo actual).
+3.  **Movimiento en la Dirección del Predictor:** El coeficiente de esa variable predictora se mueve gradualmente desde cero en la dirección del signo de su correlación. A medida que el coeficiente se mueve, el residuo cambia.
+4.  **Activación de Nuevos Predictores:** Cuando otra variable predictora alcanza la misma correlación con el residuo actual que la variable que ya está activa, el algoritmo cambia de dirección. Ahora, los coeficientes de *ambas* variables activas se mueven juntas en un "ángulo equiestadístico" de tal manera que permanecen igualmente correlacionadas con el residuo.
+5.  **Proceso Iterativo:** Este proceso continúa, añadiendo nuevas variables al conjunto de variables "activas" (es decir, aquellas con coeficientes distintos de cero) a medida que estas alcanzan la misma correlación con el residuo. Los coeficientes se mueven de forma coordinada.
+6.  **Criterio de Parada:** El algoritmo se detiene cuando todos los predictores han sido incluidos en el modelo, o cuando se alcanza un número predefinido de pasos o de variables.
+
+**Relación con otros modelos:**
+* Si LARS se detiene cuando los coeficientes de las variables no activas son menores o iguales a la correlación actual de las variables activas (y los coeficientes de las variables no activas se fijan en cero si su correlación es menor), entonces genera la **solución completa del camino de LASSO**.
+* También puede generar el camino de soluciones para la **Ridge Regression** si se modifica ligeramente.
+
+LARS es eficiente porque solo requiere un número de pasos igual al número de variables, o menos si se detiene antes.
+
+**Aprendizaje Global vs. Local:**
+
+Least Angle Regression (LARS) es un modelo de **aprendizaje global**.
+
+* **Aspecto Global:** LARS construye un **modelo lineal global** paso a paso. Aunque el algoritmo añade variables una por una y ajusta sus coeficientes de manera incremental, el modelo resultante en cada paso es una ecuación de regresión lineal que se aplica a todo el conjunto de datos. La decisión de qué variable añadir y cómo ajustar los coeficientes se basa en las correlaciones globales entre las variables predictoras y la respuesta (o el residuo). La finalidad es encontrar los coeficientes óptimos para una función de regresión que se aplica a todo el espacio de características.
+
+* **Selección de Características Globalmente:** La capacidad de LARS para realizar selección de características (al igual que LASSO) es un proceso global. Se identifican las variables más influyentes en el contexto de todo el conjunto de datos, y su inclusión en el modelo contribuye a la formación de una relación global entre los predictores y la respuesta. No se construyen modelos separados para diferentes subregiones de los datos; en cambio, se construye un único modelo global de manera progresiva.
+
 
 ```{r, echo = FALSE}
 criterios <- c(
