@@ -120,7 +120,7 @@ tabla_elastic_net %>%
 
 La Regresión Ridge aborda los problemas de la regresión por mínimos cuadrados ordinarios (OLS) al añadir un **término de penalización L2** a la función de costo de los mínimos cuadrados. La función de costo que minimiza Ridge Regression es:
 
-$\text{RSS} + \lambda \sum_{j=1}^{p} \beta_j^2$
+$$\text{RSS} + \lambda \sum_{j=1}^{p} \beta_j^2$$
 
 Donde:
 * $\text{RSS}$ es la suma de los errores cuadrados de los residuos (Residual Sum of Squares), que es lo que minimiza OLS.
@@ -224,7 +224,7 @@ tabla_ridge %>%
 
 LASSO logra esto añadiendo un **término de penalización L1** a la función de costo de los mínimos cuadrados. La función de costo que minimiza LASSO es:
 
-$\text{RSS} + \lambda \sum_{j=1}^{p} |\beta_j|$
+$$\text{RSS} + \lambda \sum_{j=1}^{p} |\beta_j|$$
 
 Donde:
 * $\text{RSS}$ es la suma de los errores cuadrados de los residuos.

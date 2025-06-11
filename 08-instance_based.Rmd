@@ -11,7 +11,30 @@
 
 ---
 
-## k - Nearest Neighbour (kNN)  {-}   
+## k - Nearest Neighbour (kNN)  {-}    
+
+
+**k-Nearest Neighbour (kNN)** es un algoritmo de **Machine Learning no paramétrico** que se utiliza tanto para tareas de **clasificación** como de **regresión**. Es considerado uno de los algoritmos más simples y se basa en la idea de que los puntos de datos que están cerca entre sí en el espacio de características suelen tener propiedades similares. No es un algoritmo que "aprende" un modelo explícito durante la fase de entrenamiento, sino que es un **algoritmo perezoso (lazy learner)**.
+
+**Funcionamiento de kNN:**
+
+1.  **Entrenamiento:** En la fase de entrenamiento, kNN simplemente **almacena todo el conjunto de datos de entrenamiento**. No hay un proceso de "aprendizaje" de parámetros o construcción de un modelo, como en la regresión lineal o las redes neuronales.
+2.  **Predicción (para una nueva instancia):**
+    * **Identificar Vecinos:** Para clasificar o predecir el valor de una nueva instancia, kNN calcula la **distancia** entre esta nueva instancia y *todas* las instancias en el conjunto de entrenamiento. La métrica de distancia más común es la **distancia euclidiana**, pero se pueden usar otras (Manhattan, Minkowski, etc.).
+    * **Seleccionar 'k' Vecinos Más Cercanos:** Se identifican los 'k' puntos de datos del entrenamiento que son más cercanos a la nueva instancia. El valor de 'k' es un **hiperparámetro** que debe ser seleccionado por el usuario.
+    * **Clasificación:** Para tareas de clasificación, la nueva instancia se asigna a la clase que es la **mayoría entre sus 'k' vecinos más cercanos** (votación mayoritaria).
+    * **Regresión:** Para tareas de regresión, el valor predicho para la nueva instancia es el **promedio (o mediana) de los valores de la variable de respuesta de sus 'k' vecinos más cercanos**.
+
+La elección del valor de 'k' es crucial: un 'k' pequeño puede hacer el modelo sensible al ruido (sobreajuste), mientras que un 'k' grande puede suavizar demasiado la predicción (subajuste) y las fronteras de decisión.
+
+**Aprendizaje Global vs. Local:**
+
+k-Nearest Neighbour (kNN) es el ejemplo por excelencia de un modelo de **aprendizaje puramente local**.
+
+* **Aspecto Local:** La predicción para una nueva instancia depende **exclusivamente de los 'k' puntos de datos más cercanos a ella en el espacio de características**. No se construye un modelo global que abarque todo el conjunto de datos. En cambio, para cada nueva consulta, el algoritmo "re-calcula" el vecindario relevante y realiza una predicción basada solo en la información de esa pequeña región local. Esto significa que la frontera de decisión (en clasificación) o la función de regresión (en regresión) se ajusta localmente a las características del vecindario del punto de consulta. Si los datos no se distribuyen linealmente y tienen estructuras complejas con patrones que varían en diferentes regiones, kNN es muy efectivo porque puede adaptarse a estas variaciones locales al funcionar como una **"regresión (o clasificación) ponderada localmente"**.
+
+* **Sin Modelo Explícito Global:** Debido a su naturaleza de "aprendizaje perezoso", kNN no genera una función matemática explícita o un conjunto de coeficientes que describan la relación global entre las variables. Todo el conocimiento del modelo está implícito en la base de datos de entrenamiento.
+
 
 ```{r, echo = FALSE}
 criterios <- c(
@@ -86,7 +109,34 @@ tabla_knn %>%
 
 
 
-## Learning Vector Quantization (LVQ)  {-}   
+## Learning Vector Quantization (LVQ)  {-}    
+
+**Learning Vector Quantization (LVQ)** es un algoritmo de **clasificación supervisada basado en prototipos**, desarrollado por Teuvo Kohonen. Puede ser visto como un tipo de **red neuronal artificial** que utiliza un enfoque de "ganador se lleva todo" (winner-take-all) para aprender a clasificar datos. LVQ es una alternativa al algoritmo k-Nearest Neighbour (kNN) que busca reducir la cantidad de información necesaria para almacenar los datos de entrenamiento, aprendiendo un conjunto más pequeño de **prototipos** que representan las clases.
+
+La idea central de LVQ es la siguiente:
+
+1.  **Representación por Prototipos:** En lugar de memorizar todos los puntos de datos de entrenamiento (como kNN), LVQ aprende un conjunto de **vectores prototipo (o "codebook vectors")**. Cada prototipo está asociado a una clase específica y representa una "región" en el espacio de características que pertenece a esa clase.
+2.  **Proceso de Aprendizaje (Entrenamiento Supervisado):**
+    * Se inicializan los prototipos (a menudo aleatoriamente o con puntos de datos de entrenamiento).
+    * Para cada instancia de entrenamiento:
+        * Se encuentra el prototipo más cercano (el "ganador") a esa instancia utilizando una métrica de distancia (comúnmente la distancia euclidiana).
+        * Se ajusta la posición de este prototipo ganador:
+            * Si el prototipo ganador tiene la **misma clase** que la instancia de entrenamiento, el prototipo se **mueve ligeramente más cerca** de la instancia (recompensa).
+            * Si el prototipo ganador tiene una **clase diferente** a la instancia de entrenamiento, el prototipo se **mueve ligeramente más lejos** de la instancia (penalización).
+    * Este proceso iterativo continúa hasta que los prototipos convergen o se alcanza un número máximo de épocas. Las diferentes variantes de LVQ (LVQ1, LVQ2.1, LVQ3) tienen reglas de actualización ligeramente distintas.
+3.  **Clasificación (Predicción):** Para clasificar una nueva instancia, simplemente se encuentra el prototipo más cercano a esa instancia en el espacio de características. La nueva instancia se asigna a la clase asociada con ese prototipo más cercano. Es similar a un clasificador 1-NN que opera sobre los prototipos aprendidos.
+
+LVQ es valorado por la interpretabilidad de sus prototipos (ya que son puntos en el espacio de características que representan una clase) y por su eficiencia una vez que los prototipos han sido aprendidos, ya que la predicción es mucho más rápida que kNN en grandes conjuntos de datos.
+
+
+**Aprendizaje Global vs. Local:**
+
+Learning Vector Quantization (LVQ) es un modelo que exhibe características de **aprendizaje tanto global como local**.
+
+* **Aspecto Local:** El corazón del aprendizaje en LVQ es la **adaptación local de los prototipos**. En cada paso de entrenamiento, solo el prototipo más cercano (o los dos prototipos más cercanos en algunas variantes como LVQ2.1 y LVQ3) a una instancia de entrenamiento se ajusta. Esto significa que las reglas de aprendizaje operan en un **vecindario localizado** alrededor de la instancia de entrada. Los prototipos se mueven en el espacio de características para delimitar mejor las fronteras de clase, lo que refleja la estructura local de los datos. De esta manera, LVQ puede modelar **relaciones no lineales** y estructuras de clase complejas al ajustar las posiciones de estos "representantes" locales de las clases.
+
+* **Aspecto Global:** Aunque el ajuste es local, el conjunto de todos los prototipos de LVQ, una vez entrenados, forma una **representación global del espacio de características** que se utiliza para la clasificación. Estos prototipos definen un mapa de clasificación en todo el espacio de entrada, donde cada región (celda de Voronoi) se asocia con una clase. Por lo tanto, el modelo final, que es la colección de prototipos, se aplica de manera global para clasificar cualquier nueva observación. El proceso de optimización para encontrar las posiciones de los prototipos, aunque iterativo y basado en actualizaciones locales, busca una configuración global óptima que minimice el error de clasificación en todo el conjunto de entrenamiento.
+
 
 ```{r, echo = FALSE}
 criterios <- c(
@@ -163,6 +213,32 @@ tabla_lvq %>%
 
 ## Locally Weighted Learning (LWL)  {-}   
 
+
+**Locally Weighted Learning (LWL)** es una clase de algoritmos de **aprendizaje supervisado no paramétrico** que se distingue por su enfoque en la **construcción de modelos locales** para cada nueva instancia de consulta, en lugar de aprender un único modelo global para todo el conjunto de datos. Es un tipo de **"aprendizaje perezoso" (lazy learning)**, lo que significa que la mayor parte del "trabajo" (cálculos) se realiza en el momento de la predicción, no durante una fase de entrenamiento explícita.
+
+La idea central de LWL es que, para predecir la salida de una nueva instancia de consulta, se construye un modelo simple (a menudo lineal o polinómico) utilizando solo las **instancias de entrenamiento que son "cercanas"** a la instancia de consulta. Además, a las instancias de entrenamiento más cercanas se les asigna un **peso mayor** en la construcción de este modelo local.
+
+El proceso de LWL (especialmente para regresión, conocida como **Regresión Lineal Ponderada Localmente - LWLR** o LOESS/LOWESS) implica:
+
+1.  **Sin Fase de Entrenamiento explícita:** El algoritmo simplemente almacena todo el conjunto de datos de entrenamiento.
+2.  **Para cada Instancia de Consulta (Predicción):**
+    * **Cálculo de Distancias:** Se calcula la distancia entre la instancia de consulta y todas las instancias de entrenamiento.
+    * **Asignación de Pesos:** Se aplica una **función de kernel (función de ponderación)** a estas distancias para asignar un peso a cada instancia de entrenamiento. Las instancias más cercanas a la consulta reciben un peso mayor, y los pesos disminuyen a medida que la distancia aumenta. Un hiperparámetro llamado **ancho de banda (bandwidth)** controla qué tan rápido disminuyen los pesos con la distancia (determina el "tamaño del vecindario" influyente).
+    * **Construcción del Modelo Local:** Se ajusta un modelo simple (ej., una regresión lineal) a las instancias de entrenamiento, pero esta vez, cada instancia se pondera según el peso calculado. Esto es, se minimiza una suma de errores cuadrados ponderada.
+    * **Predicción:** El valor predicho para la instancia de consulta se obtiene utilizando este modelo local recién construido. El modelo local se descarta después de hacer la predicción para esa instancia.
+
+LWL es muy efectivo para modelar relaciones **no lineales y complejas** en los datos porque puede adaptar la forma de la función de predicción a las variaciones locales. Es una generalización de k-Nearest Neighbors (kNN) donde en lugar de solo promediar o votar, se ajusta un modelo ponderado.
+
+
+**Aprendizaje Global vs. Local:**
+
+Locally Weighted Learning (LWL) es el epítome del **aprendizaje puramente local**.
+
+* **Aspecto Local:** LWL es intrínsecamente local en su funcionamiento. Para **cada nueva predicción**, se construye un **modelo específico y único** que solo es válido en el **vecindario local** de la instancia de consulta. Los pesos asignados a las instancias de entrenamiento enfatizan las que están más cerca del punto de consulta, lo que significa que el modelo se "adapta" a la estructura de los datos en esa región particular del espacio de características. Esto le permite manejar eficientemente relaciones no lineales y heterogéneas, ya que la relación puede ser diferente en distintas partes del dominio de los datos.
+
+* **Sin Modelo Explícito Global:** No hay un conjunto fijo de parámetros o una función matemática única que describa la relación entre las entradas y las salidas para todo el conjunto de datos. En cambio, el "modelo" se genera dinámicamente para cada punto de consulta, utilizando solo la información relevante de su vecindario. La complejidad computacional de LWL aumenta con el número de predicciones, ya que cada una requiere la construcción de un nuevo modelo local.
+
+
 ```{r, echo = FALSE}
 criterios <- c(
   "Tipo de modelo",
@@ -237,7 +313,32 @@ tabla_lwl %>%
 
 
 
-## Self - Organizing Map (SOM)  {-} 
+## Self - Organizing Map (SOM)  {-}   
+
+Una **Self-Organizing Map (SOM)**, también conocida como **Mapa Autoorganizado de Kohonen** o **Mapa de Características Autoorganizado (SOFM)**, es un tipo de **red neuronal artificial no supervisada** utilizada principalmente para **reducción de dimensionalidad y visualización de datos**. Su objetivo es producir una representación de baja dimensión (típicamente bidimensional) de un conjunto de datos de alta dimensión, mientras **preserva la estructura topológica** de los datos originales. Esto significa que los puntos de datos que son similares en el espacio de alta dimensión se mapean a neuronas cercanas en el mapa de baja dimensión.
+
+A diferencia de otras redes neuronales que utilizan el aprendizaje por retropropagación y descenso de gradiente (aprendizaje basado en el error), las SOM utilizan un proceso de **aprendizaje competitivo**.
+
+El funcionamiento de un SOM implica los siguientes pasos iterativos:
+
+1.  **Inicialización:** Se crea una cuadrícula de "neuronas" (también llamadas unidades o nodos) en el espacio de baja dimensión (ej., una cuadrícula 2D). A cada neurona se le asigna un **vector de pesos** con la misma dimensionalidad que los datos de entrada. Estos vectores de pesos se inicializan aleatoriamente o de forma lineal.
+2.  **Competencia:** Para cada vector de entrada (punto de datos) del conjunto de entrenamiento:
+    * Se calcula la distancia (comúnmente euclidiana) entre el vector de entrada y el vector de pesos de cada neurona en la cuadrícula.
+    * La neurona con el vector de pesos más cercano al vector de entrada se denomina **Unidad de Mejor Coincidencia (BMU - Best Matching Unit)**.
+3.  **Cooperación (Vecindad):** La BMU y sus neuronas **vecinas** (dentro de un radio definido en la cuadrícula) son identificadas. El tamaño de este radio de vecindad disminuye con el tiempo a medida que avanza el entrenamiento. La influencia del ajuste de los pesos disminuye con la distancia de la BMU dentro de esta vecindad (definido por una **función de vecindad**, como una Gaussiana).
+4.  **Adaptación:** Los vectores de pesos de la BMU y sus neuronas vecinas se **ajustan ligeramente** para que se acerquen al vector de entrada original. La magnitud del ajuste está determinada por una **tasa de aprendizaje**, que también disminuye con el tiempo. El ajuste es mayor para la BMU y menor para las neuronas más alejadas dentro del radio de vecindad.
+5.  **Iteración:** Los pasos 2-4 se repiten para un gran número de épocas (iteraciones) y para todos los vectores de entrada, hasta que los pesos de las neuronas convergen y la red se "autoorganiza".
+
+Al final del entrenamiento, las neuronas en el mapa se han organizado de tal manera que las neuronas cercanas representan datos de entrada similares, creando un "mapa" donde las regiones con densidades de datos similares forman grupos o clusters.
+
+**Aprendizaje Global vs. Local:**
+
+Una Self-Organizing Map (SOM) es un modelo que **combina aspectos de aprendizaje global y local** de una manera muy particular, que evoluciona a lo largo del proceso de entrenamiento.
+
+* **Aspecto Global (Fases Iniciales del Entrenamiento):** Al principio del entrenamiento, el radio de vecindad y la tasa de aprendizaje son grandes. Esto significa que cuando una BMU se ajusta, un **gran número de neuronas circundantes en el mapa también se ajustan**, incluso aquellas que están relativamente lejos de la BMU. Este amplio ajuste permite que el mapa se "organice globalmente" para capturar la estructura general de los datos. La topología general de la proyección se establece en esta fase inicial. El mapa se estira y se contrae para abarcar la dispersión global de los datos, como si una "regresión ponderada localmente" de gran escala estuviera adaptando el mapa entero.
+
+* **Aspecto Local (Fases Posteriores del Entrenamiento):** A medida que el entrenamiento avanza, el radio de vecindad y la tasa de aprendizaje **disminuyen gradualmente**. Esto hace que los ajustes a los pesos sean cada vez más localizados. En las etapas finales, solo la BMU y sus vecinos más cercanos (o incluso solo la BMU) se ajustan significativamente. Esta fase de "afinamiento" permite que el mapa capture los detalles más finos y las **estructuras locales** dentro de los datos, refinando las fronteras entre los grupos y asegurando que los puntos similares se agrupen con alta precisión.
+
 
 ```{r, echo = FALSE}
 criterios <- c(
