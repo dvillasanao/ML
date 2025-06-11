@@ -23,77 +23,11 @@ Los coeficientes de OLS se pueden calcular directamente con una fórmula matemá
 En el contexto del **aprendizaje global vs. local**, OLS es un ejemplo claro de un modelo de **aprendizaje global**. OLS busca una **única ecuación** o un conjunto de coeficientes que describan la relación entre las variables para **todo el conjunto de datos**. La línea o hiperplano que encuentra es una solución global que se aplica de manera uniforme en todo el espacio de características. Esto la hace muy interpretable y computacionalmente eficiente, pero limitada si la relación real entre las variables no es estrictamente lineal en todo el dominio de los datos.
 
 
-```{r, echo = FALSE}
-# Datos de la tabla
-criterios <- c(
-  "Tipo de modelo",
-  "Variable respuesta",
-  "Variables predictoras",
-  "Relación entre variables",
-  "Normalidad de residuos",
-  "Independencia de errores",
-  "Homoscedasticidad",
-  "Sensible a outliers",
-  "Multicolinealidad entre predictores",
-  "Interpretabilidad",
-  "Velocidad y eficiencia",
-  "Validación cruzada",
-  "No funciona bien si..."
-)
-aplica <- c(
-  "✅ Supervisado",
-  "✅ Numérica continua",
-  "✅ Numéricas y/o categóricas",
-  "✅ Lineal (supuesto clave)",
-  "☑️ Deseable",
-  "✅ Necesaria",
-  "✅ Necesaria",
-  "⚠️ Sí",
-  "⚠️ Problema común",
-  "✅ Alta",
-  "✅ Muy alta",
-  "✅ Compatible",
-  "❌ Relaciones no lineales, outliers severos, colinealidad"
-)
-detalles <- c(
-  "Se entrena con datos X → y",
-  "Ej. mpg, precio, ingresos",
-  "Categorías convertidas a dummies",
-  "Se asume una relación lineal entre X e Y",
-  "Importante para intervalos de confianza válidos",
-  "Errores deben ser independientes",
-  "Varianza de errores debe ser constante",
-  "Outliers pueden influir mucho en el modelo",
-  "Usar VIF para detectar problemas",
-  "Modelo fácil de explicar",
-  "Rápido incluso con datos grandes",
-  "Ayuda a prevenir overfitting",
-  "Evitar si no hay linealidad o hay muchos outliers"
-)
-# Crear y mostrar tabla
-tabla_olsr <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
-require(gt)
-tabla_olsr %>%
- gt() %>%
-  tab_header(title = "Guía rápida para elegir OLSR",
-             subtitle = "Regresión de Mínimos Cuadrados Ordinarios (OLSR)") %>%
-   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
-     tab_options(heading.title.font.size = 14,
-                 heading.subtitle.font.size = 12,
-                 table.font.names = "Century Gothic",
-                 table.font.size = 10,
-                 data_row.padding = px(1)) %>%
-      tab_style(style = list(cell_text(align = "left",
-                                       weight = 'bold')),
-                locations = list(cells_title(groups = c("title")))) %>%
-       tab_style(style = list(cell_text(align = "left")),
-                 locations = list(cells_title(groups = c("subtitle")))) %>%
-        cols_width(starts_with("Detalles") ~ px(500),
-                   everything() ~ px(200)) %>%
-         as_raw_html()
-```
+## Linear Regression {.unnumbered}   
 
-## Linear Regression {.unnumbered}  
+<p align="center">
+<img src="../../img/Regression/01_image_OLSR.png" alt="Machine Learning Steps" width="50%"/>
+</p>
 
 La **Regresión Lineal** es uno de los algoritmos más fundamentales y ampliamente utilizados en el campo del **Machine Learning y la estadística**. Es un modelo **supervisado** que busca establecer una **relación lineal** entre una **variable de respuesta (o dependiente)** continua y una o más **variables predictoras (o independientes)**.
 
