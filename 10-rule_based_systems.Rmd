@@ -111,7 +111,57 @@ tabla_cubist %>%
          as_raw_html() 
 ```
 
-## Decision Rules  {-}  
+## Decision Rules  {-}   
+
+Las **Reglas de Decisión** no son un algoritmo de Machine Learning en sí mismas, sino una **forma de representar un modelo predictivo** que es altamente **interpretable y fácil de entender**. Son una de las formas más intuitivas de expresar el conocimiento extraído de los datos. Una regla de decisión típicamente toma la forma de una declaración **"SI-ENTONCES" (IF-THEN)**, donde la parte "SI" (antecedente) describe las condiciones que deben cumplirse y la parte "ENTONCES" (consecuente) especifica la predicción o la acción a tomar.
+
+**Estructura de una Regla de Decisión:**
+
+Una regla de decisión básica tiene la siguiente forma:
+
+**SI** *condición 1* **Y** *condición 2* **Y** ... **Y** *condición N* **ENTONCES** *predicción / clase / valor*
+
+**Ejemplos:**
+
+* **Para Clasificación:**
+    * **SI** `Edad` > 30 **Y** `Ingreso` < 50,000 **ENTONCES** `Clase: Riesgo Bajo`
+    * **SI** `Clima` = Soleado **Y** `Humedad` > 70% **ENTONCES** `Acción: No Jugar Tenis`
+
+* **Para Regresión:**
+    * **SI** `Tamaño_Casa` > 150 m² **Y** `Num_Habitaciones` = 3 **ENTONCES** `Precio_Estimado: $300,000`
+
+**Características Clave:**   
+
+* **Interpretabilidad:** Son inherentemente fáciles de entender por los humanos, incluso por aquellos sin conocimientos técnicos profundos.
+* **Modularidad:** Un modelo completo puede estar compuesto por un conjunto de reglas. Cada regla es independiente y fácil de examinar.
+* **No Linealidad:** Aunque cada regla es una declaración lógica simple, un conjunto de reglas puede modelar relaciones no lineales complejas en los datos, ya que cada regla cubre una región diferente del espacio de características.
+* **Selección de Características Implícita:** Al construir reglas, solo las características relevantes para la condición se incluyen, lo que realiza una selección implícita de características.
+* **Robustez:** A menudo son bastante robustas a los outliers y a los datos ruidosos si las reglas se derivan y podan correctamente.
+
+**Algoritmos que Generan Reglas de Decisión:** 
+
+Si bien las reglas de decisión son la forma de representación, varios algoritmos de Machine Learning se especializan en aprender estas reglas a partir de los datos:
+
+* **Árboles de Decisión:** Cada ruta desde la raíz hasta una hoja en un árbol de decisión se puede traducir directamente en una regla de decisión.
+* **Algoritmos Basados en Reglas:**
+    * **OneR:** Genera una única regla basada en el atributo más predictivo.
+    * **RIPPER:** Produce conjuntos de reglas optimizados para la clasificación, con énfasis en la poda y la simplicidad.
+    * **RuleFit:** Combina reglas extraídas de ensamblajes de árboles con características originales en un modelo lineal regularizado.
+* **Sistemas de Lógica Difusa:** Utilizan reglas difusas para manejar la incertidumbre y la imprecisión.
+
+
+**Aprendizaje Global vs. Local:**
+
+Los modelos basados en **Reglas de Decisión** combinan de manera muy efectiva **aspectos de aprendizaje global y local**.
+
+* **Aspecto Local (Cada Regla Individual):**
+    * Cada regla de decisión es intrínsecamente **local**. Define una **región específica** (un subespacio, a menudo un hiperrectángulo) en el espacio de características. Dentro de esta región, la regla hace una predicción particular. Por ejemplo, la regla "SI `Edad` > 30 Y `Ingreso` < 50,000" solo se aplica a un subconjunto específico de instancias.
+    * La naturaleza "local" de cada regla permite al modelo adaptarse a **relaciones no lineales y complejas**. Diferentes reglas pueden activarse en distintas partes del espacio de datos, capturando patrones que varían significativamente de una región a otra, similar a una **"regresión (o clasificación) ponderada localmente"** donde cada regla representa un modelo simple para su región.
+
+* **Aspecto Global (El Conjunto de Reglas):**
+    * Aunque las reglas individuales son locales, el **conjunto completo de reglas** que conforma el modelo se aplica para cubrir **todo el espacio de características relevante**. Este conjunto de reglas forma un **modelo predictivo global** que puede clasificar o predecir un valor para cualquier nueva instancia.
+    * Los algoritmos que generan estos conjuntos de reglas (como RIPPER) a menudo optimizan la colección de reglas para un rendimiento global, buscando un equilibrio entre la precisión y la complejidad del modelo en su conjunto.
+
 
 ```{r, echo = FALSE}
 criterios <- c(
@@ -716,7 +766,6 @@ tabla_zeror %>%
                    everything() ~ px(200)) %>%
          as_raw_html() 
 ```
-
 
 
 

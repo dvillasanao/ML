@@ -93,7 +93,59 @@ tabla_olsr %>%
          as_raw_html()
 ```
 
-## Linear Regression {.unnumbered}
+## Linear Regression {.unnumbered}  
+
+La **Regresión Lineal** es uno de los algoritmos más fundamentales y ampliamente utilizados en el campo del **Machine Learning y la estadística**. Es un modelo **supervisado** que busca establecer una **relación lineal** entre una **variable de respuesta (o dependiente)** continua y una o más **variables predictoras (o independientes)**.
+
+**Concepto y Ecuación:**
+
+La idea central de la regresión lineal es encontrar la **línea (o hiperplano en múltiples dimensiones)** que mejor se ajusta a los datos, de modo que se pueda predecir el valor de la variable dependiente basándose en los valores de las variables predictoras.
+
+* **Regresión Lineal Simple:** Implica una única variable predictora. La ecuación de la línea es:
+    $Y = \beta_0 + \beta_1 X + \epsilon$
+    Donde:
+    * $Y$ es la variable de respuesta.
+    * $X$ es la variable predictora.
+    * $\beta_0$ es el **intercepto** (el valor de $Y$ cuando $X$ es 0).
+    * $\beta_1$ es el **coeficiente de la pendiente** (cuánto cambia $Y$ por cada unidad de cambio en $X$).
+    * $\epsilon$ es el **término de error** o residual (la parte de $Y$ que el modelo no puede explicar).
+
+* **Regresión Lineal Múltiple:** Implica dos o más variables predictoras. La ecuación se extiende a:
+    $Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + ... + \beta_p X_p + \epsilon$
+    Donde:
+    * $X_1, X_2, ..., X_p$ son las $p$ variables predictoras.
+    * $\beta_1, \beta_2, ..., \beta_p$ son los coeficientes de cada variable predictora.
+
+**Cómo Funciona (Mínimos Cuadrados Ordinarios - OLS):**
+
+El método más común para estimar los coeficientes ($\beta$s) en la regresión lineal es el de **Mínimos Cuadrados Ordinarios (OLS)**. OLS funciona minimizando la **suma de los cuadrados de los residuos**. Un residuo es la diferencia entre el valor real de $Y$ y el valor predicho por el modelo ($\hat{Y}$).
+
+$\text{Minimizar: } \sum_{i=1}^{n} (Y_i - \hat{Y}_i)^2 = \sum_{i=1}^{n} (Y_i - (\beta_0 + \beta_1 X_{i1} + ... + \beta_p X_{ip}))^2$
+
+Al minimizar esta suma de cuadrados, OLS encuentra los coeficientes que hacen que la línea de regresión esté lo más cerca posible de la mayoría de los puntos de datos.
+
+**Supuestos Clave:**  
+
+La validez de los resultados de la regresión lineal tradicional se basa en varios supuestos:
+
+* **Linealidad:** La relación entre las variables $X$ y $Y$ es lineal.
+* **Independencia:** Las observaciones son independientes entre sí.
+* **Normalidad de los Residuos:** Los residuos se distribuyen normalmente.
+* **Homocedasticidad:** La varianza de los residuos es constante a lo largo de todos los niveles de las variables predictoras.
+* **No Multicolinealidad Perfecta:** Las variables predictoras no deben estar perfectamente correlacionadas entre sí.
+
+**Uso y Limitaciones:**
+
+La regresión lineal es popular por su **simplicidad, interpretabilidad** y por ser un buen punto de partida para muchos problemas de predicción. Sin embargo, su principal limitación es que solo puede modelar **relaciones lineales**. Si la relación subyacente entre las variables es no lineal, una regresión lineal puede no capturarla adecuadamente y dar resultados inexactos.
+
+**Aprendizaje Global vs. Local:**
+
+La Regresión Lineal es un modelo de **aprendizaje puramente global**.
+
+* **Aspecto Global:** La Regresión Lineal aprende un **único conjunto de coeficientes** que define una **línea (o hiperplano) global** que se aplica a todo el espacio de características. Esta línea busca representar la **relación lineal promedio o general** entre las variables predictoras y la variable de respuesta a lo largo de todo el rango de los datos. La predicción para cualquier nueva instancia se realiza utilizando la misma ecuación lineal, sin importar en qué parte del espacio de características se encuentre. No hay adaptaciones o modelos separados para diferentes subregiones de los datos; el modelo es una función que describe una tendencia general y global.
+
+* **Rigidez de la Linealidad:** Debido a su naturaleza global y lineal, la regresión lineal no puede capturar relaciones **no lineales o interacciones complejas** entre las variables predictoras de forma inherente. Si la relación real en los datos es no lineal, el modelo lineal intentará ajustarla con la mejor línea recta posible, lo que podría llevar a un bajo rendimiento.
+
 
 ## Regresión Logística {.unnumbered}
 
@@ -329,12 +381,55 @@ tabla_mars %>%
 
 ## Stepwise Regression {.unnumbered}
 
-**Regresión por pasos** : añade características al modelo una a una
-hasta encontrar la puntuación óptima para tu conjunto de
-características. La selección por pasos alterna entre el avance y el
-retroceso, incorporando y eliminando variables que cumplen los criterios
-de entrada o eliminación, hasta alcanzar un conjunto estable de
-variables.
+La **Regresión por Pasos (Stepwise Regression)** es una técnica para construir un modelo de regresión lineal (o a veces otros modelos lineales generalizados) seleccionando las variables predictoras de forma iterativa y automática. Su objetivo es encontrar un subconjunto óptimo de variables que mejore la capacidad predictiva del modelo sin incluir variables irrelevantes o redundantes. Esto ayuda a simplificar el modelo, mejorar la interpretabilidad y reducir el riesgo de sobreajuste.
+
+Existen tres estrategias principales para la regresión por pasos:
+
+1.  **Selección Hacia Adelante (Forward Selection):**
+    * Comienza con un modelo que no incluye ninguna variable predictora (solo el intercepto).
+    * En cada paso, evalúa todas las variables predictoras disponibles que aún no están en el modelo.
+    * Añade al modelo la variable que, al ser incluida, produce la mayor mejora estadística (generalmente medida por un valor p bajo, un R-cuadrado ajustado mayor, o un criterio de información como AIC o BIC).
+    * El proceso continúa hasta que ninguna de las variables restantes mejora el modelo por encima de un umbral predefinido.
+
+2.  **Eliminación Hacia Atrás (Backward Elimination):**
+    * Comienza con un modelo que incluye **todas** las variables predictoras posibles.
+    * En cada paso, evalúa las variables predictoras que actualmente están en el modelo.
+    * Elimina del modelo la variable que es menos significativa estadísticamente (generalmente medida por un valor p alto, o una reducción en el R-cuadrado ajustado o un aumento en AIC/BIC).
+    * El proceso continúa hasta que la eliminación de cualquier variable empeoraría significativamente el modelo.
+
+3.  **Híbrida (Mixed / Bidirectional Stepwise):**
+    * Combina la selección hacia adelante y la eliminación hacia atrás.
+    * En cada paso, el algoritmo puede tanto añadir una variable si mejora el modelo, como eliminar una variable que ya está en el modelo si se vuelve redundante o no significativa. Esto permite que el modelo reconsidere variables que fueron añadidas o eliminadas en pasos anteriores. Es el enfoque más común y robusto.
+
+**Criterios de Selección:**  
+
+La decisión de añadir o eliminar una variable en cada paso se basa en criterios estadísticos, siendo los más comunes:
+* **Valores p:** Umbrales para la significancia estadística de los coeficientes.
+* **$R^2$ ajustado:** Mide la proporción de varianza explicada por el modelo, penalizando la inclusión de variables innecesarias.
+* **Criterio de Información de Akaike (AIC):** Penaliza la complejidad del modelo (número de parámetros) en relación con su bondad de ajuste.
+* **Criterio de Información Bayesiano (BIC):** Similar al AIC, pero con una penalización más fuerte por la complejidad.
+
+**Ventajas y Desventajas:**
+
+* **Ventajas:** Puede ayudar a construir modelos más parsimoniosos, mejorar la interpretabilidad y reducir la multicolinealidad.
+* **Desventajas:**
+    * **Sobreajuste:** Puede llevar a sobreajuste si se usa de forma acrítica, ya que el algoritmo se optimiza para los datos de entrenamiento.
+    * **Problemas de Significancia Estadística:** Los valores p y otras métricas pueden no ser confiables debido a la selección de características basada en los datos.
+    * **Inestabilidad:** El conjunto de variables seleccionadas puede ser muy sensible a pequeñas perturbaciones en los datos o a la elección del criterio de selección.
+    * **Ignora el Conocimiento del Dominio:** Puede seleccionar variables que son estadísticamente significativas pero que carecen de sentido práctico o causal.
+    * **No Maneja Interacciones Complejas:** Es fundamentalmente un método para seleccionar variables para un modelo lineal y no está diseñado para descubrir relaciones no lineales o interacciones complejas.
+
+Debido a sus desventajas, la regresión por pasos se utiliza con más cautela hoy en día. A menudo se prefieren métodos de regularización (como Lasso o Elastic Net) para la selección de características, ya que son más estables y realizan la selección de forma más robusta.
+
+**Aprendizaje Global vs. Local:**
+
+La Regresión por Pasos es un modelo de **aprendizaje global**.
+
+* **Aspecto Global:** La regresión por pasos construye un **único modelo de regresión lineal global** que busca explicar la relación entre las variables predictoras y la respuesta en todo el conjunto de datos. La selección de variables se realiza para optimizar el rendimiento de este modelo global. Los coeficientes finales que se obtienen definen una función lineal que se aplica de manera consistente a cualquier nueva observación, sin importar en qué parte del espacio de características se encuentre.
+
+* **Proceso de Selección (Global):** Aunque el proceso es iterativo y añade/elimina variables, la decisión en cada paso se basa en cómo esa adición/eliminación afecta la bondad de ajuste o la complejidad del modelo en **todo el conjunto de datos**. No se ajustan modelos separados o locales para diferentes regiones.
+
+
 
 ## Support Vector Machine (SVM) {.unnumbered}
 
