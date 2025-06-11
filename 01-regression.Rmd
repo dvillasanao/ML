@@ -16,6 +16,11 @@
 ## Ordinary Least Squares Regression (`OLSR`) {-}   
 
 
+```{r, echo = FALSE,out.width='50%', fig.align='center', fig.cap="Elaboración propia"}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Regression/01_image_OLSR.png"))
+```
+
 La **Regresión por Mínimos Cuadrados Ordinarios (OLS)** es una técnica fundamental en estadística y Machine Learning para modelar la **relación lineal** entre una **variable dependiente** (a predecir) y una o más **variables independientes**. Su objetivo es encontrar la **línea (o hiperplano) que mejor se ajusta** a los datos, minimizando la **suma de los cuadrados de las diferencias** entre los valores reales y los predichos por el modelo. Es decir, busca los coeficientes que hacen que la distancia (al cuadrado) de los puntos a la línea sea mínima.
 
 Los coeficientes de OLS se pueden calcular directamente con una fórmula matemática, sin necesidad de procesos iterativos complejos, bajo ciertos supuestos como la linealidad de la relación y la independencia de los errores.
@@ -25,10 +30,6 @@ En el contexto del **aprendizaje global vs. local**, OLS es un ejemplo claro de 
 
 ## Linear Regression {.unnumbered}   
 
-<p align="center">
-<img src="../../img/Regression/01_image_OLSR.png" alt="Machine Learning Steps" width="50%"/>
-</p>
-
 La **Regresión Lineal** es uno de los algoritmos más fundamentales y ampliamente utilizados en el campo del **Machine Learning y la estadística**. Es un modelo **supervisado** que busca establecer una **relación lineal** entre una **variable de respuesta (o dependiente)** continua y una o más **variables predictoras (o independientes)**.
 
 **Concepto y Ecuación:**
@@ -36,17 +37,19 @@ La **Regresión Lineal** es uno de los algoritmos más fundamentales y ampliamen
 La idea central de la regresión lineal es encontrar la **línea (o hiperplano en múltiples dimensiones)** que mejor se ajusta a los datos, de modo que se pueda predecir el valor de la variable dependiente basándose en los valores de las variables predictoras.
 
 * **Regresión Lineal Simple:** Implica una única variable predictora. La ecuación de la línea es:
-    $Y = \beta_0 + \beta_1 X + \epsilon$
-    Donde:
+    $$Y = \beta_0 + \beta_1 X + \epsilon$$  
+    
+Donde:
     * $Y$ es la variable de respuesta.
     * $X$ es la variable predictora.
     * $\beta_0$ es el **intercepto** (el valor de $Y$ cuando $X$ es 0).
     * $\beta_1$ es el **coeficiente de la pendiente** (cuánto cambia $Y$ por cada unidad de cambio en $X$).
     * $\epsilon$ es el **término de error** o residual (la parte de $Y$ que el modelo no puede explicar).
 
-* **Regresión Lineal Múltiple:** Implica dos o más variables predictoras. La ecuación se extiende a:
-    $Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + ... + \beta_p X_p + \epsilon$
-    Donde:
+* **Regresión Lineal Múltiple:** Implica dos o más variables predictoras. La ecuación se extiende a:   
+    $$Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + ... + \beta_p X_p + \epsilon$$  
+    
+Donde:
     * $X_1, X_2, ..., X_p$ son las $p$ variables predictoras.
     * $\beta_1, \beta_2, ..., \beta_p$ son los coeficientes de cada variable predictora.
 
@@ -54,7 +57,7 @@ La idea central de la regresión lineal es encontrar la **línea (o hiperplano e
 
 El método más común para estimar los coeficientes ($\beta$s) en la regresión lineal es el de **Mínimos Cuadrados Ordinarios (OLS)**. OLS funciona minimizando la **suma de los cuadrados de los residuos**. Un residuo es la diferencia entre el valor real de $Y$ y el valor predicho por el modelo ($\hat{Y}$).
 
-$\text{Minimizar: } \sum_{i=1}^{n} (Y_i - \hat{Y}_i)^2 = \sum_{i=1}^{n} (Y_i - (\beta_0 + \beta_1 X_{i1} + ... + \beta_p X_{ip}))^2$
+$$\text{Minimizar: } \sum_{i=1}^{n} (Y_i - \hat{Y}_i)^2 = \sum_{i=1}^{n} (Y_i - (\beta_0 + \beta_1 X_{i1} + ... + \beta_p X_{ip}))^2$$
 
 Al minimizar esta suma de cuadrados, OLS encuentra los coeficientes que hacen que la línea de regresión esté lo más cerca posible de la mayoría de los puntos de datos.
 
@@ -160,7 +163,12 @@ tabla_logit %>%
          as_raw_html()
 ```
 
-## Locally Estimated Scatterplot Smoothing (`LOESS`) {.unnumbered}
+## Locally Estimated Scatterplot Smoothing (`LOESS`) {.unnumbered} 
+
+```{r, echo = FALSE,out.width='50%', fig.align='center', fig.cap="Elaboración propia"}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Regression/LOESS.png"))
+```
 
 **LOESS (Locally Estimated Scatterplot Smoothing)**, o LOWESS, es una técnica de **regresión no paramétrica** para crear una curva suave que se ajusta a los datos en un diagrama de dispersión. Su gran ventaja es que **no asume una forma funcional global** específica para la relación entre las variables, lo que la hace muy flexible para identificar tendencias y patrones no lineales.
 
@@ -236,7 +244,12 @@ tabla_loess %>%
          as_raw_html()
 ```
 
-## Multivariate Adaptive Regression Splines (`MARS`) {.unnumbered}
+## Multivariate Adaptive Regression Splines (`MARS`) {.unnumbered} 
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Regression/MARS.png"))
+```
 
 **Multivariate Adaptive Regression Splines (MARS)** es un algoritmo de **regresión no paramétrica** que extiende los modelos lineales para manejar relaciones no lineales y complejas. Desarrollado por Jerome Friedman, MARS construye su modelo al **dividir el espacio de entrada en múltiples regiones y ajustar una función lineal simple (o de orden superior) a cada región**.
 
@@ -365,7 +378,13 @@ La Regresión por Pasos es un modelo de **aprendizaje global**.
 
 
 
-## Support Vector Machine (SVM) {.unnumbered}
+## Support Vector Machine (SVM) {.unnumbered} 
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Regression/SVM.png"))
+```
+
 
 **Support Vector Machine (SVM)** es un potente y versátil algoritmo de **Machine Learning** que se utiliza tanto para tareas de **clasificación** como de **regresión**, aunque es más conocido por su aplicación en clasificación. Su objetivo principal es encontrar el **hiperplano óptimo** que separe las clases en el espacio de características con el **margen** más grande posible. Los puntos de datos más cercanos a este hiperplano se llaman **vectores de soporte**, y son cruciales para definir la frontera de decisión.
 
