@@ -471,7 +471,13 @@ tabla_gbm %>%
 ```
 
 
-## Gradient Boosted Regression Trees (GBRT)  {-}   
+## Gradient Boosted Regression Trees (GBRT)  {-}  
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Ensemble/GBRT.png"))
+```
+
 
 **Gradient Boosted Regression Trees (GBRT)**, a menudo conocida como **Gradient Boosting Machines (GBM)** cuando los modelos base son árboles de decisión de regresión, es una técnica de **aprendizaje conjunto (ensemble learning)** extremadamente potente y ampliamente utilizada para tareas de **regresión** (predicción de valores numéricos continuos) y también puede adaptarse para **clasificación**. Su fortaleza radica en su capacidad para construir un modelo predictivo robusto y preciso mediante la combinación secuencial de múltiples árboles de decisión "débiles".
 
