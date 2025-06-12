@@ -11,7 +11,13 @@
 
 ---
 
-## Adaptive Boosting (AdaBoost)  {-}  
+## Adaptive Boosting (AdaBoost)  {-}   
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Ensemble/AdaBoost.png"))
+```
+
 
 **AdaBoost (Adaptive Boosting)** es uno de los algoritmos de **boosting** más influyentes y el primero en ser propuesto con éxito, desarrollado por Yoav Freund y Robert Schapire en 1995. Es una técnica de **aprendizaje conjunto (ensemble learning)** utilizada principalmente para **clasificación**, aunque sus principios pueden extenderse a la regresión. La idea fundamental de AdaBoost es construir un modelo fuerte combinando secuencialmente las predicciones de múltiples **clasificadores "débiles" o "base"**, y lo hace prestando más atención a los ejemplos que los modelos anteriores clasificaron incorrectamente.
 
@@ -100,6 +106,11 @@ tabla_adaboost %>%
 
 ## Boosting  {-}   
 
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Ensemble/Boosting.png"))
+```
+
 **Boosting** es una técnica de **aprendizaje conjunto (ensemble learning)** que busca transformar un conjunto de **modelos "débiles" o "base"** en un **modelo "fuerte" o "preciso"**. La idea fundamental es construir modelos de forma **secuencial** e **iterativa**, donde cada nuevo modelo se centra en corregir los errores o deficiencias de los modelos construidos en las iteraciones anteriores. A diferencia del *bagging* (como en Random Forest), donde los modelos se entrenan de forma independiente, el *boosting* es intrínsecamente secuencial y adaptativo.
 
 El concepto clave de Boosting radica en la asignación de **pesos** o en el enfoque en los **errores residuales**:
@@ -187,6 +198,11 @@ tabla_boosting %>%
 
 ## Bootstrapped Aggregation (Bagging)  {-}    
 
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Ensemble/Bagging.png"))
+```
+
 **Bootstrapped Aggregation (Bagging)** es una técnica de **aprendizaje conjunto (ensemble learning)** diseñada para mejorar la estabilidad y precisión de los algoritmos de aprendizaje automático, particularmente para reducir la **varianza** en los modelos. Fue introducida por Leo Breiman en 1996 y es la base de algoritmos muy populares como **Random Forest**. La idea fundamental de Bagging es entrenar múltiples versiones de un mismo modelo base en diferentes subconjuntos del conjunto de datos original y luego combinar sus predicciones.
 
 El proceso central de Bagging implica dos pasos clave:
@@ -268,7 +284,12 @@ tabla_bagging %>%
          as_raw_html() 
 ```
 
-## Extreme Gradient Boosting (XGBoost)  {-}    
+## Extreme Gradient Boosting (XGBoost)  {-}   
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Ensemble/XGBoost.png"))
+```
 
 **XGBoost (Extreme Gradient Boosting)** es una implementación optimizada y altamente eficiente del algoritmo de **Gradient Boosting Machines (GBM)**, ampliamente reconocida por su **velocidad**, **rendimiento** y **escalabilidad** en problemas de **clasificación** y **regresión**. Ganó una inmensa popularidad debido a su éxito en numerosas competiciones de *machine learning* (como Kaggle). Aunque se basa en los principios de GBM, XGBoost introduce varias mejoras clave que lo hacen superior en muchos escenarios.
 
@@ -356,7 +377,12 @@ tabla_xgboost %>%
 ```
 
 
-## Gradient Boosting Machines (GBM)  {-}   
+## Gradient Boosting Machines (GBM)  {-}  
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Ensemble/GBM.png"))
+```
 
 **Gradient Boosting Machines (GBM)** es un algoritmo de **aprendizaje conjunto (ensemble learning)** extremadamente potente y versátil, utilizado para **clasificación**, **regresión** y otras tareas predictivas. A diferencia de Random Forest que construye árboles de forma independiente en paralelo (bagging), GBM construye los árboles de forma **secuencial** y aditiva. La idea central es que cada nuevo árbol en el conjunto intenta corregir los errores residuales (residuos) del conjunto de árboles construidos previamente.
 
@@ -619,6 +645,11 @@ tabla_lightgbm %>%
 
 ## Random Forest  {-}   
 
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Ensemble/Bagging.png"))
+```
+
 **Random Forest** es un algoritmo de **aprendizaje conjunto (ensemble learning)** altamente popular y potente, utilizado tanto para tareas de **clasificación** como de **regresión**. Fue desarrollado por Leo Breiman en 2001 y se basa en la idea de combinar las predicciones de múltiples **árboles de decisión** para lograr una mayor precisión y robustez que un solo árbol. La fuerza de Random Forest reside en dos conceptos clave: **bagging (bootstrap aggregation)** y la **aleatoriedad en la selección de características**.
 
 La idea fundamental detrás de Random Forest es construir un "bosque" de árboles de decisión de una manera específica:
@@ -703,7 +734,12 @@ tabla_rf %>%
          as_raw_html() 
 ```
 
-## Stacked Generlization (Blending) {-}   
+## Stacked Generlization (Blending) {-}    
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Ensemble/Blending.png"))
+```
 
 **Stacked Generalization**, comúnmente conocido como **Stacking**, y su variante **Blending**, son técnicas avanzadas de **aprendizaje conjunto (ensemble learning)** que buscan combinar las predicciones de múltiples modelos de aprendizaje automático para obtener un rendimiento predictivo superior al de cualquier modelo individual. La idea fundamental es que, en lugar de simplemente promediar o votar las predicciones, se entrena un **modelo de segundo nivel (meta-modelo)** para aprender a combinar óptimamente las predicciones de los modelos de primer nivel (modelos base).
 
