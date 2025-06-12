@@ -187,6 +187,11 @@ tabla_c50 %>%
 
 ## Classification and Regression Tree (CART)  {-} 
 
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Decision Tree/CART.png"))
+```
+
 **Classification and Regression Tree (CART)** es un método no paramétrico que se utiliza para construir **árboles de decisión** tanto para problemas de **clasificación** como de **regresión**. La idea central es dividir recursivamente el espacio de las características en regiones más pequeñas y manejables, creando así un modelo con forma de árbol que es fácil de interpretar.
 
 A diferencia de los modelos lineales o algunos algoritmos de aprendizaje global, CART no asume una relación lineal entre las variables. En su lugar, el algoritmo identifica los mejores **puntos de división** en las variables predictoras para maximizar la **homogeneidad** de las respuestas dentro de cada región resultante. Para problemas de clasificación, esto se mide comúnmente con métricas como la **impureza Gini** o la **ganancia de información**, mientras que para la regresión, se busca minimizar la **suma de los cuadrados de los residuos**.
@@ -272,6 +277,13 @@ tabla_cart %>%
 
 
 ## Chi-squared Automatic Interaction Detection (CHAID)  {-}    
+
+```{r, echo = FALSE,out.width='50%', fig.align='center', fig.cap="https://select-statistics.co.uk/blog/chaid-chi-square-automatic-interaction-detector/"}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Decision Tree/CHAID.png"))
+```
+
+
 
 **Chi-squared Automatic Interaction Detection (CHAID)** es un algoritmo de **árboles de decisión** utilizado principalmente para tareas de **clasificación** y, en menor medida, para la **regresión** (aunque se aplica más comúnmente a variables dependientes categóricas). La idea fundamental de CHAID es construir un árbol de decisión al encontrar las mejores divisiones en las variables predictoras que maximicen la significancia estadística de la relación con la variable dependiente.
 
@@ -441,7 +453,12 @@ tabla_ctree %>%
 ```
 
 
-## Decision Stump  {-}  
+## Decision Stump  {-} 
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Decision Tree/Decision Stump.png"))
+```
 
 Un **Decision Stump** es el tipo de **árbol de decisión** más simple y fundamental, compuesto por un **único nodo de decisión (la raíz)** que se conecta directamente a los **nodos hoja**. La idea es que un *decision stump* toma una decisión de clasificación o regresión basándose en una sola característica o atributo de entrada.
 
@@ -605,7 +622,12 @@ tabla_id3 %>%
 
 
 
-## M5 (Model Tree) {-}  
+## M5 (Model Tree) {-}   
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Decision Tree/M5 (Model Tree).png"))
+```
 
 **M5**, a menudo referida como **M5'** o **M5P** (su implementación en el software Weka), es un algoritmo de **árboles de decisión** específicamente diseñado para **tareas de regresión**, es decir, para predecir valores numéricos continuos. Desarrollado por Ross Quinlan en 1992 y luego mejorado por Wang y Witten en 1997, M5 se destaca de los árboles de regresión tradicionales (como los de CART que solo tienen valores constantes en las hojas) al incorporar **modelos de regresión lineal** en sus nodos hoja.
 
