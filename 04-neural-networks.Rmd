@@ -1,16 +1,11 @@
-# 🧠 **4. Redes Neuronales y Deep Learning** {-}  
+# 🧠 4. Redes Neuronales {-}
 
-**Ejemplos:** MLP, CNN, RNN, Transformers   
-**Cuándo usarlo:**   
-
-* Imágenes (CNN), texto y lenguaje natural (Transformers), series temporales (RNN/LSTM).
-* Grandes volúmenes de datos no estructurados.
-
-**Ventajas:** Muy poderosos para datos complejos y no estructurados.   
-**Limitaciones:** Requieren mucha data y poder computacional. Menor interpretabilidad.
+**Ejemplos:** MLP, CNN, RNN, Transformers.
+**Uso:** Perfectas para **imágenes** (CNN), **texto** (Transformers) y **series temporales** (RNN/LSTM), especialmente con **grandes volúmenes de datos no estructurados**.
+**Ventajas:** Muy poderosas para datos complejos.
+**Limitaciones:** Requieren **mucha data** y **computación**, y tienen **menor interpretabilidad**.
 
 ---
-
 
 ## Autoenconder  {-}  
 

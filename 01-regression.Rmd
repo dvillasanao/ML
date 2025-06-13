@@ -1,17 +1,11 @@
-# 🔍 **1. Regressión** {.unnumbered}
+# 🔍 1. Regresión Lineal {-}
 
-**Ejemplos:** Linear Regression, Ridge, Lasso   
+**Ejemplos:** Regresión Lineal Simple, Regresión Ridge, Regresión Lasso.
+**Uso:** Ideal para **predecir valores numéricos continuos** (como precios o temperaturas) y cuando esperas **relaciones lineales** entre tus variables.
+**Ventajas:** Es un modelo **simple** de entender y altamente **interpretable**.
+**Limitaciones:** Su desempeño es bajo cuando las relaciones entre las variables son **no lineales** o muy complejas.
 
-**Cuándo usarlo:**  
-
-* Predicción de valores numéricos continuos (e.g. precios, temperaturas).
-* Relaciones lineales entre variables.  
-
-**Ventajas:** Simple, interpretable.  
-**Limitaciones:** Mal desempeño con relaciones no lineales complejas.  
-
----  
-
+---
 
 ## Ordinary Least Squares Regression (`OLSR`) {-}   
 
