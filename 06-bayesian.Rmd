@@ -411,6 +411,11 @@ tabla_gnb %>%
 
 ## Multinomial Naive Bayes (MNB) {-}   
 
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Bayesian/MNB.png"))
+```
+
 **Multinomial Naive Bayes (MNB)** es una variante del algoritmo **Naive Bayes** diseñada específicamente para la **clasificación de datos discretos**, y es particularmente popular en tareas de **procesamiento de lenguaje natural (NLP)**, como la clasificación de texto (ej., spam/no spam, clasificación de documentos por tema). Al igual que otras formas de Naive Bayes, se basa en el **Teorema de Bayes** y la **suposición clave de independencia condicional** entre las características, dado el valor de la clase.
 
 La diferencia fundamental de MNB radica en que asume que las características (como el recuento de palabras en un documento de texto) provienen de una **distribución multinomial**. Esto significa que:

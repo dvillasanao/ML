@@ -299,9 +299,13 @@ tabla_mda %>%
 
 
 
-
-
 ## Multidimensional Scaling (MDS)  {-}    
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Dimensionality Reduction/MDS.png"))
+```
+
 
 El **Escalamiento Multidimensional (MDS)** es una técnica de **reducción de dimensionalidad** utilizada para visualizar y explorar las **similitudes o disimilitudes** entre un conjunto de objetos. Su objetivo principal es tomar datos de alta dimensión, donde las relaciones entre los puntos pueden ser difíciles de entender, y representarlos en un **espacio de menor dimensión** (típicamente 2D o 3D) de tal manera que las **distancias entre los puntos en el nuevo espacio reflejen lo más fielmente posible las distancias (o disimilitudes) originales** entre los objetos.
 

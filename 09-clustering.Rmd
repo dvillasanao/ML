@@ -9,6 +9,10 @@
 
 ## Density-Based Spatial Clustering of Applications with Noise (DBSCAN)  {-}    
 
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Clustering/DBSCAN.png"))
+```
 
 **DBSCAN (Density-Based Spatial Clustering of Applications with Noise)** es un algoritmo de **agrupamiento (clustering) no supervisado** que se distingue de los algoritmos basados en centroides (como k-Means) por su capacidad para encontrar **clusters de formas arbitrarias** y para identificar **puntos de ruido (outliers)**. Su idea central es que los clusters son regiones densas de puntos en el espacio de características, separadas por regiones de baja densidad.
 
@@ -111,6 +115,11 @@ tabla_dbscan %>%
 
 
 ## Expectation Maximization (EM) {-}  
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Clustering/EM.png"))
+```
 
 El algoritmo **Expectation-Maximization (EM)** es un método iterativo utilizado en estadística para encontrar las **estimaciones de máxima verosimilitud (MLE)** o las estimaciones de máxima a posteriori (MAP) de los parámetros en modelos estadísticos, especialmente cuando el modelo depende de **variables latentes (no observadas o "ocultas")** o cuando los datos están "incompletos".
 
@@ -215,7 +224,12 @@ tabla_em %>%
          as_raw_html() 
 ```
 
-## Hierarchical Clustering (hclust) {-}  
+## Hierarchical Clustering (hclust) {-} 
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Clustering/hclust.png"))
+```
 
 El **Agrupamiento Jerárquico (Hierarchical Clustering)**, a menudo abreviado como **hclust**, es un método de **agrupamiento (clustering) no supervisado** que construye una **jerarquía de clusters** en lugar de una partición plana de los datos (como k-Means). El resultado de un agrupamiento jerárquico se visualiza comúnmente como un **dendrograma**, un diagrama en forma de árbol que muestra la secuencia de fusiones o divisiones de los clusters.
 
@@ -323,6 +337,10 @@ tabla_hclust %>%
 
 ## k-Means  {-}   
 
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Clustering/k-means.png"))
+```
 
 **k-Means** es uno de los algoritmos de **agrupamiento (clustering) no supervisado** más populares y ampliamente utilizados. Su objetivo es particionar un conjunto de $n$ observaciones en $k$ grupos o "clusters", donde cada observación pertenece al cluster cuyo centroide (media) es el más cercano.
 
@@ -431,6 +449,11 @@ tabla_kmeans %>%
 
 
 ## k-Medians  {-}    
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Clustering/k-medians.png"))
+```
 
 **k-Medians** es un algoritmo de **agrupamiento (clustering) no supervisado** que es una variante de **k-Means**. Al igual que k-Means, su objetivo es particionar un conjunto de $n$ observaciones en $k$ grupos o "clusters". La principal diferencia radica en cómo se calcula el "centro" de cada cluster y la métrica de distancia utilizada en su función de costo.
 

@@ -9,6 +9,11 @@
 
 ## Elastic Net  {-}   
 
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Regularization/ENet.png"))
+```
+
 **Elastic Net** es un método de **regresión lineal regularizada** que combina las penalizaciones de **Ridge Regression (regresión L2)** y **Lasso Regression (regresión L1)**. Fue desarrollado para superar las limitaciones de Lasso, que puede tener problemas cuando hay un gran número de variables predictoras o cuando estas variables están altamente correlacionadas (multicolinealidad). Elastic Net es una herramienta muy versátil para la **selección de características**, la **reducción de sobreajuste** y el manejo de **datos de alta dimensión**.
 
 La función de costo de Elastic Net añade dos términos de penalización a la suma de los errores cuadrados de los residuos (como en la regresión OLS):
@@ -110,7 +115,12 @@ tabla_elastic_net %>%
 
 
 
-## Ridge Regression  {-}    
+## Ridge Regression  {-}  
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Regularization/RR.png"))
+```
 
 **Ridge Regression (Regresión Ridge)** es un método de **regresión lineal regularizada** que se utiliza para mejorar la estimación de los coeficientes en modelos lineales, especialmente cuando existe **multicolinealidad** (alta correlación entre las variables predictoras) o cuando el número de predictores es grande en relación con el número de observaciones. Ridge Regression fue una de las primeras técnicas de regularización y es fundamental para comprender métodos más avanzados como Lasso o Elastic Net.
 
@@ -214,6 +224,12 @@ tabla_ridge %>%
 
 
 ## Least Absolute Shrinkage and Selection Operator (LASSO)  {-}  
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Regularization/LASSO.png"))
+```
+
 
 
 **LASSO (Least Absolute Shrinkage and Selection Operator)** es un método de **regresión lineal regularizada** que, al igual que Ridge Regression, se utiliza para mejorar la estimación de los coeficientes en modelos lineales y para abordar el **sobreajuste**, especialmente en escenarios con un gran número de variables predictoras o cuando algunas de ellas son irrelevantes. LASSO es particularmente famoso por su capacidad para realizar **selección automática de características**.
@@ -319,7 +335,12 @@ tabla_lasso %>%
 
 
 
-## Least Angle Regression (LARS)  {-}   
+## Least Angle Regression (LARS)  {-}  
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Regularization/LARS.png"))
+```
 
 **Least Angle Regression (LARS)** es un algoritmo de **regresión lineal** desarrollado por Bradley Efron, Trevor Hastie, Iain Johnstone y Robert Tibshirani. Es particularmente interesante porque puede considerarse como una **versión más eficiente y paso a paso de LASSO** (Least Absolute Shrinkage and Selection Operator) y es útil para **seleccionar características** y manejar datos de alta dimensión.
 
