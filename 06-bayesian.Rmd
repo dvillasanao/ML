@@ -13,6 +13,11 @@
 
 ## Averaged One - Dependence Estimators (AODE)  {-}    
 
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Bayesian/AODE.png"))
+```
+
 **Averaged One-Dependence Estimators (AODE)** es un algoritmo de **clasificación supervisada** que pertenece a la familia de los clasificadores basados en **modelos bayesianos**. Es una mejora sobre el clásico **Naive Bayes (NB)**, diseñado para superar la limitación clave de NB: la **asunción de independencia condicional** estricta entre las variables predictoras (atributos) dado el valor de la clase. Esta suposición, aunque simplifica mucho el cálculo y permite a Naive Bayes ser muy eficiente, rara vez se cumple en la realidad y puede llevar a una pérdida de precisión.
 
 AODE relaja parcialmente la suposición de independencia de Naive Bayes al considerar que **cada atributo es dependiente, como máximo, de un solo otro atributo** (además de la variable de clase). En lugar de construir un único modelo de árbol de dependencia (como en el Árbol de Dependencia de Atributos - ADTree), AODE construye una **colección de clasificadores "One-Dependence" (ODE)** y luego **promedia sus predicciones**.
@@ -110,6 +115,11 @@ tabla_aode %>%
 
 ## Bayesian Network (BN)  {-}    
 
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Bayesian/BN.png"))
+```
+
 Una **Red Bayesiana (BN)**, también conocida como **Red Bayesiana Causal** o **Modelo Gráfico Dirigido Acíclico (DAG)**, es un modelo probabilístico que representa un conjunto de **variables y sus relaciones de dependencia condicional** utilizando un **grafo dirigido acíclico**. En este grafo:
 
 * **Nodos:** Representan las variables aleatorias (pueden ser discretas o continuas).
@@ -204,7 +214,12 @@ tabla_bn %>%
 
 
 
-## Bayesian Belief Network (BBN)  {-}  
+## Bayesian Belief Network (BBN)  {-} 
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Bayesian/BBN.png"))
+```
 
 Una **Red de Creencia Bayesiana (BBN)** es simplemente **otro término para una Red Bayesiana (BN)**. No hay una diferencia fundamental entre ambos nombres; ambos se refieren al mismo tipo de modelo probabilístico. La terminología "Red de Creencia" a menudo enfatiza la capacidad del modelo para representar y actualizar "creencias" (probabilidades) sobre el estado de variables inciertas a medida que se introduce nueva evidencia.
 
@@ -299,7 +314,12 @@ tabla_bbn %>%
 
 
 
-## Gaussian Naive Bayes (GNB) {-}     
+## Gaussian Naive Bayes (GNB) {-}   
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Bayesian/GNB.png"))
+```
 
 **Gaussian Naive Bayes (GNB)** es una variante del popular algoritmo **Naive Bayes (NB)**, utilizado para tareas de **clasificación supervisada**. Es particularmente adecuado cuando las **variables predictoras (atributos) son de tipo continuo**. Al igual que todos los clasificadores Naive Bayes, GNB se basa en el **Teorema de Bayes** y, fundamentalmente, en la **suposición de independencia condicional** entre las variables predictoras, dado el valor de la clase.
 
@@ -488,6 +508,11 @@ tabla_mnb %>%
 
 
 ## Naive Bayes (NB) {-}   
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Bayesian/NB.png"))
+```
 
 **Naive Bayes (NB)** es un algoritmo de **clasificación supervisada** popular y computacionalmente eficiente, basado en el **Teorema de Bayes** y una **fuerte (o "ingenua") suposición de independencia condicional** entre las características (variables predictoras) dado el valor de la clase. Esta suposición significa que el modelo asume que la presencia o ausencia de una característica particular no afecta la presencia o ausencia de otra característica, una vez que se conoce la clase.
 

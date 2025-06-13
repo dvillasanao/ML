@@ -609,6 +609,11 @@ tabla_plsr %>%
 
 ## Partial Least Squares Discriminant Analysis (PLSDA)  {-}   
 
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Dimensionality Reduction/PLSDA.png"))
+```
+
 El **Análisis Discriminante de Mínimos Cuadrados Parciales (PLSDA)** es una extensión del algoritmo de **Regresión por Mínimos Cuadrados Parciales (PLSR)**, adaptada para problemas de **clasificación**. Al igual que PLSR, PLSDA es particularmente útil cuando se tienen muchas **variables predictoras (X)** y estas están **altamente correlacionadas (multicolinealidad)**, situaciones comunes en campos como la metabolómica, la proteómica o la espectroscopia.
 
 En esencia, PLSDA transforma un problema de clasificación en un problema de regresión. Esto se logra de la siguiente manera:
