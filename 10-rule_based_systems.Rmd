@@ -7,7 +7,12 @@
 
 ---
 
-## Cubist  {-}   
+## Cubist  {-}
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Rule-System/Cubist.png"))
+```
 
 **Cubist** es un algoritmo de **Machine Learning** desarrollado por RuleQuest Research (autores de C4.5 y See5/C5.0), principalmente para tareas de **regresión**. Es una extensión de los modelos de **árboles de decisión** que combina la simplicidad de las reglas con la precisión de los modelos locales, lo que lo hace muy potente para datos complejos con muchas características.
 
@@ -108,6 +113,11 @@ tabla_cubist %>%
 ```
 
 ## Decision Rules  {-}   
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Rule-System/Decision Rules.png"))
+```
 
 Las **Reglas de Decisión** no son un algoritmo de Machine Learning en sí mismas, sino una **forma de representar un modelo predictivo** que es altamente **interpretable y fácil de entender**. Son una de las formas más intuitivas de expresar el conocimiento extraído de los datos. Una regla de decisión típicamente toma la forma de una declaración **"SI-ENTONCES" (IF-THEN)**, donde la parte "SI" (antecedente) describe las condiciones que deben cumplirse y la parte "ENTONCES" (consecuente) especifica la predicción o la acción a tomar.
 
@@ -233,6 +243,11 @@ tabla_rules %>%
 
 ## Lógica Difusa (Fuzzy Logic) {-}
 
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Rule-System/Fuzzy Logic.png"))
+```
+
 La **Lógica Difusa (Fuzzy Logic)** no es un algoritmo de Machine Learning en sí mismo, sino un **paradigma de computación basado en la noción de "grado de verdad"** en lugar de los valores binarios "verdadero o falso" (1 o 0) de la lógica booleana clásica. Permite modelar el razonamiento humano, que a menudo involucra información imprecisa, ambigua o vaga. Es un marco para representar y manipular el conocimiento que es inherentemente incierto o subjetivo.
 
 La idea central de la lógica difusa es que un elemento puede **pertenecer a un conjunto en un cierto grado** (entre 0 y 1), en lugar de pertenecer completamente o no pertenecer en absoluto. Por ejemplo, una persona puede ser "alta" en un grado de 0.8 y "mediana" en un grado de 0.2, en lugar de ser estrictamente alta o estrictamente mediana.
@@ -336,6 +351,12 @@ tabla_fuzzy %>%
 
 ## One Rule (OneR)  {-}   
 
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Rule-System/OneR.png"))
+```
+
+
 **One Rule (OneR)** es un algoritmo de **clasificación supervisada** notable por su **simplicidad y alta interpretabilidad**. Fue propuesto por Robert Holte en 1993 y, a pesar de su sencillez, a menudo logra una precisión sorprendentemente buena en comparación con algoritmos mucho más complejos, sirviendo como una excelente línea base (benchmark) para el rendimiento del modelo.
 
 La idea central de OneR es construir un clasificador que se base en **una única regla** para tomar decisiones. Esta regla se deriva de **un solo atributo (característica)** del conjunto de datos que es el más predictivo de la clase de salida.
@@ -438,6 +459,11 @@ tabla_oner %>%
 ```
 
 ## Repeated Incremental Pruning to Produce Error Reduction (RIPPER)  {-}  
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Rule-System/RIPPER.png"))
+```
 
 **RIPPER (Repeated Incremental Pruning to Produce Error Reduction)** es un algoritmo de **clasificación supervisada** muy conocido, desarrollado por William W. Cohen. Es una extensión del algoritmo de reglas `IREP` y es especialmente valorado por su capacidad para generar **conjuntos de reglas de clasificación precisos y de alta calidad** que son a menudo más simples e interpretables que los modelos de árbol de decisión complejos, al tiempo que es muy eficiente en términos computacionales, incluso con grandes conjuntos de datos.
 
@@ -544,6 +570,11 @@ tabla_ripper %>%
 ```
 
 ## Rule Fit  {-}    
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Rule-System/Rule Fit.png"))
+```
 
 **RuleFit** es un potente y, al mismo tiempo, **interpretable algoritmo de aprendizaje automático** desarrollado por Jerome H. Friedman y Bogdan Popescu. Está diseñado para combinar la **precisión de los métodos de ensamblaje (como el *gradient boosting* o los *random forests*)** con la **interpretabilidad de los modelos lineales y las reglas de decisión**. RuleFit es particularmente útil cuando necesita un modelo que funcione bien *y* que le permita comprender el "porqué" detrás de sus predicciones.
 
@@ -663,6 +694,10 @@ tabla_rulefit %>%
 
 ## Zero Rule (ZeroR)  {-}    
 
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Rule-System/ZeroR.png"))
+```
 
 **Zero Rule (ZeroR)** es el algoritmo de **clasificación supervisada** más simple imaginable. No utiliza ninguna de las características predictoras en el conjunto de datos para hacer sus predicciones. En su lugar, simplemente **predice la clase más frecuente (mayoritaria)** que se observa en el conjunto de datos de entrenamiento.
 
