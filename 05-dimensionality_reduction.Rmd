@@ -1,9 +1,9 @@
-# 🧩 5. Reducción de Dimensionalidad {-}
+# 🧩 5. Reducción de Dimensionalidad {-}  
 
-**Ejemplos:** PCA (Análisis de Componentes Principales), t-SNE, UMAP.
-**Uso:** Fundamental para **visualizar datos de alta dimensión**, haciéndolos más comprensibles. También es un paso clave de **preprocesamiento** para eliminar ruido o multicolinealidad antes de aplicar otros modelos.
-**Ventajas:** Puede **mejorar significativamente el rendimiento y la velocidad** de otros algoritmos de *machine learning*.
-**Limitaciones:** A veces se **pierde la interpretabilidad** de los datos originales y no siempre garantiza una mejora en el desempeño de los modelos.
+**Ejemplos:** PCA (Análisis de Componentes Principales), t-SNE, UMAP.   
+**Uso:** Fundamental para **visualizar datos de alta dimensión**, haciéndolos más comprensibles. También es un paso clave de **preprocesamiento** para eliminar ruido o multicolinealidad antes de aplicar otros modelos.  
+**Ventajas:** Puede **mejorar significativamente el rendimiento y la velocidad** de otros algoritmos de *machine learning*.  
+**Limitaciones:** A veces se **pierde la interpretabilidad** de los datos originales y no siempre garantiza una mejora en el desempeño de los modelos.   
 
 ---
 

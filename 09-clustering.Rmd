@@ -1,8 +1,8 @@
-# 📏 9. Clustering (Aprendizaje No Supervisado) {-}
+# 📏 9. Clustering (Aprendizaje No Supervisado) {-}  
 
-**Ejemplos:** K-Means, DBSCAN, Agrupamiento Jerárquico.
-**Uso:** Excelente para **agrupar datos sin etiquetas previas**, permitiéndote descubrir **estructuras ocultas** o identificar **segmentos de mercado** dentro de tus conjuntos de datos. Es una herramienta clave en la exploración de datos.
-**Ventajas:** Es increíblemente útil para la **exploración de datos** y para **reducir la complejidad** al encontrar patrones inherentes.
+**Ejemplos:** K-Means, DBSCAN, Agrupamiento Jerárquico.   
+**Uso:** Excelente para **agrupar datos sin etiquetas previas**, permitiéndote descubrir **estructuras ocultas** o identificar **segmentos de mercado** dentro de tus conjuntos de datos. Es una herramienta clave en la exploración de datos.   
+**Ventajas:** Es increíblemente útil para la **exploración de datos** y para **reducir la complejidad** al encontrar patrones inherentes.  
 **Limitaciones:** Generalmente, necesitas **elegir el número de grupos** de antemano (excepto en DBSCAN), lo cual puede ser un desafío. Además, algunos algoritmos pueden ser **sensibles a la escala** de las características de tus datos.
 
 ---

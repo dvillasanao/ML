@@ -1,21 +1,21 @@
-# 🤖 4. Deep Learning {-}
-**Ejemplos:** Redes Neuronales Convolucionales (CNN), Redes Neuronales Recurrentes (RNN), Transformers, Redes Generativas Antagónicas (GANs).
+# 🤖 4. Deep Learning {-}  
+**Ejemplos:** Redes Neuronales Convolucionales (CNN), Redes Neuronales Recurrentes (RNN), Transformers, Redes Generativas Antagónicas (GANs).  
 
-**Cuándo usarlo:**
-* **Visión por Computadora:** Clasificación, detección de objetos, segmentación de imágenes (CNNs, Transformers).
-* **Procesamiento de Lenguaje Natural (PLN):** Traducción automática, análisis de sentimientos, generación de texto (RNNs, LSTMs, Transformers).
-* **Series Temporales:** Predicción bursátil, análisis de audio (RNNs, LSTMs).
-* **Generación de Contenido:** Creación de imágenes, música o texto (GANs, Transformers).
-* Cuando tienes **grandes volúmenes de datos** (especialmente no estructurados).
+**Cuándo usarlo:**  
+* **Visión por Computadora:** Clasificación, detección de objetos, segmentación de imágenes (CNNs, Transformers).  
+* **Procesamiento de Lenguaje Natural (PLN):** Traducción automática, análisis de sentimientos, generación de texto (RNNs, LSTMs, Transformers).  
+* **Series Temporales:** Predicción bursátil, análisis de audio (RNNs, LSTMs).  
+* **Generación de Contenido:** Creación de imágenes, música o texto (GANs, Transformers).  
+* Cuando tienes **grandes volúmenes de datos** (especialmente no estructurados).  
 
-**Ventajas:**
-* **Potencia sin igual:** Destaca en tareas complejas con datos no estructurados como imágenes, audio y texto.
-* **Extracción automática de características:** A diferencia de otros métodos, el *deep learning* puede aprender automáticamente las características relevantes de los datos.
+**Ventajas:**  
+* **Potencia sin igual:** Destaca en tareas complejas con datos no estructurados como imágenes, audio y texto.  
+* **Extracción automática de características:** A diferencia de otros métodos, el *deep learning* puede aprender automáticamente las características relevantes de los datos.  
 
-**Limitaciones:**
-* **Hambre de datos:** Requiere enormes cantidades de datos etiquetados para un entrenamiento efectivo.
-* **Costo computacional:** Exige una gran capacidad de procesamiento (GPUs, TPUs) y tiempo de entrenamiento.
-* **Menor interpretabilidad:** A menudo se considera una "caja negra", lo que dificulta entender cómo llega a sus decisiones.
+**Limitaciones:**  
+* **Hambre de datos:** Requiere enormes cantidades de datos etiquetados para un entrenamiento efectivo.  
+* **Costo computacional:** Exige una gran capacidad de procesamiento (GPUs, TPUs) y tiempo de entrenamiento.   
+* **Menor interpretabilidad:** A menudo se considera una "caja negra", lo que dificulta entender cómo llega a sus decisiones.   
 ---
 
 

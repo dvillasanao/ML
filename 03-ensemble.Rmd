@@ -1,9 +1,9 @@
-# 🌟 3. Métodos de Ensamble {-}
+# 🌟 3. Métodos de Ensamble {-}   
 
-**Ejemplos:** Random Forest, Gradient Boosting (XGBoost, LightGBM, AdaBoost).
-**Uso:** Excelentes para **clasificación y regresión en datos tabulares**, especialmente en **competencias de datos** por su alto rendimiento.
-**Ventajas:** Ofrecen **alta precisión** y son muy **robustos**.
-**Limitaciones:** Pueden ser **difíciles de interpretar** y suelen ser **computacionalmente más costosos**.
+**Ejemplos:** Random Forest, Gradient Boosting (XGBoost, LightGBM, AdaBoost).   
+**Uso:** Excelentes para **clasificación y regresión en datos tabulares**, especialmente en **competencias de datos** por su alto rendimiento.   
+**Ventajas:** Ofrecen **alta precisión** y son muy **robustos**.   
+**Limitaciones:** Pueden ser **difíciles de interpretar** y suelen ser **computacionalmente más costosos**.   
 
 ---
 

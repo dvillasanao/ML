@@ -1,9 +1,9 @@
-# 🧮 7. Regularización {-}
+# 🧮 7. Regularización {-}  
 
-**Ejemplos:** L1 (Lasso), L2 (Ridge), Elastic Net.
-**Uso:** Esencial para **prevenir el sobreajuste** en modelos, especialmente los lineales y las redes neuronales. Muy útil cuando trabajas con **muchas variables** (alta dimensionalidad).
-**Ventajas:** Su principal beneficio es que **penaliza la complejidad del modelo**, forzándolo a ser más simple y generalizable.
-**Limitaciones:** Si se aplica en exceso, la regularización puede **eliminar variables útiles** y, por lo tanto, afectar el rendimiento del modelo.
+**Ejemplos:** L1 (Lasso), L2 (Ridge), Elastic Net.  
+**Uso:** Esencial para **prevenir el sobreajuste** en modelos, especialmente los lineales y las redes neuronales. Muy útil cuando trabajas con **muchas variables** (alta dimensionalidad).  
+**Ventajas:** Su principal beneficio es que **penaliza la complejidad del modelo**, forzándolo a ser más simple y generalizable.  
+**Limitaciones:** Si se aplica en exceso, la regularización puede **eliminar variables útiles** y, por lo tanto, afectar el rendimiento del modelo.  
 
 ---
 

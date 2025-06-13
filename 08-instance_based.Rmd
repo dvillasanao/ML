@@ -1,9 +1,9 @@
-# 🔍 8. Modelos Basados en Instancias {-}
+# 🔍 8. Modelos Basados en Instancias {-}  
 
-**Ejemplos:** K-Nearest Neighbors (KNN).
-**Uso:** Son ideales cuando tienes una **cantidad limitada de datos** y esperas que los patrones relevantes se encuentren en la **similitud local** entre casos. Se utilizan mucho cuando la **similitud directa** entre las observaciones es un factor clave.
-**Ventajas:** Su implementación es **simple** y son bastante **eficaces** en problemas con pocas dimensiones.
-**Limitaciones:** **Escalan mal** con grandes volúmenes de datos debido a que necesitan almacenar y comparar cada instancia. Además, son **sensibles al ruido** en los datos.
+**Ejemplos:** K-Nearest Neighbors (KNN).  
+**Uso:** Son ideales cuando tienes una **cantidad limitada de datos** y esperas que los patrones relevantes se encuentren en la **similitud local** entre casos. Se utilizan mucho cuando la **similitud directa** entre las observaciones es un factor clave.   
+**Ventajas:** Su implementación es **simple** y son bastante **eficaces** en problemas con pocas dimensiones.   
+**Limitaciones:** **Escalan mal** con grandes volúmenes de datos debido a que necesitan almacenar y comparar cada instancia. Además, son **sensibles al ruido** en los datos.   
 
 ---
 

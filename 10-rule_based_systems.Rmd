@@ -1,9 +1,9 @@
-# 📐 10. Sistemas Basados en Reglas {-}
+# 📐 10. Sistemas Basados en Reglas {-}  
 
-**Ejemplos:** RuleFit, Árboles de Decisión con reglas, lógica difusa.
-**Uso:** Estos sistemas son ideales cuando la **interpretabilidad es absolutamente crucial**, como en decisiones legales o médicas donde entender el "porqué" es tan importante como el "qué". También son perfectos para **incorporar conocimiento experto** humano directamente en el modelo.
-**Ventajas:** Son notablemente **fáciles de entender y auditar**, lo que los hace transparentes y confiables en entornos regulados.
-**Limitaciones:** Su principal desventaja es que no suelen ser tan **precisos** como otros métodos más complejos cuando se enfrentan a datos muy intrincados o patrones no lineales.
+**Ejemplos:** RuleFit, Árboles de Decisión con reglas, lógica difusa.  
+**Uso:** Estos sistemas son ideales cuando la **interpretabilidad es absolutamente crucial**, como en decisiones legales o médicas donde entender el "porqué" es tan importante como el "qué". También son perfectos para **incorporar conocimiento experto** humano directamente en el modelo.  
+**Ventajas:** Son notablemente **fáciles de entender y auditar**, lo que los hace transparentes y confiables en entornos regulados.  
+**Limitaciones:** Su principal desventaja es que no suelen ser tan **precisos** como otros métodos más complejos cuando se enfrentan a datos muy intrincados o patrones no lineales.  
 
 ---
 

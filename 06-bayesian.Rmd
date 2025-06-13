@@ -1,9 +1,9 @@
-# 🧬 6. Modelos Bayesianos {-}
+# 🧬 6. Modelos Bayesianos {-}  
 
-**Ejemplos:** Naive Bayes, Redes Bayesianas.
-**Uso:** Ideales para **clasificación rápida**, especialmente en escenarios con **supuestos simples** sobre los datos. Son muy populares en tareas de **procesamiento de texto** y **detección de spam**.
-**Ventajas:** Son modelos **muy rápidos** de entrenar y predecir, y están sólidamente **fundamentados en la teoría de probabilidad**.
-**Limitaciones:** La principal es que **asumen independencia** entre las variables predictoras, lo cual no siempre se cumple en la realidad y puede afectar su precisión en ciertos problemas.
+**Ejemplos:** Naive Bayes, Redes Bayesianas.  
+**Uso:** Ideales para **clasificación rápida**, especialmente en escenarios con **supuestos simples** sobre los datos. Son muy populares en tareas de **procesamiento de texto** y **detección de spam**.  
+**Ventajas:** Son modelos **muy rápidos** de entrenar y predecir, y están sólidamente **fundamentados en la teoría de probabilidad**.  
+**Limitaciones:** La principal es que **asumen independencia** entre las variables predictoras, lo cual no siempre se cumple en la realidad y puede afectar su precisión en ciertos problemas.  
 
 ---
 

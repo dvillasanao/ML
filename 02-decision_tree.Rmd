@@ -1,9 +1,9 @@
-# 🌲 2. Árboles de Decisión y Derivados {-}
+# 🌲 2. Árboles de Decisión y Derivados {-}   
 
-**Ejemplos:** Árbol de Decisión, Random Forest, Gradient Boosting.
-**Uso:** Excelentes para **datos tabulares** con relaciones no lineales, incluyendo variables categóricas y numéricas. Son una buena opción cuando la **interpretabilidad** es clave.
-**Ventajas:** Pueden manejar diversos tipos de datos y, los árboles individuales, son **fáciles de interpretar**.
-**Limitaciones:** Los árboles simples pueden **sobreajustarse**, y su rendimiento baja con datos muy ruidosos si no se usan métodos de ensamble.
+**Ejemplos:** Árbol de Decisión, Random Forest, Gradient Boosting.   
+**Uso:** Excelentes para **datos tabulares** con relaciones no lineales, incluyendo variables categóricas y numéricas. Son una buena opción cuando la **interpretabilidad** es clave.   
+**Ventajas:** Pueden manejar diversos tipos de datos y, los árboles individuales, son **fáciles de interpretar**.   
+**Limitaciones:** Los árboles simples pueden **sobreajustarse**, y su rendimiento baja con datos muy ruidosos si no se usan métodos de ensamble.   
 
 ---
 
