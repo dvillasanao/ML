@@ -10,6 +10,11 @@
 
 ## C4.5  {-}   
 
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Decision Tree/C4.5.png"))
+```
+
 **C4.5** es una extensión del algoritmo **ID3**, también desarrollado por Ross Quinlan, y es uno de los algoritmos de **árboles de decisión** más influyentes y ampliamente utilizados para tareas de **clasificación**. Fue diseñado para abordar algunas de las limitaciones de su predecesor, ID3, y se ha convertido en un estándar de facto en el aprendizaje automático para construir modelos predictivos interpretables.
 
 Al igual que ID3, C4.5 construye un árbol de clasificación seleccionando en cada nodo el atributo que mejor divide el conjunto de datos. Sin embargo, en lugar de usar solo la **ganancia de información**, C4.5 utiliza la **relación de ganancia** (Gain Ratio). La relación de ganancia normaliza la ganancia de información por la entropía intrínseca del atributo, lo que ayuda a mitigar el sesgo de ID3 hacia atributos con muchos valores. Además, C4.5 introduce varias mejoras significativas:

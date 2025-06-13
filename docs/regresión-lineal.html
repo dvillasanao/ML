@@ -42,21 +42,7 @@
 </form>
 
       <nav aria-label="Table of contents"><h2>Table of contents</h2>
-        <ul class="book-toc list-unstyled">
-<li><a class="" href="index.html">Machine Learning</a></li>
-<li><a class="active" href="regresi%C3%B3n-lineal.html">🔍 1. Regresión Lineal</a></li>
-<li><a class="" href="%C3%A1rboles-de-decisi%C3%B3n-y-derivados.html">🌲 2. Árboles de Decisión y Derivados</a></li>
-<li><a class="" href="m%C3%A9todos-de-ensamble.html">🌟 3. Métodos de Ensamble</a></li>
-<li><a class="" href="redes-neuronales.html">🧠 4. Redes Neuronales</a></li>
-<li><a class="" href="reducci%C3%B3n-de-dimensionalidad.html">🧩 5. Reducción de Dimensionalidad</a></li>
-<li><a class="" href="modelos-bayesianos.html">🧬 6. Modelos Bayesianos</a></li>
-<li><a class="" href="regularizaci%C3%B3n.html">🧮 7. Regularización</a></li>
-<li><a class="" href="modelos-basados-en-instancias.html">🔍 8. Modelos Basados en Instancias</a></li>
-<li><a class="" href="clustering-aprendizaje-no-supervisado.html">📏 9. Clustering (Aprendizaje No Supervisado)</a></li>
-<li><a class="" href="sistemas-basados-en-reglas.html">📐 10. Sistemas Basados en Reglas</a></li>
-<li><a class="" href="deep-learning.html">🤖 4. Deep Learning</a></li>
-<li><a class="" href="references.html">References</a></li>
-</ul>
+        <ul class="book-toc list-unstyled"><li><a class="" href="index.html">🔍 1. Regresión Lineal</a></li></ul>
 
         <div class="book-extra">
           <p><a id="book-repo" href="https://dvillasanao.github.io/ML/">View book source <i class="fab fa-gitlab"></i></a></p>
@@ -71,12 +57,7 @@
 <div id="ordinary-least-squares-regression-olsr" class="section level2 unnumbered">
 <h2>Ordinary Least Squares Regression (<code>OLSR</code>)<a class="anchor" aria-label="anchor" href="#ordinary-least-squares-regression-olsr"><i class="fas fa-link"></i></a>
 </h2>
-<div class="figure" style="text-align: center">
-<span style="display:block;" id="fig:unnamed-chunk-6"></span>
-<img src="img/Regression/01_image_OLSR.png" alt="Elaboración propia" width="50%"><p class="caption">
-Figure 1: Elaboración propia
-</p>
-</div>
+<div class="inline-figure"><img src="img/Regression/OLSR.png" width="50%" style="display: block; margin: auto;"></div>
 <p>La <strong>Regresión por Mínimos Cuadrados Ordinarios (OLS)</strong> es una técnica fundamental en estadística y Machine Learning para modelar la <strong>relación lineal</strong> entre una <strong>variable dependiente</strong> (a predecir) y una o más <strong>variables independientes</strong>. Su objetivo es encontrar la <strong>línea (o hiperplano) que mejor se ajusta</strong> a los datos, minimizando la <strong>suma de los cuadrados de las diferencias</strong> entre los valores reales y los predichos por el modelo. Es decir, busca los coeficientes que hacen que la distancia (al cuadrado) de los puntos a la línea sea mínima.</p>
 <p>Los coeficientes de OLS se pueden calcular directamente con una fórmula matemática, sin necesidad de procesos iterativos complejos, bajo ciertos supuestos como la linealidad de la relación y la independencia de los errores.</p>
 <p>En el contexto del <strong>aprendizaje global vs. local</strong>, OLS es un ejemplo claro de un modelo de <strong>aprendizaje global</strong>. OLS busca una <strong>única ecuación</strong> o un conjunto de coeficientes que describan la relación entre las variables para <strong>todo el conjunto de datos</strong>. La línea o hiperplano que encuentra es una solución global que se aplica de manera uniforme en todo el espacio de características. Esto la hace muy interpretable y computacionalmente eficiente, pero limitada si la relación real entre las variables no es estrictamente lineal en todo el dominio de los datos.</p>
@@ -84,6 +65,12 @@ Figure 1: Elaboración propia
 <div id="linear-regression" class="section level2 unnumbered">
 <h2>Linear Regression<a class="anchor" aria-label="anchor" href="#linear-regression"><i class="fas fa-link"></i></a>
 </h2>
+<div class="figure" style="text-align: center">
+<span style="display:block;" id="fig:unnamed-chunk-5"></span>
+<img src="img/Regression/01_image_OLSR.png" alt="Elaboración propia" width="50%"><p class="caption">
+Figure 1.1: Elaboración propia
+</p>
+</div>
 <p>La <strong>Regresión Lineal</strong> es uno de los algoritmos más fundamentales y ampliamente utilizados en el campo del <strong>Machine Learning y la estadística</strong>. Es un modelo <strong>supervisado</strong> que busca establecer una <strong>relación lineal</strong> entre una <strong>variable de respuesta (o dependiente)</strong> continua y una o más <strong>variables predictoras (o independientes)</strong>.</p>
 <p><strong>Concepto y Ecuación:</strong></p>
 <p>La idea central de la regresión lineal es encontrar la <strong>línea (o hiperplano en múltiples dimensiones)</strong> que mejor se ajusta a los datos, de modo que se pueda predecir el valor de la variable dependiente basándose en los valores de las variables predictoras.</p>
@@ -140,7 +127,7 @@ Figure 1: Elaboración propia
 <p>La <strong>Regresión Logística</strong> es un modelo estadístico usado principalmente para problemas de <strong>clasificación binaria</strong>, donde el objetivo es predecir la <strong>probabilidad</strong> de que una instancia pertenezca a una de dos clases (por ejemplo, “sí” o “no”, “0” o “1”). A pesar de su nombre, no predice un valor continuo, sino una probabilidad.</p>
 <p>Este modelo utiliza una <strong>función sigmoide (o logística)</strong> para transformar una combinación lineal de las variables de entrada en un valor entre 0 y 1, que se interpreta como una probabilidad. Los coeficientes del modelo se aprenden maximizando la verosimilitud de observar los datos, generalmente a través de algoritmos como el descenso de gradiente.</p>
 <p>En el contexto del <strong>aprendizaje global vs. local</strong>, la Regresión Logística es un modelo de <strong>aprendizaje global</strong>. Esto significa que busca un <strong>único conjunto de coeficientes</strong> que definen una frontera de decisión (un hiperplano) que se aplica a todo el espacio de características para separar las clases. Asume una relación lineal entre las variables de entrada y el logaritmo de la probabilidad, y una vez entrenado, usa esta relación global para hacer predicciones en cualquier parte del espacio de datos. Si bien es eficiente y muy interpretable, su naturaleza global puede limitar su rendimiento en casos donde las fronteras de decisión son inherentemente no lineales o muy complejas.</p>
-<div id="mknyfczfnv" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="dwyaimdkah" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
   
   <div class="inline-table"><table class="gt_table" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: 'Century Gothic'; display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 10px; font-weight: normal; font-style: normal; background-color: #FFFFFF; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; table-layout: fixed; width: 0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false" width="0" bgcolor="#FFFFFF">
 <colgroup>
@@ -238,15 +225,15 @@ Figure 1: Elaboración propia
 <h2>Locally Estimated Scatterplot Smoothing (<code>LOESS</code>)<a class="anchor" aria-label="anchor" href="#locally-estimated-scatterplot-smoothing-loess"><i class="fas fa-link"></i></a>
 </h2>
 <div class="figure" style="text-align: center">
-<span style="display:block;" id="fig:unnamed-chunk-8"></span>
+<span style="display:block;" id="fig:unnamed-chunk-7"></span>
 <img src="img/Regression/LOESS.png" alt="Elaboración propia" width="50%"><p class="caption">
-Figure 2: Elaboración propia
+Figure 1.2: Elaboración propia
 </p>
 </div>
 <p><strong>LOESS (Locally Estimated Scatterplot Smoothing)</strong>, o LOWESS, es una técnica de <strong>regresión no paramétrica</strong> para crear una curva suave que se ajusta a los datos en un diagrama de dispersión. Su gran ventaja es que <strong>no asume una forma funcional global</strong> específica para la relación entre las variables, lo que la hace muy flexible para identificar tendencias y patrones no lineales.</p>
 <p>El principio de LOESS es simple: para estimar el valor suavizado en un punto, se seleccionan los <strong>puntos de datos cercanos</strong> (definido por un parámetro de <strong>“span”</strong> o ancho de banda), se les asignan <strong>pesos</strong> (dando más peso a los puntos más cercanos), y luego se ajusta un <strong>polinomio de bajo grado</strong> (comúnmente lineal o cuadrático) a esos puntos usando mínimos cuadrados ponderados. Este proceso se repite para cada punto de interés para construir la curva.</p>
 <p>En el contexto del <strong>aprendizaje global vs. local</strong>, LOESS es un modelo de <strong>aprendizaje puramente local</strong>. Su flexibilidad reside en que <strong>ajusta múltiples modelos simples y locales</strong> (regresiones ponderadas) en diferentes vecindarios de los datos. No busca una única ecuación global que describa la relación en todo el conjunto de datos. Esto le permite adaptarse maravillosamente a las variaciones en las relaciones y curvaturas de los datos, lo que es especialmente útil cuando los datos no se distribuyen linealmente. Sin embargo, su naturaleza local implica que no produce una fórmula explícita del modelo, y puede ser computacionalmente más intensivo para conjuntos de datos muy grandes.</p>
-<div id="lowrbbftdp" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="zremxmfxmj" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
   
   <div class="inline-table"><table class="gt_table" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: 'Century Gothic'; display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 10px; font-weight: normal; font-style: normal; background-color: #FFFFFF; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; table-layout: fixed; width: 0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false" width="0" bgcolor="#FFFFFF">
 <colgroup>
@@ -347,7 +334,7 @@ Figure 2: Elaboración propia
 <p><strong>Multivariate Adaptive Regression Splines (MARS)</strong> es un algoritmo de <strong>regresión no paramétrica</strong> que extiende los modelos lineales para manejar relaciones no lineales y complejas. Desarrollado por Jerome Friedman, MARS construye su modelo al <strong>dividir el espacio de entrada en múltiples regiones y ajustar una función lineal simple (o de orden superior) a cada región</strong>.</p>
 <p>El proceso de MARS consta de dos fases: una <strong>fase de adelante</strong> que añade iterativamente <strong>funciones base</strong> (pares de funciones “hinge” o bisagra) y <strong>nudos</strong> (puntos de corte) para capturar no linealidades e interacciones entre variables, y una <strong>fase de atrás</strong> que poda las funciones base menos significativas utilizando criterios como la <strong>Validación Cruzada Generalizada (GCV)</strong> para prevenir el sobreajuste. Esto permite a MARS ser adaptable a las particularidades de los datos.</p>
 <p>En el contexto del <strong>aprendizaje global vs. local</strong>, MARS se sitúa como un modelo de <strong>aprendizaje adaptativo que combina aspectos globales y locales</strong>. Es “local” en el sentido de que sus funciones base y nudos dividen el espacio de datos en regiones, y dentro de cada región se aplica una relación simple. Sin embargo, es “global” porque la suma de todas estas funciones base forma una única ecuación que describe la relación en todo el conjunto de datos y se aplica de forma consistente. Esto significa que si los datos no se distribuyen linealmente, MARS puede aprender y modelar estas relaciones complejas de forma adaptativa, encontrando automáticamente dónde y cómo las relaciones cambian, ofreciendo una solución que es tanto flexible como interpretable.</p>
-<div id="xwdwjrdvzm" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="ufsjqncuga" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
   
   <div class="inline-table"><table class="gt_table" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: 'Century Gothic'; display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 10px; font-weight: normal; font-style: normal; background-color: #FFFFFF; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; table-layout: fixed; width: 0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false" width="0" bgcolor="#FFFFFF">
 <colgroup>
@@ -514,7 +501,7 @@ Figure 2: Elaboración propia
 <p><strong>Support Vector Machine (SVM)</strong> es un potente y versátil algoritmo de <strong>Machine Learning</strong> que se utiliza tanto para tareas de <strong>clasificación</strong> como de <strong>regresión</strong>, aunque es más conocido por su aplicación en clasificación. Su objetivo principal es encontrar el <strong>hiperplano óptimo</strong> que separe las clases en el espacio de características con el <strong>margen</strong> más grande posible. Los puntos de datos más cercanos a este hiperplano se llaman <strong>vectores de soporte</strong>, y son cruciales para definir la frontera de decisión.</p>
 <p>Para manejar datos que no son linealmente separables, SVM utiliza el <strong>“truco del kernel”</strong>. Este truco permite a SVM mapear implícitamente los datos a un espacio de mayor dimensión donde las clases podrían ser linealmente separables, sin necesidad de calcular explícitamente las coordenadas. Funciones kernel comunes como el <strong>Radial Basis Function (RBF) o Gaussiano</strong> permiten a SVM modelar fronteras de decisión no lineales complejas en el espacio original de baja dimensión.</p>
 <p>En el contexto del <strong>aprendizaje global vs. local</strong>, SVM se clasifica principalmente como un modelo de <strong>aprendizaje global</strong>. Esto se debe a que busca un <strong>único hiperplano óptimo</strong> (o una frontera de decisión no lineal definida por el kernel) que se aplica a la totalidad del espacio de características. Una vez entrenado, el modelo predice evaluando la posición de un nuevo punto con respecto a esta frontera global. Sin embargo, hay un matiz “local” en su funcionamiento: la determinación de este hiperplano depende <strong>críticamente solo de los vectores de soporte</strong>, que son los puntos de datos “más difíciles” cercanos a la frontera. Los puntos que están lejos del margen no influyen en la definición del modelo. Aunque la frontera de decisión es una función global que se aplica en todas partes, su construcción está influenciada por estos puntos localmente relevantes, permitiendo a SVM adaptar su aproximación incluso cuando las relaciones en los datos no se distribuyen linealmente, al encontrar la separación óptima en un espacio transformado.</p>
-<div id="xgqvluwkdt" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="tyblfdprgj" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
   
   <div class="inline-table"><table class="gt_table" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: 'Century Gothic'; display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 10px; font-weight: normal; font-style: normal; background-color: #FFFFFF; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; table-layout: fixed; width: 0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false" width="0" bgcolor="#FFFFFF">
 <colgroup>
@@ -611,25 +598,15 @@ Figure 2: Elaboración propia
 </div>
 </div>
   <div class="chapter-nav">
-<div class="prev"><a href="index.html">Machine Learning</a></div>
-<div class="next"><a href="%C3%A1rboles-de-decisi%C3%B3n-y-derivados.html">🌲 2. Árboles de Decisión y Derivados</a></div>
+<div class="empty"></div>
+<div class="empty"></div>
 </div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
     <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
-      <ul class="nav navbar-nav">
-<li><a class="nav-link" href="#regresi%C3%B3n-lineal">🔍 1. Regresión Lineal</a></li>
-<li><a class="nav-link" href="#ordinary-least-squares-regression-olsr">Ordinary Least Squares Regression (OLSR)</a></li>
-<li><a class="nav-link" href="#linear-regression">Linear Regression</a></li>
-<li><a class="nav-link" href="#regresi%C3%B3n-log%C3%ADstica">Regresión Logística</a></li>
-<li><a class="nav-link" href="#locally-estimated-scatterplot-smoothing-loess">Locally Estimated Scatterplot Smoothing (LOESS)</a></li>
-<li><a class="nav-link" href="#multivariate-adaptive-regression-splines-mars">Multivariate Adaptive Regression Splines (MARS)</a></li>
-<li><a class="nav-link" href="#stepwise-regression">Stepwise Regression</a></li>
-<li><a class="nav-link" href="#support-vector-machine-svm">Support Vector Machine (SVM)</a></li>
-</ul>
+      <div id="book-on-this-page"></div>
 
       <div class="book-extra">
         <ul class="list-unstyled">
-<li><a id="book-source" href="https://dvillasanao.github.io/ML//blob/master/01-regression.Rmd">View source <i class="fab fa-gitlab"></i></a></li>
-          <li><a id="book-edit" href="https://dvillasanao.github.io/ML//edit/master/01-regression.Rmd">Edit this page <i class="fab fa-gitlab"></i></a></li>
+          
         </ul>
 </div>
     </nav>

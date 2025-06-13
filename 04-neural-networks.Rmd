@@ -400,6 +400,11 @@ tabla_hopfield %>%
 
 ## Multilayer Perceptron (MP)  {-}     
 
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Neural Networks/MP.png"))
+```
+
 El **Multilayer Perceptron (MLP)**, también conocido como **red neuronal de propagación hacia adelante clásica**, es un tipo fundamental de **red neuronal artificial** utilizada para una amplia gama de tareas de **aprendizaje supervisado**, incluyendo **clasificación** y **regresión**. La idea fundamental del MLP es extender el concepto del Perceptrón simple al incorporar una o más **capas ocultas** entre la capa de entrada y la capa de salida, y utilizando **funciones de activación no lineales** en estas capas. Esta arquitectura de múltiples capas es lo que le confiere a los MLP su capacidad para aprender y modelar relaciones complejas y no lineales en los datos.
 
 La estructura de un MLP típicamente incluye:
