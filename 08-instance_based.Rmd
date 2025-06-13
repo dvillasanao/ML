@@ -10,6 +10,12 @@
 ## k - Nearest Neighbour (kNN)  {-}    
 
 
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Intance-Based/kNN.png"))
+```
+
+
 **k-Nearest Neighbour (kNN)** es un algoritmo de **Machine Learning no paramétrico** que se utiliza tanto para tareas de **clasificación** como de **regresión**. Es considerado uno de los algoritmos más simples y se basa en la idea de que los puntos de datos que están cerca entre sí en el espacio de características suelen tener propiedades similares. No es un algoritmo que "aprende" un modelo explícito durante la fase de entrenamiento, sino que es un **algoritmo perezoso (lazy learner)**.
 
 **Funcionamiento de kNN:**
@@ -105,7 +111,12 @@ tabla_knn %>%
 
 
 
-## Learning Vector Quantization (LVQ)  {-}    
+## Learning Vector Quantization (LVQ)  {-} 
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Intance-Based/LVQ.png"))
+```
 
 **Learning Vector Quantization (LVQ)** es un algoritmo de **clasificación supervisada basado en prototipos**, desarrollado por Teuvo Kohonen. Puede ser visto como un tipo de **red neuronal artificial** que utiliza un enfoque de "ganador se lleva todo" (winner-take-all) para aprender a clasificar datos. LVQ es una alternativa al algoritmo k-Nearest Neighbour (kNN) que busca reducir la cantidad de información necesaria para almacenar los datos de entrenamiento, aprendiendo un conjunto más pequeño de **prototipos** que representan las clases.
 
