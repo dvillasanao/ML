@@ -1,5 +1,6 @@
 --- 
 title: "Machine Learning (Apuntes) "
+subtitle: "Apuntes personales"
 author: "Diana Villasana Ocampo"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site

@@ -1,3 +1,114 @@
+--- 
+title: "Machine Learning (Apuntes) "
+subtitle: "Apuntes personales"
+author: "Diana Villasana Ocampo"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+documentclass: book
+bibliography: [book.bib, packages.bib]
+# url: your book url like https://bookdown.org/yihui/bookdown
+# cover-image: path to the social sharing image like images/cover.jpg
+description: |
+  This is a minimal example of using the bookdown package to write a book.
+  The HTML output format for this example is bookdown::bs4_book,
+  set in the _output.yml file.
+biblio-style: apalike
+csl: chicago-fullnote-bibliography.csl
+---
+
+# url: your book url like https://bookdown.org/yihui/bookdown
+
+Placeholder
+
+
+## 📌 Cuadro {-}
+## Modelos de Machine Learning  {-}
+
+<!--chapter:end:index.Rmd-->
+
+
+# 🔍 **1. Regressión** {.unnumbered}
+
+Placeholder
+
+
+## Ordinary Least Squares Regression (`OLSR`) {-}   
+## Linear Regression {.unnumbered}   
+## Regresión Logística {.unnumbered}
+## Locally Estimated Scatterplot Smoothing (`LOESS`) {.unnumbered} 
+## Multivariate Adaptive Regression Splines (`MARS`) {.unnumbered} 
+## Stepwise Regression {.unnumbered}
+## Support Vector Machine (SVM) {.unnumbered} 
+
+<!--chapter:end:01-regression.Rmd-->
+
+
+# 🌲 **2. Árboles de Decisión y Derivados** {-}  
+
+Placeholder
+
+
+## C4.5  {-}   
+## C5.0  {-}  
+## Classification and Regression Tree (CART)  {-} 
+## Chi-squared Automatic Interaction Detection (CHAID)  {-}    
+## Conditional Decision Trees (Conditional Inference Trees - CITs)  {-}   
+## Decision Stump  {-} 
+## Iterative Dichotomiser 3 (ID3)  {-}    
+## M5 (Model Tree) {-}   
+
+<!--chapter:end:02-decision_tree.Rmd-->
+
+
+# 🌟 **3. Ensambles (Ensemble Methods)** {-}
+
+Placeholder
+
+
+## Adaptive Boosting (AdaBoost)  {-}   
+## Boosting  {-}   
+## Bootstrapped Aggregation (Bagging)  {-}    
+## Extreme Gradient Boosting (XGBoost)  {-}   
+## Gradient Boosting Machines (GBM)  {-}  
+## Gradient Boosted Regression Trees (GBRT)  {-}  
+## Light Gradient Boosting Machine (LightGBM)  {-}   
+## Random Forest  {-}   
+## Stacked Generlization (Blending) {-}    
+
+<!--chapter:end:03-ensemble.Rmd-->
+
+
+# 🧠 **4. Redes Neuronales y Deep Learning** {-}  
+
+Placeholder
+
+
+## Autoenconder  {-}  
+## Back - Propagation  {-}  
+## Convolutional Neural Network (CNN)  {-}   
+## Hopfield Network  {-}    
+## Multilayer Perceptron (MP)  {-}     
+## Perceptron  {-}     
+## Radial Basis Function Network (RBFN)  {-}   
+## Recurrent Neural Networks (RNNs) {-}  
+## Transformers  {-}  
+
+<!--chapter:end:04-neural-networks.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+# example R options set globally
+options(width = 80)
+
+# example chunk options set globally
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE,
+  message = FALSE,
+  warning = FALSE
+)
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+setwd(here::here())
+```
 # 🧩 **5. Reducción de Dimensionalidad** {-}   
 
 **Ejemplos:** PCA, t-SNE, UMAP   
@@ -1287,4 +1398,102 @@ tabla_umap %>%
                    everything() ~ px(200)) %>%
          as_raw_html() 
 ```
+
+
+<!--chapter:end:05-dimensionality_reduction.Rmd-->
+
+
+# 🧬 **6. Bayesianos** {-}  
+
+Placeholder
+
+
+## Averaged One - Dependence Estimators (AODE)  {-}    
+## Bayesian Network (BN)  {-}    
+## Bayesian Belief Network (BBN)  {-}  
+## Gaussian Naive Bayes (GNB) {-}     
+## Multinomial Naive Bayes (MNB) {-}   
+## Naive Bayes (NB) {-}   
+
+<!--chapter:end:06-bayesian.Rmd-->
+
+
+# 🧮 **7. Regularización** {-}  
+
+Placeholder
+
+
+## Elastic Net  {-}   
+## Ridge Regression  {-}    
+## Least Absolute Shrinkage and Selection Operator (LASSO)  {-}  
+## Least Angle Regression (LARS)  {-}   
+
+<!--chapter:end:07-regularization.Rmd-->
+
+
+# 🔍 **8. Instance-Based (Basados en Instancias)** {-}  
+
+Placeholder
+
+
+## k - Nearest Neighbour (kNN)  {-}    
+## Learning Vector Quantization (LVQ)  {-}    
+## Locally Weighted Learning (LWL)  {-}   
+## Self - Organizing Map (SOM)  {-}   
+
+<!--chapter:end:08-instance_based.Rmd-->
+
+
+# 📏 **9. Clustering (No Supervisado)** {-}  
+
+Placeholder
+
+
+## Density-Based Spatial Clustering of Applications with Noise (DBSCAN)  {-}    
+## Expectation Maximization (EM) {-}  
+## Hierarchical Clustering (hclust) {-}  
+## k-Means  {-}   
+## k-Medians  {-}    
+
+<!--chapter:end:09-clustering.Rmd-->
+
+
+# 📐 **10. Sistemas Basados en Reglas (Rule-Based Systems)** {-}
+
+Placeholder
+
+
+## Cubist  {-}   
+## Decision Rules  {-}   
+## Lógica Difusa (Fuzzy Logic) {-}
+## One Rule (OneR)  {-}   
+## Repeated Incremental Pruning to Produce Error Reduction (RIPPER)  {-}  
+## Rule Fit  {-}    
+## Zero Rule (ZeroR)  {-}    
+
+<!--chapter:end:10-rule_based_systems.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+# example R options set globally
+options(width = 80)
+
+# example chunk options set globally
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE,
+  message = FALSE,
+  warning = FALSE
+)
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+setwd(here::here())
+```
+`r if (knitr::is_html_output()) '
+# References {-}
+'`
+
+Sagi, S. (2019). ML Algorithms: One SD (σ). The obvious questions to ask when… | by Sagi Shaier | Medium. https://medium.com/@Shaier/ml-algorithms-one-sd-%CF%83-74bcb28fafb6 
+
+Kuhn, M. (2019). The caret Package. https://topepo.github.io/caret/index.html
+
+<!--chapter:end:11-references.Rmd-->
 
