@@ -83,7 +83,12 @@ La Regresión Lineal es un modelo de **aprendizaje puramente global**.
 * **Rigidez de la Linealidad:** Debido a su naturaleza global y lineal, la regresión lineal no puede capturar relaciones **no lineales o interacciones complejas** entre las variables predictoras de forma inherente. Si la relación real en los datos es no lineal, el modelo lineal intentará ajustarla con la mejor línea recta posible, lo que podría llevar a un bajo rendimiento.
 
 
-## Regresión Logística {.unnumbered}
+## Regresión Logística (Logit) {.unnumbered}
+
+```{r, echo = FALSE,out.width='50%', fig.align='center', fig.cap="Elaboración propia"}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Regression/Logit.png"))
+```
 
 La **Regresión Logística** es un modelo estadístico usado principalmente para problemas de **clasificación binaria**, donde el objetivo es predecir la **probabilidad** de que una instancia pertenezca a una de dos clases (por ejemplo, "sí" o "no", "0" o "1"). A pesar de su nombre, no predice un valor continuo, sino una probabilidad.
 
@@ -164,9 +169,9 @@ tabla_logit %>%
 
 ## Locally Estimated Scatterplot Smoothing (`LOESS`) {.unnumbered} 
 
-```{r, echo = FALSE,out.width='50%', fig.align='center', fig.cap="Elaboración propia"}
-require(knitr)
+```{r echo=FALSE, fig.show="hold", out.width="48%"}
 knitr::include_graphics(paste0(here::here(), "/img/Regression/LOESS.png"))
+knitr::include_graphics(paste0(here::here(), "/img/Regression/LOESS_1.png"))
 ```
 
 **LOESS (Locally Estimated Scatterplot Smoothing)**, o LOWESS, es una técnica de **regresión no paramétrica** para crear una curva suave que se ajusta a los datos en un diagrama de dispersión. Su gran ventaja es que **no asume una forma funcional global** específica para la relación entre las variables, lo que la hace muy flexible para identificar tendencias y patrones no lineales.
@@ -326,6 +331,11 @@ tabla_mars %>%
 ```
 
 ## Stepwise Regression {.unnumbered}
+
+```{r, echo = FALSE,out.width='50%', fig.align='center', fig.cap="Elaboración propia"}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Regression/StepW.png"))
+```
 
 La **Regresión por Pasos (Stepwise Regression)** es una técnica para construir un modelo de regresión lineal (o a veces otros modelos lineales generalizados) seleccionando las variables predictoras de forma iterativa y automática. Su objetivo es encontrar un subconjunto óptimo de variables que mejore la capacidad predictiva del modelo sin incluir variables irrelevantes o redundantes. Esto ayuda a simplificar el modelo, mejorar la interpretabilidad y reducir el riesgo de sobreajuste.
 
