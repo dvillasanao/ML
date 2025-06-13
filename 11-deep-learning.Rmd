@@ -19,8 +19,23 @@
 ---
 
 
-## Deep Boltzman Machine (DBM) {-}
+## Deep Boltzman Machine (DBM) {-}  
 
-## Deep Belief Networks (DBN) {-}
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Deep learning/DBM.png"))
+```
+
+## Deep Belief Networks (DBNet) {-}
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Deep learning/DBNet.png"))
+```
 
 ## Stacked Auto-Enconders {-}
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Deep learning/SAE.png"))
+```
