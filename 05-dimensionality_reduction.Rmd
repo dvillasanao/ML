@@ -902,6 +902,11 @@ tabla_pcr %>%
 
 ## Projection Pursuit (PP)  {-}     
 
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Dimensionality Reduction/PP.png"))
+```
+
 **Projection Pursuit (PP)** es una técnica estadística de **reducción de dimensionalidad y análisis exploratorio de datos** utilizada para encontrar las proyecciones "más interesantes" de datos multivariados de alta dimensión en un espacio de menor dimensión (generalmente 1D o 2D). La clave de PP es que las proyecciones "interesantes" son aquellas que **se desvían más de una distribución normal (gaussiana)**, ya que las estructuras como agrupaciones, valores atípicos, o formas inusuales tienden a ser más evidentes en proyecciones no gaussianas.
 
 El algoritmo de PP no busca simplemente la mayor varianza (como PCA), sino que intenta encontrar direcciones de proyección que revelen la estructura subyacente y las características no lineales de los datos. Lo hace **maximizando un "índice de proyección"** que mide la "interesante" o la "no-gaussianidad" de la proyección. Diferentes índices pueden enfocarse en diferentes aspectos, como la asimetría, la curtosis, o la presencia de múltiples modos (grupos).
@@ -995,7 +1000,13 @@ tabla_pp %>%
 
 
 
-## Sammon Mapping  {-}   
+## Sammon Mapping  {-}  
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Dimensionality Reduction/Sammon Mapping.png"))
+```
+
 
 **Sammon Mapping** es una técnica de **reducción de dimensionalidad no lineal** que se utiliza para visualizar datos de alta dimensión en un espacio de menor dimensión (generalmente 2D o 3D). Su principal objetivo es **preservar la estructura de distancia local** de los datos originales en la representación de menor dimensión.
 
@@ -1090,7 +1101,13 @@ tabla_sammon %>%
 
 
 
-## Regularized Discriminant Analysis (RDA)  {-}    
+## Regularized Discriminant Analysis (RDA)  {-}   
+
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Dimensionality Reduction/RDA.png"))
+```
 
 El **Análisis Discriminante Regularizado (RDA)** es un método de **clasificación** que actúa como un **intermedio flexible entre el Análisis Discriminante Lineal (LDA) y el Análisis Discriminante Cuadrático (QDA)**. Fue desarrollado por Jerome Friedman para abordar las limitaciones de LDA (que asume covarianzas iguales para todas las clases, lo que resulta en fronteras lineales) y QDA (que permite covarianzas separadas pero puede ser inestable con pocos datos o muchas variables).
 
@@ -1193,6 +1210,11 @@ tabla_rda %>%
 
 
 ## Uniform Manifold Approximation and Projection (UMAP) {-}   
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Dimensionality Reduction/UMAP.png"))
+```
 
 **Uniform Manifold Approximation and Projection (UMAP)** es una técnica de **reducción de dimensionalidad no lineal** de vanguardia, utilizada principalmente para la **visualización de datos** de alta dimensión y para el **aprendizaje de características (feature learning)**. Fue desarrollada por Leland McInnes, John Healy y James Melville. UMAP es una alternativa más reciente y a menudo más rápida y escalable a t-SNE (t-Distributed Stochastic Neighbor Embedding), manteniendo su capacidad para preservar la estructura local y global de los datos.
 
