@@ -696,7 +696,7 @@ tabla_rulefit %>%
 
 ```{r, echo = FALSE,out.width='50%', fig.align='center'}
 require(knitr)
-knitr::include_graphics(paste0(here::here(), "/img/Rule-System/ZeroR.png"))
+knitr::include_graphics(paste0(here::here(), "/img/Rule-System/Rule Fit.png"))
 ```
 
 **Zero Rule (ZeroR)** es el algoritmo de **clasificación supervisada** más simple imaginable. No utiliza ninguna de las características predictoras en el conjunto de datos para hacer sus predicciones. En su lugar, simplemente **predice la clase más frecuente (mayoritaria)** que se observa en el conjunto de datos de entrenamiento.

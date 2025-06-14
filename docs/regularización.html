@@ -44,7 +44,7 @@
       <nav aria-label="Table of contents"><h2>Table of contents</h2>
         <ul class="book-toc list-unstyled">
 <li><a class="" href="index.html">Machine Learning</a></li>
-<li><a class="" href="regresi%C3%B3n-lineal.html">🔍 1. Regresión Lineal</a></li>
+<li><a class="" href="regresi%C3%B3n.html">🔍 1. Regresión</a></li>
 <li><a class="" href="%C3%A1rboles-de-decisi%C3%B3n-y-derivados.html">🌲 2. Árboles de Decisión y Derivados</a></li>
 <li><a class="" href="m%C3%A9todos-de-ensamble.html">🌟 3. Métodos de Ensamble</a></li>
 <li><a class="" href="redes-neuronales.html">🧠 4. Redes Neuronales</a></li>
@@ -100,7 +100,7 @@
 <li><p><strong>Aspecto Global:</strong> Elastic Net construye un <strong>modelo lineal global</strong> que se aplica a todo el conjunto de datos. Los coeficientes de la regresión se estiman optimizando una función de costo que considera todos los puntos de datos simultáneamente. La penalización se aplica a todos los coeficientes de manera uniforme, lo que busca una solución que minimice el error de predicción y controle la complejidad del modelo a nivel global. La ecuación de regresión final es una función que se aplica de manera consistente a cualquier nueva observación, sin importar su ubicación en el espacio de características.</p></li>
 <li><p><strong>Influencia de la Regularización:</strong> Aunque la regresión en sí es global, las penalizaciones de regularización pueden tener un efecto que podríamos considerar “adaptativo” en el sentido de que ajustan la influencia de las variables en función de su relación con otras variables y la respuesta. Por ejemplo, la penalización L1 puede “localizar” las variables más importantes al poner otras a cero, y la L2 puede distribuir la importancia entre variables correlacionadas. Sin embargo, estas son propiedades de la optimización global del modelo, no de ajustar modelos separados para diferentes subregiones del espacio de datos. La Elastic Net, al igual que OLS, Ridge y Lasso, busca una única relación lineal que describa la tendencia general de los datos.</p></li>
 </ul>
-<div id="ckqayhvrkz" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="rvmykimtoc" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
   
   <div class="inline-table"><table class="gt_table" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: 'Century Gothic'; display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 10px; font-weight: normal; font-style: normal; background-color: #FFFFFF; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; table-layout: fixed; width: 0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false" width="0" bgcolor="#FFFFFF">
 <colgroup>
@@ -217,7 +217,7 @@
 <li><p><strong>Aspecto Global:</strong> Ridge Regression construye un <strong>modelo lineal global</strong> que se aplica a todo el conjunto de datos. Los coeficientes se estiman optimizando una función de costo que considera todos los puntos de datos simultáneamente. La penalización L2 se aplica a todos los coeficientes para controlar la complejidad y la estabilidad del modelo a nivel global. La ecuación de regresión resultante es una función única que se aplica de manera consistente a cualquier nueva observación, sin importar su ubicación específica en el espacio de características.</p></li>
 <li><p><strong>Estabilización Global:</strong> Aunque la regularización L2 mejora la estabilidad de las estimaciones de los coeficientes y ayuda a manejar la multicolinealidad, lo hace como parte de una optimización global. No implica la creación de múltiples modelos locales o la adaptación a subregiones específicas de los datos. La Regresión Ridge busca una relación lineal subyacente que sea la mejor aproximación para el conjunto de datos completo, penalizando la complejidad para mejorar la generalización global.</p></li>
 </ul>
-<div id="hzdmkhyjrt" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="mfxaykrnzx" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
   
   <div class="inline-table"><table class="gt_table" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: 'Century Gothic'; display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 10px; font-weight: normal; font-style: normal; background-color: #FFFFFF; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; table-layout: fixed; width: 0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false" width="0" bgcolor="#FFFFFF">
 <colgroup>
@@ -333,7 +333,7 @@
 <li><p><strong>Aspecto Global:</strong> LASSO construye un <strong>modelo lineal global</strong> que se aplica a todo el conjunto de datos. Los coeficientes se estiman optimizando una función de costo que considera todos los puntos de datos simultáneamente. La penalización L1 se aplica a todos los coeficientes para controlar la complejidad y realizar la selección de características a nivel global. La ecuación de regresión final es una función única que se aplica de manera consistente a cualquier nueva observación, sin importar su ubicación en el espacio de características.</p></li>
 <li><p><strong>Selección Global de Características:</strong> Aunque LASSO puede “localizar” qué variables son importantes al reducir sus coeficientes a cero, esto se hace como parte de un proceso de optimización global que evalúa la contribución de cada variable a la predicción general del modelo. No implica la creación de múltiples modelos locales o la adaptación a subregiones específicas de los datos. LASSO busca la relación lineal más parsimoniosa que mejor se ajuste al conjunto de datos completo.</p></li>
 </ul>
-<div id="suahjxteyg" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="lqhzhnhiav" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
   
   <div class="inline-table"><table class="gt_table" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: 'Century Gothic'; display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 10px; font-weight: normal; font-style: normal; background-color: #FFFFFF; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; table-layout: fixed; width: 0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false" width="0" bgcolor="#FFFFFF">
 <colgroup>
@@ -458,7 +458,7 @@
 <li><p><strong>Aspecto Global:</strong> LARS construye un <strong>modelo lineal global</strong> paso a paso. Aunque el algoritmo añade variables una por una y ajusta sus coeficientes de manera incremental, el modelo resultante en cada paso es una ecuación de regresión lineal que se aplica a todo el conjunto de datos. La decisión de qué variable añadir y cómo ajustar los coeficientes se basa en las correlaciones globales entre las variables predictoras y la respuesta (o el residuo). La finalidad es encontrar los coeficientes óptimos para una función de regresión que se aplica a todo el espacio de características.</p></li>
 <li><p><strong>Selección de Características Globalmente:</strong> La capacidad de LARS para realizar selección de características (al igual que LASSO) es un proceso global. Se identifican las variables más influyentes en el contexto de todo el conjunto de datos, y su inclusión en el modelo contribuye a la formación de una relación global entre los predictores y la respuesta. No se construyen modelos separados para diferentes subregiones de los datos; en cambio, se construye un único modelo global de manera progresiva.</p></li>
 </ul>
-<div id="lpeoqvzurk" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="ilzhbltupi" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
   
   <div class="inline-table"><table class="gt_table" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: 'Century Gothic'; display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 10px; font-weight: normal; font-style: normal; background-color: #FFFFFF; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; table-layout: fixed; width: 0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false" width="0" bgcolor="#FFFFFF">
 <colgroup>
@@ -582,7 +582,7 @@
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Machine Learning (Apuntes)</strong>" was written by Diana Villasana Ocampo. It was last built on 2025-06-13.</p>
+    <p>"<strong>Machine Learning (Apuntes)</strong>" was written by Diana Villasana Ocampo. It was last built on 2025-06-14.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

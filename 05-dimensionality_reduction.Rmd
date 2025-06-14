@@ -208,22 +208,23 @@ require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Dimensionality Reduction/MDA.png"))
 ```
 
-El **Análisis Discriminante de Mezclas (MDA)** es una extensión del Análisis Discriminante Lineal (LDA) y del Análisis Discriminante Cuadrático (QDA) que aborda la limitación de que estas técnicas asumen que cada clase proviene de una única distribución normal (o gaussiana). MDA relaja esta suposición al permitir que **cada clase sea modelada como una mezcla de múltiples distribuciones gaussianas**. Esto le otorga una capacidad significativamente mayor para manejar clases con formas complejas o multimodales, que no pueden ser descritas adecuadamente por una sola distribución normal.
+El **Análisis Discriminante de Mezclas (MDA)** es una extensión del Análisis Discriminante Lineal (LDA) y del Análisis Discriminante Cuadrático (QDA) que aborda la limitación de que estas técnicas asumen que cada clase proviene de una única distribución normal (o gaussiana). MDA relaja esta suposición al permitir que **cada clase sea modelada como una mezcla de múltiples distribuciones gaussianas**. Esto le otorga una capacidad significativamente mayor para manejar clases con formas complejas o multimodales, que no pueden ser descritas adecuadamente por una sola distribución normal.  
 
-MDA funciona de la siguiente manera:
-1.  **Modelado por Componentes de Mezcla:** Para cada clase, MDA estima los parámetros (media y matriz de covarianza) de varias distribuciones gaussianas ("componentes de mezcla") en lugar de solo una. Es similar al proceso de agrupamiento de mezclas gaussianas (Gaussian Mixture Models - GMM) aplicado dentro de cada clase.
-2.  **Asignación a la Clase:** Una vez que se han modelado las distribuciones de mezcla para cada clase, para una nueva observación, MDA calcula la probabilidad de que esa observación pertenezca a cada componente de mezcla en cada clase. Luego, asigna la observación a la clase que maximiza la probabilidad posterior, es decir, la clase que es más probable que haya generado esa observación.
-3.  **Fronteras de Decisión Flexibles:** Al modelar cada clase como una mezcla de gaussianas, MDA puede generar fronteras de decisión que son mucho más flexibles y no lineales que las de LDA (que son lineales) o QDA (que son cuadráticas). Esto le permite adaptarse a clases con estructuras complejas, que pueden tener "agrupaciones" internas o formas irregulares.
+MDA funciona de la siguiente manera:  
 
-Los parámetros del modelo (las medias, covarianzas y pesos de los componentes de mezcla para cada clase) se suelen estimar utilizando un algoritmo iterativo como la **Maximización de Expectativas (Expectation-Maximization - EM)**.
+1.  **Modelado por Componentes de Mezcla:** Para cada clase, MDA estima los parámetros (media y matriz de covarianza) de varias distribuciones gaussianas ("componentes de mezcla") en lugar de solo una. Es similar al proceso de agrupamiento de mezclas gaussianas (Gaussian Mixture Models - GMM) aplicado dentro de cada clase.  
+2.  **Asignación a la Clase:** Una vez que se han modelado las distribuciones de mezcla para cada clase, para una nueva observación, MDA calcula la probabilidad de que esa observación pertenezca a cada componente de mezcla en cada clase. Luego, asigna la observación a la clase que maximiza la probabilidad posterior, es decir, la clase que es más probable que haya generado esa observación.   
+3.  **Fronteras de Decisión Flexibles:** Al modelar cada clase como una mezcla de gaussianas, MDA puede generar fronteras de decisión que son mucho más flexibles y no lineales que las de LDA (que son lineales) o QDA (que son cuadráticas). Esto le permite adaptarse a clases con estructuras complejas, que pueden tener "agrupaciones" internas o formas irregulares.  
 
-**Aprendizaje Global vs. Local:**
+Los parámetros del modelo (las medias, covarianzas y pesos de los componentes de mezcla para cada clase) se suelen estimar utilizando un algoritmo iterativo como la **Maximización de Expectativas (Expectation-Maximization - EM)**.   
 
-El Análisis Discriminante de Mezclas (MDA) se encuentra en un punto intermedio, inclinándose hacia un modelo que **combina aspectos de aprendizaje global y local**, con una mayor flexibilidad para capturar la estructura local de los datos en comparación con LDA o QDA.
+**Aprendizaje Global vs. Local:**   
 
-* **Aspecto Global:** Al igual que LDA, el objetivo final de MDA es crear un **clasificador global** que pueda asignar cualquier nueva observación a una de las clases. Las distribuciones de mezcla para cada clase se aprenden a partir de todo el conjunto de datos de entrenamiento para esas clases, y el clasificador resultante se aplica de manera consistente en todo el espacio de características. La regla de decisión final es una función que se deriva de las distribuciones aprendidas para todas las clases.
+El Análisis Discriminante de Mezclas (MDA) se encuentra en un punto intermedio, inclinándose hacia un modelo que **combina aspectos de aprendizaje global y local**, con una mayor flexibilidad para capturar la estructura local de los datos en comparación con LDA o QDA.  
 
-* **Aspecto Local:** La "flexibilidad" de MDA y su capacidad para manejar no linealidades proviene de su suposición de que cada clase puede estar compuesta por **múltiples componentes gaussianos**. Esto significa que, dentro de una misma clase, puede haber sub-agrupaciones o densidades locales que son modeladas individualmente. Al permitir estas múltiples distribuciones gaussianas dentro de cada clase, MDA puede adaptarse mejor a las características y densidades de los datos en diferentes **vecindarios o subregiones** del espacio de características. Si los datos no se distribuyen linealmente y tienen formas complejas (como clusters separados dentro de una clase), MDA puede "localizar" y modelar estas estructuras, llevando a fronteras de decisión mucho más complejas y no lineales que se ajustan mejor a la forma real de las clases.
+* **Aspecto Global:** Al igual que LDA, el objetivo final de MDA es crear un **clasificador global** que pueda asignar cualquier nueva observación a una de las clases. Las distribuciones de mezcla para cada clase se aprenden a partir de todo el conjunto de datos de entrenamiento para esas clases, y el clasificador resultante se aplica de manera consistente en todo el espacio de características. La regla de decisión final es una función que se deriva de las distribuciones aprendidas para todas las clases.  
+
+* **Aspecto Local:** La "flexibilidad" de MDA y su capacidad para manejar no linealidades proviene de su suposición de que cada clase puede estar compuesta por **múltiples componentes gaussianos**. Esto significa que, dentro de una misma clase, puede haber sub-agrupaciones o densidades locales que son modeladas individualmente. Al permitir estas múltiples distribuciones gaussianas dentro de cada clase, MDA puede adaptarse mejor a las características y densidades de los datos en diferentes **vecindarios o subregiones** del espacio de características. Si los datos no se distribuyen linealmente y tienen formas complejas (como clusters separados dentro de una clase), MDA puede "localizar" y modelar estas estructuras, llevando a fronteras de decisión mucho más complejas y no lineales que se ajustan mejor a la forma real de las clases.   
 
 
 ```{r, echo = FALSE}
@@ -307,26 +308,26 @@ knitr::include_graphics(paste0(here::here(), "/img/Dimensionality Reduction/MDS.
 ```
 
 
-El **Escalamiento Multidimensional (MDS)** es una técnica de **reducción de dimensionalidad** utilizada para visualizar y explorar las **similitudes o disimilitudes** entre un conjunto de objetos. Su objetivo principal es tomar datos de alta dimensión, donde las relaciones entre los puntos pueden ser difíciles de entender, y representarlos en un **espacio de menor dimensión** (típicamente 2D o 3D) de tal manera que las **distancias entre los puntos en el nuevo espacio reflejen lo más fielmente posible las distancias (o disimilitudes) originales** entre los objetos.
+El **Escalamiento Multidimensional (MDS)** es una técnica de **reducción de dimensionalidad** utilizada para visualizar y explorar las **similitudes o disimilitudes** entre un conjunto de objetos. Su objetivo principal es tomar datos de alta dimensión, donde las relaciones entre los puntos pueden ser difíciles de entender, y representarlos en un **espacio de menor dimensión** (típicamente 2D o 3D) de tal manera que las **distancias entre los puntos en el nuevo espacio reflejen lo más fielmente posible las distancias (o disimilitudes) originales** entre los objetos.   
 
-Imagina que tienes una tabla de distancias de viaje entre varias ciudades. MDS intentaría dibujar un mapa de esas ciudades donde las distancias en el mapa se correspondieran lo más posible con las distancias de la tabla.
+Imagina que tienes una tabla de distancias de viaje entre varias ciudades. MDS intentaría dibujar un mapa de esas ciudades donde las distancias en el mapa se correspondieran lo más posible con las distancias de la tabla.   
 
-El proceso general de MDS implica:
+El proceso general de MDS implica:   
 
-1.  **Matriz de Disimilitud:** Se necesita una matriz que contenga las disimilitudes (distancias) entre cada par de objetos. Estas disimilitudes pueden ser distancias euclidianas, correlaciones, o cualquier otra medida de qué tan diferentes (o similares) son dos objetos.
-2.  **Optimización:** El algoritmo busca una configuración de puntos en el espacio de menor dimensión que minimice una **función de "estrés" o "ajuste"**. Esta función mide qué tan bien las distancias en el espacio reducido se corresponden con las disimilitudes originales. Una función de estrés baja indica un buen ajuste.
-3.  **Visualización:** Los puntos resultantes en el espacio de menor dimensión pueden ser graficados para revelar patrones, clusters o la estructura subyacente de los datos que no eran evidentes en las dimensiones originales.
+1.  **Matriz de Disimilitud:** Se necesita una matriz que contenga las disimilitudes (distancias) entre cada par de objetos. Estas disimilitudes pueden ser distancias euclidianas, correlaciones, o cualquier otra medida de qué tan diferentes (o similares) son dos objetos.  
+2.  **Optimización:** El algoritmo busca una configuración de puntos en el espacio de menor dimensión que minimice una **función de "estrés" o "ajuste"**. Esta función mide qué tan bien las distancias en el espacio reducido se corresponden con las disimilitudes originales. Una función de estrés baja indica un buen ajuste.  
+3.  **Visualización:** Los puntos resultantes en el espacio de menor dimensión pueden ser graficados para revelar patrones, clusters o la estructura subyacente de los datos que no eran evidentes en las dimensiones originales.  
 
-Existen varias variantes de MDS, como el **MDS Clásico (o Métrica)**, que asume que las disimilitudes son distancias euclidianas y busca una solución analítica, y el **MDS No-Métrico**, que solo busca preservar el **orden** de las disimilitudes (es decir, si A es más diferente de B que de C, esa relación se mantendrá en el espacio reducido, sin que las distancias exactas tengan que ser iguales).
+Existen varias variantes de MDS, como el **MDS Clásico (o Métrica)**, que asume que las disimilitudes son distancias euclidianas y busca una solución analítica, y el **MDS No-Métrico**, que solo busca preservar el **orden** de las disimilitudes (es decir, si A es más diferente de B que de C, esa relación se mantendrá en el espacio reducido, sin que las distancias exactas tengan que ser iguales).  
 
 
-**Aprendizaje Global vs. Local:**
+**Aprendizaje Global vs. Local:**  
 
-El Escalamiento Multidimensional (MDS) se considera predominantemente una técnica de **aprendizaje global**.
+El Escalamiento Multidimensional (MDS) se considera predominantemente una técnica de **aprendizaje global**.   
 
-* **Aspecto Global:** MDS busca una **configuración única de puntos** en el espacio de baja dimensión que optimice el ajuste de **todas las disimilitudes** en el conjunto de datos de manera simultánea. La función de estrés que se minimiza considera las distancias entre *todos* los pares de puntos, buscando una solución que sea globalmente la mejor representación de esas relaciones. El objetivo es preservar la estructura general de las distancias en el conjunto de datos completo, no solo las relaciones en vecindarios específicos. La solución que se encuentra es una "vista aérea" o un "mapa" de las relaciones de todo el conjunto de datos.
+* **Aspecto Global:** MDS busca una **configuración única de puntos** en el espacio de baja dimensión que optimice el ajuste de **todas las disimilitudes** en el conjunto de datos de manera simultánea. La función de estrés que se minimiza considera las distancias entre *todos* los pares de puntos, buscando una solución que sea globalmente la mejor representación de esas relaciones. El objetivo es preservar la estructura general de las distancias en el conjunto de datos completo, no solo las relaciones en vecindarios específicos. La solución que se encuentra es una "vista aérea" o un "mapa" de las relaciones de todo el conjunto de datos.   
 
-Aunque las disimilitudes originales son "locales" en el sentido de que son medidas entre pares de puntos, la forma en que MDS utiliza todas estas medidas para construir un mapa coherente y de baja dimensión es un proceso global de optimización. No se ajustan modelos separados para diferentes subconjuntos de datos; en su lugar, se busca una representación unificada que capture la estructura general de similaridad/disimilitud de todos los datos. Por lo tanto, si los datos tienen una estructura global bien definida basada en distancias, MDS es una herramienta efectiva para revelar esa estructura. 
+Aunque las disimilitudes originales son "locales" en el sentido de que son medidas entre pares de puntos, la forma en que MDS utiliza todas estas medidas para construir un mapa coherente y de baja dimensión es un proceso global de optimización. No se ajustan modelos separados para diferentes subconjuntos de datos; en su lugar, se busca una representación unificada que capture la estructura general de similaridad/disimilitud de todos los datos. Por lo tanto, si los datos tienen una estructura global bien definida basada en distancias, MDS es una herramienta efectiva para revelar esa estructura.   
 
 
 ```{r, echo = FALSE}
@@ -408,23 +409,23 @@ require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Dimensionality Reduction/QDA.png"))
 ```
 
-El **Análisis Discriminante Cuadrático (QDA)** es un método de **clasificación** que, al igual que el Análisis Discriminante Lineal (LDA), modela la distribución de cada clase para clasificar nuevas observaciones. Sin embargo, QDA es una extensión de LDA que relaja una de sus suposiciones clave: mientras que LDA asume que todas las clases comparten la misma matriz de covarianza (es decir, las distribuciones tienen la misma "forma" o "orientación"), **QDA permite que cada clase tenga su propia matriz de covarianza distinta**.
+El **Análisis Discriminante Cuadrático (QDA)** es un método de **clasificación** que, al igual que el Análisis Discriminante Lineal (LDA), modela la distribución de cada clase para clasificar nuevas observaciones. Sin embargo, QDA es una extensión de LDA que relaja una de sus suposiciones clave: mientras que LDA asume que todas las clases comparten la misma matriz de covarianza (es decir, las distribuciones tienen la misma "forma" o "orientación"), **QDA permite que cada clase tenga su propia matriz de covarianza distinta**.  
 
-Esta diferencia es fundamental:
-* **LDA:** Asume que la variación de los datos es la misma en todas las clases, lo que resulta en **fronteras de decisión lineales** entre las clases.
-* **QDA:** Permite que la variación de los datos sea diferente para cada clase, lo que resulta en **fronteras de decisión cuadráticas** entre las clases. Esto significa que las fronteras de decisión pueden ser curvas (elipsoides, parábolas, hipérbolas), lo que permite a QDA modelar relaciones más complejas y no lineales entre las variables y las clases.
+Esta diferencia es fundamental:  
+* **LDA:** Asume que la variación de los datos es la misma en todas las clases, lo que resulta en **fronteras de decisión lineales** entre las clases.  
+* **QDA:** Permite que la variación de los datos sea diferente para cada clase, lo que resulta en **fronteras de decisión cuadráticas** entre las clases. Esto significa que las fronteras de decisión pueden ser curvas (elipsoides, parábolas, hipérbolas), lo que permite a QDA modelar relaciones más complejas y no lineales entre las variables y las clases.  
 
-El funcionamiento de QDA implica:
-1.  **Modelado de Distribuciones:** Para cada clase, QDA estima la media y la matriz de covarianza específicas de esa clase, asumiendo una distribución normal multivariada.
-2.  **Clasificación:** Para una nueva observación, QDA calcula la probabilidad de que esa observación provenga de cada clase, utilizando las distribuciones normales modeladas para cada clase. Luego, asigna la observación a la clase con la probabilidad posterior más alta (aplicando el Teorema de Bayes).
+El funcionamiento de QDA implica:  
+1.  **Modelado de Distribuciones:** Para cada clase, QDA estima la media y la matriz de covarianza específicas de esa clase, asumiendo una distribución normal multivariada.  
+2.  **Clasificación:** Para una nueva observación, QDA calcula la probabilidad de que esa observación provenga de cada clase, utilizando las distribuciones normales modeladas para cada clase. Luego, asigna la observación a la clase con la probabilidad posterior más alta (aplicando el Teorema de Bayes).  
 
-**Aprendizaje Global vs. Local:**
+**Aprendizaje Global vs. Local:**  
 
-El Análisis Discriminante Cuadrático (QDA) es, al igual que LDA, un modelo de **aprendizaje global**.
+El Análisis Discriminante Cuadrático (QDA) es, al igual que LDA, un modelo de **aprendizaje global**.  
 
-* **Aspecto Global:** QDA construye un **clasificador global** basado en las distribuciones de probabilidad aprendidas para cada clase. Las medias y las matrices de covarianza se estiman a partir de todo el conjunto de datos de entrenamiento para cada clase, y estos parámetros definen una función discriminante que se aplica de manera uniforme a cualquier nueva observación en el espacio de características. La frontera de decisión, aunque cuadrática y no lineal, es una única función matemática definida a nivel global por los parámetros del modelo. No se ajustan modelos separados para diferentes vecindarios de datos.
+* **Aspecto Global:** QDA construye un **clasificador global** basado en las distribuciones de probabilidad aprendidas para cada clase. Las medias y las matrices de covarianza se estiman a partir de todo el conjunto de datos de entrenamiento para cada clase, y estos parámetros definen una función discriminante que se aplica de manera uniforme a cualquier nueva observación en el espacio de características. La frontera de decisión, aunque cuadrática y no lineal, es una única función matemática definida a nivel global por los parámetros del modelo. No se ajustan modelos separados para diferentes vecindarios de datos.  
 
-* **Mayor Flexibilidad Globalmente:** Aunque sigue siendo un modelo global, la capacidad de QDA para tener matrices de covarianza separadas para cada clase le otorga una **mayor flexibilidad para adaptarse a formas de clase más diversas** en comparación con LDA. Esto significa que QDA puede modelar situaciones donde las clases tienen diferentes orientaciones o dispersiones en el espacio de características, lo que resulta en fronteras de decisión que pueden capturar ciertas no linealidades de manera global. Sin embargo, sigue asumiendo distribuciones gaussianas para cada clase y una forma cuadrática para las fronteras, lo que puede ser una limitación si la verdadera complejidad de los datos es aún mayor o no se ajusta a estas suposiciones.
+* **Mayor Flexibilidad Globalmente:** Aunque sigue siendo un modelo global, la capacidad de QDA para tener matrices de covarianza separadas para cada clase le otorga una **mayor flexibilidad para adaptarse a formas de clase más diversas** en comparación con LDA. Esto significa que QDA puede modelar situaciones donde las clases tienen diferentes orientaciones o dispersiones en el espacio de características, lo que resulta en fronteras de decisión que pueden capturar ciertas no linealidades de manera global. Sin embargo, sigue asumiendo distribuciones gaussianas para cada clase y una forma cuadrática para las fronteras, lo que puede ser una limitación si la verdadera complejidad de los datos es aún mayor o no se ajusta a estas suposiciones.  
 
 
 
@@ -508,31 +509,31 @@ require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Dimensionality Reduction/PLSR.png"))
 ```
 
-**Partial Least Squares Regression (PLSR)** es una técnica de **regresión multivariada** que combina características de la **regresión por mínimos cuadrados ordinarios (OLS)** y el **análisis de componentes principales (PCA)**. Se utiliza para modelar la relación entre un conjunto de variables predictoras (X) y uno o más conjuntos de variables de respuesta (Y), siendo particularmente útil en situaciones donde hay un gran número de variables predictoras, **multicolinealidad** (altas correlaciones entre las variables predictoras), o cuando el número de predictoras excede el número de observaciones.
+**Partial Least Squares Regression (PLSR)** es una técnica de **regresión multivariada** que combina características de la **regresión por mínimos cuadrados ordinarios (OLS)** y el **análisis de componentes principales (PCA)**. Se utiliza para modelar la relación entre un conjunto de variables predictoras (X) y uno o más conjuntos de variables de respuesta (Y), siendo particularmente útil en situaciones donde hay un gran número de variables predictoras, **multicolinealidad** (altas correlaciones entre las variables predictoras), o cuando el número de predictoras excede el número de observaciones.  
 
-La idea fundamental de PLSR es encontrar un conjunto de **componentes latentes** (también conocidos como "factores" o "variables latentes") tanto en el espacio de las variables X como en el de las variables Y. Estos componentes se construyen de tal manera que **maximizan la covarianza** entre las variables predictoras y las variables de respuesta. A diferencia de PCA, que solo busca componentes que expliquen la máxima varianza en X, PLSR busca componentes que sean relevantes para explicar la varianza en X *y* que también estén altamente correlacionados con Y. Una vez que se extraen estos componentes, se realiza una regresión de mínimos cuadrados ordinarios de Y sobre estos componentes latentes.
+La idea fundamental de PLSR es encontrar un conjunto de **componentes latentes** (también conocidos como "factores" o "variables latentes") tanto en el espacio de las variables X como en el de las variables Y. Estos componentes se construyen de tal manera que **maximizan la covarianza** entre las variables predictoras y las variables de respuesta. A diferencia de PCA, que solo busca componentes que expliquen la máxima varianza en X, PLSR busca componentes que sean relevantes para explicar la varianza en X *y* que también estén altamente correlacionados con Y. Una vez que se extraen estos componentes, se realiza una regresión de mínimos cuadrados ordinarios de Y sobre estos componentes latentes.  
 
-El proceso general de PLSR implica:
+El proceso general de PLSR implica:  
 
 1.  **Extracción de Componentes Latentes:** PLSR construye iterativamente un conjunto de componentes latentes. En cada paso:
-    * Identifica una combinación lineal de las variables X (un componente de X) y una combinación lineal de las variables Y (un componente de Y) que tienen la mayor covarianza entre sí.
+    * Identifica una combinación lineal de las variables X (un componente de X) y una combinación lineal de las variables Y (un componente de Y) que tienen la mayor covarianza entre sí.  
     * Estos componentes representan las direcciones en el espacio de datos que explican la mayor cantidad de la relación entre X y Y.
-    * Una vez que se extrae un componente, la varianza explicada por ese componente se "deflacta" (se elimina) de las matrices X e Y, y el proceso se repite con los residuos para encontrar el siguiente componente ortogonal.
-2.  **Regresión:** Una vez que se ha determinado el número óptimo de componentes latentes (a menudo a través de validación cruzada), se realiza una regresión lineal estándar de las variables Y sobre estos componentes latentes de X.
+    * Una vez que se extrae un componente, la varianza explicada por ese componente se "deflacta" (se elimina) de las matrices X e Y, y el proceso se repite con los residuos para encontrar el siguiente componente ortogonal.  
+2.  **Regresión:** Una vez que se ha determinado el número óptimo de componentes latentes (a menudo a través de validación cruzada), se realiza una regresión lineal estándar de las variables Y sobre estos componentes latentes de X.  
 
-**Ventajas clave de PLSR:**
+**Ventajas clave de PLSR:**  
 
-* **Manejo de Multicolinealidad:** Es muy efectivo en la reducción de dimensionalidad y el manejo de predictoras altamente correlacionadas, donde la regresión OLS fallaría o produciría estimaciones inestables.
-* **Manejo de Datos de Alta Dimensionalidad:** Funciona bien cuando el número de variables predictoras es mayor que el número de observaciones.
-* **Enfoque Predictivo:** Se centra en desarrollar modelos con una fuerte capacidad predictiva.
+* **Manejo de Multicolinealidad:** Es muy efectivo en la reducción de dimensionalidad y el manejo de predictoras altamente correlacionadas, donde la regresión OLS fallaría o produciría estimaciones inestables.  
+* **Manejo de Datos de Alta Dimensionalidad:** Funciona bien cuando el número de variables predictoras es mayor que el número de observaciones.   
+* **Enfoque Predictivo:** Se centra en desarrollar modelos con una fuerte capacidad predictiva.  
 
-**Aprendizaje Global vs. Local:**
+**Aprendizaje Global vs. Local:**  
   
-La Regresión por Mínimos Cuadrados Parciales (PLSR) se considera un modelo de **aprendizaje global**.
+La Regresión por Mínimos Cuadrados Parciales (PLSR) se considera un modelo de **aprendizaje global**.  
 
-* **Aspecto Global:** PLSR construye un **modelo lineal global** que relaciona las variables predictoras con la variable de respuesta a través de sus componentes latentes. Los componentes PLS se derivan de la estructura de covarianza de **todas las variables** (tanto predictoras como de respuesta) en el conjunto de datos completo, y el modelo de regresión final se ajusta sobre estos componentes, generando una ecuación que se aplica de manera consistente a cualquier nueva observación. No se ajustan modelos separados para diferentes vecindarios de datos; en cambio, se busca una transformación global de los datos que facilite la predicción.
+* **Aspecto Global:** PLSR construye un **modelo lineal global** que relaciona las variables predictoras con la variable de respuesta a través de sus componentes latentes. Los componentes PLS se derivan de la estructura de covarianza de **todas las variables** (tanto predictoras como de respuesta) en el conjunto de datos completo, y el modelo de regresión final se ajusta sobre estos componentes, generando una ecuación que se aplica de manera consistente a cualquier nueva observación. No se ajustan modelos separados para diferentes vecindarios de datos; en cambio, se busca una transformación global de los datos que facilite la predicción.  
 
-Si bien PLSR no es un método de **regresión ponderada localmente** como LOESS (que ajusta modelos simples a subconjuntos locales de datos), comparte con ellos el objetivo de modelar relaciones complejas. Sin embargo, lo hace de una manera diferente. En lugar de dividir el espacio de características y aplicar modelos locales, PLSR transforma el espacio de características de forma global para encontrar una representación de menor dimensionalidad que sea óptima para la predicción. Cuando los datos no se distribuyen linealmente, PLSR puede no ser la herramienta más adecuada en su forma lineal básica, ya que sigue siendo una técnica lineal. Sin embargo, al encontrar las direcciones más relevantes en el espacio de los datos, puede capturar aspectos importantes de la estructura de los datos que son útiles incluso si la relación subyacente es no lineal. Para manejar la no linealidad explícitamente, existen extensiones como **Nonlinear Partial Least Squares (NPLS)** o **Kernel PLS (KPLS)**, que introducen funciones kernel para mapear los datos a un espacio de características de mayor dimensión donde la relación podría ser linealmente modelable por PLS.
+Si bien PLSR no es un método de **regresión ponderada localmente** como LOESS (que ajusta modelos simples a subconjuntos locales de datos), comparte con ellos el objetivo de modelar relaciones complejas. Sin embargo, lo hace de una manera diferente. En lugar de dividir el espacio de características y aplicar modelos locales, PLSR transforma el espacio de características de forma global para encontrar una representación de menor dimensionalidad que sea óptima para la predicción. Cuando los datos no se distribuyen linealmente, PLSR puede no ser la herramienta más adecuada en su forma lineal básica, ya que sigue siendo una técnica lineal. Sin embargo, al encontrar las direcciones más relevantes en el espacio de los datos, puede capturar aspectos importantes de la estructura de los datos que son útiles incluso si la relación subyacente es no lineal. Para manejar la no linealidad explícitamente, existen extensiones como **Nonlinear Partial Least Squares (NPLS)** o **Kernel PLS (KPLS)**, que introducen funciones kernel para mapear los datos a un espacio de características de mayor dimensión donde la relación podría ser linealmente modelable por PLS.  
 
 
 ```{r, echo = FALSE}

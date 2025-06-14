@@ -1,4 +1,4 @@
-# 🔍 1. Regresión Lineal {-}   
+# 🔍 1. Regresión {-}   
 
 **Ejemplos:** Regresión Lineal Simple, Regresión Ridge, Regresión Lasso.  
 **Uso:** Ideal para **predecir valores numéricos continuos** (como precios o temperaturas) y cuando esperas **relaciones lineales** entre tus variables.   
@@ -7,13 +7,17 @@
 
 ---
 
-## Ordinary Least Squares Regression (`OLSR`) {-}   
+## Ordinary Least Squares Regression (`OLSR`) {-}    
+
+[Ordinary Least Squares Regression (`OLSR`) en R](https://dvillasanao.github.io/ML/Output/01_01.OLSR.html)  
+[Ordinary Least Squares Regression (`OLSR`) en Python](https://dvillasanao.github.io/ML/Output/01_01.OLSR.html)   
 
 ```{r echo=FALSE, fig.show="hold", out.width="48%"}
 require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Regression/01_image_OLSR.png"))
 knitr::include_graphics(paste0(here::here(), "/img/Regression/OLSR.png"))
 ```
+
 
 La **Regresión por Mínimos Cuadrados Ordinarios (OLS)** es una técnica fundamental en estadística y Machine Learning para modelar la **relación lineal** entre una **variable dependiente** (a predecir) y una o más **variables independientes**. Su objetivo es encontrar la **línea (o hiperplano) que mejor se ajusta** a los datos, minimizando la **suma de los cuadrados de las diferencias** entre los valores reales y los predichos por el modelo. Es decir, busca los coeficientes que hacen que la distancia (al cuadrado) de los puntos a la línea sea mínima.
 
@@ -326,6 +330,7 @@ tabla_mars %>%
                    everything() ~ px(200)) %>%
          as_raw_html()
 ```
+
 
 ## Stepwise Regression {.unnumbered}
 

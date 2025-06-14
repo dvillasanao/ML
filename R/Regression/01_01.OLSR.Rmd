@@ -151,7 +151,7 @@ require(tibble)
 ```
 
 ::: {.rmdwarning}
-🎯 Este material es reproducible con código R
+🎯 Este material es reproducible en código R
 :::
 
 

@@ -464,9 +464,10 @@ tabla_ctree %>%
 
 ## Decision Stump  {-} 
 
-```{r, echo = FALSE,out.width='50%', fig.align='center'}
+```{r echo=FALSE, fig.show="hold", out.width="48%"}
 require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Decision Tree/Decision Stump.png"))
+knitr::include_graphics(paste0(here::here(), "/img/Decision Tree/Decision Stump_1.png"))
 ```
 
 Un **Decision Stump** es el tipo de **árbol de decisión** más simple y fundamental, compuesto por un **único nodo de decisión (la raíz)** que se conecta directamente a los **nodos hoja**. La idea es que un *decision stump* toma una decisión de clasificación o regresión basándose en una sola característica o atributo de entrada.
