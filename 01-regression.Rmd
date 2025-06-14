@@ -250,9 +250,10 @@ tabla_loess %>%
 
 ## Multivariate Adaptive Regression Splines (`MARS`) {.unnumbered} 
 
-```{r, echo = FALSE,out.width='50%', fig.align='center'}
+```{r echo=FALSE, fig.show="hold", out.width="48%"}
 require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Regression/MARS.png"))
+knitr::include_graphics(paste0(here::here(), "/img/Regression/MARS_1.png"))
 ```
 
 **Multivariate Adaptive Regression Splines (MARS)** es un algoritmo de **regresión no paramétrica** que extiende los modelos lineales para manejar relaciones no lineales y complejas. Desarrollado por Jerome Friedman, MARS construye su modelo al **dividir el espacio de entrada en múltiples regiones y ajustar una función lineal simple (o de orden superior) a cada región**.
@@ -389,9 +390,10 @@ La Regresión por Pasos es un modelo de **aprendizaje global**.
 
 ## Support Vector Machine (SVM) {.unnumbered} 
 
-```{r, echo = FALSE,out.width='50%', fig.align='center'}
+```{r echo=FALSE, fig.show="hold", out.width="48%"}
 require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Regression/SVM.png"))
+knitr::include_graphics(paste0(here::here(), "/img/Regression/SVM_1.png"))
 ```
 
 
