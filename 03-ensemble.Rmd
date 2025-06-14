@@ -559,7 +559,12 @@ tabla_gbrt %>%
          as_raw_html() 
 ```
 
-## Light Gradient Boosting Machine (LightGBM)  {-}   
+## Light Gradient Boosting Machine (LightGBM)  {-}  
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Ensemble/LightGBM.png"))
+```
 
 **LightGBM (Light Gradient Boosting Machine)** es otro algoritmo de **Gradient Boosting Machines (GBM)** de alto rendimiento, desarrollado por Microsoft. Está diseñado para ser **extremadamente rápido** y **eficiente** en el uso de memoria, especialmente con grandes conjuntos de datos, sin sacrificar una precisión significativa. Al igual que XGBoost, ha ganado popularidad en competiciones de *machine learning* por su velocidad y capacidad para manejar grandes volúmenes de datos.
 

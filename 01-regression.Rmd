@@ -9,8 +9,9 @@
 
 ## Ordinary Least Squares Regression (`OLSR`) {-}   
 
-```{r, echo = FALSE,out.width='50%', fig.align='center'}
+```{r echo=FALSE, fig.show="hold", out.width="48%"}
 require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Regression/01_image_OLSR.png"))
 knitr::include_graphics(paste0(here::here(), "/img/Regression/OLSR.png"))
 ```
 
@@ -23,11 +24,6 @@ En el contexto del **aprendizaje global vs. local**, OLS es un ejemplo claro de 
 
 ## Linear Regression {.unnumbered}   
 
-
-```{r, echo = FALSE,out.width='50%', fig.align='center', fig.cap="Elaboración propia"}
-require(knitr)
-knitr::include_graphics(paste0(here::here(), "/img/Regression/01_image_OLSR.png"))
-```
 
 La **Regresión Lineal** es uno de los algoritmos más fundamentales y ampliamente utilizados en el campo del **Machine Learning y la estadística**. Es un modelo **supervisado** que busca establecer una **relación lineal** entre una **variable de respuesta (o dependiente)** continua y una o más **variables predictoras (o independientes)**.
 

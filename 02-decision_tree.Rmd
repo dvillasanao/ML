@@ -99,7 +99,12 @@ tabla_c45 %>%
 ```
 
 
-## C5.0  {-}  
+## C5.0  {-} 
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Decision Tree/C5.0.png"))
+```
 
 **C5.0** es la versión más reciente y avanzada de los algoritmos de árboles de decisión desarrollados por Ross Quinlan, sucediendo a ID3 y C4.5. Es un algoritmo propietario (aunque se ofrece una versión de código abierto bajo ciertas licencias) y es ampliamente reconocido por su **rapidez**, **precisión** y **eficiencia** en la construcción de **árboles de decisión** y **reglas de clasificación** para tareas de **clasificación**.
 
@@ -189,9 +194,10 @@ tabla_c50 %>%
 
 ## Classification and Regression Tree (CART)  {-} 
 
-```{r, echo = FALSE,out.width='50%', fig.align='center'}
+```{r echo=FALSE, fig.show="hold", out.width="48%"}
 require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Decision Tree/CART.png"))
+knitr::include_graphics(paste0(here::here(), "/img/Decision Tree/CART_1.png"))
 ```
 
 **Classification and Regression Tree (CART)** es un método no paramétrico que se utiliza para construir **árboles de decisión** tanto para problemas de **clasificación** como de **regresión**. La idea central es dividir recursivamente el espacio de las características en regiones más pequeñas y manejables, creando así un modelo con forma de árbol que es fácil de interpretar.
@@ -280,9 +286,10 @@ tabla_cart %>%
 
 ## Chi-squared Automatic Interaction Detection (CHAID)  {-}    
 
-```{r, echo = FALSE,out.width='50%', fig.align='center', fig.cap="https://select-statistics.co.uk/blog/chaid-chi-square-automatic-interaction-detector/"}
+```{r echo=FALSE, fig.show="hold", out.width="48%", fig.cap="https://select-statistics.co.uk/blog/chaid-chi-square-automatic-interaction-detector/"}
 require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Decision Tree/CHAID.png"))
+knitr::include_graphics(paste0(here::here(), "/img/Decision Tree/CHAID_1.png"))
 ```
 
 
@@ -543,6 +550,12 @@ tabla_stump %>%
 
 
 ## Iterative Dichotomiser 3 (ID3)  {-}    
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Decision Tree/ID3.png"))
+```
+
 **Iterative Dichotomiser 3 (ID3)** es un algoritmo clásico para construir **árboles de decisión**, diseñado principalmente para tareas de **clasificación**. Fue uno de los primeros algoritmos de árboles de decisión desarrollados por Ross Quinlan. La idea central de ID3 es construir un árbol de clasificación seleccionando en cada nodo del árbol el atributo que mejor divide el conjunto de datos en subconjuntos más puros y homogéneos.
 
 ID3 opera de forma **iterativa** y **dicotómica** (aunque puede manejar atributos con más de dos categorías), dividiendo el conjunto de datos en cada paso basándose en el atributo más informativo. La selección del "mejor" atributo se basa en métricas de **teoría de la información**, principalmente la **ganancia de información** (Information Gain). La ganancia de información mide la reducción en la **entropía** (una medida de la impureza o desorden de un conjunto de datos) que se logra al dividir los datos según un atributo particular. El atributo con la mayor ganancia de información es elegido como el nodo de decisión en cada nivel del árbol.
