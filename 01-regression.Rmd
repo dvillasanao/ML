@@ -9,8 +9,8 @@
 
 ## Ordinary Least Squares Regression (`OLSR`) {-}    
 
-[Ordinary Least Squares Regression (`OLSR`) en R](https://dvillasanao.github.io/ML/Output/01_01.OLSR.html)  
-[Ordinary Least Squares Regression (`OLSR`) en Python](https://dvillasanao.github.io/ML/Output/01_01.OLSR.html)   
+[Ordinary Least Squares Regression (`OLSR`) en R](https://dvillasanao.github.io/ML_Examples/Output/Regression/01_01.OLSR.html)  
+[Ordinary Least Squares Regression (`OLSR`) en Python](https://dvillasanao.github.io/ML_Examples/R/Regression/01_01_OLSR_py.html)   
 
 ```{r echo=FALSE, fig.show="hold", out.width="48%"}
 require(knitr)
