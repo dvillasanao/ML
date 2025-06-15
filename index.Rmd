@@ -1,4 +1,4 @@
---- 
+---
 title: "Machine Learning (Apuntes) "
 author: "Diana Villasana Ocampo"
 date: "`r Sys.Date()`"
@@ -13,31 +13,31 @@ biblio-style: apalike
 csl: chicago-fullnote-bibliography.csl
 ---
 
-
 ```{r, echo = FALSE, include = FALSE}
 require(dplyr)
 require(gt)
 require(caret)
 ```
 
+# Machine Learning {.unnumbered}
 
+El machine learning ha experimentado un crecimiento significativo durante la última década. Este desarrollo se atribuye a tres factores fundamentales: el **incremento sustancial en la disponibilidad de datos** (Big Data), la **evolución de las capacidades computacionales** y el **perfeccionamiento de algoritmos avanzados**. En la actualidad, el machine learning constituye un elemento transformador en diversos sectores: desde aplicaciones médicas para el diagnóstico de enfermedades, hasta la optimización de estrategias financieras. Su capacidad analítica y de procesamiento de datos lo posiciona como un recurso esencial para la planificación estratégica, la optimización de procesos y el desarrollo de soluciones personalizadas.
 
-# Machine Learning {-}   
+**¿Cuándo Implementar Machine Learning?**
 
-El machine learning ha experimentado un crecimiento significativo durante la última década. Este desarrollo se atribuye a tres factores fundamentales: el **incremento sustancial en la disponibilidad de datos** (Big Data), la **evolución de las capacidades computacionales** y el **perfeccionamiento de algoritmos avanzados**. En la actualidad, el machine learning constituye un elemento transformador en diversos sectores: desde aplicaciones médicas para el diagnóstico de enfermedades, hasta la optimización de estrategias financieras. Su capacidad analítica y de procesamiento de datos lo posiciona como un recurso esencial para la planificación estratégica, la optimización de procesos y el desarrollo de soluciones personalizadas.  
+La implementación del machine learning resulta particularmente efectiva en los siguientes contextos:
 
-**¿Cuándo Implementar Machine Learning?**  
+-   **Disponibilidad de datos a gran escala:** La eficacia del modelo se incrementa proporcionalmente con la cantidad de datos relevantes disponibles.\
+-   **Presencia de relaciones complejas entre variables:** En situaciones donde la multiplicidad de variables dificulta la definición de reglas convencionales.\
+-   **Necesidad de adaptación dinámica:** Los sistemas de machine learning permiten una optimización continua mediante la incorporación de nueva información.\
+-   **Requerimientos de automatización avanzada:** Facilita la ejecución de tareas complejas, desde el análisis visual hasta la generación de pronósticos predictivos.
 
-La implementación del machine learning resulta particularmente efectiva en los siguientes contextos:  
+```{r echo=FALSE, fig.align='center', out.width="80%"}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/ML Categories_Page_1.png"))
+```
 
-- **Disponibilidad de datos a gran escala:** La eficacia del modelo se incrementa proporcionalmente con la cantidad de datos relevantes disponibles.  
-- **Presencia de relaciones complejas entre variables:** En situaciones donde la multiplicidad de variables dificulta la definición de reglas convencionales.  
-- **Necesidad de adaptación dinámica:** Los sistemas de machine learning permiten una optimización continua mediante la incorporación de nueva información.  
-- **Requerimientos de automatización avanzada:** Facilita la ejecución de tareas complejas, desde el análisis visual hasta la generación de pronósticos predictivos.  
-
-
-
-## 📌 Cuadro {-}
+## 📌 Cuadro {.unnumbered}
 
 ```{r, echo = FALSE}
 algoritmos_ml <- data.frame(
@@ -116,12 +116,11 @@ algoritmos_ml %>%
 
 ```
 
+## Modelos de Machine Learning {.unnumbered}
 
-## Modelos de Machine Learning  {-}
+Modelos disponibles en la paquetería `caret` en R.
 
-Modelos disponibles en la paquetería `caret` en R.  
-
-**Enlace**: https://topepo.github.io/caret/model-training-and-tuning.html 
+**Enlace**: <https://topepo.github.io/caret/model-training-and-tuning.html>
 
 ```{r list_setup, include=FALSE}
 library(DT)
@@ -148,9 +147,8 @@ model_info <- model_info[, c('name', 'model', 'type', 'libraries', 'num_param')]
 model_info <- model_info[order(model_info$name),]
 ```
 
-
-<div style="height:400px;overflow:auto;">
-```{r list_table, echo = FALSE} 
+::: {style="height:400px;overflow:auto;"}
+```{r list_table, echo = FALSE}
 model_info %>%
  gt() %>%
   tab_header(title = "Modelos de Machine Learning",
@@ -176,7 +174,7 @@ model_info %>%
                     num_param = md("**Tunning Parameters**")) %>%
          as_raw_html()
 ```
-</div>
+:::
 
 ```{r include=FALSE}
 # automatically create a bib database for R packages
