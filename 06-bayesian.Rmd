@@ -308,7 +308,7 @@ tabla_bbn %>%
          as_raw_html() 
 ```
 
-
+## Bayesian Linear Regression {-}   
 
 ## Gaussian Naive Bayes (GNB) {-}   
 
@@ -407,7 +407,9 @@ tabla_gnb %>%
 ```
 
 
+## Hidden Markov Models (HMMs) {-}   
 
+## Kalman Filter {-}   
 
 ## Multinomial Naive Bayes (MNB) {-}   
 
@@ -607,4 +609,4 @@ tabla_nb %>%
 ```
 
 
-
+## Particle Filter {-}   

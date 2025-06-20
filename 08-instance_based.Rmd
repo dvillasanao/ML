@@ -7,6 +7,8 @@
 
 ---
 
+## Case-Based Reasoning (CBR) {-}   
+
 ## k - Nearest Neighbour (kNN)  {-}    
 
 
@@ -109,7 +111,7 @@ tabla_knn %>%
          as_raw_html() 
 ```
 
-
+## Kernel Regression / Nadaraya-Watson Estimator   
 
 ## Learning Vector Quantization (LVQ)  {-} 
 
@@ -428,4 +430,4 @@ tabla_som %>%
 ```
 
 
-
+## Prototype-Based Learning (General Concept) {-}     

@@ -398,6 +398,11 @@ tabla_hopfield %>%
 
 ```
 
+
+## Generative Adversarial Networks (GANs) {-}  
+
+## Long Short-Term Memory (LSTM) / Gated Recurrent Unit (GRU) {-}   
+
 ## Multilayer Perceptron (MP)  {-}     
 
 ```{r, echo = FALSE,out.width='50%', fig.align='center'}
@@ -783,7 +788,7 @@ tabla_rnn %>%
 ```
 
 
-
+## Restricted Boltzmann Machine (RBM) {-}   
 
 ## Transformers  {-}  
 

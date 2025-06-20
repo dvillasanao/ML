@@ -7,6 +7,10 @@
 
 ---
 
+## Affinity Propagation {-}   
+
+## Agglomerative Clustering {-}   
+
 ## Density-Based Spatial Clustering of Applications with Noise (DBSCAN)  {-}    
 
 ```{r, echo = FALSE,out.width='50%', fig.align='center'}
@@ -223,6 +227,9 @@ tabla_em %>%
                    everything() ~ px(200)) %>%
          as_raw_html() 
 ```
+
+## Gaussian Mixture Models (GMMs) {-}   
+
 
 ## Hierarchical Clustering (hclust) {-} 
 
@@ -567,6 +574,10 @@ tabla_kmedians %>%
 ```
 
 
+## Mean-Shift {-}   
 
+## Ordering Points To Identify the Clustering Structure (OPTICS) {-}   
+
+## Spectral Clustering {-}   
 
 

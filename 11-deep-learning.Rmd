@@ -212,6 +212,8 @@ tabla_dbn %>%
   as_raw_html()
 ```
 
+## Reinforcement Learning (DL-based RL) {-}  
+
 ## Stacked Auto-Enconders {-}  
 
 ```{r, echo = FALSE,out.width='50%', fig.align='center'}
@@ -318,3 +320,6 @@ tabla_sae %>%
              everything() ~ px(200)) %>%
   as_raw_html()
 ```
+
+
+## -	Variational Autoencoders (VAEs) {-}

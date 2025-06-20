@@ -102,8 +102,9 @@ tabla_fda %>%
 ```
 
 
+## Independent Component Analysis (ICA) {-}   
 
-  
+## Kernel PCA (KPCA) {-}   
   
 ## Linear Discriminant Analysis (LDA)  {-}    
 
@@ -199,7 +200,8 @@ tabla_lda %>%
          as_raw_html() 
 ```
 
-   
+
+## Locally Linear Embedding (LLE) {-}    
    
 ## Mixture Discriminant Analysis (MDA)  {-}   
 
@@ -1213,7 +1215,7 @@ tabla_rda %>%
 ```
 
 
-
+## -	t-Distributed Stochastic Neighbor Embedding (t-SNE) {-}
 
 ## Uniform Manifold Approximation and Projection (UMAP) {-}   
 

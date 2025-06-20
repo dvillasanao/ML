@@ -280,6 +280,8 @@ tabla_bagging %>%
          as_raw_html() 
 ```
 
+## CatBoost {-}   
+
 ## Extreme Gradient Boosting (XGBoost)  {-}   
 
 ```{r, echo = FALSE,out.width='50%', fig.align='center'}
@@ -558,6 +560,9 @@ tabla_gbrt %>%
                    everything() ~ px(200)) %>%
          as_raw_html() 
 ```
+
+
+## Isolation Forest {-}   
 
 ## Light Gradient Boosting Machine (LightGBM)  {-}  
 

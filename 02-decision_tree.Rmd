@@ -461,6 +461,113 @@ tabla_ctree %>%
 
 ```
 
+## Cubist  {-}
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Rule-System/Cubist.png"))
+```
+
+**Cubist** es un algoritmo de **Machine Learning** desarrollado por RuleQuest Research (autores de C4.5 y See5/C5.0), principalmente para tareas de **regresión**. Es una extensión de los modelos de **árboles de decisión** que combina la simplicidad de las reglas con la precisión de los modelos locales, lo que lo hace muy potente para datos complejos con muchas características.
+
+En esencia, Cubist construye un **modelo de reglas con un modelo lineal adjunto a cada regla**. Opera en dos fases principales:
+
+1.  **Construcción del Árbol de Reglas:**
+    * Similar a un árbol de decisión, Cubist construye una estructura de árbol dividiendo los datos en subconjuntos basados en los valores de las características.
+    * Sin embargo, en lugar de hojas que contienen un valor constante (como en los árboles de regresión tradicionales), cada hoja de este árbol se transforma en un **conjunto de reglas**.
+    * A cada regla se le asocia un **modelo lineal multivariado local** (o un "modelo de comité" de reglas, donde varias reglas contribuyen a la predicción). Este modelo lineal se entrena solo con los datos que satisfacen las condiciones de esa regla.
+
+2.  **Ajuste del Modelo de Reglas y Predicción:**
+    * Para cada nueva instancia de predicción, Cubist identifica las reglas que se aplican a esa instancia.
+    * La predicción final se calcula combinando las predicciones de los modelos lineales de las reglas que se aplican, y luego se ajusta un poco esa predicción mediante un **"comité" de vecinos** (ajustes locales adicionales basados en ejemplos similares), si está configurado para ello. Esta etapa de ajuste lo hace aún más robusto.
+
+Cubist es valorado por su capacidad para manejar **relaciones complejas y no lineales** en los datos. Proporciona un modelo que es más interpretable que una "caja negra" (como una red neuronal profunda) debido a su base en reglas, pero mucho más preciso que los modelos lineales o los árboles de regresión simples, gracias a sus modelos lineales locales y ajustes.
+
+
+**Aprendizaje Global vs. Local:**
+
+Cubist es un algoritmo que combina de manera muy efectiva aspectos de **aprendizaje global y local**.
+
+* **Aspecto Global (Estructura de Reglas):** La fase de construcción del árbol y la derivación de las reglas crean una **estructura global** que divide el espacio de características. Este conjunto de reglas abarca todo el dominio de los datos y determina qué modelo local se aplicará a una instancia. Es una forma de particionar el espacio de características de manera jerárquica para establecer un marco de predicción general.
+
+* **Aspecto Local (Modelos Lineales y Ajustes):** Aquí es donde Cubist brilla en su capacidad de aprendizaje local:
+    * **Modelos Lineales Locales:** Cada regla tiene asociado un **modelo lineal que se entrena solo con los datos que caen dentro de esa regla**. Esto permite a Cubist capturar **relaciones locales y no lineales** de manera precisa. En lugar de una única relación lineal global, el modelo se adapta a las particularidades de diferentes subregiones de los datos.
+    * **Ajuste Basado en Vecinos:** Si se activa la opción de "comité" o el ajuste basado en vecinos (conocido como `committees` o `neighbors`), el modelo refina aún más su predicción incorporando la información de los ejemplos de entrenamiento más cercanos al punto de consulta. Esto es una forma de **"regresión ponderada localmente"**, donde la predicción final se ajusta en función de los patrones observados en el vecindario inmediato del punto de interés.
+
+
+```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica <- c(
+  "✅ Supervisado (regresión basada en reglas)",
+  "✅ Numérica (regresión)",
+  "✅ Numéricas y categóricas",
+  "✅ Modelo aditivo basado en reglas y ajustes lineales locales",
+  "⚠️ Requiere análisis de residuos, no siempre normalidad estricta",
+  "⚠️ Asume independencia, como otros modelos supervisados",
+  "⚠️ Puede tener heteroscedasticidad",
+  "⚠️ Moderadamente sensible a outliers",
+  "⚠️ Puede manejar correlación, pero multicolinealidad puede afectar interpretabilidad",
+  "✅ Moderada: reglas explican el modelo, pero menos transparente que modelos lineales",
+  "⚠️ Relativamente rápido, pero depende del número de reglas",
+  "✅ Compatible con validación cruzada para evaluar rendimiento",
+  "❌ No funciona bien con datos muy pequeños o ruido extremo"
+)
+
+detalles <- c(
+  "Combina técnicas de árboles de decisión con modelos lineales locales para predicción precisa.",
+  "Predice variables continuas mediante reglas que dividen el espacio y ajustes lineales en cada región.",
+  "Puede manejar variables predictoras mixtas (numéricas y categóricas).",
+  "Modelo flexible que ajusta múltiples reglas para capturar relaciones no lineales y locales.",
+  "Evaluar residuos para verificar supuestos; no es tan rígido como OLS.",
+  "Como modelo supervisado, se espera independencia entre observaciones.",
+  "Puede tolerar algo de heteroscedasticidad, pero afecta precisión de intervalos.",
+  "Outliers pueden afectar algunas reglas locales y coeficientes.",
+  "Multicolinealidad puede dificultar interpretación de coeficientes locales.",
+  "Las reglas pueden interpretarse, pero el modelo global puede ser complejo.",
+  "La velocidad depende del tamaño del dataset y número de reglas generadas.",
+  "Se usa validación cruzada para seleccionar parámetros y validar modelo.",
+  "No es ideal para datasets muy pequeños o con mucho ruido no estructurado."
+)
+
+tabla_cubist <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_cubist %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir cubist",
+             subtitle = "Cubist")  %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
+```
+
+
+
 
 ## Decision Stump  {-} 
 
@@ -548,7 +655,7 @@ tabla_stump %>%
          as_raw_html() 
 ```
 
-
+## Guided Trees / Hybrid Trees {-}    
 
 ## Iterative Dichotomiser 3 (ID3)  {-}    
 
@@ -727,5 +834,7 @@ tabla_m5 %>%
 ```
 
 
+## Oblique Decision Trees {-}    
 
+## Specific Implementations/Libraries {-}  
 
