@@ -68,6 +68,10 @@
 </h1>
 <p><strong>Ejemplos:</strong> K-Nearest Neighbors (KNN).<br><strong>Uso:</strong> Son ideales cuando tienes una <strong>cantidad limitada de datos</strong> y esperas que los patrones relevantes se encuentren en la <strong>similitud local</strong> entre casos. Se utilizan mucho cuando la <strong>similitud directa</strong> entre las observaciones es un factor clave.<br><strong>Ventajas:</strong> Su implementación es <strong>simple</strong> y son bastante <strong>eficaces</strong> en problemas con pocas dimensiones.<br><strong>Limitaciones:</strong> <strong>Escalan mal</strong> con grandes volúmenes de datos debido a que necesitan almacenar y comparar cada instancia. Además, son <strong>sensibles al ruido</strong> en los datos.</p>
 <hr>
+<div id="case-based-reasoning-cbr" class="section level2 unnumbered">
+<h2>Case-Based Reasoning (CBR)<a class="anchor" aria-label="anchor" href="#case-based-reasoning-cbr"><i class="fas fa-link"></i></a>
+</h2>
+</div>
 <div id="k---nearest-neighbour-knn" class="section level2 unnumbered">
 <h2>k - Nearest Neighbour (kNN)<a class="anchor" aria-label="anchor" href="#k---nearest-neighbour-knn"><i class="fas fa-link"></i></a>
 </h2>
@@ -98,7 +102,7 @@
 <li><p><strong>Aspecto Local:</strong> La predicción para una nueva instancia depende <strong>exclusivamente de los ‘k’ puntos de datos más cercanos a ella en el espacio de características</strong>. No se construye un modelo global que abarque todo el conjunto de datos. En cambio, para cada nueva consulta, el algoritmo “re-calcula” el vecindario relevante y realiza una predicción basada solo en la información de esa pequeña región local. Esto significa que la frontera de decisión (en clasificación) o la función de regresión (en regresión) se ajusta localmente a las características del vecindario del punto de consulta. Si los datos no se distribuyen linealmente y tienen estructuras complejas con patrones que varían en diferentes regiones, kNN es muy efectivo porque puede adaptarse a estas variaciones locales al funcionar como una <strong>“regresión (o clasificación) ponderada localmente”</strong>.</p></li>
 <li><p><strong>Sin Modelo Explícito Global:</strong> Debido a su naturaleza de “aprendizaje perezoso”, kNN no genera una función matemática explícita o un conjunto de coeficientes que describan la relación global entre las variables. Todo el conocimiento del modelo está implícito en la base de datos de entrenamiento.</p></li>
 </ul>
-<div id="oblzcjttui" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="ftpyismzvb" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
   
   <div class="inline-table"><table class="gt_table" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: 'Century Gothic'; display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 10px; font-weight: normal; font-style: normal; background-color: #FFFFFF; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; table-layout: fixed; width: 0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false" width="0" bgcolor="#FFFFFF">
 <colgroup>
@@ -192,6 +196,11 @@
 </table></div>
 </div>
 </div>
+<div id="kernel-regression-nadaraya-watson-estimator" class="section level2" number="0.1">
+<h2>
+<span class="header-section-number">0.1</span> Kernel Regression / Nadaraya-Watson Estimator<a class="anchor" aria-label="anchor" href="#kernel-regression-nadaraya-watson-estimator"><i class="fas fa-link"></i></a>
+</h2>
+</div>
 <div id="learning-vector-quantization-lvq" class="section level2 unnumbered">
 <h2>Learning Vector Quantization (LVQ)<a class="anchor" aria-label="anchor" href="#learning-vector-quantization-lvq"><i class="fas fa-link"></i></a>
 </h2>
@@ -229,7 +238,7 @@
 <li><p><strong>Aspecto Local:</strong> El corazón del aprendizaje en LVQ es la <strong>adaptación local de los prototipos</strong>. En cada paso de entrenamiento, solo el prototipo más cercano (o los dos prototipos más cercanos en algunas variantes como LVQ2.1 y LVQ3) a una instancia de entrenamiento se ajusta. Esto significa que las reglas de aprendizaje operan en un <strong>vecindario localizado</strong> alrededor de la instancia de entrada. Los prototipos se mueven en el espacio de características para delimitar mejor las fronteras de clase, lo que refleja la estructura local de los datos. De esta manera, LVQ puede modelar <strong>relaciones no lineales</strong> y estructuras de clase complejas al ajustar las posiciones de estos “representantes” locales de las clases.</p></li>
 <li><p><strong>Aspecto Global:</strong> Aunque el ajuste es local, el conjunto de todos los prototipos de LVQ, una vez entrenados, forma una <strong>representación global del espacio de características</strong> que se utiliza para la clasificación. Estos prototipos definen un mapa de clasificación en todo el espacio de entrada, donde cada región (celda de Voronoi) se asocia con una clase. Por lo tanto, el modelo final, que es la colección de prototipos, se aplica de manera global para clasificar cualquier nueva observación. El proceso de optimización para encontrar las posiciones de los prototipos, aunque iterativo y basado en actualizaciones locales, busca una configuración global óptima que minimice el error de clasificación en todo el conjunto de entrenamiento.</p></li>
 </ul>
-<div id="asmpzqrajy" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="nfbfelfjgf" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
   
   <div class="inline-table"><table class="gt_table" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: 'Century Gothic'; display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 10px; font-weight: normal; font-style: normal; background-color: #FFFFFF; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; table-layout: fixed; width: 0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false" width="0" bgcolor="#FFFFFF">
 <colgroup>
@@ -354,7 +363,7 @@
 <li><p><strong>Aspecto Local:</strong> LWL es intrínsecamente local en su funcionamiento. Para <strong>cada nueva predicción</strong>, se construye un <strong>modelo específico y único</strong> que solo es válido en el <strong>vecindario local</strong> de la instancia de consulta. Los pesos asignados a las instancias de entrenamiento enfatizan las que están más cerca del punto de consulta, lo que significa que el modelo se “adapta” a la estructura de los datos en esa región particular del espacio de características. Esto le permite manejar eficientemente relaciones no lineales y heterogéneas, ya que la relación puede ser diferente en distintas partes del dominio de los datos.</p></li>
 <li><p><strong>Sin Modelo Explícito Global:</strong> No hay un conjunto fijo de parámetros o una función matemática única que describa la relación entre las entradas y las salidas para todo el conjunto de datos. En cambio, el “modelo” se genera dinámicamente para cada punto de consulta, utilizando solo la información relevante de su vecindario. La complejidad computacional de LWL aumenta con el número de predicciones, ya que cada una requiere la construcción de un nuevo modelo local.</p></li>
 </ul>
-<div id="ffatftdosh" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="dskpfbnsjv" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
   
   <div class="inline-table"><table class="gt_table" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: 'Century Gothic'; display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 10px; font-weight: normal; font-style: normal; background-color: #FFFFFF; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; table-layout: fixed; width: 0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false" width="0" bgcolor="#FFFFFF">
 <colgroup>
@@ -479,7 +488,7 @@
 <li><p><strong>Aspecto Global (Fases Iniciales del Entrenamiento):</strong> Al principio del entrenamiento, el radio de vecindad y la tasa de aprendizaje son grandes. Esto significa que cuando una BMU se ajusta, un <strong>gran número de neuronas circundantes en el mapa también se ajustan</strong>, incluso aquellas que están relativamente lejos de la BMU. Este amplio ajuste permite que el mapa se “organice globalmente” para capturar la estructura general de los datos. La topología general de la proyección se establece en esta fase inicial. El mapa se estira y se contrae para abarcar la dispersión global de los datos, como si una “regresión ponderada localmente” de gran escala estuviera adaptando el mapa entero.</p></li>
 <li><p><strong>Aspecto Local (Fases Posteriores del Entrenamiento):</strong> A medida que el entrenamiento avanza, el radio de vecindad y la tasa de aprendizaje <strong>disminuyen gradualmente</strong>. Esto hace que los ajustes a los pesos sean cada vez más localizados. En las etapas finales, solo la BMU y sus vecinos más cercanos (o incluso solo la BMU) se ajustan significativamente. Esta fase de “afinamiento” permite que el mapa capture los detalles más finos y las <strong>estructuras locales</strong> dentro de los datos, refinando las fronteras entre los grupos y asegurando que los puntos similares se agrupen con alta precisión.</p></li>
 </ul>
-<div id="ljbdjebpsm" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="ewqqvyydcm" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
   
   <div class="inline-table"><table class="gt_table" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: 'Century Gothic'; display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 10px; font-weight: normal; font-style: normal; background-color: #FFFFFF; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; table-layout: fixed; width: 0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false" width="0" bgcolor="#FFFFFF">
 <colgroup>
@@ -572,6 +581,10 @@
     </tr></tfoot>
 </table></div>
 </div>
+</div>
+<div id="prototype-based-learning-general-concept" class="section level2 unnumbered">
+<h2>Prototype-Based Learning (General Concept)<a class="anchor" aria-label="anchor" href="#prototype-based-learning-general-concept"><i class="fas fa-link"></i></a>
+</h2>
 
 </div>
 </div>
@@ -582,10 +595,13 @@
     <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
       <ul class="nav navbar-nav">
 <li><a class="nav-link" href="#modelos-basados-en-instancias">🔍 8. Modelos Basados en Instancias</a></li>
+<li><a class="nav-link" href="#case-based-reasoning-cbr">Case-Based Reasoning (CBR)</a></li>
 <li><a class="nav-link" href="#k---nearest-neighbour-knn">k - Nearest Neighbour (kNN)</a></li>
+<li><a class="nav-link" href="#kernel-regression-nadaraya-watson-estimator"><span class="header-section-number">0.1</span> Kernel Regression / Nadaraya-Watson Estimator</a></li>
 <li><a class="nav-link" href="#learning-vector-quantization-lvq">Learning Vector Quantization (LVQ)</a></li>
 <li><a class="nav-link" href="#locally-weighted-learning-lwl">Locally Weighted Learning (LWL)</a></li>
 <li><a class="nav-link" href="#self---organizing-map-som">Self - Organizing Map (SOM)</a></li>
+<li><a class="nav-link" href="#prototype-based-learning-general-concept">Prototype-Based Learning (General Concept)</a></li>
 </ul>
 
       <div class="book-extra">
@@ -603,7 +619,7 @@
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Machine Learning (Apuntes)</strong>" was written by Diana Villasana Ocampo. It was last built on 2025-06-15.</p>
+    <p>"<strong>Machine Learning (Apuntes)</strong>" was written by Diana Villasana Ocampo. It was last built on 2025-06-20.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

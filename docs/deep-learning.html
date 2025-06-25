@@ -90,7 +90,7 @@
 <li><p><strong>Aspecto Global:</strong> Las DBMs construyen un <strong>modelo probabilístico unificado y global</strong> de la distribución de los datos. Los pesos de conexión en todas las capas de la red se ajustan para representar las dependencias y correlaciones en todo el espacio de entrada. No se crean modelos específicos para subconjuntos locales de datos; en cambio, el modelo aprende una representación coherente y jerárquica que se aplica a todos los puntos de datos. La función de energía (o función de coste) de la DBM se define sobre el espacio completo de variables visibles y ocultas, y el entrenamiento busca minimizar esta energía globalmente para que los datos de entrenamiento tengan una energía baja.</p></li>
 <li><p><strong>Impacto de la Estructura Jerárquica:</strong> Aunque la DBM aprende representaciones en diferentes niveles de abstracción (jerarquías), estas representaciones contribuyen a un entendimiento cohesivo y global de los datos. La interacción entre las capas y las unidades es parte de una estructura probabilística interconectada que busca modelar la distribución general de los datos. El proceso de inferencia y generación, aunque implica pasar información a través de las capas, se basa en los parámetros globales de la red para producir resultados consistentes y representativos de la distribución aprendida. Esto contrasta con modelos locales que podrían segmentar el espacio de entrada y construir modelos independientes para cada segmento.</p></li>
 </ul>
-<div id="ynmzdbwmra" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="xloeoznuor" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
   
   <div class="inline-table"><table class="gt_table" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: 'Century Gothic'; display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 10px; font-weight: normal; font-style: normal; background-color: #FFFFFF; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; table-layout: fixed; width: 0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false" width="0" bgcolor="#FFFFFF">
 <colgroup>
@@ -214,7 +214,7 @@
 <li><p><strong>Aspecto Global (Objetivo Final y Representación):</strong> El objetivo general de una DBN es construir un <strong>modelo probabilístico jerárquico global</strong> de los datos. Aunque el entrenamiento se realiza capa por capa, la intención es que cada capa capture características que contribuyan a una comprensión más abstracta y completa de la distribución de los datos de entrada en su conjunto. Las características de bajo nivel aprendidas por las primeras RBMs se combinan en las capas superiores para formar representaciones más complejas y de alto nivel, que son intrínsecas a la estructura global de los datos. El modelo final, una vez que todas las RBMs están entrenadas y se aplica el ajuste fino, opera como una red unificada que mapea entradas a salidas basadas en un entendimiento global de las relaciones en los datos.</p></li>
 <li><p><strong>Aspecto Local (Estrategia de Entrenamiento):</strong> La fase de <strong>pre-entrenamiento codicioso por capas</strong> de las DBNs tiene un fuerte componente local. Cada <strong>RBM individual</strong> se entrena de manera local, optimizando sus propios pesos para modelar la relación entre su capa visible y su capa oculta, <strong>sin considerar explícitamente las capas más allá de sí misma en ese momento</strong>. La entrada para cada RBM superior proviene de la activación de la capa oculta de la RBM inferior ya entrenada. Este entrenamiento local y secuencial es lo que permite que las DBNs escalen a redes profundas y eviten problemas de optimización de modelos globales complejos desde cero. Sin embargo, esta “localidad” es solo en la etapa de entrenamiento por partes; el efecto acumulativo de estas optimizaciones locales es la construcción de una representación jerárquica que eventualmente se une en un modelo global cuando se realiza el ajuste fino de toda la red.</p></li>
 </ul>
-<div id="ncuoeovsdm" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="whupazccru" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
   
   <div class="inline-table"><table class="gt_table" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: 'Century Gothic'; display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 10px; font-weight: normal; font-style: normal; background-color: #FFFFFF; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; table-layout: fixed; width: 0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false" width="0" bgcolor="#FFFFFF">
 <colgroup>
@@ -308,6 +308,10 @@
 </table></div>
 </div>
 </div>
+<div id="reinforcement-learning-dl-based-rl" class="section level2 unnumbered">
+<h2>Reinforcement Learning (DL-based RL)<a class="anchor" aria-label="anchor" href="#reinforcement-learning-dl-based-rl"><i class="fas fa-link"></i></a>
+</h2>
+</div>
 <div id="stacked-auto-enconders" class="section level2 unnumbered">
 <h2>Stacked Auto-Enconders<a class="anchor" aria-label="anchor" href="#stacked-auto-enconders"><i class="fas fa-link"></i></a>
 </h2>
@@ -344,7 +348,7 @@
 <li><p><strong>Aspecto Global (Objetivo Final y Representación):</strong> El objetivo final de un SAE es aprender una <strong>representación global y jerárquica</strong> de los datos. Cada capa codificadora en la pila extrae características de un nivel de abstracción creciente, contribuyendo a una comprensión más profunda y compacta de toda la distribución de los datos de entrada. La codificación final producida por el SAE es una representación de baja dimensionalidad que intenta encapsular la información más relevante de los datos en su conjunto, permitiendo su reconstrucción. Cuando se utiliza para tareas posteriores (como clasificación) después del ajuste fino, la red opera como un modelo unificado que aplica las características globales aprendidas a nuevas entradas.</p></li>
 <li><p><strong>Aspecto Local (Estrategia de Entrenamiento por Capas):</strong> La fase de <strong>pre-entrenamiento codicioso por capas</strong> de los SAEs tiene un componente fuertemente local. Cada <strong>autoencoder individual</strong> en la pila se entrena de forma independiente para aprender una codificación óptima y una reconstrucción de su propia entrada. Esto significa que los pesos de cada autoencoder se optimizan localmente, en un momento dado, sin considerar directamente la optimización simultánea de toda la red. La entrada a cada autoencoder subsiguiente es la representación codificada aprendida por el autoencoder anterior. Esta estrategia de entrenamiento “por partes” permite que las redes profundas sean entrenadas de manera más eficiente y eficaz, ya que descompone un problema de optimización complejo en subproblemas más manejables. Sin embargo, el resultado acumulado de estas optimizaciones locales es la construcción de una jerarquía de características que, en última instancia, forma parte de un modelo global y unificado de los datos.</p></li>
 </ul>
-<div id="xxbdbttcjp" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="mknycyrypm" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
   
   <div class="inline-table"><table class="gt_table" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: 'Century Gothic'; display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 10px; font-weight: normal; font-style: normal; background-color: #FFFFFF; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; table-layout: fixed; width: 0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false" width="0" bgcolor="#FFFFFF">
 <colgroup>
@@ -437,6 +441,10 @@
     </tr></tfoot>
 </table></div>
 </div>
+</div>
+<div id="variational-autoencoders-vaes" class="section level2 unnumbered">
+<h2>Variational Autoencoders (VAEs)<a class="anchor" aria-label="anchor" href="#variational-autoencoders-vaes"><i class="fas fa-link"></i></a>
+</h2>
 
 </div>
 </div>
@@ -449,7 +457,9 @@
 <li><a class="nav-link" href="#deep-learning">🤖 4. Deep Learning</a></li>
 <li><a class="nav-link" href="#deep-boltzman-machine-dbm">Deep Boltzman Machine (DBM)</a></li>
 <li><a class="nav-link" href="#deep-belief-networks-dbnet">Deep Belief Networks (DBNet)</a></li>
+<li><a class="nav-link" href="#reinforcement-learning-dl-based-rl">Reinforcement Learning (DL-based RL)</a></li>
 <li><a class="nav-link" href="#stacked-auto-enconders">Stacked Auto-Enconders</a></li>
+<li><a class="nav-link" href="#variational-autoencoders-vaes">Variational Autoencoders (VAEs)</a></li>
 </ul>
 
       <div class="book-extra">
@@ -467,7 +477,7 @@
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Machine Learning (Apuntes)</strong>" was written by Diana Villasana Ocampo. It was last built on 2025-06-15.</p>
+    <p>"<strong>Machine Learning (Apuntes)</strong>" was written by Diana Villasana Ocampo. It was last built on 2025-06-20.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

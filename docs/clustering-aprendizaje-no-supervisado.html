@@ -68,6 +68,14 @@
 </h1>
 <p><strong>Ejemplos:</strong> K-Means, DBSCAN, Agrupamiento Jerárquico.<br><strong>Uso:</strong> Excelente para <strong>agrupar datos sin etiquetas previas</strong>, permitiéndote descubrir <strong>estructuras ocultas</strong> o identificar <strong>segmentos de mercado</strong> dentro de tus conjuntos de datos. Es una herramienta clave en la exploración de datos.<br><strong>Ventajas:</strong> Es increíblemente útil para la <strong>exploración de datos</strong> y para <strong>reducir la complejidad</strong> al encontrar patrones inherentes.<br><strong>Limitaciones:</strong> Generalmente, necesitas <strong>elegir el número de grupos</strong> de antemano (excepto en DBSCAN), lo cual puede ser un desafío. Además, algunos algoritmos pueden ser <strong>sensibles a la escala</strong> de las características de tus datos.</p>
 <hr>
+<div id="affinity-propagation" class="section level2 unnumbered">
+<h2>Affinity Propagation<a class="anchor" aria-label="anchor" href="#affinity-propagation"><i class="fas fa-link"></i></a>
+</h2>
+</div>
+<div id="agglomerative-clustering" class="section level2 unnumbered">
+<h2>Agglomerative Clustering<a class="anchor" aria-label="anchor" href="#agglomerative-clustering"><i class="fas fa-link"></i></a>
+</h2>
+</div>
 <div id="density-based-spatial-clustering-of-applications-with-noise-dbscan" class="section level2 unnumbered">
 <h2>Density-Based Spatial Clustering of Applications with Noise (DBSCAN)<a class="anchor" aria-label="anchor" href="#density-based-spatial-clustering-of-applications-with-noise-dbscan"><i class="fas fa-link"></i></a>
 </h2>
@@ -104,7 +112,7 @@
 <li><p><strong>Aspecto Local:</strong> El corazón de DBSCAN reside en la definición de densidad local y la conectividad. Las decisiones sobre si un punto es un núcleo, un frontera o ruido, y si dos puntos pertenecen al mismo clúster, se basan <strong>exclusivamente en la densidad de puntos en un vecindario muy localizado</strong> definido por el radio <span class="math inline">\(\epsilon\)</span> y el <code>MinPts</code>. El algoritmo “expande” los clústeres al moverse de un punto núcleo a sus vecinos, y de estos a sus vecinos, y así sucesivamente. Esta capacidad de crecer y formar clústeres orgánicamente a partir de las densidades locales es lo que permite a DBSCAN descubrir formas arbitrarias y adaptarse a la estructura local de los datos. No hay una función global o centroides predefinidos que guíen la agrupación; todo se deriva de las propiedades de densidad local.</p></li>
 <li><p><strong>Resultado Global (Partición):</strong> Aunque el proceso es local, el resultado final es una <strong>partición global del conjunto de datos</strong> en varios clústeres y un conjunto de puntos de ruido. Una vez que todos los puntos han sido procesados y los clústeres expandidos, se obtiene una vista global de la estructura de agrupamiento.</p></li>
 </ul>
-<div id="vnnfzebvbe" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="njjpqepzbk" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
   
   <div class="inline-table"><table class="gt_table" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: 'Century Gothic'; display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 10px; font-weight: normal; font-style: normal; background-color: #FFFFFF; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; table-layout: fixed; width: 0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false" width="0" bgcolor="#FFFFFF">
 <colgroup>
@@ -233,7 +241,7 @@
 <li><p><strong>Convergencia a Máximos Locales:</strong> Aunque EM busca una solución global, una limitación crítica es que <strong>solo está garantizado para converger a un máximo local</strong> de la función de verosimilitud, no necesariamente al máximo global. Esto significa que el resultado final puede depender de la <strong>inicialización</strong> de los parámetros del modelo. Si la función de verosimilitud tiene múltiples “picos” (máximos locales), EM puede quedar “atrapado” en uno de ellos. Para mitigar esto, es una práctica común ejecutar EM varias veces con diferentes inicializaciones aleatorias y seleccionar el resultado con la verosimilitud más alta.</p></li>
 </ul>
 <p>Por lo tanto, mientras que el objetivo de EM es aprender un modelo global que abarque todo el espacio de datos, su método iterativo de optimización lo hace susceptible a encontrar óptimos locales en la función de verosimilitud. La forma en que un modelo probabilístico como un GMM puede modelar <strong>relaciones no lineales</strong> en los datos es que, al combinar múltiples distribuciones gaussianas (lineales), el modelo resultante puede capturar formas y densidades complejas y no lineales en el espacio de características. EM es el algoritmo que permite aprender estos componentes subyacentes.</p>
-<div id="xmesyhnpky" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="wawngekbgk" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
   
   <div class="inline-table"><table class="gt_table" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: 'Century Gothic'; display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 10px; font-weight: normal; font-style: normal; background-color: #FFFFFF; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; table-layout: fixed; width: 0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false" width="0" bgcolor="#FFFFFF">
 <colgroup>
@@ -327,6 +335,10 @@
 </table></div>
 </div>
 </div>
+<div id="gaussian-mixture-models-gmms" class="section level2 unnumbered">
+<h2>Gaussian Mixture Models (GMMs)<a class="anchor" aria-label="anchor" href="#gaussian-mixture-models-gmms"><i class="fas fa-link"></i></a>
+</h2>
+</div>
 <div id="hierarchical-clustering-hclust" class="section level2 unnumbered">
 <h2>Hierarchical Clustering (hclust)<a class="anchor" aria-label="anchor" href="#hierarchical-clustering-hclust"><i class="fas fa-link"></i></a>
 </h2>
@@ -371,7 +383,7 @@
 <li><p><strong>Aspecto Local (Proceso de Fusión/División):</strong> En cada paso del agrupamiento aglomerativo, la decisión de qué clusters fusionar se basa <strong>exclusivamente en la distancia (o similitud) entre los clusters más cercanos en ese momento</strong>. Esta es una decisión puramente local, ya que solo se consideran los pares de clusters más próximos. El algoritmo construye la jerarquía fusionando iterativamente los vecinos más cercanos, lo que le permite adaptarse a la forma y densidad local de los datos. Las fronteras de los clústeres no están predefinidas por un modelo global; en cambio, emergen de las relaciones de proximidad locales. Esto permite a hclust descubrir clusters de <strong>formas arbitrarias</strong> y <strong>relaciones no lineales</strong> que podrían no ser detectadas por métodos que asumen formas específicas de clusters (como k-Means con suposiciones esféricas).</p></li>
 <li><p><strong>Aspecto Global (Dendrograma):</strong> Aunque las decisiones de fusión son locales, el resultado final (el dendrograma) es una <strong>representación jerárquica global</strong> de las relaciones de todos los puntos de datos. Proporciona una visión completa de cómo todos los puntos se agrupan en diferentes niveles de granularidad, desde clusters individuales hasta un solo cluster grande. Esta estructura global revela patrones de anidamiento y relaciones a diferentes escalas.</p></li>
 </ul>
-<div id="ezkctwsars" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="chwlfufemd" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
   
   <div class="inline-table"><table class="gt_table" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: 'Century Gothic'; display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 10px; font-weight: normal; font-style: normal; background-color: #FFFFFF; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; table-layout: fixed; width: 0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false" width="0" bgcolor="#FFFFFF">
 <colgroup>
@@ -509,7 +521,7 @@
 <li><p><strong>Aspecto Global:</strong> k-Means busca una <strong>partición global de todo el conjunto de datos</strong> en <span class="math inline">\(k\)</span> clusters. El objetivo de la optimización (minimizar la suma de los cuadrados de las distancias a los centroides) se calcula sobre <strong>todos los puntos de datos</strong> y todos los clusters simultáneamente. Los centroides, una vez convergidos, representan los “centros” de los clusters en el espacio de características, y estos se utilizan para asignar cualquier nuevo punto a su cluster correspondiente. La solución final es una asignación de cada punto a un cluster que se aplica a nivel global.</p></li>
 <li><p><strong>Asignaciones Locales dentro de una Optimización Global:</strong> Aunque en cada iteración los puntos se asignan a su centroide “local” más cercano, esta asignación es parte de un proceso iterativo que busca optimizar un criterio global (la inercia total del cluster). Los centroides mismos son influenciados por todos los puntos asignados a su cluster, y la reubicación de los centroides afecta las asignaciones de todos los puntos en la siguiente iteración. El resultado son <strong>fronteras de decisión lineales (hiperplanos)</strong> entre los clusters (cuyas combinaciones pueden formar polígonos de Voronoi), que son una característica de un modelo global que divide el espacio. Si los datos no se distribuyen linealmente y los clusters tienen formas no esféricas o densidades muy diferentes, k-Means puede tener dificultades para descubrirlos, precisamente por su naturaleza global de optimización de la distancia euclidiana a un centroide.</p></li>
 </ul>
-<div id="mycrbcpzol" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="pkradkuore" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
   
   <div class="inline-table"><table class="gt_table" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: 'Century Gothic'; display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 10px; font-weight: normal; font-style: normal; background-color: #FFFFFF; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; table-layout: fixed; width: 0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false" width="0" bgcolor="#FFFFFF">
 <colgroup>
@@ -656,7 +668,7 @@
 <li><p><strong>Aspecto Global:</strong> k-Medians busca una <strong>partición global de todo el conjunto de datos</strong> en <span class="math inline">\(k\)</span> clusters. El objetivo de la optimización (minimizar la suma de las distancias L1 a las medianas) se calcula sobre <strong>todos los puntos de datos</strong> y todos los clusters simultáneamente. Las medianas, una vez convergidas, representan los “centros” robustos de los clusters en el espacio de características, y estos se utilizan para asignar cualquier nuevo punto a su cluster correspondiente. La solución final es una asignación de cada punto a un cluster que se aplica a nivel global.</p></li>
 <li><p><strong>Asignaciones Locales dentro de una Optimización Global:</strong> Si bien en cada iteración los puntos se asignan a su mediana “local” más cercana, esta asignación es parte de un proceso iterativo que busca optimizar un criterio global (la suma total de distancias L1). Las medianas mismas son influenciadas por todos los puntos asignados a su cluster, y la reubicación de las medianas afecta las asignaciones de todos los puntos en la siguiente iteración. El resultado son <strong>fronteras de decisión lineales</strong> (debido al uso de la distancia L1, similar a las fronteras de Voronoi), que son una característica de un modelo global que divide el espacio. Aunque es más robusto a outliers, k-Medians todavía tiende a encontrar clusters que son más o menos “esféricos” o convexos en la métrica L1, y puede tener dificultades con clusters de formas muy arbitrarias o no lineales.</p></li>
 </ul>
-<div id="yerbldixmy" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="ptqtgxxnie" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
   
   <div class="inline-table"><table class="gt_table" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: 'Century Gothic'; display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 10px; font-weight: normal; font-style: normal; background-color: #FFFFFF; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; table-layout: fixed; width: 0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false" width="0" bgcolor="#FFFFFF">
 <colgroup>
@@ -749,6 +761,18 @@
     </tr></tfoot>
 </table></div>
 </div>
+</div>
+<div id="mean-shift" class="section level2 unnumbered">
+<h2>Mean-Shift<a class="anchor" aria-label="anchor" href="#mean-shift"><i class="fas fa-link"></i></a>
+</h2>
+</div>
+<div id="ordering-points-to-identify-the-clustering-structure-optics" class="section level2 unnumbered">
+<h2>Ordering Points To Identify the Clustering Structure (OPTICS)<a class="anchor" aria-label="anchor" href="#ordering-points-to-identify-the-clustering-structure-optics"><i class="fas fa-link"></i></a>
+</h2>
+</div>
+<div id="spectral-clustering" class="section level2 unnumbered">
+<h2>Spectral Clustering<a class="anchor" aria-label="anchor" href="#spectral-clustering"><i class="fas fa-link"></i></a>
+</h2>
 
 </div>
 </div>
@@ -759,11 +783,17 @@
     <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
       <ul class="nav navbar-nav">
 <li><a class="nav-link" href="#clustering-aprendizaje-no-supervisado">📏 9. Clustering (Aprendizaje No Supervisado)</a></li>
+<li><a class="nav-link" href="#affinity-propagation">Affinity Propagation</a></li>
+<li><a class="nav-link" href="#agglomerative-clustering">Agglomerative Clustering</a></li>
 <li><a class="nav-link" href="#density-based-spatial-clustering-of-applications-with-noise-dbscan">Density-Based Spatial Clustering of Applications with Noise (DBSCAN)</a></li>
 <li><a class="nav-link" href="#expectation-maximization-em">Expectation Maximization (EM)</a></li>
+<li><a class="nav-link" href="#gaussian-mixture-models-gmms">Gaussian Mixture Models (GMMs)</a></li>
 <li><a class="nav-link" href="#hierarchical-clustering-hclust">Hierarchical Clustering (hclust)</a></li>
 <li><a class="nav-link" href="#k-means">k-Means</a></li>
 <li><a class="nav-link" href="#k-medians">k-Medians</a></li>
+<li><a class="nav-link" href="#mean-shift">Mean-Shift</a></li>
+<li><a class="nav-link" href="#ordering-points-to-identify-the-clustering-structure-optics">Ordering Points To Identify the Clustering Structure (OPTICS)</a></li>
+<li><a class="nav-link" href="#spectral-clustering">Spectral Clustering</a></li>
 </ul>
 
       <div class="book-extra">
@@ -781,7 +811,7 @@
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Machine Learning (Apuntes)</strong>" was written by Diana Villasana Ocampo. It was last built on 2025-06-15.</p>
+    <p>"<strong>Machine Learning (Apuntes)</strong>" was written by Diana Villasana Ocampo. It was last built on 2025-06-20.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
