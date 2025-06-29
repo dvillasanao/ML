@@ -448,21 +448,21 @@ tabla_mars %>%
 
 ## Polynomial Regression {-} 
 
-```{r, echo = FALSE,out.width='50%', fig.align='center', fig.cap="Elaboración propia"}
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
 require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Regression/Polynomial Regression.png"))
 ```
 
 ## Quantile Regression {-}   
 
-```{r, echo = FALSE,out.width='50%', fig.align='center', fig.cap="Elaboración propia"}
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
 require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Regression/Quantile Regression.png"))
 ```
 
 ## Stepwise Regression {.unnumbered}
 
-```{r, echo = FALSE,out.width='50%', fig.align='center', fig.cap="Elaboración propia"}
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
 require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Regression/StepW.png"))
 ```
