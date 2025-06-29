@@ -398,10 +398,26 @@ tabla_hopfield %>%
 
 ```
 
+## Gated Recurrent Unit (GRU) {-}   
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Neural Networks/GRU.png"))
+```
 
 ## Generative Adversarial Networks (GANs) {-}  
 
-## Long Short-Term Memory (LSTM) / Gated Recurrent Unit (GRU) {-}   
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Neural Networks/GANs.png"))
+```
+
+## Long Short-Term Memory (LSTM) {-}  
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Neural Networks/LSTM.png"))
+```
 
 ## Multilayer Perceptron (MP)  {-}     
 
@@ -789,6 +805,11 @@ tabla_rnn %>%
 
 
 ## Restricted Boltzmann Machine (RBM) {-}   
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Neural Networks/RBM.png"))
+```
 
 ## Transformers  {-}  
 

@@ -2,3 +2,10 @@ fig:unnamed-chunk-8
 fig:unnamed-chunk-16
 fig:unnamed-chunk-26
 kernel-regression-nadaraya-watson-estimator
+fig:unnamed-chunk-11
+fig:unnamed-chunk-13
+fig:unnamed-chunk-20
+fig:unnamed-chunk-21
+fig:unnamed-chunk-22
+fig:unnamed-chunk-32
+url-your-book-url-like-httpsbookdown.orgyihuibookdown
