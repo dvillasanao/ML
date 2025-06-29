@@ -280,7 +280,12 @@ tabla_bagging %>%
          as_raw_html() 
 ```
 
-## CatBoost {-}   
+## CatBoost {-}  
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Ensemble/CatBoost.png"))
+```
 
 ## Extreme Gradient Boosting (XGBoost)  {-}   
 
@@ -562,7 +567,12 @@ tabla_gbrt %>%
 ```
 
 
-## Isolation Forest {-}   
+## Isolation Forest {-}  
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Ensemble/Isolation Forest.png"))
+```
 
 ## Light Gradient Boosting Machine (LightGBM)  {-}  
 

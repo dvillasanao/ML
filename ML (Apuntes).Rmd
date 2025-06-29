@@ -1,0 +1,2556 @@
+---
+title: "Machine Learning (Apuntes) "
+author: "Diana Villasana Ocampo"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+documentclass: book
+bibliography: [book.bib, packages.bib]
+# url: your book url like https://bookdown.org/yihui/bookdown
+# cover-image: path to the social sharing image like images/cover.jpg
+description: |
+  Apuntes personales
+biblio-style: apalike
+csl: chicago-fullnote-bibliography.csl
+---
+
+# url: your book url like https://bookdown.org/yihui/bookdown
+
+Placeholder
+
+
+## 📌 Cuadro {.unnumbered}
+## Modelos de Machine Learning {.unnumbered}
+
+<!--chapter:end:index.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+# example R options set globally
+options(width = 80)
+
+# example chunk options set globally
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE,
+  message = FALSE,
+  warning = FALSE
+)
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+setwd(here::here())
+```
+# 🔍 1. Regresión {-}   
+
+**Ejemplos:** Regresión Lineal Simple, Regresión Ridge, Regresión Lasso.  
+**Uso:** Ideal para **predecir valores numéricos continuos** (como precios o temperaturas) y cuando esperas **relaciones lineales** entre tus variables.   
+**Ventajas:** Es un modelo **simple** de entender y altamente **interpretable**.  
+**Limitaciones:** Su desempeño es bajo cuando las relaciones entre las variables son **no lineales** o muy complejas.  
+
+---
+
+## Ordinary Least Squares Regression (`OLSR`) {-}    
+
+[Ordinary Least Squares Regression (`OLSR`) en R](https://dvillasanao.github.io/ML_Examples/Output/Regression/01_01.OLSR.html)  
+[Ordinary Least Squares Regression (`OLSR`) en Python](https://dvillasanao.github.io/ML_Examples/R/Regression/01_01_OLSR_py.html)   
+
+```{r echo=FALSE, fig.show="hold", out.width="48%"}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Regression/01_image_OLSR.png"))
+knitr::include_graphics(paste0(here::here(), "/img/Regression/OLSR.png"))
+```
+
+
+La **Regresión por Mínimos Cuadrados Ordinarios (OLS)** es una técnica fundamental en estadística y Machine Learning para modelar la **relación lineal** entre una **variable dependiente** (a predecir) y una o más **variables independientes**. Su objetivo es encontrar la **línea (o hiperplano) que mejor se ajusta** a los datos, minimizando la **suma de los cuadrados de las diferencias** entre los valores reales y los predichos por el modelo. Es decir, busca los coeficientes que hacen que la distancia (al cuadrado) de los puntos a la línea sea mínima.
+
+Los coeficientes de OLS se pueden calcular directamente con una fórmula matemática, sin necesidad de procesos iterativos complejos, bajo ciertos supuestos como la linealidad de la relación y la independencia de los errores.
+
+En el contexto del **aprendizaje global vs. local**, OLS es un ejemplo claro de un modelo de **aprendizaje global**. OLS busca una **única ecuación** o un conjunto de coeficientes que describan la relación entre las variables para **todo el conjunto de datos**. La línea o hiperplano que encuentra es una solución global que se aplica de manera uniforme en todo el espacio de características. Esto la hace muy interpretable y computacionalmente eficiente, pero limitada si la relación real entre las variables no es estrictamente lineal en todo el dominio de los datos.
+
+
+## Linear Regression {.unnumbered}   
+
+
+La **Regresión Lineal** es uno de los algoritmos más fundamentales y ampliamente utilizados en el campo del **Machine Learning y la estadística**. Es un modelo **supervisado** que busca establecer una **relación lineal** entre una **variable de respuesta (o dependiente)** continua y una o más **variables predictoras (o independientes)**.
+
+**Concepto y Ecuación:**
+
+La idea central de la regresión lineal es encontrar la **línea (o hiperplano en múltiples dimensiones)** que mejor se ajusta a los datos, de modo que se pueda predecir el valor de la variable dependiente basándose en los valores de las variables predictoras.
+
+* **Regresión Lineal Simple:** Implica una única variable predictora. La ecuación de la línea es:
+    $$Y = \beta_0 + \beta_1 X + \epsilon$$  
+    
+Donde:
+    * $Y$ es la variable de respuesta.
+    * $X$ es la variable predictora.
+    * $\beta_0$ es el **intercepto** (el valor de $Y$ cuando $X$ es 0).
+    * $\beta_1$ es el **coeficiente de la pendiente** (cuánto cambia $Y$ por cada unidad de cambio en $X$).
+    * $\epsilon$ es el **término de error** o residual (la parte de $Y$ que el modelo no puede explicar).
+
+* **Regresión Lineal Múltiple:** Implica dos o más variables predictoras. La ecuación se extiende a:   
+    $$Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + ... + \beta_p X_p + \epsilon$$  
+    
+Donde:
+    * $X_1, X_2, ..., X_p$ son las $p$ variables predictoras.
+    * $\beta_1, \beta_2, ..., \beta_p$ son los coeficientes de cada variable predictora.
+
+**Cómo Funciona (Mínimos Cuadrados Ordinarios - OLS):**
+
+El método más común para estimar los coeficientes ($\beta$s) en la regresión lineal es el de **Mínimos Cuadrados Ordinarios (OLS)**. OLS funciona minimizando la **suma de los cuadrados de los residuos**. Un residuo es la diferencia entre el valor real de $Y$ y el valor predicho por el modelo ($\hat{Y}$).
+
+$$\text{Minimizar: } \sum_{i=1}^{n} (Y_i - \hat{Y}_i)^2 = \sum_{i=1}^{n} (Y_i - (\beta_0 + \beta_1 X_{i1} + ... + \beta_p X_{ip}))^2$$
+
+Al minimizar esta suma de cuadrados, OLS encuentra los coeficientes que hacen que la línea de regresión esté lo más cerca posible de la mayoría de los puntos de datos.
+
+**Supuestos Clave:**  
+
+La validez de los resultados de la regresión lineal tradicional se basa en varios supuestos:
+
+* **Linealidad:** La relación entre las variables $X$ y $Y$ es lineal.
+* **Independencia:** Las observaciones son independientes entre sí.
+* **Normalidad de los Residuos:** Los residuos se distribuyen normalmente.
+* **Homocedasticidad:** La varianza de los residuos es constante a lo largo de todos los niveles de las variables predictoras.
+* **No Multicolinealidad Perfecta:** Las variables predictoras no deben estar perfectamente correlacionadas entre sí.
+
+**Uso y Limitaciones:**
+
+La regresión lineal es popular por su **simplicidad, interpretabilidad** y por ser un buen punto de partida para muchos problemas de predicción. Sin embargo, su principal limitación es que solo puede modelar **relaciones lineales**. Si la relación subyacente entre las variables es no lineal, una regresión lineal puede no capturarla adecuadamente y dar resultados inexactos.
+
+**Aprendizaje Global vs. Local:**
+
+La Regresión Lineal es un modelo de **aprendizaje puramente global**.
+
+* **Aspecto Global:** La Regresión Lineal aprende un **único conjunto de coeficientes** que define una **línea (o hiperplano) global** que se aplica a todo el espacio de características. Esta línea busca representar la **relación lineal promedio o general** entre las variables predictoras y la variable de respuesta a lo largo de todo el rango de los datos. La predicción para cualquier nueva instancia se realiza utilizando la misma ecuación lineal, sin importar en qué parte del espacio de características se encuentre. No hay adaptaciones o modelos separados para diferentes subregiones de los datos; el modelo es una función que describe una tendencia general y global.
+
+* **Rigidez de la Linealidad:** Debido a su naturaleza global y lineal, la regresión lineal no puede capturar relaciones **no lineales o interacciones complejas** entre las variables predictoras de forma inherente. Si la relación real en los datos es no lineal, el modelo lineal intentará ajustarla con la mejor línea recta posible, lo que podría llevar a un bajo rendimiento.
+
+
+## Regresión Logística (Logit) {.unnumbered}
+
+```{r, echo = FALSE,out.width='50%', fig.align='center', fig.cap="Elaboración propia"}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Regression/Logit.png"))
+```
+
+La **Regresión Logística** es un modelo estadístico usado principalmente para problemas de **clasificación binaria**, donde el objetivo es predecir la **probabilidad** de que una instancia pertenezca a una de dos clases (por ejemplo, "sí" o "no", "0" o "1"). A pesar de su nombre, no predice un valor continuo, sino una probabilidad.
+
+Este modelo utiliza una **función sigmoide (o logística)** para transformar una combinación lineal de las variables de entrada en un valor entre 0 y 1, que se interpreta como una probabilidad. Los coeficientes del modelo se aprenden maximizando la verosimilitud de observar los datos, generalmente a través de algoritmos como el descenso de gradiente.
+
+En el contexto del **aprendizaje global vs. local**, la Regresión Logística es un modelo de **aprendizaje global**. Esto significa que busca un **único conjunto de coeficientes** que definen una frontera de decisión (un hiperplano) que se aplica a todo el espacio de características para separar las clases. Asume una relación lineal entre las variables de entrada y el logaritmo de la probabilidad, y una vez entrenado, usa esta relación global para hacer predicciones en cualquier parte del espacio de datos. Si bien es eficiente y muy interpretable, su naturaleza global puede limitar su rendimiento en casos donde las fronteras de decisión son inherentemente no lineales o muy complejas.
+
+
+
+```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+aplica <- c(
+  "✅ Supervisado",
+  "✅ Categórica binaria (0/1)",
+  "✅ Numéricas y categóricas",
+  "✅ Lineal entre log-odds y predictores",
+  "❌ No es requisito",
+  "✅ Necesaria",
+  "✅ Deseable",
+  "⚠️ Sí",
+  "⚠️ Puede afectar",
+  "✅ Alta (coeficientes interpretables)",
+  "✅ Alta",
+  "✅ Compatible",
+  "❌ Respuesta no binaria o multiclase sin ajuste"
+)
+detalles <- c(
+  "Clasificación binaria",
+  "Ej. éxito/fracaso, sí/no",
+  "Convertir categóricas a dummies",
+  "Relación entre log(p/(1-p)) y X debe ser lineal",
+  "No se exige normalidad en errores",
+  "Independencia entre observaciones",
+  "Idealmente varianza constante",
+  "Outliers pueden alterar los coeficientes",
+  "Usar VIF y regularización si hay problema",
+  "Coeficientes en términos de odds/log-odds",
+  "Rápido y estable para datasets medianos",
+  "K-fold funciona muy bien",
+  "Evitar si hay multiclase sin ajuste"
+)
+tabla_logit <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+require(gt)
+tabla_logit %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir logit",
+             subtitle = "Regresión logística") %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14,
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html()
+```
+
+## Generalized Linear Model (GLM) {-}  
+
+```{r, echo = FALSE,out.width='50%', fig.align='center', fig.cap="Elaboración propia"}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Regression/GLM.png"))
+```
+
+## Least Angle Regression (LARS)  {-}  
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Regularization/LARS.png"))
+```
+
+**Least Angle Regression (LARS)** es un algoritmo de **regresión lineal** desarrollado por Bradley Efron, Trevor Hastie, Iain Johnstone y Robert Tibshirani. Es particularmente interesante porque puede considerarse como una **versión más eficiente y paso a paso de LASSO** (Least Absolute Shrinkage and Selection Operator) y es útil para **seleccionar características** y manejar datos de alta dimensión.
+
+A diferencia de OLS, que calcula todos los coeficientes de una vez, o de Lasso, que requiere optimización más compleja, LARS opera de manera incremental. Su idea central es avanzar los coeficientes de forma que su ángulo con el vector de residuos sea siempre el mismo y que sea el "más pequeño" posible.
+
+El proceso de LARS se puede resumir así:
+
+1.  **Inicio:** Todos los coeficientes se inicializan en cero.
+2.  **Identificación del Predictor más Correlacionado:** El algoritmo encuentra la variable predictora que está más correlacionada con la variable de respuesta (o con el residuo actual).
+3.  **Movimiento en la Dirección del Predictor:** El coeficiente de esa variable predictora se mueve gradualmente desde cero en la dirección del signo de su correlación. A medida que el coeficiente se mueve, el residuo cambia.
+4.  **Activación de Nuevos Predictores:** Cuando otra variable predictora alcanza la misma correlación con el residuo actual que la variable que ya está activa, el algoritmo cambia de dirección. Ahora, los coeficientes de *ambas* variables activas se mueven juntas en un "ángulo equiestadístico" de tal manera que permanecen igualmente correlacionadas con el residuo.
+5.  **Proceso Iterativo:** Este proceso continúa, añadiendo nuevas variables al conjunto de variables "activas" (es decir, aquellas con coeficientes distintos de cero) a medida que estas alcanzan la misma correlación con el residuo. Los coeficientes se mueven de forma coordinada.
+6.  **Criterio de Parada:** El algoritmo se detiene cuando todos los predictores han sido incluidos en el modelo, o cuando se alcanza un número predefinido de pasos o de variables.
+
+**Relación con otros modelos:**
+* Si LARS se detiene cuando los coeficientes de las variables no activas son menores o iguales a la correlación actual de las variables activas (y los coeficientes de las variables no activas se fijan en cero si su correlación es menor), entonces genera la **solución completa del camino de LASSO**.
+* También puede generar el camino de soluciones para la **Ridge Regression** si se modifica ligeramente.
+
+LARS es eficiente porque solo requiere un número de pasos igual al número de variables, o menos si se detiene antes.
+
+**Aprendizaje Global vs. Local:**
+
+Least Angle Regression (LARS) es un modelo de **aprendizaje global**.
+
+* **Aspecto Global:** LARS construye un **modelo lineal global** paso a paso. Aunque el algoritmo añade variables una por una y ajusta sus coeficientes de manera incremental, el modelo resultante en cada paso es una ecuación de regresión lineal que se aplica a todo el conjunto de datos. La decisión de qué variable añadir y cómo ajustar los coeficientes se basa en las correlaciones globales entre las variables predictoras y la respuesta (o el residuo). La finalidad es encontrar los coeficientes óptimos para una función de regresión que se aplica a todo el espacio de características.
+
+* **Selección de Características Globalmente:** La capacidad de LARS para realizar selección de características (al igual que LASSO) es un proceso global. Se identifican las variables más influyentes en el contexto de todo el conjunto de datos, y su inclusión en el modelo contribuye a la formación de una relación global entre los predictores y la respuesta. No se construyen modelos separados para diferentes subregiones de los datos; en cambio, se construye un único modelo global de manera progresiva.
+
+
+```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica <- c(
+  "✅ Supervisado (regresión)",
+  "✅ Numérica continua",
+  "✅ Numéricas (requiere estandarización)",
+  "✅ Lineal",
+  "⚠️ Deseable para inferencia clásica",
+  "✅ Necesaria",
+  "✅ Supuesto importante",
+  "⚠️ Afectado por valores extremos",
+  "✅ Maneja bien multicolinealidad como LASSO",
+  "✅ Muy interpretable (secuencia de modelos anidados)",
+  "✅ Muy eficiente, especialmente con muchas variables",
+  "✅ Útil para elegir número de variables con validación cruzada",
+  "❌ Datos ruidosos o no lineales; ❌ si hay muchas interacciones no capturadas"
+)
+
+detalles <- c(
+  "Algoritmo de regresión eficiente que selecciona variables secuencialmente como alternativa a LASSO.",
+  "Busca predecir una variable continua usando múltiples predictores.",
+  "Usa variables numéricas estandarizadas; es sensible a escala.",
+  "Asume relación lineal entre predictores y respuesta.",
+  "No exige normalidad para predicción, pero sí para inferencia estadística.",
+  "Errores deben ser independientes entre sí.",
+  "Supone varianza constante de los errores.",
+  "Puede verse afectado si hay valores extremos en las variables.",
+  "Muy útil cuando los predictores están correlacionados; elige uno a la vez.",
+  "Produce una ruta de modelos fácilmente interpretable con selección progresiva.",
+  "Más rápido que LASSO al generar trayectorias de coeficientes.",
+  "Puede aplicarse validación cruzada para seleccionar el mejor modelo en la secuencia.",
+  "No captura relaciones no lineales o interacciones sin modificación previa del modelo."
+)
+
+tabla_lars <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_lars %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir LARS",
+             subtitle = "Least Angle Regression (LARS)")  %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
+```
+
+
+
+## Locally Estimated Scatterplot Smoothing (`LOESS`) {.unnumbered} 
+
+```{r echo=FALSE, fig.show="hold", out.width="48%"}
+knitr::include_graphics(paste0(here::here(), "/img/Regression/LOESS.png"))
+knitr::include_graphics(paste0(here::here(), "/img/Regression/LOESS_1.png"))
+```
+
+**LOESS (Locally Estimated Scatterplot Smoothing)**, o LOWESS, es una técnica de **regresión no paramétrica** para crear una curva suave que se ajusta a los datos en un diagrama de dispersión. Su gran ventaja es que **no asume una forma funcional global** específica para la relación entre las variables, lo que la hace muy flexible para identificar tendencias y patrones no lineales.
+
+El principio de LOESS es simple: para estimar el valor suavizado en un punto, se seleccionan los **puntos de datos cercanos** (definido por un parámetro de **"span"** o ancho de banda), se les asignan **pesos** (dando más peso a los puntos más cercanos), y luego se ajusta un **polinomio de bajo grado** (comúnmente lineal o cuadrático) a esos puntos usando mínimos cuadrados ponderados. Este proceso se repite para cada punto de interés para construir la curva.
+
+En el contexto del **aprendizaje global vs. local**, LOESS es un modelo de **aprendizaje puramente local**. Su flexibilidad reside en que **ajusta múltiples modelos simples y locales** (regresiones ponderadas) en diferentes vecindarios de los datos. No busca una única ecuación global que describa la relación en todo el conjunto de datos. Esto le permite adaptarse maravillosamente a las variaciones en las relaciones y curvaturas de los datos, lo que es especialmente útil cuando los datos no se distribuyen linealmente. Sin embargo, su naturaleza local implica que no produce una fórmula explícita del modelo, y puede ser computacionalmente más intensivo para conjuntos de datos muy grandes.  
+
+
+```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+aplica <- c(
+  "✅ Supervisado",
+  "✅ Continua",
+  "✅ Numéricas (usualmente 1 o 2 predictores)",
+  "✅ No lineal y suave",
+  "❌ No necesaria",
+  "✅ Deseable",
+  "✅ Deseable",
+  "⚠️ Muy sensible",
+  "❌ No aplica (pocos predictores)",
+  "✅ Muy interpretable gráficamente",
+  "⚠️ Lento en grandes volúmenes de datos",
+  "✅ Puede usarse para elegir 'span'",
+  "❌ Datos grandes o con ruido fuerte"
+)
+detalles <- c(
+  "Modelo no paramétrico local",
+  "Regresión para valores continuos",
+  "Generalmente 1 o 2 variables numéricas",
+  "Ajuste por vecindad, suaviza la curva",
+  "No asume distribución específica",
+  "Supuesto deseable si hay dependencias temporales",
+  "Ideal si la varianza no cambia mucho localmente",
+  "Altamente afectado por outliers locales",
+  "No es una técnica multivariable compleja",
+  "La curva ajustada se interpreta visualmente",
+  "Computacionalmente costoso con datos grandes",
+  "Ayuda a seleccionar el mejor 'span'",
+  "Poco eficaz en alta dimensión o datos muy dispersos"
+)
+tabla_loess <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+tabla_loess %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir LOESS",
+             subtitle = "Locally Estimated Scatterplot Smoothing (LOESS)") %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14,
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html()
+```
+
+## Multivariate Adaptive Regression Splines (`MARS`) {.unnumbered} 
+
+```{r echo=FALSE, fig.show="hold", out.width="48%"}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Regression/MARS.png"))
+knitr::include_graphics(paste0(here::here(), "/img/Regression/MARS_1.png"))
+```
+
+**Multivariate Adaptive Regression Splines (MARS)** es un algoritmo de **regresión no paramétrica** que extiende los modelos lineales para manejar relaciones no lineales y complejas. Desarrollado por Jerome Friedman, MARS construye su modelo al **dividir el espacio de entrada en múltiples regiones y ajustar una función lineal simple (o de orden superior) a cada región**.
+
+El proceso de MARS consta de dos fases: una **fase de adelante** que añade iterativamente **funciones base** (pares de funciones "hinge" o bisagra) y **nudos** (puntos de corte) para capturar no linealidades e interacciones entre variables, y una **fase de atrás** que poda las funciones base menos significativas utilizando criterios como la **Validación Cruzada Generalizada (GCV)** para prevenir el sobreajuste. Esto permite a MARS ser adaptable a las particularidades de los datos.
+
+En el contexto del **aprendizaje global vs. local**, MARS se sitúa como un modelo de **aprendizaje adaptativo que combina aspectos globales y locales**. Es "local" en el sentido de que sus funciones base y nudos dividen el espacio de datos en regiones, y dentro de cada región se aplica una relación simple. Sin embargo, es "global" porque la suma de todas estas funciones base forma una única ecuación que describe la relación en todo el conjunto de datos y se aplica de forma consistente. Esto significa que si los datos no se distribuyen linealmente, MARS puede aprender y modelar estas relaciones complejas de forma adaptativa, encontrando automáticamente dónde y cómo las relaciones cambian, ofreciendo una solución que es tanto flexible como interpretable.
+
+
+```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+aplica <- c(
+  "✅ Supervisado",
+  "✅ Continua o categórica (binaria con extensión)",
+  "✅ Numéricas (categóricas con dummies)",
+  "✅ No lineal (automático)",
+  "❌ No requerida",
+  "✅ Deseable",
+  "✅ Deseable",
+  "⚠️ Sí (aunque algo robusto)",
+  "⚠️ Puede afectar",
+  "⚠️ Media (modelo tipo caja negra)",
+  "✅ Razonable para tamaños medianos",
+  "✅ Recomendado (ej. repeated k-fold)",
+  "❌ Relación puramente lineal o muchos factores irrelevantes"
+)
+detalles <- c(
+  "Regresión flexible no lineal",
+  "Ideal para regresión continua (también clasificación con `earth`)",
+  "Crea automáticamente 'splines' por variable",
+  "Crea funciones por tramos con 'nudos'",
+  "No exige distribución específica de errores",
+  "Mejor si los datos no están correlacionados temporalmente",
+  "Idealmente errores con varianza constante",
+  "Puede ser sensible a valores extremos",
+  "Detecta interacciones, pero VIF sigue siendo útil",
+  "Coeficientes no tan interpretables como OLS",
+  "Más lento que OLS pero más flexible",
+  "CV ayuda a elegir número óptimo de términos",
+  "Tiene riesgo de sobreajuste si no se controla bien"
+)
+tabla_mars <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+require(gt)
+tabla_mars %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir MARS",
+             subtitle = "Splines de Regresión Adaptativa Multivariante (MARS)") %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14,
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html()
+```
+
+## Polynomial Regression {-} 
+
+```{r, echo = FALSE,out.width='50%', fig.align='center', fig.cap="Elaboración propia"}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Regression/Polynomial Regression.png"))
+```
+
+## Quantile Regression {-}   
+
+```{r, echo = FALSE,out.width='50%', fig.align='center', fig.cap="Elaboración propia"}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Regression/Quantile Regression.png"))
+```
+
+## Stepwise Regression {.unnumbered}
+
+```{r, echo = FALSE,out.width='50%', fig.align='center', fig.cap="Elaboración propia"}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Regression/StepW.png"))
+```
+
+La **Regresión por Pasos (Stepwise Regression)** es una técnica para construir un modelo de regresión lineal (o a veces otros modelos lineales generalizados) seleccionando las variables predictoras de forma iterativa y automática. Su objetivo es encontrar un subconjunto óptimo de variables que mejore la capacidad predictiva del modelo sin incluir variables irrelevantes o redundantes. Esto ayuda a simplificar el modelo, mejorar la interpretabilidad y reducir el riesgo de sobreajuste.
+
+Existen tres estrategias principales para la regresión por pasos:
+
+1.  **Selección Hacia Adelante (Forward Selection):**
+    * Comienza con un modelo que no incluye ninguna variable predictora (solo el intercepto).
+    * En cada paso, evalúa todas las variables predictoras disponibles que aún no están en el modelo.
+    * Añade al modelo la variable que, al ser incluida, produce la mayor mejora estadística (generalmente medida por un valor p bajo, un R-cuadrado ajustado mayor, o un criterio de información como AIC o BIC).
+    * El proceso continúa hasta que ninguna de las variables restantes mejora el modelo por encima de un umbral predefinido.
+
+2.  **Eliminación Hacia Atrás (Backward Elimination):**
+    * Comienza con un modelo que incluye **todas** las variables predictoras posibles.
+    * En cada paso, evalúa las variables predictoras que actualmente están en el modelo.
+    * Elimina del modelo la variable que es menos significativa estadísticamente (generalmente medida por un valor p alto, o una reducción en el R-cuadrado ajustado o un aumento en AIC/BIC).
+    * El proceso continúa hasta que la eliminación de cualquier variable empeoraría significativamente el modelo.
+
+3.  **Híbrida (Mixed / Bidirectional Stepwise):**
+    * Combina la selección hacia adelante y la eliminación hacia atrás.
+    * En cada paso, el algoritmo puede tanto añadir una variable si mejora el modelo, como eliminar una variable que ya está en el modelo si se vuelve redundante o no significativa. Esto permite que el modelo reconsidere variables que fueron añadidas o eliminadas en pasos anteriores. Es el enfoque más común y robusto.
+
+**Criterios de Selección:**  
+
+La decisión de añadir o eliminar una variable en cada paso se basa en criterios estadísticos, siendo los más comunes:
+* **Valores p:** Umbrales para la significancia estadística de los coeficientes.
+* **$R^2$ ajustado:** Mide la proporción de varianza explicada por el modelo, penalizando la inclusión de variables innecesarias.
+* **Criterio de Información de Akaike (AIC):** Penaliza la complejidad del modelo (número de parámetros) en relación con su bondad de ajuste.
+* **Criterio de Información Bayesiano (BIC):** Similar al AIC, pero con una penalización más fuerte por la complejidad.
+
+**Ventajas y Desventajas:**
+
+* **Ventajas:** Puede ayudar a construir modelos más parsimoniosos, mejorar la interpretabilidad y reducir la multicolinealidad.
+* **Desventajas:**
+    * **Sobreajuste:** Puede llevar a sobreajuste si se usa de forma acrítica, ya que el algoritmo se optimiza para los datos de entrenamiento.
+    * **Problemas de Significancia Estadística:** Los valores p y otras métricas pueden no ser confiables debido a la selección de características basada en los datos.
+    * **Inestabilidad:** El conjunto de variables seleccionadas puede ser muy sensible a pequeñas perturbaciones en los datos o a la elección del criterio de selección.
+    * **Ignora el Conocimiento del Dominio:** Puede seleccionar variables que son estadísticamente significativas pero que carecen de sentido práctico o causal.
+    * **No Maneja Interacciones Complejas:** Es fundamentalmente un método para seleccionar variables para un modelo lineal y no está diseñado para descubrir relaciones no lineales o interacciones complejas.
+
+Debido a sus desventajas, la regresión por pasos se utiliza con más cautela hoy en día. A menudo se prefieren métodos de regularización (como Lasso o Elastic Net) para la selección de características, ya que son más estables y realizan la selección de forma más robusta.
+
+**Aprendizaje Global vs. Local:**
+
+La Regresión por Pasos es un modelo de **aprendizaje global**.
+
+* **Aspecto Global:** La regresión por pasos construye un **único modelo de regresión lineal global** que busca explicar la relación entre las variables predictoras y la respuesta en todo el conjunto de datos. La selección de variables se realiza para optimizar el rendimiento de este modelo global. Los coeficientes finales que se obtienen definen una función lineal que se aplica de manera consistente a cualquier nueva observación, sin importar en qué parte del espacio de características se encuentre.
+
+* **Proceso de Selección (Global):** Aunque el proceso es iterativo y añade/elimina variables, la decisión en cada paso se basa en cómo esa adición/eliminación afecta la bondad de ajuste o la complejidad del modelo en **todo el conjunto de datos**. No se ajustan modelos separados o locales para diferentes regiones.
+
+
+
+## Support Vector Machine (SVM) {.unnumbered} 
+
+```{r echo=FALSE, fig.show="hold", out.width="48%"}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Regression/SVM.png"))
+knitr::include_graphics(paste0(here::here(), "/img/Regression/SVM_1.png"))
+```
+
+
+**Support Vector Machine (SVM)** es un potente y versátil algoritmo de **Machine Learning** que se utiliza tanto para tareas de **clasificación** como de **regresión**, aunque es más conocido por su aplicación en clasificación. Su objetivo principal es encontrar el **hiperplano óptimo** que separe las clases en el espacio de características con el **margen** más grande posible. Los puntos de datos más cercanos a este hiperplano se llaman **vectores de soporte**, y son cruciales para definir la frontera de decisión.
+
+Para manejar datos que no son linealmente separables, SVM utiliza el **"truco del kernel"**. Este truco permite a SVM mapear implícitamente los datos a un espacio de mayor dimensión donde las clases podrían ser linealmente separables, sin necesidad de calcular explícitamente las coordenadas. Funciones kernel comunes como el **Radial Basis Function (RBF) o Gaussiano** permiten a SVM modelar fronteras de decisión no lineales complejas en el espacio original de baja dimensión.
+
+En el contexto del **aprendizaje global vs. local**, SVM se clasifica principalmente como un modelo de **aprendizaje global**. Esto se debe a que busca un **único hiperplano óptimo** (o una frontera de decisión no lineal definida por el kernel) que se aplica a la totalidad del espacio de características. Una vez entrenado, el modelo predice evaluando la posición de un nuevo punto con respecto a esta frontera global. Sin embargo, hay un matiz "local" en su funcionamiento: la determinación de este hiperplano depende **críticamente solo de los vectores de soporte**, que son los puntos de datos "más difíciles" cercanos a la frontera. Los puntos que están lejos del margen no influyen en la definición del modelo. Aunque la frontera de decisión es una función global que se aplica en todas partes, su construcción está influenciada por estos puntos localmente relevantes, permitiendo a SVM adaptar su aproximación incluso cuando las relaciones en los datos no se distribuyen linealmente, al encontrar la separación óptima en un espacio transformado.
+
+
+```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+aplica <- c(
+  "✅ Supervisado",
+  "✅ Categórica o Continua",
+  "✅ Numéricas (categorías deben codificarse)",
+  "✅ Capta relaciones no lineales (kernel)",
+  "❌ No requiere",
+  "✅ Idealmente sí",
+  "❌ No es requisito",
+  "⚠️ Sí, especialmente sin margen amplio",
+  "✅ Puede manejarla bien",
+  "❌ Baja (modelo es una caja negra)",
+  "⚠️ Lento con muchos datos o predictores",
+  "✅ Esencial para elegir kernel y parámetros",
+  "❌ Datos con mucho ruido o solapamiento entre clases"
+)
+detalles <- c(
+  "Modelo supervisado que maximiza el margen entre clases",
+  "Clasificación binaria, multiclase o regresión (SVR)",
+  "Requiere escalar o estandarizar las variables numéricas",
+  "Puede usar kernel para resolver problemas no lineales",
+  "No requiere supuestos clásicos como normalidad",
+  "Mejor si los datos son independientes",
+  "Puede usarse aunque haya heterocedasticidad",
+  "Los outliers cercanos al margen afectan el modelo",
+  "Los kernels pueden reducir el efecto de multicolinealidad",
+  "Difícil de explicar; es un modelo de tipo caja negra",
+  "Puede ser costoso computacionalmente con datos grandes",
+  "Parámetros como C y gamma se ajustan vía validación cruzada",
+  "No es ideal si hay ruido o datos mal etiquetados"
+)
+tabla_svm <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+require(gt)
+tabla_svm %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir SVM",
+             subtitle = "Support Vector Machine (SVM) ") %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14,
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html()
+```
+
+<!--chapter:end:01-regression.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+# example R options set globally
+options(width = 80)
+
+# example chunk options set globally
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE,
+  message = FALSE,
+  warning = FALSE
+)
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+setwd(here::here())
+```
+# 🌲 2. Árboles de Decisión y Derivados {-}   
+
+**Ejemplos:** Árbol de Decisión, Random Forest, Gradient Boosting.   
+**Uso:** Excelentes para **datos tabulares** con relaciones no lineales, incluyendo variables categóricas y numéricas. Son una buena opción cuando la **interpretabilidad** es clave.   
+**Ventajas:** Pueden manejar diversos tipos de datos y, los árboles individuales, son **fáciles de interpretar**.   
+**Limitaciones:** Los árboles simples pueden **sobreajustarse**, y su rendimiento baja con datos muy ruidosos si no se usan métodos de ensamble.   
+
+---
+
+
+## C4.5  {-}   
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Decision Tree/C4.5.png"))
+```
+
+**C4.5** es una extensión del algoritmo **ID3**, también desarrollado por Ross Quinlan, y es uno de los algoritmos de **árboles de decisión** más influyentes y ampliamente utilizados para tareas de **clasificación**. Fue diseñado para abordar algunas de las limitaciones de su predecesor, ID3, y se ha convertido en un estándar de facto en el aprendizaje automático para construir modelos predictivos interpretables.
+
+Al igual que ID3, C4.5 construye un árbol de clasificación seleccionando en cada nodo el atributo que mejor divide el conjunto de datos. Sin embargo, en lugar de usar solo la **ganancia de información**, C4.5 utiliza la **relación de ganancia** (Gain Ratio). La relación de ganancia normaliza la ganancia de información por la entropía intrínseca del atributo, lo que ayuda a mitigar el sesgo de ID3 hacia atributos con muchos valores. Además, C4.5 introduce varias mejoras significativas:
+
+* **Manejo de atributos continuos:** Puede discretizar atributos numéricos continuos dividiendo el rango en intervalos.
+* **Manejo de valores faltantes:** Puede manejar datos con valores ausentes asignando una probabilidad fraccionada a cada rama posible.
+* **Poda del árbol:** Implementa una técnica de poda para reducir el sobreajuste, lo que implica eliminar ramas del árbol que no aportan significativamente a la clasificación o que representan ruido en los datos.
+
+En el contexto del **aprendizaje global vs. local**, C4.5, al igual que ID3 y CART, opera como un sistema de **aprendizaje local**. La construcción del árbol se logra a través de decisiones de división que se optimizan localmente en cada nodo, buscando la máxima homogeneidad o pureza en los subconjuntos resultantes. Esto le permite a C4.5 manejar eficazmente relaciones no lineales entre las variables independientes y dependientes. La idea es que, si los datos no se distribuyen linealmente, el concepto de regresión (o clasificación) se puede aplicar de forma efectiva mediante esta **regresión ponderada localmente**, donde el algoritmo divide el problema de aprendizaje global en múltiples problemas de aprendizaje más pequeños y simples. Al centrarse en divisiones óptimas a nivel de subconjuntos, C4.5 ofrece una alternativa robusta a los métodos de aproximación de funciones globales, que a veces pueden fallar en proporcionar una buena aproximación cuando la relación entre las variables no es lineal.
+
+
+
+```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica <- c(
+  "✅ Supervisado",
+  "✅ Categórica (clasificación)",
+  "✅ Categóricas y numéricas",
+  "✅ Captura relaciones no lineales",
+  "❌ No requiere",
+  "✅ Deseable, pero no obligatorio",
+  "❌ No es relevante",
+  "⚠️ Moderadamente (puede hacer overfitting con ruido)",
+  "✅ Robusto a multicolinealidad",
+  "✅ Alta (árbol interpretable)",
+  "✅ Relativamente rápido",
+  "✅ Recomendable para evitar sobreajuste",
+  "❌ Demasiadas categorías o ruido en datos"
+)
+
+detalles <- c(
+  "Modelo supervisado tipo árbol de decisión",
+  "Clasifica variables categóricas en ramas lógicas",
+  "Divide por puntos de corte para variables numéricas",
+  "No asume forma funcional entre predictores y respuesta",
+  "No necesita normalidad de errores",
+  "Mejor si las observaciones son independientes",
+  "No requiere varianzas constantes",
+  "Datos ruidosos pueden afectar las ramas",
+  "No se ve afectado por correlaciones entre predictores",
+  "Salida fácil de visualizar y explicar",
+  "Escala bien para tamaños de muestra medianos",
+  "Evita sobreajuste con poda y validación",
+  "Muchas clases con pocos datos pueden sobreajustar"
+)
+
+tabla_c45 <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_c45 %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir C4.5") %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
+
+```
+
+
+## C5.0  {-} 
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Decision Tree/C5.0.png"))
+```
+
+**C5.0** es la versión más reciente y avanzada de los algoritmos de árboles de decisión desarrollados por Ross Quinlan, sucediendo a ID3 y C4.5. Es un algoritmo propietario (aunque se ofrece una versión de código abierto bajo ciertas licencias) y es ampliamente reconocido por su **rapidez**, **precisión** y **eficiencia** en la construcción de **árboles de decisión** y **reglas de clasificación** para tareas de **clasificación**.
+
+Al igual que sus predecesores, C5.0 construye un árbol de clasificación mediante la división recursiva de los datos en subconjuntos más homogéneos. Sin embargo, C5.0 incorpora mejoras significativas que lo hacen superior en muchos aspectos:
+
+* **Velocidad y eficiencia:** Es notablemente más rápido y más eficiente en el uso de memoria que C4.5, lo que le permite manejar conjuntos de datos mucho más grandes.
+* **Impulso (Boosting):** C5.0 puede usar la técnica de **boosting** (específicamente, una variante de AdaBoost) para crear múltiples árboles de decisión y combinarlos para producir una predicción más robusta y precisa. Esto reduce significativamente los errores de clasificación y mejora la generalización.
+* **Poda mejorada:** Ofrece técnicas de poda más sofisticadas para evitar el sobreajuste y producir árboles más pequeños y comprensibles.
+* **Manejo de valores faltantes y atributos continuos:** Al igual que C4.5, maneja de manera efectiva valores faltantes y atributos numéricos continuos.
+* **Generación de reglas:** Además de árboles de decisión, C5.0 puede generar conjuntos de **reglas de clasificación** concisas, que a menudo son más fáciles de interpretar que un árbol completo.
+
+En el contexto de la **regresión localmente ponderada**, C5.0, como los demás algoritmos de árboles de decisión, opera bajo la premisa de un **aprendizaje local**. La construcción del árbol implica tomar decisiones de división óptimas en cada nodo, basándose en la información local de ese subconjunto de datos. Si los datos no se distribuyen linealmente, el concepto de regresión (o clasificación, que es su enfoque principal) se puede aplicar eficazmente al dividir el problema de aprendizaje global en múltiples problemas de aprendizaje más pequeños y simples. Cada división en el árbol se puede ver como una forma de **regresión ponderada localmente**, donde el algoritmo se enfoca en aproximar la relación dentro de un subespacio específico del conjunto de datos. Esto convierte a C5.0 en una potente alternativa a los métodos de aproximación de funciones globales, especialmente cuando la relación entre las variables independientes y dependientes no es lineal y se busca un modelo interpretable y robusto.
+
+
+
+```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica <- c(
+  "✅ Supervisado",
+  "✅ Categórica (clasificación)",
+  "✅ Categóricas y numéricas",
+  "✅ Captura relaciones no lineales",
+  "❌ No requiere",
+  "✅ Deseable, pero no obligatorio",
+  "❌ No es relevante",
+  "⚠️ Moderadamente (puede generar ramas excesivas)",
+  "✅ Robusto a multicolinealidad",
+  "✅ Alta (árbol fácil de visualizar)",
+  "✅ Relativamente rápido en training",
+  "✅ Recomendable para evitar sobreajuste",
+  "❌ Clases muy desbalanceadas sin ajuste"
+)
+
+detalles <- c(
+  "Algoritmo de árbol de decisión avanzado basado en C4.5",
+  "Clasifica en múltiples categorías (también multiclase)",
+  "Divide automáticamente variables numéricas con puntos de corte",
+  "No asume función lineal: usa ganancia de información y boosting",
+  "No exige normalidad de errores",
+  "Mejor si las instancias son independientes",
+  "No requiere varianzas constantes",
+  "Los valores extremos pueden influir en ramas profundas",
+  "No se ve afectado por correlación alta entre predictores",
+  "Salida clara con reglas y pesos de boosting",
+  "Más rápido que C4.5 y con opciones de boosting",
+  "Usar k-fold o repeated CV para determinar parámetros óptimos",
+  "Muchos atributos irrelevantes pueden generar sobreajuste"
+)
+
+tabla_c50 <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_c50 %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir C5.0") %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
+
+``` 
+
+
+## Classification and Regression Tree (CART)  {-} 
+
+```{r echo=FALSE, fig.show="hold", out.width="48%"}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Decision Tree/CART.png"))
+knitr::include_graphics(paste0(here::here(), "/img/Decision Tree/CART_1.png"))
+```
+
+**Classification and Regression Tree (CART)** es un método no paramétrico que se utiliza para construir **árboles de decisión** tanto para problemas de **clasificación** como de **regresión**. La idea central es dividir recursivamente el espacio de las características en regiones más pequeñas y manejables, creando así un modelo con forma de árbol que es fácil de interpretar.
+
+A diferencia de los modelos lineales o algunos algoritmos de aprendizaje global, CART no asume una relación lineal entre las variables. En su lugar, el algoritmo identifica los mejores **puntos de división** en las variables predictoras para maximizar la **homogeneidad** de las respuestas dentro de cada región resultante. Para problemas de clasificación, esto se mide comúnmente con métricas como la **impureza Gini** o la **ganancia de información**, mientras que para la regresión, se busca minimizar la **suma de los cuadrados de los residuos**.
+
+Mientras que muchos algoritmos (como las redes neuronales clásicas o las máquinas de vectores de soporte) son sistemas de **aprendizaje global** que buscan minimizar una función de pérdida única para todo el conjunto de datos, CART se puede considerar más como un sistema de **aprendizaje local**. Construye el modelo tomando decisiones de división locales en cada nodo del árbol, lo que le permite capturar relaciones complejas y no lineales en los datos. Esto es particularmente útil cuando una aproximación de función global única podría no ser suficiente para modelar la relación entre las variables. Una de las ventajas de CART es su capacidad para manejar diferentes tipos de datos (numéricos y categóricos) y su interpretabilidad, ya que la ruta desde la raíz hasta una hoja del árbol representa un conjunto de reglas de decisión.
+
+
+
+```{r, echo =FALSE}
+
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica <- c(
+  "✅ Supervisado",
+  "✅ Categórica o Continua",
+  "✅ Numéricas y Categóricas",
+  "✅ No lineal y con interacciones",
+  "❌ No requiere",
+  "⚠️ Puede verse afectado",
+  "⚠️ No necesario pero deseable",
+  "⚠️ Sí, en puntos de corte",
+  "✅ No se ve afectado",
+  "✅ Alta (gráfico del árbol)",
+  "✅ Rápido en datasets medianos",
+  "✅ Muy usado para poda y ajuste",
+  "❌ Muy profundo (overfitting), datos muy ruidosos"
+)
+
+detalles <- c(
+  "Algoritmo basado en divisiones binarias",
+  "Puede predecir clases o valores continuos",
+  "Acepta todo tipo de variables predictoras",
+  "Captura relaciones complejas y no lineales",
+  "No requiere distribución normal",
+  "Idealmente los errores deben ser independientes",
+  "La varianza constante mejora resultados",
+  "Puede generar divisiones extremas por valores atípicos",
+  "No necesita preocuparse por colinealidad",
+  "Fácil de entender, especialmente con árboles pequeños",
+  "Escalable pero no óptimo en grandes volúmenes sin poda",
+  "Usa poda y validación cruzada para evitar sobreajuste",
+  "Tiende al sobreajuste si no se poda o se regulariza"
+)
+
+tabla_cart <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)  
+
+require(gt) 
+
+tabla_cart %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir CART",
+             subtitle = "Classification and Regression Tree (CART)") %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
+```
+
+
+
+## Chi-squared Automatic Interaction Detection (CHAID)  {-}    
+
+```{r echo=FALSE, fig.show="hold", out.width="48%", fig.cap="https://select-statistics.co.uk/blog/chaid-chi-square-automatic-interaction-detector/"}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Decision Tree/CHAID.png"))
+knitr::include_graphics(paste0(here::here(), "/img/Decision Tree/CHAID_1.png"))
+```
+
+
+
+**Chi-squared Automatic Interaction Detection (CHAID)** es un algoritmo de **árboles de decisión** utilizado principalmente para tareas de **clasificación** y, en menor medida, para la **regresión** (aunque se aplica más comúnmente a variables dependientes categóricas). La idea fundamental de CHAID es construir un árbol de decisión al encontrar las mejores divisiones en las variables predictoras que maximicen la significancia estadística de la relación con la variable dependiente.
+
+A diferencia de ID3, C4.5 o CART, que utilizan medidas de impureza como la entropía o el índice Gini, CHAID se basa en pruebas estadísticas de **chi-cuadrado ($\chi^2$)** para identificar las divisiones óptimas. Cuando la variable dependiente es nominal o ordinal, CHAID evalúa cada variable predictora para encontrar la combinación de categorías que sea más significativamente diferente de otras combinaciones en términos de la distribución de la variable dependiente. El algoritmo fusiona las categorías de una variable predictora si no son significativamente diferentes, y luego selecciona la variable predictora y la división que resultan en el valor más bajo de $p$ (es decir, la mayor significancia estadística) de la prueba $\chi^2$. Para variables dependientes continuas, se utiliza una prueba F.
+
+En el contexto del **aprendizaje global vs. local**, CHAID opera como un sistema de **aprendizaje local**. La construcción del árbol es un proceso iterativo y recursivo donde las decisiones de división se toman en cada nodo basándose en la significancia estadística local de la interacción entre las variables predictoras y la variable dependiente. Esto le permite a CHAID descubrir relaciones complejas y no lineales en los datos. La idea es que, si los datos no se distribuyen linealmente, se puede aplicar el concepto de regresión (o clasificación) de manera efectiva mediante lo que se denomina **regresión ponderada localmente**. Esto se logra al dividir el problema de aprendizaje global en múltiples problemas de aprendizaje más pequeños y simples, donde cada rama del árbol representa una región del espacio de características donde las interacciones son evaluadas y modeladas localmente. Esto hace de CHAID una alternativa robusta a los métodos de aproximación de funciones globales, especialmente cuando se busca un modelo interpretable y se quieren identificar las interacciones entre las variables de una manera estadísticamente rigurosa.
+
+```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica <- c(
+  "✅ Supervisado",
+  "✅ Categórica (clasificación multinivel)",
+  "✅ Categóricas nativas (numéricas requieren binarización o discretización)",
+  "✅ No lineal (explora interacciones automáticas con χ²)",
+  "❌ No requiere",
+  "✅ Deseable, pero no obligatorio",
+  "❌ No aplica",
+  "⚠️ Moderadamente (outliers categóricos pueden crear nodos muy pequeños)",
+  "✅ Robusto a multicolinealidad (usa χ², no varianzas)",
+  "✅ Media (árboles con muchos nodos pueden resultar complejos)",
+  "⚠️ Razonablemente rápido en datasets moderados, lento si hay muy altas cardinalidades",
+  "✅ Recomendable para determinar profundidad y grado de interacción",
+  "❌ Variable objetivo continua o muchos niveles con pocas observaciones"
+)
+
+detalles <- c(
+  "Construye un árbol de decisión usando pruebas χ² para detectar interacciones entre predictores y variable objetivo.",
+  "Diseñado para clasificar en múltiples categorías sin orden; puede manejar targets con más de dos niveles.",
+  "Funciona mejor con predictores categóricos; las variables numéricas deben transformarse en categorías mediante binning.",
+  "No asume ninguna forma funcional; detecta automáticamente relaciones complejas basadas en χ².",
+  "No depende de supuestos de normalidad de errores ni de forma de distribución de residuos.",
+  "Las instancias deben ser independientes; no es ideal para datos con fuerte dependencia temporal sin procesar.",
+  "Homoscedasticidad no se evalúa, ya que no se basa en un término de error paramétrico como OLS.",
+  "Los valores extremos en variables categóricas con pocas observaciones pueden crear ramas muy específicas, pero CHAID maneja cardinalidades moderadas.",
+  "Al basarse en χ², CHAID no se ve afectado directamente por colinealidad, aunque variables muy correlacionadas pueden crear redundancia en las divisiones.",
+  "Cada división se basa en pruebas de χ²; el árbol resultante puede interpretarse visualmente, pero muchos niveles pueden reducir claridad.",
+  "La creación recursiva de nodos por agrupación de categorías es eficiente para conjuntos de datos moderados; puede volverse lento si hay muchas categorías de predictores.",
+  "Se usa validación cruzada para podar el árbol y elegir el nivel óptimo de interacción, equilibrando sesgo y varianza.",
+  "No es adecuado si la variable objetivo es continua (sin discretizar) o si hay demasiados niveles con muy pocos casos en cada uno."
+)
+
+tabla_chaid <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+
+tabla_chaid %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir CHAID",
+             subtitle = "Chi-squared Automatic Interaction Detection (CHAID)") %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
+```
+
+## Conditional Decision Trees (Conditional Inference Trees - CITs)  {-}   
+
+**Conditional Decision Trees**, often referred to as **Conditional Inference Trees (CITs)**, represent a class of **árboles de decisión** que abordan una limitación importante de los algoritmos de árboles de decisión tradicionales como CART, ID3, y C4.5: el **sesgo en la selección de variables**. Mientras que los algoritmos tradicionales pueden favorecer variables predictoras con muchas categorías o valores continuos (debido a que estas variables tienen más "oportunidades" de generar una división que parezca óptima), los CITs emplean un enfoque basado en **pruebas estadísticas** para seleccionar la mejor división.
+
+La idea fundamental de los Conditional Decision Trees es que cada división en el árbol se basa en la **significancia estadística** de la asociación entre las variables predictoras y la variable de respuesta. En lugar de seleccionar el atributo que maximiza una medida de impureza (como la ganancia de información o la impureza Gini), los CITs realizan una serie de **pruebas de inferencia condicional** (típicamente **pruebas de permutación**).
+
+El algoritmo opera de la siguiente manera:
+1.  En cada nodo, se evalúa una **hipótesis nula** de independencia entre cada variable predictora y la variable de respuesta.
+2.  Se calcula el valor de $p$ para cada variable predictora.
+3.  La variable predictora con el valor de $p$ más pequeño (es decir, la asociación más estadísticamente significativa) es seleccionada para la división, siempre y cuando este valor de $p$ sea menor que un umbral de significancia predefinido.
+4.  Una vez seleccionada la variable, se encuentra la mejor división binaria (generalmente) dentro de esa variable para ese nodo.
+5.  Este proceso se repite recursivamente hasta que no haya más variables significativas para dividir o se alcance un criterio de parada.
+
+En el contexto del **aprendizaje global vs. local**, los Conditional Decision Trees se pueden considerar como un enfoque de **aprendizaje local** con un fuerte respaldo estadístico. Aunque el árbol resultante es un modelo global, cada decisión de división se toma localmente basándose en la inferencia estadística sobre la relación entre las variables en ese subconjunto de datos. Esto significa que si los datos no se distribuyen linealmente, el concepto de regresión (o clasificación) se aplica de forma efectiva mediante lo que se denomina **regresión ponderada localmente**. Al utilizar pruebas de significancia para las divisiones, los CITs evitan el problema de que "a veces ningún valor de parámetro puede proporcionar una aproximación suficientemente buena" en una única aproximación global, ya que las divisiones se determinan por la evidencia estadística local. Esto los convierte en una alternativa robusta que ofrece una selección de variables menos sesgada y modelos con una mayor interpretabilidad estadística.
+
+
+
+```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica <- c(
+  "✅ Supervisado",
+  "✅ Continua (regresión) o Categórica (clasificación)",
+  "✅ Numéricas y categóricas",
+  "✅ No lineal, usa tests condicionales para particionar",
+  "❌ No requiere",
+  "✅ Deseable, pero no obligatorio",
+  "❌ No relevante",
+  "⚠️ Moderadamente (consume tests basados en permutaciones)",
+  "✅ Robusto a colinealidad",
+  "✅ Alta (cada división está basada en criterios estadísticos claros)",
+  "⚠️ Más lento que CART en datasets grandes",
+  "✅ Recomendable para podar y evitar sobreajuste",
+  "❌ Datos muy pequeños por nodo o variables irrelevantes"
+)
+
+detalles <- c(
+  "Construye árboles basados en test de independencia condicional (ctree).",
+  "Permite tanto regresión (valor continuo) como clasificación multinivel.",
+  "Acepta variables numéricas y categóricas sin necesidad de dummies.",
+  "Detecta relaciones complejas y no lineales usando tests basados en permutaciones.",
+  "No exige que los residuos sigan una distribución específica.",
+  "Ideal si las observaciones no están correlacionadas en el tiempo.",
+  "No requiere homoscedasticidad porque no se basa en un modelo paramétrico de error.",
+  "Los outliers pueden afectar el cálculo de los tests, aunque es más robusto que CART.",
+  "El algoritmo ctree no se ve afectado por predictores altamente correlacionados.",
+  "Los árboles generados son fáciles de visualizar y explicar.",
+  "Para cada división realiza múltiples tests, por lo que es más lento en datos muy grandes.",
+  "Usar k-fold o repeated CV para elegir la profundidad y evitar sobreajuste.",
+  "No es apto si tienes muy pocas observaciones en cada parto o muchas variables irrelevantes."
+)
+
+tabla_ctree <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_ctree %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir ctree",
+             subtitle = "Conditional Decision Trees") %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
+
+```
+
+## Cubist  {-}
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Rule-System/Cubist.png"))
+```
+
+**Cubist** es un algoritmo de **Machine Learning** desarrollado por RuleQuest Research (autores de C4.5 y See5/C5.0), principalmente para tareas de **regresión**. Es una extensión de los modelos de **árboles de decisión** que combina la simplicidad de las reglas con la precisión de los modelos locales, lo que lo hace muy potente para datos complejos con muchas características.
+
+En esencia, Cubist construye un **modelo de reglas con un modelo lineal adjunto a cada regla**. Opera en dos fases principales:
+
+1.  **Construcción del Árbol de Reglas:**
+    * Similar a un árbol de decisión, Cubist construye una estructura de árbol dividiendo los datos en subconjuntos basados en los valores de las características.
+    * Sin embargo, en lugar de hojas que contienen un valor constante (como en los árboles de regresión tradicionales), cada hoja de este árbol se transforma en un **conjunto de reglas**.
+    * A cada regla se le asocia un **modelo lineal multivariado local** (o un "modelo de comité" de reglas, donde varias reglas contribuyen a la predicción). Este modelo lineal se entrena solo con los datos que satisfacen las condiciones de esa regla.
+
+2.  **Ajuste del Modelo de Reglas y Predicción:**
+    * Para cada nueva instancia de predicción, Cubist identifica las reglas que se aplican a esa instancia.
+    * La predicción final se calcula combinando las predicciones de los modelos lineales de las reglas que se aplican, y luego se ajusta un poco esa predicción mediante un **"comité" de vecinos** (ajustes locales adicionales basados en ejemplos similares), si está configurado para ello. Esta etapa de ajuste lo hace aún más robusto.
+
+Cubist es valorado por su capacidad para manejar **relaciones complejas y no lineales** en los datos. Proporciona un modelo que es más interpretable que una "caja negra" (como una red neuronal profunda) debido a su base en reglas, pero mucho más preciso que los modelos lineales o los árboles de regresión simples, gracias a sus modelos lineales locales y ajustes.
+
+
+**Aprendizaje Global vs. Local:**
+
+Cubist es un algoritmo que combina de manera muy efectiva aspectos de **aprendizaje global y local**.
+
+* **Aspecto Global (Estructura de Reglas):** La fase de construcción del árbol y la derivación de las reglas crean una **estructura global** que divide el espacio de características. Este conjunto de reglas abarca todo el dominio de los datos y determina qué modelo local se aplicará a una instancia. Es una forma de particionar el espacio de características de manera jerárquica para establecer un marco de predicción general.
+
+* **Aspecto Local (Modelos Lineales y Ajustes):** Aquí es donde Cubist brilla en su capacidad de aprendizaje local:
+    * **Modelos Lineales Locales:** Cada regla tiene asociado un **modelo lineal que se entrena solo con los datos que caen dentro de esa regla**. Esto permite a Cubist capturar **relaciones locales y no lineales** de manera precisa. En lugar de una única relación lineal global, el modelo se adapta a las particularidades de diferentes subregiones de los datos.
+    * **Ajuste Basado en Vecinos:** Si se activa la opción de "comité" o el ajuste basado en vecinos (conocido como `committees` o `neighbors`), el modelo refina aún más su predicción incorporando la información de los ejemplos de entrenamiento más cercanos al punto de consulta. Esto es una forma de **"regresión ponderada localmente"**, donde la predicción final se ajusta en función de los patrones observados en el vecindario inmediato del punto de interés.
+
+
+```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica <- c(
+  "✅ Supervisado (regresión basada en reglas)",
+  "✅ Numérica (regresión)",
+  "✅ Numéricas y categóricas",
+  "✅ Modelo aditivo basado en reglas y ajustes lineales locales",
+  "⚠️ Requiere análisis de residuos, no siempre normalidad estricta",
+  "⚠️ Asume independencia, como otros modelos supervisados",
+  "⚠️ Puede tener heteroscedasticidad",
+  "⚠️ Moderadamente sensible a outliers",
+  "⚠️ Puede manejar correlación, pero multicolinealidad puede afectar interpretabilidad",
+  "✅ Moderada: reglas explican el modelo, pero menos transparente que modelos lineales",
+  "⚠️ Relativamente rápido, pero depende del número de reglas",
+  "✅ Compatible con validación cruzada para evaluar rendimiento",
+  "❌ No funciona bien con datos muy pequeños o ruido extremo"
+)
+
+detalles <- c(
+  "Combina técnicas de árboles de decisión con modelos lineales locales para predicción precisa.",
+  "Predice variables continuas mediante reglas que dividen el espacio y ajustes lineales en cada región.",
+  "Puede manejar variables predictoras mixtas (numéricas y categóricas).",
+  "Modelo flexible que ajusta múltiples reglas para capturar relaciones no lineales y locales.",
+  "Evaluar residuos para verificar supuestos; no es tan rígido como OLS.",
+  "Como modelo supervisado, se espera independencia entre observaciones.",
+  "Puede tolerar algo de heteroscedasticidad, pero afecta precisión de intervalos.",
+  "Outliers pueden afectar algunas reglas locales y coeficientes.",
+  "Multicolinealidad puede dificultar interpretación de coeficientes locales.",
+  "Las reglas pueden interpretarse, pero el modelo global puede ser complejo.",
+  "La velocidad depende del tamaño del dataset y número de reglas generadas.",
+  "Se usa validación cruzada para seleccionar parámetros y validar modelo.",
+  "No es ideal para datasets muy pequeños o con mucho ruido no estructurado."
+)
+
+tabla_cubist <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_cubist %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir cubist",
+             subtitle = "Cubist")  %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
+```
+
+
+
+
+## Decision Stump  {-} 
+
+```{r echo=FALSE, fig.show="hold", out.width="48%"}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Decision Tree/Decision Stump.png"))
+knitr::include_graphics(paste0(here::here(), "/img/Decision Tree/Decision Stump_1.png"))
+```
+
+Un **Decision Stump** es el tipo de **árbol de decisión** más simple y fundamental, compuesto por un **único nodo de decisión (la raíz)** que se conecta directamente a los **nodos hoja**. La idea es que un *decision stump* toma una decisión de clasificación o regresión basándose en una sola característica o atributo de entrada.
+
+Aunque parece demasiado simple, la lógica es que, a pesar de su simplicidad, un *decision stump* identifica el mejor umbral o categoría dentro de una única variable para separar los datos de la manera más efectiva posible. Para problemas de clasificación, esto significa encontrar la característica que, por sí sola, maximice alguna medida de **pureza** (como la ganancia de información, la impureza Gini, o la significancia chi-cuadrado) o minimice el error de clasificación. Para regresión, buscará el punto de división en una sola característica que minimice la suma de los cuadrados de los errores.
+
+En el contexto del **aprendizaje local vs. global**, un *decision stump* es inherentemente un sistema de **aprendizaje local**. Su "aprendizaje" se limita a encontrar la mejor división dentro de una única variable, lo que es una forma extrema de **regresión ponderada localmente**. Si los datos no se distribuyen linealmente, un *decision stump* no puede por sí mismo modelar relaciones complejas. Sin embargo, su valor no reside en ser un modelo predictivo robusto por sí mismo, sino en ser un **"clasificador débil"** o **"regresor débil"** que puede ser combinado en **conjuntos de modelos (ensembles)** más potentes. Por ejemplo, los *decision stumps* son los bloques de construcción más comunes para algoritmos de **boosting** como **AdaBoost**. En estos casos, múltiples *decision stumps* se entrenan secuencialmente, cada uno enfocándose en los errores que cometieron los *stumps* anteriores, sumando sus "aprendizajes locales" para formar un modelo global más preciso. Esto contrarresta la limitación de que "a veces ningún valor de parámetro puede proporcionar una aproximación suficientemente buena" en un solo modelo.
+
+
+```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica <- c(
+  "✅ Supervisado",
+  "✅ Categórica (clasificación) o Continua (regresión simplificada)",
+  "✅ Numéricas y/o categóricas",
+  "⚠️ Captura solo una división (muy simple, un solo nodo interno)",
+  "❌ No requiere",
+  "✅ Deseable, pero no obligatorio",
+  "❌ No relevante",
+  "✅ Relativamente robusto (poca complejidad)",
+  "✅ Ignora colinealidad (usa solo una variable)",
+  "✅ Muy alta (un solo umbral para dividir)",
+  "✅ Extremadamente rápido",
+  "✅ Se puede usar k-fold para evaluar estabilidad",
+  "❌ No funciona bien si la relación es compleja o no hay un buen umbral único"
+)
+
+detalles <- c(
+  "Modelo de árbol con un solo nivel de decisión (un umbral en una sola variable).",
+  "En clasificación predice una clase binaria; en regresión, un valor medio para cada división.",
+  "Selecciona la mejor variable con el punto de corte que maximiza ganancia (clasificación) o reduce varianza (regresión).",
+  "Solo ajusta un umbral, por lo que no modela interacciones ni no linealidades complejas.",
+  "No hay supuestos paramétricos de distribución de errores.",
+  "Mejor si las instancias no están correlacionadas (por ejemplo, no aplica a series de tiempo sin agrupar).",
+  "La varianza constante no se evalúa, pues el modelo es no paramétrico y muy simple.",
+  "Un solo punto de corte es menos sensible a outliers en comparación con árboles profundos, pero aún puede verse afectado si un outlier define el umbral.",
+  "Como solo usa una variable, no se ve afectado por correlaciones altas entre predictores.",
+  "El modelo entero es resumido en un único umbral; fácil de explicar.",
+  "Muy rápido de entrenar y predecir, pues solo se evalúa un umbral en un predictor.",
+  "Es útil para comprobar si hay una única variable con gran poder predictivo; k-fold ayuda a validar que el umbral se mantenga estable.",
+  "No sirve si el problema requiere varias divisiones, interacciones o relaciones no lineales profundas."
+)
+
+tabla_stump <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_stump %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir Decision Stump",
+             subtitle = "Decision Stump") %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
+```
+
+## Guided Trees / Hybrid Trees {-}    
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Decision Tree/Hybrid Trees.png"))
+```
+
+## Iterative Dichotomiser 3 (ID3)  {-}    
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Decision Tree/ID3.png"))
+```
+
+**Iterative Dichotomiser 3 (ID3)** es un algoritmo clásico para construir **árboles de decisión**, diseñado principalmente para tareas de **clasificación**. Fue uno de los primeros algoritmos de árboles de decisión desarrollados por Ross Quinlan. La idea central de ID3 es construir un árbol de clasificación seleccionando en cada nodo del árbol el atributo que mejor divide el conjunto de datos en subconjuntos más puros y homogéneos.
+
+ID3 opera de forma **iterativa** y **dicotómica** (aunque puede manejar atributos con más de dos categorías), dividiendo el conjunto de datos en cada paso basándose en el atributo más informativo. La selección del "mejor" atributo se basa en métricas de **teoría de la información**, principalmente la **ganancia de información** (Information Gain). La ganancia de información mide la reducción en la **entropía** (una medida de la impureza o desorden de un conjunto de datos) que se logra al dividir los datos según un atributo particular. El atributo con la mayor ganancia de información es elegido como el nodo de decisión en cada nivel del árbol.
+
+A diferencia de los sistemas de aprendizaje global que buscan minimizar funciones de pérdida globales (como el error cuadrático medio), ID3 es un algoritmo de **aprendizaje local** en el sentido de que toma decisiones de división óptimas en cada nodo basándose en la información disponible en ese subconjunto de datos. Aunque la construcción del árbol es un proceso global, cada paso de la división se optimiza localmente para maximizar la pureza de los subconjuntos resultantes. Esto le permite a ID3 capturar relaciones no lineales entre las variables, ya que no asume una distribución lineal de los datos. En esencia, si los datos no se distribuyen linealmente, se puede aplicar el concepto de regresión (o clasificación, en este caso) de manera ponderada localmente al dividir el espacio de características en regiones más manejables. Sin embargo, una desventaja de ID3 es que tiende a favorecer atributos con muchos valores y puede ser propenso al sobreajuste.
+
+
+
+```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica <- c(
+  "✅ Supervisado",
+  "✅ Categórica (clasificación)",
+  "✅ Principalmente categóricas (numéricas requieren discretización)",
+  "✅ No lineal (basado en ganancia de información)",
+  "❌ No requiere",
+  "✅ Deseable, pero no obligatorio",
+  "❌ No aplica",
+  "⚠️ Moderadamente (valores atípicos pueden generar ramas poco representativas)",
+  "✅ Robusto a multicolinealidad",
+  "✅ Alta (árbol simple de interpretar)",
+  "✅ Rápido con datos moderados y discretizados",
+  "✅ Recomendable para equilibrar datos y evitar overfitting",
+  "❌ Respuesta continua, muchos valores faltantes o ruido elevado"
+)
+
+detalles <- c(
+  "Construye un árbol de decisión dividiendo por ganancia de información (entropía).",
+  "Clasifica muestras en categorías discretas, ej. Sí/No, A/B/C.",
+  "Mejor con variables categóricas nativas; las numéricas deben transformarse en rangos.",
+  "No asume ninguna relación funcional: usa particiones basadas en criterios de información.",
+  "No hay residuos en el sentido paramétrico; no exige distribución normal.",
+  "Las instancias deben ser independientes; no orientado a series temporales.",
+  "No requiere varianzas constantes porque no hay término de error paramétrico.",
+  "Los outliers categóricos pueden crear nodos muy pequeños no representativos.",
+  "ID3 ignora correlaciones altas, pero demasiadas variables correlacionadas pueden ralentizar la búsqueda de mejores divisiones.",
+  "Cada nodo muestra la regla de división; el árbol global es fácil de visualizar para pocos niveles.",
+  "La construcción recursiva es eficiente para datos discretizados; se vuelve lento si hay muchas categorías o atributos.",
+  "Se usa para podar y seleccionar profundidad óptima del árbol, equilibrando sesgo y varianza.",
+  "No es recomendable si la variable objetivo es continua o si hay mucho ruido sin transformar."
+)
+
+tabla_id3 <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)  
+
+tabla_id3 %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir IDE3",
+             subtitle = "Iterative Dichotomiser 3 (ID3)") %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
+```
+
+
+
+## M5 (Model Tree) {-}   
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Decision Tree/M5 (Model Tree).png"))
+```
+
+**M5**, a menudo referida como **M5'** o **M5P** (su implementación en el software Weka), es un algoritmo de **árboles de decisión** específicamente diseñado para **tareas de regresión**, es decir, para predecir valores numéricos continuos. Desarrollado por Ross Quinlan en 1992 y luego mejorado por Wang y Witten en 1997, M5 se destaca de los árboles de regresión tradicionales (como los de CART que solo tienen valores constantes en las hojas) al incorporar **modelos de regresión lineal** en sus nodos hoja.
+
+La idea fundamental de M5 es combinar la interpretabilidad de un árbol de decisión con la capacidad predictiva de los modelos de regresión lineal. Funciona en dos etapas principales:
+
+1.  **Construcción del Árbol:** M5 construye un árbol de decisión de forma recursiva, similar a otros algoritmos de árboles. Sin embargo, en lugar de usar medidas de impureza para clasificación, utiliza la **reducción de la desviación estándar (SDR)** como criterio de división. El algoritmo selecciona el atributo y el punto de división que maximizan la reducción de la desviación estándar del valor objetivo en los subconjuntos resultantes. Este proceso continúa hasta que el número de instancias en un nodo es muy pequeño o la desviación estándar es muy baja.
+
+2.  **Poda y Suavizado:** Una vez construido el árbol inicial, M5 lo **poda** para evitar el sobreajuste. En lugar de reemplazar los nodos con un valor constante, los nodos hoja (y a veces nodos internos) son reemplazados por **modelos de regresión lineal multivariados**. Estos modelos lineales se construyen utilizando los atributos relevantes para esa rama del árbol. Además, M5 aplica un proceso de **suavizado** para compensar las discontinuidades bruscas que podrían surgir entre las predicciones de modelos lineales adyacentes. Este suavizado ajusta el valor predicho en una hoja basándose en las predicciones de los modelos en los nodos a lo largo de la ruta desde la raíz hasta esa hoja.
+
+En el contexto del **aprendizaje global vs. local**, M5 es un híbrido interesante. Por un lado, la construcción del árbol se basa en decisiones de división **locales**, buscando la mejor reducción de la desviación estándar en cada nodo. Esto permite a M5 modelar relaciones no lineales, ya que "si los datos no se distribuyen linealmente, se puede aplicar el concepto de regresión de manera ponderada localmente". El árbol divide el problema de regresión global en múltiples subproblemas más pequeños. Por otro lado, al tener **modelos de regresión lineal** en las hojas, M5 incorpora un componente de **aproximación de función local** más sofisticado que un simple valor constante. Estos modelos lineales son "locales" para la región de datos que representa esa hoja, pero internamente son modelos globales para esa subregión. Esto permite a M5 ofrecer una alternativa potente a las aproximaciones de funciones puramente globales, especialmente cuando las relaciones entre las variables son complejas y se benefician de una combinación de particionamiento del espacio y modelado lineal dentro de esas particiones.
+
+```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica <- c(
+  "✅ Supervisado",
+  "✅ Continua",
+  "✅ Numéricas (categóricas procesar como dummies)",
+  "✅ Lineal por segmentos (árbol + regresión en hojas)",
+  "❌ No requiere estrictamente",
+  "✅ Deseable, pero no obligatorio",
+  "❌ No es requisito",
+  "⚠️ Moderadamente (outliers pueden distorsionar regresiones locales)",
+  "✅ Relativamente robusto (regresión en hojas mitiga algo la colinealidad)",
+  "⚠️ Media (árbol complejo, hojas lineales más interpretables)",
+  "⚠️ Moderado (depende de número de nodos y atributos)",
+  "✅ Recomendable para optimizar número de nodos y hojas",
+  "❌ Muchos nodos con pocos casos o ruido elevado"
+)
+
+detalles <- c(
+  "Modelo de árbol de regresión con ajustes lineales en cada hoja.",
+  "Predice valores continuos, p. ej., precio, consumo, etc.",
+  "Requiere que variables categóricas se conviertan a indicadores antes de ajuste.",
+  "Combina particiones basadas en atributos con regresiones múltiples en hojas.",
+  "No exige que los residuos en cada hoja sean normales, aunque mejora inferencia.",
+  "Ideal si las observaciones son independientes; en series de tiempo hay que agrupar.",
+  "La varianza constante no es crítica, cada hoja ajusta localmente.",
+  "Los extremos pueden afectar las regresiones locales; poda puede mitigar esto.",
+  "El método divide el espacio antes de ajustar, reduciendo efectos de colinealidad.",
+  "El árbol completo puede ser grande, pero cada hoja contiene una función lineal clara.",
+  "Construcción y poda del árbol más costosas que OLS, pero razonables para tamaños medianos.",
+  "Ayuda a determinar número óptimo de hojas y complejidad del árbol.",
+  "Si hay muy pocas observaciones por hoja o ruido demasiado alto, las regresiones locales fallan."
+)
+
+tabla_m5 <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_m5 %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir M5",
+             subtitle = "M5 model tree algorithm") %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
+```
+
+
+## Oblique Decision Trees {-}    
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Decision Tree/Oblique Decision Trees.png"))
+```
+
+## Specific Implementations/Libraries {-}  
+
+
+<!--chapter:end:02-decision_tree.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+# example R options set globally
+options(width = 80)
+
+# example chunk options set globally
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE,
+  message = FALSE,
+  warning = FALSE
+)
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+setwd(here::here())
+```
+# 🌟 3. Métodos de Ensamble {-}   
+
+**Ejemplos:** Random Forest, Gradient Boosting (XGBoost, LightGBM, AdaBoost).   
+**Uso:** Excelentes para **clasificación y regresión en datos tabulares**, especialmente en **competencias de datos** por su alto rendimiento.   
+**Ventajas:** Ofrecen **alta precisión** y son muy **robustos**.   
+**Limitaciones:** Pueden ser **difíciles de interpretar** y suelen ser **computacionalmente más costosos**.   
+
+---
+
+## Adaptive Boosting (AdaBoost)  {-}   
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Ensemble/AdaBoost.png"))
+```
+
+
+**AdaBoost (Adaptive Boosting)** es uno de los algoritmos de **boosting** más influyentes y el primero en ser propuesto con éxito, desarrollado por Yoav Freund y Robert Schapire en 1995. Es una técnica de **aprendizaje conjunto (ensemble learning)** utilizada principalmente para **clasificación**, aunque sus principios pueden extenderse a la regresión. La idea fundamental de AdaBoost es construir un modelo fuerte combinando secuencialmente las predicciones de múltiples **clasificadores "débiles" o "base"**, y lo hace prestando más atención a los ejemplos que los modelos anteriores clasificaron incorrectamente.
+
+El funcionamiento de AdaBoost se basa en un sistema de **re-ponderación de datos** en cada iteración:
+
+1.  **Inicialización de Pesos:** Se asigna un peso inicial igual a cada ejemplo de entrenamiento.
+2.  **Entrenamiento del Clasificador Débil:** En cada iteración, se entrena un clasificador débil (a menudo un **Decision Stump**, que es un árbol de decisión de un solo nivel) en el conjunto de datos actual. Este clasificador se enfoca en minimizar el error ponderado.
+3.  **Cálculo del Error Ponderado:** Se calcula el error del clasificador débil, teniendo en cuenta los pesos de los ejemplos. Los ejemplos mal clasificados tienen un mayor impacto en este error.
+4.  **Actualización de Pesos de Datos:** Los pesos de los ejemplos mal clasificados por el clasificador actual son **aumentados**, mientras que los pesos de los ejemplos correctamente clasificados son **disminuidos**. Esto asegura que el siguiente clasificador débil se enfoque más en los ejemplos que son difíciles de clasificar.
+5.  **Cálculo del Peso del Clasificador:** Se asigna un peso (o "contribución") al clasificador débil actual en función de su precisión. Los clasificadores más precisos reciben un peso mayor en la predicción final del conjunto.
+6.  **Combinación de Predicciones:** Las predicciones finales del modelo AdaBoost se obtienen mediante una **suma ponderada** de las predicciones de todos los clasificadores débiles.
+
+En el contexto del **aprendizaje global vs. local**, AdaBoost es un sistema de **aprendizaje global** que se construye de manera iterativa a partir de componentes de **aprendizaje local**. Cada clasificador débil que se entrena en una iteración puede verse como una forma de **regresión ponderada localmente** (o, más precisamente, clasificación ponderada localmente), ya que ajusta su enfoque basándose en los ejemplos que el modelo combinado anterior no pudo clasificar bien. Al iterar y ajustar los pesos de los datos, AdaBoost se enfoca progresivamente en las regiones del espacio de características donde el modelo actual tiene un rendimiento deficiente. Si los datos no se distribuyen linealmente, el algoritmo aplica el concepto de clasificación (y por extensión, las ideas de regresión) de manera altamente adaptativa. La capacidad de AdaBoost para concentrarse en los "errores" más difíciles aborda directamente la desventaja de que "a veces ningún valor de parámetro puede proporcionar una aproximación suficientemente buena" en un solo modelo. El resultado es un clasificador global muy preciso y robusto, capaz de modelar relaciones complejas y no lineales, que es una combinación ponderada de muchas decisiones locales.
+
+
+```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica <- c(
+  "✅ Supervisado",
+  "✅ Categórica (clasificación) o Continua (regresión adaptada)",
+  "✅ Numéricas y categóricas (requiere codificación para algunas implementaciones)",
+  "✅ Captura no linealidades e interacciones mediante reponderación iterativa",
+  "❌ No requiere supuestos de normalidad en los residuos",
+  "✅ Deseable, aunque no obligatorio (mejor si instancias independientes)",
+  "❌ No asume homoscedasticidad",
+  "⚠️ Moderadamente (outliers pueden obtener demasiado peso durante iteraciones)",
+  "✅ Robusto (reduce colinealidad al iterar sobre subconjuntos ponderados)",
+  "⚠️ Baja (modelo resultante es especie de ’caja negra’)",
+  "⚠️ Lento con muchas iteraciones o datos grandes",
+  "✅ Recomendable para ajustar tasa de aprendizaje y número de iteraciones",
+  "❌ No es ideal con datos muy ruidosos o clases extremadamente desbalanceadas sin técnicas adicionales"
+)
+
+detalles <- c(
+  "Ensamble supervisado que combina varios modelos débiles (ej. árboles simples) ajustando pesos según errores anteriores.",
+  "En clasificación ajusta pesos para mal clasificados; en regresión, adapta predicción por minimización de pérdida.",
+  "Puede trabajar con datos mixtos; para variables categóricas suele usar codificación de dummies.",
+  "Cada iteración repondera observaciones difíciles, enfocándose en patrones que previos modelos no capturaron.",
+  "No impone distribución de errores; se basa en función de pérdida, no en supuestos paramétricos.",
+  "Funciona mejor si cada observación es independiente; sensible a dependencias temporales si no se corrige.",
+  "No requiere varianza constante, ya que funciona sobre el error iterativo en lugar de residuos tradicionales.",
+  "Outliers difíciles de clasificar tienden a recibir mayor peso, lo que puede sesgar el ensamble si no se controla el learning rate.",
+  "La reponderación de muestras atenúa el efecto de predictores correlacionados, pues cada iteración puede focalizarse en subconjuntos distintos.",
+  "Es complejo desentrañar la contribución de cada modelo débil; se pueden usar métricas de importancia o SHAP para interpretación.",
+  "Cada iteración entrena un modelo débil; muchas iteraciones o modelos complejos pueden ralentizar el entrenamiento.",
+  "K-fold o repeated CV ayudan a elegir tasa de aprendizaje (learning rate) y número de iteraciones (trials).",
+  "No conviene con instancias altamente ruidosas: se puede sobreajustar rápidamente si la tasa de aprendizaje es alta o no se regula iteraciones."
+)
+
+tabla_adaboost <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)  
+
+tabla_adaboost %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir adaboost",
+             subtitle = "AdaBoost") %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
+```
+
+## Boosting  {-}   
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Ensemble/Boosting.png"))
+```
+
+**Boosting** es una técnica de **aprendizaje conjunto (ensemble learning)** que busca transformar un conjunto de **modelos "débiles" o "base"** en un **modelo "fuerte" o "preciso"**. La idea fundamental es construir modelos de forma **secuencial** e **iterativa**, donde cada nuevo modelo se centra en corregir los errores o deficiencias de los modelos construidos en las iteraciones anteriores. A diferencia del *bagging* (como en Random Forest), donde los modelos se entrenan de forma independiente, el *boosting* es intrínsecamente secuencial y adaptativo.
+
+El concepto clave de Boosting radica en la asignación de **pesos** o en el enfoque en los **errores residuales**:
+
+1.  **Iteraciones Secuenciales:** El proceso comienza con un modelo base inicial (a menudo simple, como un *decision stump*).
+2.  **Enfoque en los Errores:** En cada iteración subsiguiente, el algoritmo presta más atención a los ejemplos que fueron clasificados (o predichos) incorrectamente por los modelos anteriores, o a los errores residuales no explicados. Esto se logra ya sea **re-ponderando** los datos (dando más peso a los ejemplos mal clasificados) o **ajustando** el nuevo modelo para que prediga los residuos de los modelos anteriores.
+3.  **Combinación Ponderada:** Las predicciones de todos los modelos débiles se combinan, generalmente a través de una suma ponderada, donde los modelos más precisos reciben un mayor peso en la predicción final.
+
+La fuerza del boosting radica en su capacidad para reducir el **sesgo** y la **varianza** del modelo final, al construir un modelo complejo a partir de componentes simples que se complementan entre sí.
+
+En el contexto del **aprendizaje global vs. local**, Boosting es una estrategia de **aprendizaje global** que opera construyendo una serie de aproximaciones **locales**. Cada modelo "débil" que se entrena en una iteración puede verse como una forma de **regresión ponderada localmente** (o clasificación ponderada localmente), ya que se enfoca en una parte específica del espacio de las características o en los datos con mayor error. El proceso iterativo de Boosting busca corregir estos errores localizados. Si los datos no se distribuyen linealmente, el boosting permite que el concepto de regresión (o clasificación) se aplique de manera muy flexible y potente. La capacidad de concentrarse en los "errores" residuales aborda directamente la desventaja de que "a veces ningún valor de parámetro puede proporcionar una aproximación suficientemente buena" en un solo modelo. Al ensamblar muchos modelos débiles que se adaptan a los errores de los anteriores, Boosting construye un modelo final que es una aproximación de función global altamente adaptable y precisa. Algoritmos como AdaBoost y Gradient Boosting Machines (GBM) son ejemplos prominentes de esta técnica.
+
+
+```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica <- c(
+  "✅ Supervisado",
+  "✅ Categórica (clasificación) o Continua (regresión)",
+  "✅ Numéricas y categóricas (requiere codificación para algunas implementaciones)",
+  "✅ Captura no linealidades e interacciones complejas mediante aprendizaje secuencial",
+  "❌ No requiere supuestos de normalidad",
+  "✅ Deseable, aunque no obligatorio para muchos algoritmos",
+  "❌ No se asume homoscedasticidad",
+  "⚠️ Moderadamente (puede ajustar demasiado a outliers si no se controla)",
+  "✅ Robusto (cada iteración utiliza un subconjunto ponderado de datos)",
+  "⚠️ Baja (modelo en su conjunto es tipo caja negra)",
+  "⚠️ Lento con muchos árboles o altas iteraciones",
+  "✅ Recomendable con k-fold o repeated CV para ajustar tasa de aprendizaje y número de iteraciones",
+  "❌ Si se tienen pocos datos, alto ruido o target muy desbalanceado sin ajuste"
+)
+
+detalles <- c(
+  "Ensamble supervisado que combina varios modelos débiles (ej. árboles pequeños) de forma secuencial",
+  "En clasificación se usan votaciones ponderadas; en regresión se suman predicciones graduadas",
+  "Acepta variables mixtas; algunas bibliotecas requieren convertir categóricas en dummies",
+  "Construye modelos débiles en cada iteración, enfocándose en muestras mal clasificadas o con alto residuo",
+  "No exige distribución de errores, ya que se basa en función de pérdida sin supuestos paramétricos",
+  "Mejor si los ejemplos son independientes; puede usar técnicas especiales para datos correlacionados",
+  "No asume varianza constante, usa función de pérdida directa para optimizar",
+  "Los outliers pueden recibir peso excesivo en iteraciones posteriores, por lo que es necesario regularizar o usar robust loss",
+  "La selección de variables se hace implícitamente, reduciendo el impacto de colinealidad",
+  "Difícil de interpretar directamente; se pueden usar métricas de importancia, SHAP o partial dependence para explicación",
+  "Cada iteración entrena un modelo débil, por lo que puede ser costoso si el número de iteraciones es alto",
+  "CV ayuda a determinar la tasa de aprendizaje (learning rate), número de iteraciones y complejidad de base learners",
+  "No es adecuado si hay muy pocos ejemplos, alta dimensionalidad con poco señal o target extremadamente desequilibrado"
+)
+
+tabla_boosting <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_boosting %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir Boosting",
+             subtitle = "Boosting") %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
+```
+
+
+## Bootstrapped Aggregation (Bagging)  {-}    
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Ensemble/Bagging.png"))
+```
+
+**Bootstrapped Aggregation (Bagging)** es una técnica de **aprendizaje conjunto (ensemble learning)** diseñada para mejorar la estabilidad y precisión de los algoritmos de aprendizaje automático, particularmente para reducir la **varianza** en los modelos. Fue introducida por Leo Breiman en 1996 y es la base de algoritmos muy populares como **Random Forest**. La idea fundamental de Bagging es entrenar múltiples versiones de un mismo modelo base en diferentes subconjuntos del conjunto de datos original y luego combinar sus predicciones.
+
+El proceso central de Bagging implica dos pasos clave:
+
+1.  **Muestreo Bootstrap:** En lugar de entrenar un único modelo en todo el conjunto de datos de entrenamiento, Bagging crea **múltiples conjuntos de datos de arranque (bootstrap samples)**. Cada muestra de arranque se crea seleccionando aleatoriamente, **con reemplazo**, un número de observaciones igual al tamaño del conjunto de datos original. Esto significa que algunos puntos de datos pueden aparecer varias veces en una muestra de arranque, mientras que otros pueden no aparecer en absoluto. Este muestreo aleatorio introduce diversidad entre los conjuntos de entrenamiento para cada modelo.
+
+2.  **Agregación (Aggregation):** Una vez que se han entrenado **múltiples modelos base independientes** (por ejemplo, árboles de decisión) en cada una de estas muestras de arranque, sus predicciones se combinan. Para tareas de **clasificación**, la combinación se realiza mediante **votación por mayoría** (la clase más votada). Para tareas de **regresión**, las predicciones se promedian. Esta agregación de predicciones de modelos diversos reduce la varianza y, por lo tanto, hace que el modelo final sea más robusto y menos propenso al sobreajuste que un solo modelo entrenado en todo el conjunto de datos.
+
+En el contexto del **aprendizaje global vs. local**, Bagging es una estrategia que combina las ventajas de los modelos de **aprendizaje local** para construir una **aproximación de función global** más estable. Cada modelo base (ej. un árbol de decisión) que se entrena en una muestra de arranque puede considerarse un sistema de aprendizaje local, ya que toma decisiones basadas en el subconjunto de datos que le ha sido asignado. Sin embargo, al entrenar estos múltiples modelos en paralelo y luego agregarlos, Bagging construye un modelo final que es una aproximación de función global altamente adaptable. La ventaja principal es que, si los datos no se distribuyen linealmente, el concepto de regresión (o clasificación) se puede aplicar eficazmente mediante esta forma de **regresión ponderada localmente** (donde los "pesos" son implícitos a través de la agregación de predicciones de modelos entrenados en subconjuntos aleatorios de datos). Bagging aborda el problema de que "a veces ningún valor de parámetro puede proporcionar una aproximación suficientemente buena" en un solo modelo al promediar o votar las predicciones de múltiples modelos, lo que reduce la varianza y mejora la generalización.
+
+```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica <- c(
+  "✅ Supervisado",
+  "✅ Categórica o Continua",
+  "✅ Numéricas y categóricas",
+  "✅ Captura relaciones no lineales al promediar múltiples modelos",
+  "❌ No requiere",
+  "✅ Deseable, pero no obligatorio",
+  "❌ No se asume homoscedasticidad",
+  "✅ Robusto (cada bootstrap reduce el impacto de outliers)",
+  "✅ Robusto (la agregación mitiga colinealidad)",
+  "⚠️ Moderada (difícil interpretar conjunto de modelos)",
+  "⚠️ Moderado (depende del número de árboles y tamaño del dataset)",
+  "✅ Recomendable usar k-fold",
+  "❌ No es ideal con muy pocos datos o si los base learners son demasiado simples"
+)
+
+detalles <- c(
+  "Ensamble supervisado que ajusta varios modelos (usualmente árboles) sobre muestras bootstrap y promedia predicciones.",
+  "En clasificación predice la clase más votada; en regresión, promedia los valores predichos.",
+  "Acepta todo tipo de variables; las categóricas deben codificarse adecuadamente.",
+  "Al promediar múltiples modelos, reduce varianza y captura no linealidades implícitamente.",
+  "No impone supuestos sobre la distribución de errores.",
+  "Los datos deben ser independientes; funciona peor en datos con fuerte autocorrelación sin ajuste.",
+  "No requiere varianza constante puesto que se basa en agregación de múltiples predicciones.",
+  "Cada muestra bootstrap y árbol es menos sensible a valores extremos; la agregación aumenta robustez.",
+  "La selección aleatoria de subconjuntos y bootstrap reduce el efecto de predictores correlacionados.",
+  "El modelo final es un conjunto de muchos árboles, lo que dificulta su explicación directa.",
+  "Entrenar cientos de árboles toma tiempo, pero es paralelizable; la predicción es relativamente rápida.",
+  "CV ayuda a ajustar parámetros como número de árboles y profundidad máxima de cada árbol.",
+  "Con pocos ejemplos, los bootstrap no aportan diversidad suficiente; si los base learners son muy simples, no capturan bien patrones complejos."
+)
+
+tabla_bagging <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_bagging %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir bagging",
+             subtitle = "Bootstrapped Aggregation (Bagging) ") %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
+```
+
+## CatBoost {-}  
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Ensemble/CatBoost.png"))
+```
+
+## Extreme Gradient Boosting (XGBoost)  {-}   
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Ensemble/XGBoost.png"))
+```
+
+**XGBoost (Extreme Gradient Boosting)** es una implementación optimizada y altamente eficiente del algoritmo de **Gradient Boosting Machines (GBM)**, ampliamente reconocida por su **velocidad**, **rendimiento** y **escalabilidad** en problemas de **clasificación** y **regresión**. Ganó una inmensa popularidad debido a su éxito en numerosas competiciones de *machine learning* (como Kaggle). Aunque se basa en los principios de GBM, XGBoost introduce varias mejoras clave que lo hacen superior en muchos escenarios.
+
+La idea fundamental de XGBoost, al igual que GBM, es construir un modelo aditivo de forma **secuencial**, donde cada nuevo árbol intenta corregir los errores residuales del conjunto de árboles previos. Sin embargo, XGBoost optimiza este proceso con las siguientes características:
+
+1.  **Paralelización:** Aunque el *boosting* es inherentemente secuencial, XGBoost permite la paralelización de la construcción de los árboles individuales. Por ejemplo, en el paso de búsqueda de la mejor división, puede evaluar las posibles divisiones en paralelo a través de múltiples núcleos de CPU.
+2.  **Regularización:** Incorpora términos de **regularización L1 (Lasso)** y **L2 (Ridge)** en la función de costo para controlar la complejidad del modelo y evitar el sobreajuste. Esto es crucial para la generalización.
+3.  **Manejo de Valores Faltantes:** Tiene una capacidad incorporada para manejar valores faltantes en los datos, permitiendo al algoritmo aprender la mejor dirección para los valores ausentes.
+4.  **Poda por Profundidad (Depth-First Search):** A diferencia de muchos algoritmos de árboles que crecen nivel por nivel, XGBoost puede usar un enfoque de poda por profundidad, lo que a menudo resulta en árboles más eficientes.
+5.  **Caché-Aware Computing:** Optimiza el acceso a la memoria para manejar grandes conjuntos de datos de manera eficiente.
+6.  **Flexibilidad de Función de Pérdida:** Permite el uso de funciones de pérdida personalizadas, lo que lo hace adaptable a una amplia gama de problemas.
+
+En el contexto del **aprendizaje global vs. local**, XGBoost es una poderosa estrategia de **aprendizaje global** que se construye iterativamente a partir de componentes de **aprendizaje local**. Cada árbol de regresión (o clasificación) individual es un "aprendiz débil" que se enfoca en las deficiencias del modelo acumulado. Si los datos no se distribuyen linealmente, el algoritmo aplica el concepto de regresión (o clasificación) de manera altamente sofisticada mediante esta **regresión ponderada localmente**. Al centrarse en los errores residuales y optimizar el proceso de manera rigurosa, XGBoost aborda de manera excepcional la desventaja de que "a veces ningún valor de parámetro puede proporcionar una aproximación suficientemente buena" en un solo modelo. Su combinación de precisión, velocidad y capacidad para manejar grandes conjuntos de datos lo ha convertido en uno de los algoritmos más populares y efectivos en la práctica del *machine learning*.
+
+
+```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica <- c(
+  "✅ Supervisado",
+  "✅ Continua (regresión) o Categórica (clasificación)",
+  "✅ Numéricas y categóricas (requiere codificación para dummies o label encoding)",
+  "✅ Captura no linealidades e interacciones complejas vía árboles en boosting",
+  "❌ No requiere supuestos de normalidad",
+  "✅ Deseable, aunque no obligatorio (mejor si instancias independientes)",
+  "❌ No asume homoscedasticidad",
+  "⚠️ Moderadamente (puede sobreajustar a outliers si no regula)",
+  "✅ Robusto (reduce efecto de colinealidad al usar árboles secuenciales)",
+  "⚠️ Baja (modelo complejo y tipo ’caja negra’)",
+  "✅ Muy rápido y escalable (implementación optimizada, paralelizable)",
+  "✅ Recomendable usar k-fold o repeated CV para ajustar hiperparámetros",
+  "❌ No es ideal con datos muy pequeños, ruido alto o target extremadamente desbalanceado sin ajuste"
+)
+
+detalles <- c(
+  "Ensamble supervisado que combina múltiples árboles débiles optimizados con gradiente descendente acelerado.",
+  "En regresión predice valores continuos; en clasificación combina probabilidades o clases mediante log-loss o multiclass objectives.",
+  "Acepta variables mixtas; las categóricas deben convertirse a formatos compatibles (p. ej. factor numerico, one-hot encoding).",
+  "Cada iteración ajusta un nuevo árbol enfocándose en los residuos del modelo anterior, capturando patrones complejos.",
+  "No impone distribución paramétrica de errores, ya que optimiza funciones de pérdida directamente.",
+  "Funciona mejor si cada muestra es independiente; sensible a series de tiempo sin preparación apropiada.",
+  "No requiere varianza constante, porque basa la optimización en gradientes del loss, no en supuestos de error.",
+  "Los outliers difíciles de predecir pueden recibir demasiado peso en iteraciones sucesivas; usar _learning_rate_ bajo y _max_depth_ pequeño para regular.",
+  "Los árboles reducen el impacto de variables altamente correlacionadas, aunque múltiples iteraciones pueden aún privilegiar características correlacionadas.",
+  "Difícil interpretar directamente cada árbol; se utilizan métricas de importancia, SHAP values o partial dependence plots para explicación.",
+  "Implementación en C++ altamente optimizada (CPU/GPU), permite entrenamiento muy rápido incluso con millones de filas.",
+  "Validación cruzada anidada o simple ayuda a elegir hiperparámetros como `eta` (learning_rate), `nrounds` (número de árboles), `max_depth`, `subsample`, `colsample_bytree`.",
+  "No conviene con datasets muy pequeños, ya que puede sobreajustar; tampoco si el ruido es muy alto y no se regula bien la complejidad."
+)
+
+tabla_xgboost <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_xgboost %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir xgboost",
+             subtitle = "XGBoost")  %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
+```
+
+
+## Gradient Boosting Machines (GBM)  {-}  
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Ensemble/GBM.png"))
+```
+
+**Gradient Boosting Machines (GBM)** es un algoritmo de **aprendizaje conjunto (ensemble learning)** extremadamente potente y versátil, utilizado para **clasificación**, **regresión** y otras tareas predictivas. A diferencia de Random Forest que construye árboles de forma independiente en paralelo (bagging), GBM construye los árboles de forma **secuencial** y aditiva. La idea central es que cada nuevo árbol en el conjunto intenta corregir los errores residuales (residuos) del conjunto de árboles construidos previamente.
+
+El concepto fundamental detrás de GBM es el **impulso (boosting)**, donde los modelos "débiles" (generalmente árboles de decisión, a menudo árboles poco profundos o "stumps") se combinan para formar un modelo "fuerte". GBM logra esto de una manera específica:
+
+1.  **Modelo Inicial:** Comienza con una predicción inicial para todos los datos (por ejemplo, el valor promedio para regresión o la probabilidad logarítmica para clasificación).
+2.  **Cálculo de Residuos (Pseudo-residuos):** En cada iteración, el algoritmo calcula los **residuos** (o más precisamente, los "pseudo-residuos" o gradientes negativos de la función de pérdida) entre los valores reales y las predicciones actuales del modelo. Estos residuos representan los "errores" que el modelo actual no ha podido capturar.
+3.  **Entrenamiento de un Nuevo Árbol:** Se entrena un nuevo árbol de decisión para **predecir estos residuos**. Este árbol es típicamente pequeño y débil, diseñado para centrarse en las áreas donde el modelo actual tiene los mayores errores.
+4.  **Actualización del Modelo:** La predicción de este nuevo árbol se añade a la predicción acumulada del modelo existente, multiplicada por una **tasa de aprendizaje (learning rate)**. Esta tasa de aprendizaje controla el tamaño del paso de cada árbol, evitando que el modelo se sobreajuste rápidamente.
+5.  **Iteración:** Este proceso se repite para un número predefinido de iteraciones, o hasta que una métrica de rendimiento deje de mejorar. Cada nuevo árbol contribuye a reducir los errores restantes.
+
+En el contexto del **aprendizaje global vs. local**, GBM es un sistema de **aprendizaje global** que se construye de manera iterativa a partir de componentes de **aprendizaje local**. Cada árbol individual en el proceso de boosting es un sistema de aprendizaje local (como los *decision stumps* o árboles poco profundos) que se enfoca en una parte específica del error. Sin embargo, la combinación aditiva y secuencial de estos modelos "débiles" produce un modelo predictivo global altamente sofisticado y preciso. Si los datos no se distribuyen linealmente, GBM aplica el concepto de regresión (o clasificación) mediante una forma incremental y adaptativa de **regresión ponderada localmente**. Al centrarse en los errores residuales, GBM aborda directamente la desventaja de que "a veces ningún valor de parámetro puede proporcionar una aproximación suficientemente buena" en un solo modelo. Su capacidad para minimizar la función de pérdida de forma gradual y dirigida lo hace excepcionalmente eficaz para modelar relaciones complejas y no lineales, a menudo logrando un rendimiento superior en muchos problemas del mundo real.
+
+
+```{r, echo = FALSE}
+
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica <- c(
+  "✅ Supervisado",
+  "✅ Categórica o Continua",
+  "✅ Numéricas y categóricas (requiere codificación)",
+  "✅ Captura no linealidades e interacciones complejas vía boosting",
+  "❌ No requiere",
+  "✅ Deseable pero no obligatorio",
+  "❌ No se asume homoscedasticidad",
+  "⚠️ Moderadamente (los outliers pueden influir en árboles individuales)",
+  "✅ Robusto (los arboles manejan colinealidad localmente)",
+  "⚠️ Baja (modelo de tipo caja negra con varios árboles secuenciales)",
+  "⚠️ Lento con muchos árboles, datos grandes o parámetros altos",
+  "✅ Recomendable con k-fold o repeated CV para ajuste de hiperparámetros",
+  "❌ Si se tienen pocos datos, muchas categorías o ruido alto"
+)
+
+detalles <- c(
+  "Ensamble de árboles secuenciales donde cada árbol corrige errores del anterior.",
+  "En clasificación se combinan probabilidades; en regresión se promedian predicciones.",
+  "Funciona con muchas variables y aprende la importancia automáticamente.",
+  "Construye árboles débiles que se enfocan en los errores residuales previos.",
+  "No impone supuestos en la distribución de los errores.",
+  "Los datos deben ser observaciones independientes; sensible a dependencias temporales.",
+  "No requiere varianza constante puesto que se basa en árboles.",
+  "Los outliers pueden exagerar los gradientes y forzar ajustes extremos en árboles individuales.",
+  "Los árboles reducen impacto de colinealidad, pero múltiples árboles pueden still complicarla.",
+  "Difícil de interpretar el conjunto; se pueden usar importance plots o SHAP para explicación.",
+  "La construcción secuencial de cientos de árboles puede ser costosa en tiempo y memoria.",
+  "La validación cruzada ayuda a determinar tasa de aprendizaje, número de árboles y profundidad.",
+  "No es ideal cuando se tienen muy pocos datos o categorías con pocos ejemplos."
+)
+
+tabla_gbm <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)  
+
+tabla_gbm %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir GBM",
+             subtitle = "Gradient Boosting Machines (GBM)") %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
+
+```
+
+
+## Gradient Boosted Regression Trees (GBRT)  {-}  
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Ensemble/GBRT.png"))
+```
+
+
+**Gradient Boosted Regression Trees (GBRT)**, a menudo conocida como **Gradient Boosting Machines (GBM)** cuando los modelos base son árboles de decisión de regresión, es una técnica de **aprendizaje conjunto (ensemble learning)** extremadamente potente y ampliamente utilizada para tareas de **regresión** (predicción de valores numéricos continuos) y también puede adaptarse para **clasificación**. Su fortaleza radica en su capacidad para construir un modelo predictivo robusto y preciso mediante la combinación secuencial de múltiples árboles de decisión "débiles".
+
+La idea central de GBRT se basa en el principio de **boosting**, donde cada nuevo árbol en el conjunto se entrena para **corregir los errores residuales** (la diferencia entre los valores reales y las predicciones acumuladas del modelo hasta ese momento) de los árboles construidos en las iteraciones anteriores. Este proceso es iterativo y aditivo:
+
+1.  **Modelo Inicial:** El proceso comienza con una predicción inicial simple para todos los datos, a menudo el valor promedio de la variable objetivo.
+2.  **Cálculo de Pseudo-Residuos:** En cada iteración, GBRT calcula los "pseudo-residuos", que son los **gradientes negativos de la función de pérdida** con respecto a la predicción actual. Para la pérdida cuadrática media (común en regresión), estos pseudo-residuos son simplemente los errores tradicionales (valor real - predicción).
+3.  **Entrenamiento de un Árbol de Regresión:** Se entrena un nuevo **árbol de decisión de regresión** (que es un "aprendiz débil", a menudo un árbol poco profundo o un *decision stump*) para **predecir estos pseudo-residuos**. El árbol busca los mejores puntos de división para reducir estos errores.
+4.  **Actualización del Modelo:** La predicción de este nuevo árbol de regresión se añade a la predicción acumulada del modelo existente, pero se escala por una **tasa de aprendizaje (learning rate)**. Esta tasa de aprendizaje es un hiperparámetro crucial que controla la "contribución" de cada nuevo árbol y ayuda a prevenir el sobreajuste.
+5.  **Iteración:** Los pasos 2 a 4 se repiten para un número predefinido de iteraciones. Cada nuevo árbol se enfoca en las deficiencias del modelo combinado anterior, refinando gradualmente la predicción.
+
+En el contexto del **aprendizaje global vs. local**, GBRT es un sistema de **aprendizaje global** que se construye de manera iterativa a partir de componentes de **aprendizaje local**. Cada árbol de regresión individual es un sistema de aprendizaje local que divide el espacio de características y aprende patrones en subregiones. Sin embargo, el proceso de boosting, al combinar estos árboles secuencialmente para reducir los errores residuales globales, construye una **aproximación de función global** altamente flexible y precisa. La clave es que, si los datos no se distribuyen linealmente, el algoritmo aplica el concepto de regresión de manera muy efectiva a través de esta **regresión ponderada localmente**. Al centrarse en los errores que el modelo actual no puede explicar, GBRT aborda directamente la desventaja de que "a veces ningún valor de parámetro puede proporcionar una aproximación suficientemente buena" en un solo modelo. Es excepcionalmente potente para capturar relaciones complejas y no lineales, y es ampliamente utilizado en diversas aplicaciones, desde la predicción de precios hasta la optimización de rutas.
+
+
+```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica <- c(
+  "✅ Supervisado",
+  "✅ Continua (regresión)",
+  "✅ Numéricas y categóricas (requiere codificación para ciertas implementaciones)",
+  "✅ Captura no linealidades e interacciones complejas mediante boosting de árboles",
+  "❌ No requiere supuestos de normalidad en residuos",
+  "✅ Deseable, aunque no obligatorio (mejor si instancias independientes)",
+  "❌ No asume homoscedasticidad",
+  "⚠️ Moderadamente (outliers pueden influir en árboles individuales)",
+  "✅ Robusto (los árboles reducen el impacto de colinealidad localmente)",
+  "⚠️ Baja (modelo en su conjunto es “caja negra”)",
+  "⚠️ Lento con muchos árboles o datos extensos",
+  "✅ Recomendable usar k-fold o repeated CV para ajuste de hiperparámetros",
+  "❌ No es ideal si hay muy pocos datos o ruido excesivo"
+)
+
+detalles <- c(
+  "Ensamble de árboles de regresión secuenciales donde cada árbol corrige errores del anterior mediante gradiente.",
+  "Predice valores continuos sumando las predicciones ponderadas de múltiples árboles débiles.",
+  "Funciona con variables mixtas; las categóricas suelen transformarse en dummies.",
+  "Cada nuevo árbol se enfoca en los residuos del modelo anterior, capturando patrones complejos.",
+  "No impone distribución normal porque optimiza una función de pérdida (por ejemplo, MSE) directamente.",
+  "Mejor si las observaciones no están correlacionadas en el tiempo; ajustar para series si es necesario.",
+  "No requiere varianza constante puesto que se basa en árboles, no en un modelo paramétrico de errores.",
+  "Los valores extremos pueden provocar ajustes excesivos en árboles individuales; usar tasa de aprendizaje baja ayuda a mitigar.",
+  "Los árboles reducen el impacto de variables correlacionadas, aunque múltiples iteraciones pueden complicar interpretaciones.",
+  "Difícil de interpretar directamente; se puede usar importancia de variables o herramientas como SHAP para explicación.",
+  "Cada iteración entrena un árbol nuevo; muchos árboles o gran profundidad de árbol incrementan el tiempo de entrenamiento.",
+  "CV ayuda a determinar parámetros como tasa de aprendizaje (`learning_rate`), número de árboles (`n.trees`) y profundidad máxima (`max_depth`).",
+  "No es adecuado cuando el dataset es muy pequeño o extremadamente ruidoso, ya que puede sobreajustar fácilmente."
+)
+
+tabla_gbrt <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_gbrt %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir GBRT",
+             subtitle = "Gradient Boosted Regression Trees (GBRT)")  %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
+```
+
+
+## Isolation Forest {-}  
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Ensemble/Isolation Forest.png"))
+```
+
+## Light Gradient Boosting Machine (LightGBM)  {-}  
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Ensemble/LightGBM.png"))
+```
+
+**LightGBM (Light Gradient Boosting Machine)** es otro algoritmo de **Gradient Boosting Machines (GBM)** de alto rendimiento, desarrollado por Microsoft. Está diseñado para ser **extremadamente rápido** y **eficiente** en el uso de memoria, especialmente con grandes conjuntos de datos, sin sacrificar una precisión significativa. Al igual que XGBoost, ha ganado popularidad en competiciones de *machine learning* por su velocidad y capacidad para manejar grandes volúmenes de datos.
+
+La idea fundamental de LightGBM es la misma que la de otros algoritmos de boosting: construir un modelo aditivo de forma **secuencial**, donde cada nuevo árbol intenta corregir los errores residuales del modelo combinado anterior. Sin embargo, LightGBM introduce varias optimizaciones clave para lograr su notable eficiencia:
+
+1.  **Gradient-based One-Side Sampling (GOSS):** A diferencia de XGBoost que usa todas las instancias para cada iteración, GOSS se enfoca en las instancias que tienen un **mayor gradiente** (es decir, las que contribuyen más al error). Descarta las instancias con gradientes pequeños o las muestrea con menos frecuencia, lo que acelera el entrenamiento sin perder demasiada precisión.
+2.  **Exclusive Feature Bundling (EFB):** EFB agrupa características mutuamente exclusivas (es decir, características que rara vez toman valores distintos de cero al mismo tiempo) en un solo "bundle". Esto reduce el número de características y acelera el cálculo del histograma sin afectar la precisión.
+3.  **Histogram-based Algorithm:** En lugar de construir árboles en una forma de pre-orden que es común en muchos algoritmos (lo que puede ser lento al enumerar todos los puntos de división), LightGBM utiliza un **algoritmo basado en histogramas**. Convierte los valores de las características continuas en *bins* discretos. Esto acelera significativamente el proceso de búsqueda del mejor punto de división.
+4.  **Leaf-wise (Best-first) Tree Growth:** A diferencia de la mayoría de los árboles de decisión que crecen nivel por nivel (como en XGBoost), LightGBM crece el árbol **"hoja por hoja" (leaf-wise)**. Esto significa que en cada paso, selecciona la hoja con la mayor reducción de pérdida y la divide. Este enfoque puede llevar a árboles más profundos y asimétricos que pueden ser más precisos para el mismo número de nodos, aunque puede ser más propenso al sobreajuste (lo cual se mitiga con la regularización).
+
+En el contexto del **aprendizaje global vs. local**, LightGBM, al igual que otros algoritmos de boosting, es una estrategia de **aprendizaje global** que se construye de manera iterativa a partir de componentes de **aprendizaje local**. Cada árbol que se entrena es un "aprendiz débil" que se enfoca en las deficiencias residuales del modelo acumulado. Si los datos no se distribuyen linealmente, el algoritmo aplica el concepto de regresión (o clasificación) de manera muy eficiente mediante esta **regresión ponderada localmente**. Al centrarse en los errores y optimizar los cálculos, LightGBM aborda de manera sobresaliente la desventaja de que "a veces ningún valor de parámetro puede proporcionar una aproximación suficientemente buena" en un solo modelo. Su énfasis en la velocidad y la eficiencia lo hace ideal para conjuntos de datos muy grandes o escenarios donde el tiempo de entrenamiento es una preocupación crítica.  
+
+
+
+```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica <- c(
+  "✅ Supervisado",
+  "✅ Continua (regresión) o Categórica (clasificación)",
+  "✅ Numéricas y categóricas (requiere codificación apropiada)",
+  "✅ Captura no linealidades e interacciones mediante árboles en boosting",
+  "❌ No requiere supuestos de normalidad",
+  "✅ Deseable, aunque no obligatorio (mejor si instancias independientes)",
+  "❌ No asume homoscedasticidad",
+  "⚠️ Moderadamente (los outliers pueden influir en pesos de hojas)",
+  "✅ Robusto (usa histogram-based split que atenúa colinealidad)",
+  "⚠️ Baja (modelo complejo tipo ‘caja negra’)",
+  "✅ Muy rápido y escalable (optimized gradient-based)",
+  "✅ Recomendable usar k-fold o repeated CV para ajustar hiperparámetros",
+  "❌ No conviene con datos muy pequeños o muy ruidosos sin regularización"
+)
+
+detalles <- c(
+  "Ensamble supervisado que entrenan árboles de decisión usando histogram-based gradient boosting.",
+  "En regresión predice valores continuos; en clasificación maximiza log-loss u otras funciones objetivo.",
+  "Acepta variables mixtas; las categóricas deben convertirse a formato numérico o usar encoding interno.",
+  "Cada iteración ajusta un árbol enfocándose en los residuos del anterior, capturando patrones complejos.",
+  "No impone distribución paramétrica de errores; optimiza la función de pérdida directamente.",
+  "Funciona mejor si las muestras son independientes; sensible a series de tiempo sin preparación adecuada.",
+  "No requiere varianza constante, dado que es un método basado en árbol, no en supuestos de error.",
+  "Los valores extremos pueden afectar el cálculo de gradientes y splits; usar regularización y parámetros de manejo de outliers.",
+  "La división basada en histogramas reduce el impacto de predictores altamente correlacionados.",
+  "Difícil interpretar cada árbol; se utilizan métricas de importancia y herramientas como SHAP para explicación.",
+  "Implementación en C++ altamente optimizada que permite entrenamiento muy rápido incluso con grandes volúmenes de datos.",
+  "CV ayuda a elegir parámetros como `learning_rate`, `num_leaves`, `max_depth`, `feature_fraction`, `bagging_fraction`.",
+  "No es ideal si el dataset es muy pequeño, pues el boosting puede sobreajustar; tampoco con mucho ruido sin regularización adecuada."
+)
+
+tabla_lightgbm <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_lightgbm %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir LightGBM",
+             subtitle = "LightGBM")  %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
+```
+
+## Random Forest  {-}   
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Ensemble/Bagging.png"))
+```
+
+**Random Forest** es un algoritmo de **aprendizaje conjunto (ensemble learning)** altamente popular y potente, utilizado tanto para tareas de **clasificación** como de **regresión**. Fue desarrollado por Leo Breiman en 2001 y se basa en la idea de combinar las predicciones de múltiples **árboles de decisión** para lograr una mayor precisión y robustez que un solo árbol. La fuerza de Random Forest reside en dos conceptos clave: **bagging (bootstrap aggregation)** y la **aleatoriedad en la selección de características**.
+
+La idea fundamental detrás de Random Forest es construir un "bosque" de árboles de decisión de una manera específica:
+
+1.  **Bagging (Bootstrap Aggregation):** En lugar de entrenar un solo árbol en todo el conjunto de datos, Random Forest entrena cada árbol en una **muestra de arranque (bootstrap sample)** diferente. Una muestra de arranque es un subconjunto del conjunto de datos original, muestreado con reemplazo. Esto significa que algunos puntos de datos pueden aparecer varias veces en una muestra, mientras que otros pueden no aparecer en absoluto. Este muestreo genera diversidad entre los árboles.
+
+2.  **Aleatoriedad en la Selección de Características:** Cuando cada árbol se construye, en cada paso de división (nodo), Random Forest no considera todas las características disponibles. En cambio, solo considera un **subconjunto aleatorio de características** para encontrar la mejor división. Esta aleatoriedad adicional (además del muestreo de arranque) descorrelaciona aún más los árboles, lo que es crucial para el rendimiento del algoritmo. Si los árboles estuvieran altamente correlacionados, el error de un árbol promedio no se reduciría al promediar.
+
+Una vez que se han construido numerosos árboles (típicamente cientos o miles), las predicciones se combinan: para **clasificación**, se utiliza la **votación por mayoría** (la clase más votada por los árboles individuales); para **regresión**, se calcula el **promedio** de las predicciones de todos los árboles.
+
+En el contexto del **aprendizaje global vs. local**, Random Forest se puede considerar como un sistema de **aprendizaje global** que se construye a partir de componentes de **aprendizaje local**. Cada árbol individual en el bosque es un sistema de aprendizaje local (como CART, que divide el problema en subproblemas más pequeños). Sin embargo, al combinar las predicciones de muchos de estos árboles, Random Forest logra una **aproximación de función global** muy robusta y flexible. La ventaja es que, si los datos no se distribuyen linealmente, el algoritmo aplica el concepto de regresión (o clasificación) mediante una forma sofisticada de **regresión ponderada localmente**. La combinación de árboles diversos y descorrelacionados mitiga la desventaja de que "a veces ningún valor de parámetro puede proporcionar una aproximación suficientemente buena" en un solo modelo. Random Forest sobresale en capturar relaciones complejas y no lineales, manejar grandes conjuntos de datos con muchas características y es menos propenso al sobreajuste que un solo árbol de decisión grande.
+
+
+```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica <- c(
+  "✅ Supervisado",
+  "✅ Categórica o Continua",
+  "✅ Numéricas y categóricas (requiere codificación)",
+  "✅ Captura relaciones no lineales e interacciones complejas",
+  "❌ No requiere",
+  "✅ Deseable pero no obligatorio",
+  "❌ No se asume homoscedasticidad",
+  "✅ Robusto a outliers (por agregación)",
+  "✅ Robusto (selecciona subconjuntos aleatorios)",
+  "⚠️ Moderada (difícil interpretar cientos de árboles)",
+  "⚠️ Lento con muchos árboles o datos grandes",
+  "✅ Recomendado usar k-fold",
+  "❌ Puede sobreajustar si no se ajustan hiperparámetros (e.g. profundidad, número de árboles)"
+)
+
+detalles <- c(
+  "Ensamble de árboles de decisión, cada uno entrenado en una muestra bootstrap y usando un subconjunto aleatorio de predictores.",
+  "En clasificación predice la clase mayoritaria entre árboles; en regresión, el promedio de predicciones.",
+  "Acepta muchas variables y selecciona automáticamente las más relevantes por importancia.",
+  "Al generar múltiples árboles, capta interacciones no lineales sin necesidad de especificarlas.",
+  "No hay supuestos sobre la distribución de los errores.",
+  "Los árboles individuales pueden manejar correlación leve; el ensamble mitiga la dependencia.",
+  "No necesita homogeneidad de varianza en los errores residuales.",
+  "Cada árbol es poco sensible a outliers, y la agregación mejora robustez.",
+  "Reduce el problema de colinealidad al seleccionar subconjuntos de variables por árbol.",
+  "Es difícil de explicar, aunque se pueden usar métricas de importancia de variables.",
+  "Puede volverse lento si se entrenan miles de árboles en datasets muy grandes.",
+  "Cross-validation ayuda a evitar overfitting y evaluar generalización.",
+  "No es ideal si el interpretabilidad es crítica o el tiempo computacional es limitado."
+)
+
+tabla_rf <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+tabla_rf %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir random forest",
+             subtitle = "Random Forest") %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
+```
+
+## Stacked Generlization (Blending) {-}    
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Ensemble/Blending.png"))
+```
+
+**Stacked Generalization**, comúnmente conocido como **Stacking**, y su variante **Blending**, son técnicas avanzadas de **aprendizaje conjunto (ensemble learning)** que buscan combinar las predicciones de múltiples modelos de aprendizaje automático para obtener un rendimiento predictivo superior al de cualquier modelo individual. La idea fundamental es que, en lugar de simplemente promediar o votar las predicciones, se entrena un **modelo de segundo nivel (meta-modelo)** para aprender a combinar óptimamente las predicciones de los modelos de primer nivel (modelos base).
+
+El proceso de Stacking generalmente implica dos o más "capas" de modelos:
+
+1.  **Modelos Base (Nivel 0):** En la primera capa, se entrenan múltiples modelos de aprendizaje automático diversos (pueden ser de diferentes tipos, como árboles de decisión, máquinas de vectores de soporte, redes neuronales, etc.). Estos modelos base se entrenan sobre el conjunto de datos de entrenamiento original (o en particiones del mismo).
+
+2.  **Generación de Meta-Características:** Las predicciones generadas por estos modelos base sobre un conjunto de datos "fuera de muestra" (que no se usó para entrenar los modelos base, típicamente a través de validación cruzada k-fold) se utilizan como **nuevas características** o "meta-características". Estas meta-características, junto con la variable objetivo original, forman un nuevo conjunto de datos de entrenamiento para el meta-modelo.
+
+3.  **Meta-Modelo (Nivel 1):** En la segunda capa, se entrena un **meta-modelo** (a menudo un modelo más simple, como regresión lineal, regresión logística o un árbol de decisión poco profundo) utilizando estas meta-características como entrada y la variable objetivo original como salida. El meta-modelo aprende la relación entre las predicciones de los modelos base y la respuesta verdadera, y por lo tanto, cómo "pesar" o "combinar" esas predicciones de la mejor manera.
+
+**Blending** es una variación más sencilla de Stacking. La principal diferencia es cómo se generan las meta-características para el meta-modelo. En Blending, se reserva una **subdivisión de validación (holdout set)** del conjunto de entrenamiento original. Los modelos base se entrenan en la parte restante del conjunto de entrenamiento, y luego sus predicciones sobre este conjunto de validación se utilizan directamente como meta-características para entrenar el meta-modelo. Esto simplifica el proceso de validación cruzada, pero el meta-modelo se entrena con menos datos.
+
+En el contexto del **aprendizaje global vs. local**, Stacking/Blending es una estrategia de **aprendizaje global** que explota el poder de múltiples **aproximaciones de función local** (los modelos base) para construir un modelo final altamente sofisticado. Cada modelo base, dependiendo de su naturaleza, puede ser un sistema de aprendizaje local que descubre patrones en subregiones de datos. Sin embargo, el meta-modelo aprende una función de combinación global sobre las predicciones de estos modelos base. Si los datos no se distribuyen linealmente, Stacking/Blending aplica el concepto de regresión (o clasificación) de una manera muy flexible. Al permitir que un modelo de segundo nivel aprenda a combinar las predicciones de diversos modelos, supera la limitación de que "a veces ningún valor de parámetro puede proporcionar una aproximación suficientemente buena" en un solo modelo. Es particularmente eficaz en competiciones de machine learning donde se busca el máximo rendimiento, ya que aprovecha las fortalezas complementarias de diferentes algoritmos. Sin embargo, puede ser computacionalmente intensivo y más difícil de interpretar que los modelos individuales.
+
+
+```{r, echo = FALSE}
+criterios <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica <- c(
+  "✅ Supervisado",
+  "✅ Categórica o Continua (depende de los modelos base)",
+  "✅ Numéricas y/o categóricas (codificación según modelos base)",
+  "✅ Captura relaciones complejas vía combinación de modelos base",
+  "❌ No exige supuestos de normalidad en residuos",
+  "✅ Deseable, pero no obligatorio (mejor si observaciones independientes)",
+  "❌ No se asume homoscedasticidad",
+  "⚠️ Moderadamente (outliers afectan modelos base individuales)",
+  "⚠️ Puede verse afectado (depende de base learners y correlated features)",
+  "⚠️ Baja (modelo meta difícil de interpretar directamente)",
+  "⚠️ Lento en entrenamiento y predicción, según número de base learners",
+  "✅ Esencial (usar CV anidada para entrenar meta-modelo)",
+  "❌ Si datos muy escasos o muy ruidosos, riesgo de sobreajuste"
+)
+
+detalles <- c(
+  "Ensamble supervisado que combina varias predicciones (base learners) mediante un modelo meta.",
+  "El meta-modelo acepta la salida de modelos base; puede predecir clases o valores continuos.",
+  "Usa predictores originales para los base learners; algunos requieren dummies, otros no.",
+  "Aprende patrones no lineales e interacciones complejas a través de múltiples capas.",
+  "No impone distribución normal: cada base learner tiene sus propios supuestos.",
+  "Ideal si cada muestra es independiente; sensibles a dependencias en validaciones cruzadas.",
+  "No requiere varianza constante, ya que se basa en agregación de predicciones.",
+  "Modelos base (p. ej. ARBOTS, SVM) pueden verse influenciados por valores extremos;",
+  "Modelos base diversificados reducen colinealidad, pero meta-modelo puede verse afectado.",
+  "Difícil atribuir importancia directa; se pueden usar técnicas como SHAP para interpretación.",
+  "Entrenamiento de múltiples base learners y meta-modelo incrementa tiempo; predicción también más lenta.",
+  "Usar validación cruzada anidada: inner folds para entrenar base learners y stacking, outer folds para evaluar.",
+  "No recomendable si hay muy pocos datos (stacking requiere dividir en folds) o si los base learners no aportan diversidad."
+)
+
+tabla_stacking <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+
+
+tabla_stacking %>%
+ gt() %>%
+  tab_header(title = "Guía rápida para elegir blending",
+             subtitle = "Stacked Generlizaation (Blending)")  %>%
+   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+     tab_options(heading.title.font.size = 14, 
+                 heading.subtitle.font.size = 12,
+                 table.font.names = "Century Gothic",
+                 table.font.size = 10,
+                 data_row.padding = px(1)) %>%
+      tab_style(style = list(cell_text(align = "left",
+                                       weight = 'bold')),
+                locations = list(cells_title(groups = c("title")))) %>%
+       tab_style(style = list(cell_text(align = "left")),
+                 locations = list(cells_title(groups = c("subtitle")))) %>%
+        cols_width(starts_with("Detalles") ~ px(500),
+                   everything() ~ px(200)) %>%
+         as_raw_html() 
+```
+
+
+
+
+
+
+
+<!--chapter:end:03-ensemble.Rmd-->
+
+
+# 🧠 4. Redes Neuronales {-}  
+
+Placeholder
+
+
+## Autoenconder  {-}  
+## Back - Propagation  {-}  
+## Convolutional Neural Network (CNN)  {-}   
+## Hopfield Network  {-}    
+## Generative Adversarial Networks (GANs) {-}  
+## Long Short-Term Memory (LSTM) / Gated Recurrent Unit (GRU) {-}   
+## Multilayer Perceptron (MP)  {-}     
+## Perceptron  {-}     
+## Radial Basis Function Network (RBFN)  {-}   
+## Recurrent Neural Networks (RNNs) {-}  
+## Restricted Boltzmann Machine (RBM) {-}   
+## Transformers  {-}  
+
+<!--chapter:end:04-neural-networks.Rmd-->
+
+
+# 🧩 5. Reducción de Dimensionalidad {-}  
+
+Placeholder
+
+
+## Flexible Discriminant Analysis (FDA)  {-}   
+## Independent Component Analysis (ICA) {-}   
+## Kernel PCA (KPCA) {-}   
+## Linear Discriminant Analysis (LDA)  {-}    
+## Locally Linear Embedding (LLE) {-}    
+## Mixture Discriminant Analysis (MDA)  {-}   
+## Multidimensional Scaling (MDS)  {-}    
+## Quadratic Discriminant Analysis (QDA) {-}  
+## Partial Least Squares Regression (PLSR)  {-}    
+## Partial Least Squares Discriminant Analysis (PLSDA)  {-}   
+## Principal Component Analysis (PCA)  {-}   
+## Principal Component Regression (PCR)  {-}   
+## Projection Pursuit (PP)  {-}     
+## Sammon Mapping  {-}  
+## Regularized Discriminant Analysis (RDA)  {-}   
+## -	t-Distributed Stochastic Neighbor Embedding (t-SNE) {-}
+## Uniform Manifold Approximation and Projection (UMAP) {-}   
+
+<!--chapter:end:05-dimensionality_reduction.Rmd-->
+
+
+# 🧬 6. Modelos Bayesianos {-}  
+
+Placeholder
+
+
+## Averaged One - Dependence Estimators (AODE)  {-}    
+## Bayesian Network (BN)  {-}    
+## Bayesian Belief Network (BBN)  {-} 
+## Bayesian Linear Regression {-}   
+## Gaussian Naive Bayes (GNB) {-}   
+## Hidden Markov Models (HMMs) {-}   
+## Kalman Filter {-}   
+## Multinomial Naive Bayes (MNB) {-}   
+## Naive Bayes (NB) {-}   
+## Particle Filter {-}   
+
+<!--chapter:end:06-bayesian.Rmd-->
+
+
+# 🧮 7. Regularización {-}  
+
+Placeholder
+
+
+## Elastic Net  {-}   
+## Ridge Regression  {-}  
+## Least Absolute Shrinkage and Selection Operator (LASSO)  {-}  
+
+<!--chapter:end:07-regularization.Rmd-->
+
+
+# 🔍 8. Modelos Basados en Instancias {-}  
+
+Placeholder
+
+
+## Case-Based Reasoning (CBR) {-}   
+## k - Nearest Neighbour (kNN)  {-}    
+## Kernel Regression / Nadaraya-Watson Estimator   
+## Learning Vector Quantization (LVQ)  {-} 
+## Locally Weighted Learning (LWL)  {-}   
+## Self - Organizing Map (SOM)  {-}   
+## Prototype-Based Learning (General Concept) {-}     
+
+<!--chapter:end:08-instance_based.Rmd-->
+
+
+# 📏 9. Clustering (Aprendizaje No Supervisado) {-}  
+
+Placeholder
+
+
+## Affinity Propagation {-}   
+## Agglomerative Clustering {-}   
+## Density-Based Spatial Clustering of Applications with Noise (DBSCAN)  {-}    
+## Expectation Maximization (EM) {-}  
+## Gaussian Mixture Models (GMMs) {-}   
+## Hierarchical Clustering (hclust) {-} 
+## k-Means  {-}   
+## k-Medians  {-}    
+## Mean-Shift {-}   
+## Ordering Points To Identify the Clustering Structure (OPTICS) {-}   
+## Spectral Clustering {-}   
+
+<!--chapter:end:09-clustering.Rmd-->
+
+
+# 📐 10. Sistemas Basados en Reglas {-}  
+
+Placeholder
+
+
+## Associative Classification (e.g., CBA, CMAR, FP-Growth based methods) {-}     
+## CN2 Algorithm {-}  
+## Decision List/Decision Tree to Rules {-}  
+## Decision Rules  {-}   
+## Lógica Difusa (Fuzzy Logic) {-}
+## Minsky's Perceptron {-}    
+## One Rule (OneR)  {-}   
+## Repeated Incremental Pruning to Produce Error Reduction (RIPPER)  {-}  
+## Rule Fit  {-}    
+## Zero Rule (ZeroR)  {-}    
+
+<!--chapter:end:10-rule_based_systems.Rmd-->
+
+
+# 🤖 4. Deep Learning {-}  
+
+Placeholder
+
+
+## Deep Boltzman Machine (DBM) {-}  
+## Deep Belief Networks (DBNet) {-}   
+## Reinforcement Learning (DL-based RL) {-}  
+## Stacked Auto-Enconders {-}  
+## Variational Autoencoders (VAEs) {-}
+
+<!--chapter:end:11-deep-learning.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+# example R options set globally
+options(width = 80)
+
+# example chunk options set globally
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE,
+  message = FALSE,
+  warning = FALSE
+)
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+setwd(here::here())
+```
+`r if (knitr::is_html_output()) '
+# References {-}
+'`
+
+Sagi, S. (2019). ML Algorithms: One SD (σ). The obvious questions to ask when… | by Sagi Shaier | Medium. https://medium.com/@Shaier/ml-algorithms-one-sd-%CF%83-74bcb28fafb6 
+
+Kuhn, M. (2019). The caret Package. https://topepo.github.io/caret/index.html
+
+<!--chapter:end:12-references.Rmd-->
+

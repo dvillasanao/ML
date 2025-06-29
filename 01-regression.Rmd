@@ -167,7 +167,12 @@ tabla_logit %>%
          as_raw_html()
 ```
 
-## Generalized Linear Model (GLM) {-}   
+## Generalized Linear Model (GLM) {-}  
+
+```{r, echo = FALSE,out.width='50%', fig.align='center', fig.cap="Elaboración propia"}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Regression/GLM.png"))
+```
 
 ## Least Angle Regression (LARS)  {-}  
 
@@ -441,9 +446,19 @@ tabla_mars %>%
          as_raw_html()
 ```
 
-## Polynomial Regression {-}    
+## Polynomial Regression {-} 
+
+```{r, echo = FALSE,out.width='50%', fig.align='center', fig.cap="Elaboración propia"}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Regression/Polynomial Regression.png"))
+```
 
 ## Quantile Regression {-}   
+
+```{r, echo = FALSE,out.width='50%', fig.align='center', fig.cap="Elaboración propia"}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Regression/Quantile Regression.png"))
+```
 
 ## Stepwise Regression {.unnumbered}
 

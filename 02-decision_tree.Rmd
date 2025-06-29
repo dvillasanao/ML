@@ -657,6 +657,11 @@ tabla_stump %>%
 
 ## Guided Trees / Hybrid Trees {-}    
 
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Decision Tree/Hybrid Trees.png"))
+```
+
 ## Iterative Dichotomiser 3 (ID3)  {-}    
 
 ```{r, echo = FALSE,out.width='50%', fig.align='center'}
@@ -835,6 +840,11 @@ tabla_m5 %>%
 
 
 ## Oblique Decision Trees {-}    
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Decision Tree/Oblique Decision Trees.png"))
+```
 
 ## Specific Implementations/Libraries {-}  
 
