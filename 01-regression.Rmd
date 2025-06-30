@@ -174,6 +174,87 @@ require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Regression/GLM.png"))
 ```
 
+```{r, echo = FALSE}
+criterios_glm <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica_glm <- c(
+  "✅ Supervisado",
+  "✅ Numérica, conteo, binaria, etc.",
+  "✅ Numéricas y categóricas",
+  "✅ No lineal (transformada)",
+  "❌ No es requisito",
+  "✅ Necesaria",
+  "❌ No es requisito",
+  "⚠️ Sí",
+  "⚠️ Puede afectar",
+  "✅ Alta (coeficientes interpretables)",
+  "✅ Alta",
+  "✅ Compatible",
+  "❌ No cumple supuestos clave"
+)
+
+detalles_glm <- c(
+  "Regresión o clasificación (dependiendo de la distribución y función de enlace)",
+  "Requiere que la respuesta pertenezca a la familia exponencial (e.g., Normal, Poisson, Binomial, Gamma)",
+  "Las categóricas se convierten a variables dummy o indicadoras.",
+  "La función de enlace transforma la esperanza de la respuesta para ser lineal en los predictores.",
+  "No asume normalidad en los errores, sino una distribución específica para la respuesta.",
+  "Se asume que las observaciones son independientes.",
+  "La varianza puede depender de la media a través de la función de varianza.",
+  "Pueden influir en la estimación de los coeficientes, especialmente con algunas distribuciones.",
+  "Puede generar inestabilidad en los coeficientes y dificultar la interpretación.",
+  "Los coeficientes se interpretan en la escala de la función de enlace.",
+  "Generalmente eficientes computacionalmente.",
+  "Técnicas como k-fold cross-validation son aplicables.",
+  "Por ejemplo, si la función de enlace o la distribución asumida no son adecuadas para los datos."
+)
+
+tabla_glm <- data.frame(Criterio = criterios_glm, Aplica = aplica_glm, Detalles = detalles_glm)
+
+tabla_glm %>%
+  gt() %>%
+  tab_header(
+    title = "Guía rápida para elegir GLM",
+    subtitle = "Modelos Lineales Generalizados"
+  ) %>%
+  tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+  tab_options(
+    heading.title.font.size = 14,
+    heading.subtitle.font.size = 12,
+    table.font.names = "Century Gothic",
+    table.font.size = 10,
+    data_row.padding = px(1)
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left", weight = 'bold')),
+    locations = list(cells_title(groups = c("title")))
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left")),
+    locations = list(cells_title(groups = c("subtitle")))
+  ) %>%
+  cols_width(
+    starts_with("Detalles") ~ px(500),
+    everything() ~ px(200)
+  ) %>%
+  as_raw_html()
+```
+
+
 ## Least Angle Regression (LARS)  {-}  
 
 ```{r, echo = FALSE,out.width='50%', fig.align='center'}
@@ -453,12 +534,176 @@ require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Regression/Polynomial Regression.png"))
 ```
 
+```{r, echo = FALSE}
+criterios_poly_reg <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica_poly_reg <- c(
+  "✅ Supervisado",
+  "✅ Numérica continua",
+  "✅ Numéricas (principalmente)",
+  "✅ No lineal (curvilínea)",
+  "✅ Necesaria",
+  "✅ Necesaria",
+  "✅ Necesaria",
+  "✅ Sí, muy",
+  "⚠️ Sí, alta",
+  "⚠️ Moderada a baja",
+  "✅ Alta",
+  "✅ Compatible",
+  "❌ No hay una relación polinómica clara"
+)
+
+detalles_poly_reg <- c(
+  "Regresión para predecir un valor continuo.",
+  "La variable dependiente debe ser continua.",
+  "Funciona mejor con variables predictoras numéricas para crear términos polinómicos.",
+  "Se ajusta una curva a los datos usando potencias de las variables predictoras (ej., x, x^2, x^3).",
+  "Los errores deben seguir una distribución normal con media cero.",
+  "Las observaciones deben ser independientes entre sí.",
+  "La varianza de los errores debe ser constante en todos los niveles de las variables predictoras.",
+  "Los valores atípicos pueden distorsionar significativamente la curva ajustada.",
+  "Los términos polinómicos (ej., x y x^2) suelen estar altamente correlacionados, requiriendo centrado o escalado.",
+  "La interpretación de los coeficientes puede ser compleja, ya que representan el cambio en la pendiente de la curva.",
+  "Rápido para ajustar y predecir, similar a la regresión lineal simple.",
+  "Esencial para seleccionar el grado del polinomio y evaluar la generalización del modelo.",
+  "Los datos no exhiben una tendencia curvilínea, o si se elige un grado de polinomio inapropiado (muy bajo o muy alto)."
+)
+
+tabla_poly_reg <- data.frame(Criterio = criterios_poly_reg, Aplica = aplica_poly_reg, Detalles = detalles_poly_reg)
+
+tabla_poly_reg %>%
+  gt() %>%
+  tab_header(
+    title = "Guía rápida para elegir Regresión Polinómica",
+    subtitle = "Extensión de la Regresión Lineal"
+  ) %>%
+  tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+  tab_options(
+    heading.title.font.size = 14,
+    heading.subtitle.font.size = 12,
+    table.font.names = "Century Gothic",
+    table.font.size = 10,
+    data_row.padding = px(1)
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left", weight = 'bold')),
+    locations = list(cells_title(groups = c("title")))
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left")),
+    locations = list(cells_title(groups = c("subtitle")))
+  ) %>%
+  cols_width(
+    starts_with("Detalles") ~ px(500),
+    everything() ~ px(200)
+  ) %>%
+  as_raw_html()
+```
+
+
 ## Quantile Regression {-}   
 
 ```{r, echo = FALSE,out.width='50%', fig.align='center'}
 require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Regression/Quantile Regression.png"))
 ```
+
+```{r, echo = FALSE}
+library(gt)
+
+criterios_quantile_reg <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica_quantile_reg <- c(
+  "✅ Supervisado",
+  "✅ Numérica continua",
+  "✅ Numéricas y categóricas",
+  "✅ Lineal (en cada cuantil)",
+  "❌ No es requisito",
+  "✅ Necesaria",
+  "❌ No es requisito",
+  "❌ Menos sensible",
+  "⚠️ Puede afectar",
+  "✅ Alta (para cada cuantil)",
+  "✅ Moderada",
+  "✅ Compatible",
+  "❌ Se busca solo la media condicional"
+)
+
+detalles_quantile_reg <- c(
+  "Regresión para modelar la relación entre predictores y un cuantil específico (ej., mediana, Q1, Q3) de la variable respuesta.",
+  "La variable dependiente debe ser continua.",
+  "Puede manejar ambos tipos de variables, similar a la regresión lineal.",
+  "La relación es lineal en la escala de cada cuantil condicional (ej., la mediana o el percentil 90 de Y dado X).",
+  "No asume normalidad en la distribución de los errores, lo que la hace robusta a distribuciones no normales.",
+  "Las observaciones deben ser independientes entre sí.",
+  "No asume varianza constante de los errores; de hecho, puede modelar cómo la varianza (o forma de la distribución) cambia a través de los cuantiles.",
+  "Utiliza la función de pérdida de suma de valores absolutos ponderados, que es más robusta a valores atípicos que el método de mínimos cuadrados.",
+  "La multicolinealidad puede generar coeficientes inestables, aunque es menos problemática que en OLS para la inferencia.",
+  "Los coeficientes se interpretan como el cambio en el cuantil especificado de la variable respuesta por unidad de cambio en el predictor, manteniendo los demás constantes.",
+  "Puede ser más intensiva computacionalmente que la regresión de mínimos cuadrados ordinarios (OLS) si se modelan muchos cuantiles.",
+  "Aplicable para evaluar el rendimiento del modelo en la predicción de diferentes cuantiles.",
+  "El objetivo es exclusivamente entender la media condicional de la respuesta, y no la distribución completa o diferentes puntos de la distribución."
+)
+
+tabla_quantile_reg <- data.frame(Criterio = criterios_quantile_reg, Aplica = aplica_quantile_reg, Detalles = detalles_quantile_reg)
+
+tabla_quantile_reg %>%
+  gt() %>%
+  tab_header(
+    title = "Guía rápida para elegir Regresión Cuantílica",
+    subtitle = "Modelado de cuantiles condicionales"
+  ) %>%
+  tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+  tab_options(
+    heading.title.font.size = 14,
+    heading.subtitle.font.size = 12,
+    table.font.names = "Century Gothic",
+    table.font.size = 10,
+    data_row.padding = px(1)
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left", weight = 'bold')),
+    locations = list(cells_title(groups = c("title")))
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left")),
+    locations = list(cells_title(groups = c("subtitle")))
+  ) %>%
+  cols_width(
+    starts_with("Detalles") ~ px(500),
+    everything() ~ px(200)
+  ) %>%
+  as_raw_html()
+```
+
 
 ## Stepwise Regression {.unnumbered}
 

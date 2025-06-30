@@ -662,6 +662,89 @@ require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Decision Tree/Hybrid Trees.png"))
 ```
 
+```{r,  echo = FALSE}
+library(gt)
+
+criterios_hybrid_trees <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica_hybrid_trees <- c(
+  "✅ Supervisado (principalmente)",
+  "✅ Numérica o Categórica",
+  "✅ Numéricas y categóricas",
+  "✅ Compleja (no lineal)",
+  "❌ No es requisito directo",
+  "✅ Necesaria (para componentes)",
+  "❌ No es requisito directo",
+  "⚠️ Depende del híbrido",
+  "⚠️ Depende del híbrido",
+  "⚠️ Moderada a Baja",
+  "⚠️ Varía (más complejo)",
+  "✅ Compatible y crucial",
+  "❌ Componentes del híbrido son ineficaces"
+)
+
+detalles_hybrid_trees <- c(
+  "Se refiere a la combinación de árboles de decisión con otros algoritmos (ej., redes neuronales, regresión lineal, SVM) o a la mezcla de diferentes tipos de árboles.",
+  "Puede manejar tareas de regresión (respuesta numérica) o clasificación (respuesta categórica) según el objetivo del modelo híbrido.",
+  "Las variables predictoras pueden ser de ambos tipos, y su tratamiento dependerá de los componentes individuales del modelo híbrido.",
+  "La relación es inherentemente compleja y no lineal, ya que los árboles de decisión son capaces de capturar interacciones intrincadas y los híbridos buscan mejorar esto.",
+  "No es un supuesto directo del modelo híbrido; la distribución de errores dependerá de los componentes de regresión/clasificación subyacentes.",
+  "Como en la mayoría de los modelos, la independencia de las observaciones es generalmente deseable para la validez estadística de los componentes.",
+  "No es un supuesto directo. La capacidad para manejar heteroscedasticidad dependerá de la robustez de los algoritmos que componen el híbrido.",
+  "La sensibilidad a los outliers dependerá de los algoritmos específicos que se combinen. Algunos híbridos pueden ser más robustos (ej., si incluyen componentes basados en medianas).",
+  "La multicolinealidad puede ser manejada de forma diferente por cada componente. Algunos algoritmos de árboles son robustos, pero si hay regresión lineal como componente, podría ser un problema.",
+  "La interpretabilidad tiende a disminuir a medida que aumenta la complejidad del híbrido. Un árbol por sí solo es interpretable, pero la combinación con otros modelos lo hace más opaco.",
+  "La velocidad y eficiencia varían considerablemente. Un híbrido puede ser más lento de entrenar y predecir debido a la complejidad de sus múltiples componentes.",
+  "La validación cruzada es crucial para evaluar el rendimiento y generalización del modelo híbrido, así como para la sintonización de hiperparámetros.",
+  "Los 'Hybrid Trees' no funcionarán bien si los problemas subyacentes (ej., datos insuficientes, ruido extremo) no son abordados por los componentes individuales, o si la combinación de algoritmos no aporta un beneficio sinérgico."
+)
+
+tabla_hybrid_trees <- data.frame(Criterio = criterios_hybrid_trees, Aplica = aplica_hybrid_trees, Detalles = detalles_hybrid_trees)
+
+tabla_hybrid_trees %>%
+  gt() %>%
+  tab_header(
+    title = "Guía rápida para elegir Modelos de 'Hybrid Trees'",
+    subtitle = "Combinaciones de Árboles de Decisión con otros Algoritmos"
+  ) %>%
+  tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+  tab_options(
+    heading.title.font.size = 14,
+    heading.subtitle.font.size = 12,
+    table.font.names = "Century Gothic",
+    table.font.size = 10,
+    data_row.padding = px(1)
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left", weight = 'bold')),
+    locations = list(cells_title(groups = c("title")))
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left")),
+    locations = list(cells_title(groups = c("subtitle")))
+  ) %>%
+  cols_width(
+    starts_with("Detalles") ~ px(500),
+    everything() ~ px(200)
+  ) %>%
+  as_raw_html()
+```
+
+
 ## Iterative Dichotomiser 3 (ID3)  {-}    
 
 ```{r, echo = FALSE,out.width='50%', fig.align='center'}
@@ -845,6 +928,87 @@ tabla_m5 %>%
 require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Decision Tree/Oblique Decision Trees.png"))
 ```
+
+```{r, echo = FALSE}
+criterios_oblique_dt <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica_oblique_dt <- c(
+  "✅ Supervisado",
+  "✅ Numérica o Categórica",
+  "✅ Numéricas (idealmente)",
+  "✅ Compleja (no lineal, diagonal)",
+  "❌ No es requisito",
+  "✅ Necesaria",
+  "❌ No es requisito",
+  "⚠️ Moderadamente",
+  "✅ Ventajoso (puede manejarla)",
+  "⚠️ Baja a Moderada",
+  "⚠️ Moderada a Baja",
+  "✅ Compatible y recomendada",
+  "❌ Datos altamente ruidosos o irrelevantes"
+)
+
+detalles_oblique_dt <- c(
+  "Clasificación o regresión. Extensión de los árboles de decisión tradicionales que utiliza combinaciones lineales (divisiones oblicuas) de las características.",
+  "Puede manejar tareas de regresión (respuesta numérica) o clasificación (respuesta categórica).",
+  "Funciona mejor con variables predictoras numéricas, ya que las divisiones son combinaciones lineales de estas.",
+  "Captura relaciones complejas y no lineales, incluyendo interacciones entre variables, a través de divisiones diagonales en el espacio de características.",
+  "No asume normalidad en los residuos o errores.",
+  "Las observaciones deben ser independientes para la validez del modelo.",
+  "No asume homoscedasticidad. La heterogeneidad en la varianza puede ser manejada por la naturaleza de las particiones.",
+  "Aunque son más robustos que algunos modelos lineales puros, los outliers extremos aún pueden influir en la determinación de las divisiones óptimas.",
+  "A menudo maneja mejor la multicolinealidad que los árboles axis-parallel o modelos lineales, ya que puede usar combinaciones de variables correlacionadas para una división.",
+  "La interpretabilidad es menor que la de los árboles de decisión simples (axis-parallel) debido a las divisiones oblicuas, que son más difíciles de visualizar y explicar intuitivamente.",
+  "El entrenamiento es significativamente más lento y computacionalmente más intensivo que los árboles axis-parallel debido a la búsqueda del mejor coeficiente para cada combinación lineal.",
+  "Esencial para la selección de hiperparámetros y para evaluar la capacidad de generalización del modelo, dada su mayor complejidad.",
+  "No funcionará bien si hay un ruido excesivo en los datos, si las relaciones son puramente axis-parallel (donde un árbol simple sería más eficiente), o si las características son predominantemente categóricas sin una codificación numérica significativa."
+)
+
+tabla_oblique_dt <- data.frame(Criterio = criterios_oblique_dt, Aplica = aplica_oblique_dt, Detalles = detalles_oblique_dt)
+
+tabla_oblique_dt %>%
+  gt() %>%
+  tab_header(
+    title = "Guía rápida para elegir Oblique Decision Trees",
+    subtitle = "Árboles de Decisión con Divisiones Diagonales"
+  ) %>%
+  tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+  tab_options(
+    heading.title.font.size = 14,
+    heading.subtitle.font.size = 12,
+    table.font.names = "Century Gothic",
+    table.font.size = 10,
+    data_row.padding = px(1)
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left", weight = 'bold')),
+    locations = list(cells_title(groups = c("title")))
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left")),
+    locations = list(cells_title(groups = c("subtitle")))
+  ) %>%
+  cols_width(
+    starts_with("Detalles") ~ px(500),
+    everything() ~ px(200)
+  ) %>%
+  as_raw_html()
+```
+
 
 ## Specific Implementations/Libraries {-}  
 

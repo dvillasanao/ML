@@ -287,6 +287,89 @@ require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Ensemble/CatBoost.png"))
 ```
 
+```{r, echo = FALSE}
+library(gt)
+
+criterios_catboost <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica_catboost <- c(
+  "✅ Supervisado",
+  "✅ Numérica o Categórica",
+  "✅ Numéricas y categóricas (nativas)",
+  "✅ Muy compleja (no lineal, interacciones)",
+  "❌ No es requisito",
+  "✅ Necesaria",
+  "❌ No es requisito",
+  "⚠️ Menos sensible (gradiente ordenado)",
+  "✅ Maneja bien",
+  "⚠️ Baja (modelo de caja negra)",
+  "✅ Alta (entrenamiento paralelo)",
+  "✅ Compatible y recomendada",
+  "❌ Datos muy limitados o bajo ruido"
+)
+
+detalles_catboost <- c(
+  "Algoritmo de boosting de árboles de decisión (tipo Gradient Boosting). Puede usarse para tareas de regresión, clasificación (binaria, multiclase) y ranking.",
+  "Puede manejar variables respuesta numéricas continuas (regresión) y categóricas (clasificación).",
+  "Una de sus fortalezas clave es el manejo nativo y eficiente de variables categóricas, sin necesidad de pre-procesamiento manual (ej., one-hot encoding).",
+  "Capaz de modelar relaciones altamente complejas y no lineales, incluyendo interacciones de orden superior entre variables, gracias a la combinación de múltiples árboles débiles.",
+  "No hace suposiciones sobre la distribución de los residuos. Es un método no paramétrico.",
+  "Las observaciones deben ser independientes entre sí para que los gradientes sean estimados correctamente.",
+  "No asume homoscedasticidad. Puede modelar patrones complejos de varianza.",
+  "Menos sensible a outliers que otros algoritmos de boosting debido a su técnica de 'Ordered Boosting' y el manejo de los gradientes ordenados, lo que reduce el sesgo en la estimación.",
+  "Generalmente robusto a la multicolinealidad. Los árboles pueden seleccionar características individualmente o en conjunto sin ser excesivamente penalizados por la correlación.",
+  "Como la mayoría de los modelos de boosting complejos, CatBoost es una 'caja negra'. La interpretabilidad directa de los coeficientes individuales es baja, aunque se pueden usar herramientas de explicabilidad (ej., SHAP, feature importance).",
+  "Alta. Está optimizado para la eficiencia y velocidad de entrenamiento, especialmente con GPUs. La predicción también es muy rápida.",
+  "Esencial para la selección de hiperparámetros y para obtener una estimación robusta del rendimiento generalizado del modelo.",
+  "No funciona tan bien con datasets extremadamente pequeños donde no hay suficiente información para que los árboles construyan patrones complejos. En datos con muy poco ruido, puede ser propenso a overfitting si no se regula adecuadamente."
+)
+
+tabla_catboost <- data.frame(Criterio = criterios_catboost, Aplica = aplica_catboost, Detalles = detalles_catboost)
+
+tabla_catboost %>%
+  gt() %>%
+  tab_header(
+    title = "Guía rápida para elegir CatBoost",
+    subtitle = "Gradient Boosting con Árboles de Decisión"
+  ) %>%
+  tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+  tab_options(
+    heading.title.font.size = 14,
+    heading.subtitle.font.size = 12,
+    table.font.names = "Century Gothic",
+    table.font.size = 10,
+    data_row.padding = px(1)
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left", weight = 'bold')),
+    locations = list(cells_title(groups = c("title")))
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left")),
+    locations = list(cells_title(groups = c("subtitle")))
+  ) %>%
+  cols_width(
+    starts_with("Detalles") ~ px(500),
+    everything() ~ px(200)
+  ) %>%
+  as_raw_html()
+```
+
+
 ## Extreme Gradient Boosting (XGBoost)  {-}   
 
 ```{r, echo = FALSE,out.width='50%', fig.align='center'}
@@ -573,6 +656,89 @@ tabla_gbrt %>%
 require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Ensemble/Isolation Forest.png"))
 ```
+
+```{r, echo = FALSE}
+library(gt)
+
+criterios_isolation_forest <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica_isolation_forest <- c(
+  "✅ No Supervisado",
+  "❌ No aplica (detección de anomalías)",
+  "✅ Numéricas (idealmente), Categóricas (codificadas)",
+  "✅ Compleja (aislamiento de anomalías)",
+  "❌ No es requisito",
+  "✅ Necesaria",
+  "❌ No es requisito",
+  "✅ Diseñado para ellos",
+  "⚠️ Puede afectar, pero a menudo robusto",
+  "⚠️ Baja (caja negra)",
+  "✅ Alta (especialmente en alta dimensión)",
+  "❌ No aplica directamente (sin etiquetas)",
+  "❌ Anomalías muy densas o datos altamente ruidosos"
+)
+
+detalles_isolation_forest <- c(
+  "Principalmente un modelo de detección de anomalías (outlier detection). No es un modelo predictivo supervisado tradicional.",
+  "No tiene una 'variable respuesta' en el sentido supervisado. Su objetivo es asignar una puntuación de anomalía a cada observación.",
+  "Funciona mejor con variables numéricas. Las categóricas deben ser codificadas (ej., one-hot encoding o codificación binaria) antes de su uso.",
+  "Busca aislar puntos de datos inusuales dividiendo aleatoriamente las características. Las anomalías requieren menos divisiones para ser aisladas.",
+  "No asume ninguna distribución subyacente para los datos ni para los 'residuos'.",
+  "Las observaciones deben ser independientes para que la aleatoriedad de las particiones sea efectiva en el aislamiento de puntos.",
+  "No asume homoscedasticidad. Su mecanismo de aislamiento no depende de varianzas constantes.",
+  "Está **diseñado** para identificar outliers. Los puntos atípicos se aíslan con menos divisiones en los árboles.",
+  "Si hay multicolinealidad, las variables correlacionadas podrían llevar a divisiones redundantes. Sin embargo, el enfoque de partición aleatoria a menudo lo hace bastante robusto.",
+  "Como un ensemble de árboles, la interpretabilidad de un punto específico puede ser baja. Se pueden obtener 'scores' de anomalía y 'feature importance' (aunque con cuidado) para entender qué características contribuyen al aislamiento.",
+  "Muy eficiente computacionalmente, especialmente en datasets grandes y de alta dimensión. Su costo computacional es lineal y no depende de la distancia/densidad de los puntos.",
+  "La validación cruzada no se aplica directamente ya que no hay una etiqueta 'verdadera'. La evaluación se realiza con métricas como el área bajo la curva ROC si se tienen etiquetas de anomalía para probar, o mediante inspección cualitativa.",
+  "No funciona bien si las anomalías están mezcladas de forma densa con los datos normales o si los datos tienen un ruido excesivo que enmascara los verdaderos patrones atípicos. También si las 'anomalías' son solo variaciones normales esperadas."
+)
+
+tabla_isolation_forest <- data.frame(Criterio = criterios_isolation_forest, Aplica = aplica_isolation_forest, Detalles = detalles_isolation_forest)
+
+tabla_isolation_forest %>%
+  gt() %>%
+  tab_header(
+    title = "Guía rápida para elegir Isolation Forest",
+    subtitle = "Algoritmo de Detección de Anomalías"
+  ) %>%
+  tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+  tab_options(
+    heading.title.font.size = 14,
+    heading.subtitle.font.size = 12,
+    table.font.names = "Century Gothic",
+    table.font.size = 10,
+    data_row.padding = px(1)
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left", weight = 'bold')),
+    locations = list(cells_title(groups = c("title")))
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left")),
+    locations = list(cells_title(groups = c("subtitle")))
+  ) %>%
+  cols_width(
+    starts_with("Detalles") ~ px(500),
+    everything() ~ px(200)
+  ) %>%
+  as_raw_html()
+```
+
 
 ## Light Gradient Boosting Machine (LightGBM)  {-}  
 
