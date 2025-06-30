@@ -109,12 +109,178 @@ require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Dimensionality Reduction/ICA.png"))
 ```
 
+```{r, echo = FALSE}
+library(gt)
+
+criterios_ica <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica_ica <- c(
+  "✅ No Supervisado",
+  "❌ No aplica directamente",
+  "✅ Numéricas",
+  "✅ Lineal (separación de fuentes), pero fuentes no Gaussianas",
+  "❌ No es requisito",
+  "❌ No aplica directamente",
+  "❌ No es requisito",
+  "⚠️ Sí (puede afectar estimación)",
+  "✅ Ideal (busca independencia más allá de correlación)",
+  "⚠️ Moderada (si las fuentes son claras)",
+  "✅ Moderada a Alta",
+  "❌ No aplica directamente (evaluación de separación)",
+  "❌ Fuentes Gaussianas o dependientes"
+)
+
+detalles_ica <- c(
+  "Algoritmo de aprendizaje no supervisado utilizado para separar una señal multivariada en subcomponentes aditivos independientes no Gaussianos (fuentes latentes). Es una extensión de PCA pero busca independencia estadística, no solo incorrelación.",
+  "ICA no tiene una 'variable respuesta'. Su objetivo es descomponer un conjunto de datos observados en un conjunto de componentes subyacentes que son estadísticamente independientes entre sí.",
+  "Las variables de entrada deben ser numéricas. Se asume que las observaciones son mezclas lineales de las fuentes independientes.",
+  "Asume que los datos observados son una mezcla lineal de fuentes subyacentes **independientes y no Gaussianas**. La relación se busca para identificar esas fuentes ocultas.",
+  "No hace suposiciones sobre la normalidad de los residuos. De hecho, su fuerza reside en la asunción de **no Gaussianidad** de las fuentes originales.",
+  "ICA busca la independencia estadística de los componentes subyacentes, lo que va más allá de la incorrelación (como en PCA). Por lo tanto, el concepto de 'errores independientes' no se aplica de la misma manera.",
+  "No asume homoscedasticidad. Se centra en la separación de las fuentes, no en la varianza constante de un error.",
+  "Sí, ICA puede ser sensible a outliers, ya que estos pueden distorsionar la estimación de las distribuciones no Gaussianas de las fuentes, afectando la separación.",
+  "ICA es particularmente útil en presencia de multicolinealidad. De hecho, busca separar fuentes que pueden estar combinadas en los datos observados, incluso si están correlacionadas en la mezcla pero son independientes en su origen.",
+  "La interpretabilidad es moderada. Si las 'fuentes' subyacentes tienen un significado físico (ej., señales cerebrales, voces separadas en una grabación), los componentes resultantes pueden ser muy interpretables. De lo contrario, pueden ser abstractos.",
+  "Moderadamente eficiente. El costo computacional es mayor que PCA, pero generalmente manejable para datasets de tamaño medio. Algunos algoritmos (ej., FastICA) son bastante rápidos.",
+  "La validación cruzada no se aplica directamente, ya que no hay una métrica de rendimiento supervisada. La evaluación se realiza a menudo cualitativamente (inspección de las fuentes separadas) o utilizando métricas de calidad de separación si se conocen las fuentes verdaderas.",
+  "ICA no funciona bien si: 1) las fuentes subyacentes son Gaussianas (en cuyo caso ICA no puede distinguirlas de manera única), 2) las fuentes no son estadísticamente independientes, o 3) hay un ruido muy significativo que enmascara las señales de las fuentes."
+)
+
+tabla_ica <- data.frame(Criterio = criterios_ica, Aplica = aplica_ica, Detalles = detalles_ica)
+
+tabla_ica %>%
+  gt() %>%
+  tab_header(
+    title = "Guía rápida para elegir Independent Component Analysis (ICA)",
+    subtitle = "Análisis de Componentes Independientes"
+  ) %>%
+  tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+  tab_options(
+    heading.title.font.size = 14,
+    heading.subtitle.font.size = 12,
+    table.font.names = "Century Gothic",
+    table.font.size = 10,
+    data_row.padding = px(1)
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left", weight = 'bold')),
+    locations = list(cells_title(groups = c("title")))
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left")),
+    locations = list(cells_title(groups = c("subtitle")))
+  ) %>%
+  cols_width(
+    starts_with("Detalles") ~ px(500),
+    everything() ~ px(200)
+  ) %>%
+  as_raw_html()
+```
+
+
 ## Kernel PCA (KPCA) {-}   
 
 ```{r, echo = FALSE,out.width='50%', fig.align='center'}
 require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Dimensionality Reduction/KPCA.png"))
 ```
+
+```{r, echo = FALSE}
+library(gt)
+
+criterios_kpca <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica_kpca <- c(
+  "✅ No Supervisado (Reducción de dimensionalidad)",
+  "❌ No aplica directamente",
+  "✅ Numéricas",
+  "✅ Muy compleja (no lineal)",
+  "❌ No es requisito",
+  "❌ No aplica directamente",
+  "❌ No es requisito",
+  "⚠️ Sí (similar a PCA, en el espacio transformado)",
+  "✅ Ideal (maneja relaciones no lineales complejas)",
+  "❌ Baja (transformación no lineal)",
+  "⚠️ Moderada a Baja (costo computacional alto)",
+  "❌ No aplica directamente (métrica de reconstrucción)",
+  "❌ Datos lineales o ruido excesivo"
+)
+
+detalles_kpca <- c(
+  "Algoritmo de reducción de dimensionalidad no supervisado que extiende PCA a relaciones no lineales. Transforma los datos a un espacio de mayor dimensión (espacio de características) donde pueden ser linealmente separables, y luego aplica PCA en ese nuevo espacio.",
+  "KPCA no tiene una 'variable respuesta'. Su objetivo es encontrar un conjunto de componentes principales no lineales que representen la mayor varianza de los datos en un espacio transformado.",
+  "Las variables de entrada deben ser numéricas. Es crucial escalar las características antes de aplicar KPCA, especialmente si se usan ciertos tipos de kernels.",
+  "Es capaz de capturar relaciones muy complejas y no lineales entre las variables al proyectar implícitamente los datos a un espacio de dimensionalidad superior donde las relaciones pueden ser lineales.",
+  "No asume normalidad en los residuos. Su enfoque es la varianza en el espacio de características, no los errores de predicción.",
+  "No aplica el concepto de independencia de errores de la misma manera que los modelos supervisados. Se enfoca en la estructura de los datos mismos.",
+  "No asume homoscedasticidad. Su objetivo es encontrar la variabilidad en el espacio transformado.",
+  "Sí, KPCA puede ser sensible a outliers, ya que estos pueden influir significativamente en la matriz de kernel y, por lo tanto, en los componentes principales extraídos del espacio de características.",
+  "Es muy efectivo para manejar la multicolinealidad, ya que su propósito es reducir la dimensionalidad y aprender representaciones de datos, incluso cuando las características originales están altamente correlacionadas.",
+  "La interpretabilidad es baja. A diferencia de PCA estándar, donde los componentes son combinaciones lineales de las características originales, los componentes de KPCA son transformaciones no lineales y a menudo no tienen una interpretación directa en el espacio original.",
+  "El costo computacional de KPCA es más alto que el de PCA, especialmente para grandes datasets, ya que implica calcular una matriz de kernel de tamaño N x N (donde N es el número de observaciones). Esto puede ser lento y requerir mucha memoria.",
+  "La validación cruzada no se aplica directamente en el sentido supervisado. La 'validación' de KPCA a menudo implica evaluar la calidad de la reconstrucción de los datos desde el espacio de características reducido, o la mejora en el rendimiento de un modelo supervisado posterior que utilice las características de KPCA.",
+  "No funciona bien si: 1) la relación entre las características es realmente lineal (en cuyo caso PCA estándar sería más simple y eficiente), 2) el dataset es extremadamente grande debido al costo computacional de la matriz de kernel, 3) los datos están dominados por ruido, lo que puede llevar a aprender patrones espurios."
+)
+
+tabla_kpca <- data.frame(Criterio = criterios_kpca, Aplica = aplica_kpca, Detalles = detalles_kpca)
+
+tabla_kpca %>%
+  gt() %>%
+  tab_header(
+    title = "Guía rápida para elegir Kernel PCA (KPCA)",
+    subtitle = "Análisis de Componentes Principales No Lineal"
+  ) %>%
+  tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+  tab_options(
+    heading.title.font.size = 14,
+    heading.subtitle.font.size = 12,
+    table.font.names = "Century Gothic",
+    table.font.size = 10,
+    data_row.padding = px(1)
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left", weight = 'bold')),
+    locations = list(cells_title(groups = c("title")))
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left")),
+    locations = list(cells_title(groups = c("subtitle")))
+  ) %>%
+  cols_width(
+    starts_with("Detalles") ~ px(500),
+    everything() ~ px(200)
+  ) %>%
+  as_raw_html()
+```
+
   
 ## Linear Discriminant Analysis (LDA)  {-}    
 
@@ -217,6 +383,89 @@ tabla_lda %>%
 require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Dimensionality Reduction/LLE.png"))
 ```
+
+```{r, echo = FALSE}
+library(gt)
+
+criterios_lle <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica_lle <- c(
+  "✅ No Supervisado (Reducción de dimensionalidad no lineal)",
+  "❌ No aplica directamente",
+  "✅ Numéricas",
+  "✅ Muy compleja (captura la estructura local)",
+  "❌ No es requisito",
+  "❌ No aplica directamente",
+  "❌ No es requisito",
+  "⚠️ Sí (muy)",
+  "✅ Maneja bien (se enfoca en vecinos locales)",
+  "⚠️ Baja (las nuevas dimensiones no tienen significado directo)",
+  "⚠️ Moderada a Baja (costo computacional cuadrático/cúbico)",
+  "❌ No aplica directamente (evaluación de la preservación de la topología)",
+  "❌ Datos ruidosos, muestreo escaso, dimensiones muy altas"
+)
+
+detalles_lle <- c(
+  "Algoritmo de reducción de dimensionalidad no supervisado que busca preservar la estructura local de los datos. Proyecta los puntos a un espacio de menor dimensión manteniendo las relaciones de ponderación lineal entre un punto y sus vecinos más cercanos.",
+  "LLE no tiene una 'variable respuesta'. Su objetivo es encontrar una representación de baja dimensión que conserve la geometría intrínseca de los datos de alta dimensión.",
+  "Las variables de entrada deben ser numéricas. Es importante que las características estén bien escaladas.",
+  "Captura relaciones muy complejas y no lineales al asumir que cada punto puede ser reconstruido linealmente a partir de sus vecinos más cercanos. Estas relaciones lineales locales se preservan en el espacio de menor dimensión.",
+  "No hace suposiciones sobre la normalidad de los residuos ni la distribución de los datos, ya que su enfoque es la geometría local.",
+  "No aplica el concepto de independencia de errores como en modelos predictivos. Se enfoca en cómo los puntos se relacionan con sus vecinos.",
+  "No asume homoscedasticidad. El objetivo es preservar las distancias relativas en el vecindario local.",
+  "Sí, LLE es muy sensible a los outliers y al ruido. Los puntos atípicos pueden distorsionar significativamente las ponderaciones de reconstrucción local, llevando a incrustaciones incorrectas.",
+  "Maneja bien la multicolinealidad, ya que su algoritmo se basa en las relaciones locales entre los puntos, no en la independencia de las características globales.",
+  "La interpretabilidad es baja. Las nuevas dimensiones obtenidas no suelen tener un significado físico o intuitivo directo en términos de las características originales. Se utiliza principalmente para visualización o como pre-procesamiento.",
+  "La velocidad y eficiencia pueden ser un problema. El algoritmo implica resolver un problema de optimización que puede tener una complejidad cuadrática o incluso cúbica con respecto al número de muestras, lo que lo hace menos escalable para datasets muy grandes.",
+  "La validación cruzada no se aplica directamente. La evaluación de LLE se basa en la calidad de la incrustación (ej., la preservación de las distancias o la topología local) y su utilidad en tareas posteriores como la clasificación o el clustering.",
+  "No funciona bien si: 1) los datos son muy ruidosos, 2) el muestreo de la variedad intrínseca es escaso (pocos puntos para capturar la estructura local), 3) la dimensionalidad intrínseca es muy alta, o 4) el dataset es demasiado grande para su costo computacional."
+)
+
+tabla_lle <- data.frame(Criterio = criterios_lle, Aplica = aplica_lle, Detalles = detalles_lle)
+
+tabla_lle %>%
+  gt() %>%
+  tab_header(
+    title = "Guía rápida para elegir Locally Linear Embedding (LLE)",
+    subtitle = "Reducción de Dimensionalidad No Lineal (Manifold Learning)"
+  ) %>%
+  tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+  tab_options(
+    heading.title.font.size = 14,
+    heading.subtitle.font.size = 12,
+    table.font.names = "Century Gothic",
+    table.font.size = 10,
+    data_row.padding = px(1)
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left", weight = 'bold')),
+    locations = list(cells_title(groups = c("title")))
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left")),
+    locations = list(cells_title(groups = c("subtitle")))
+  ) %>%
+  cols_width(
+    starts_with("Detalles") ~ px(500),
+    everything() ~ px(200)
+  ) %>%
+  as_raw_html()
+```
+
    
 ## Mixture Discriminant Analysis (MDA)  {-}   
 
@@ -1236,6 +1485,89 @@ tabla_rda %>%
 require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Dimensionality Reduction/t-SNE.png"))
 ```
+
+```{r, echo = FALSE}
+library(gt)
+
+criterios_tsne <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica_tsne <- c(
+  "✅ No Supervisado (Reducción de dimensionalidad para visualización)",
+  "❌ No aplica directamente",
+  "✅ Numéricas",
+  "✅ Muy compleja (preserva la estructura no lineal local y global)",
+  "❌ No es requisito",
+  "❌ No aplica directamente",
+  "❌ No es requisito",
+  "⚠️ Sí (puede mover puntos, pero menos que LLE)",
+  "✅ Maneja bien (se enfoca en relaciones de distancia)",
+  "⚠️ Baja (las nuevas dimensiones no tienen significado directo)",
+  "⚠️ Baja a Moderada (costo computacional alto para N grande)",
+  "❌ No aplica directamente (evaluación visual)",
+  "❌ Datos extremadamente grandes, ruido excesivo, significado de distancias no euclidianas"
+)
+
+detalles_tsne <- c(
+  "Algoritmo de reducción de dimensionalidad no supervisado, principalmente utilizado para **visualización de datos de alta dimensión**. Convierte las distancias entre puntos en probabilidades de similitud y las minimiza en un espacio de baja dimensión.",
+  "t-SNE no tiene una 'variable respuesta'. Su objetivo es crear un mapa de baja dimensión donde los puntos similares se agrupan y los diferentes se separan, haciendo visibles clústeres y estructuras.",
+  "Las variables de entrada deben ser numéricas. Es crucial pre-procesar y escalar los datos adecuadamente antes de aplicar t-SNE.",
+  "Captura relaciones no lineales complejas entre los datos, enfocándose en preservar las proximidades entre puntos (vecinos cercanos) en el espacio de alta y baja dimensión. Utiliza una distribución t de Student en el espacio de baja dimensión para aliviar el problema de 'aglomeración'.",
+  "No hace suposiciones sobre la normalidad de los residuos ni la distribución de los datos. Se basa en la optimización de las distribuciones de probabilidad de similitud.",
+  "No aplica el concepto de independencia de errores como en modelos predictivos. Se enfoca en cómo los puntos se agrupan y se separan en un espacio dimensional reducido.",
+  "No asume homoscedasticidad. Su objetivo es preservar las similitudes de probabilidad entre los puntos.",
+  "Sí, t-SNE puede ser sensible a outliers. Aunque su robustez es mayor que la de LLE, un punto anómalo puede atraer a otros puntos o aparecer aislado de manera engañosa. El pre-procesamiento para manejar outliers puede ser útil.",
+  "Maneja bien la multicolinealidad, ya que su algoritmo se centra en las distancias y similitudes entre puntos, no en las relaciones directas entre las características originales.",
+  "La interpretabilidad es baja en el sentido de que las nuevas dimensiones no tienen un significado directo en términos de las características originales. Sin embargo, su salida visual es altamente interpretable para identificar clústeres o patrones.",
+  "La velocidad y eficiencia pueden ser un problema para datasets muy grandes. Su complejidad computacional es típicamente O(N log N) o O(N^2) dependiendo de la implementación. Las implementaciones optimizadas (ej., Barnes-Hut t-SNE) son más rápidas.",
+  "La validación cruzada no se aplica directamente. La evaluación de t-SNE es predominantemente visual y cualitativa. Se pueden usar métricas de preservación de proximidad o la utilidad de la incrustación para tareas de clustering posteriores.",
+  "No funciona bien si: 1) el dataset es extremadamente grande (millones de puntos) debido a su complejidad computacional, 2) los datos tienen ruido excesivo que oscurece las relaciones de similitud, 3) se necesita que las distancias en la visualización se interpreten como distancias absolutas (t-SNE solo preserva la proximidad relativa, no las distancias exactas), o 4) la estructura subyacente es puramente lineal (PCA sería más adecuado)."
+)
+
+tabla_tsne <- data.frame(Criterio = criterios_tsne, Aplica = aplica_tsne, Detalles = detalles_tsne)
+
+tabla_tsne %>%
+  gt() %>%
+  tab_header(
+    title = "Guía rápida para elegir t-Distributed Stochastic Neighbor Embedding (t-SNE)",
+    subtitle = "Reducción de Dimensionalidad para Visualización"
+  ) %>%
+  tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+  tab_options(
+    heading.title.font.size = 14,
+    heading.subtitle.font.size = 12,
+    table.font.names = "Century Gothic",
+    table.font.size = 10,
+    data_row.padding = px(1)
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left", weight = 'bold')),
+    locations = list(cells_title(groups = c("title")))
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left")),
+    locations = list(cells_title(groups = c("subtitle")))
+  ) %>%
+  cols_width(
+    starts_with("Detalles") ~ px(500),
+    everything() ~ px(200)
+  ) %>%
+  as_raw_html()
+```
+
 
 ## Uniform Manifold Approximation and Projection (UMAP) {-}   
 

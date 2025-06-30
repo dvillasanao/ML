@@ -14,6 +14,89 @@ require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Intance-Based/CBR.png"))
 ```
 
+```{r, echo = FALSE}
+library(gt)
+
+criterios_cbr <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica_cbr <- c(
+  "✅ Supervisado / Semi-supervisado",
+  "✅ Numérica o Categórica",
+  "✅ Mixtas (numéricas, categóricas, textuales, etc.)",
+  "✅ Compleja (analogías, no lineal)",
+  "❌ No es requisito",
+  "❌ No aplica directamente",
+  "❌ No es requisito",
+  "⚠️ Sí (un caso atípico puede generar una mala coincidencia)",
+  "✅ Maneja bien (si la similitud es robusta)",
+  "✅ Muy alta (se explica a partir de casos reales)",
+  "⚠️ Moderada a Baja (búsqueda intensiva en grandes bases de casos)",
+  "✅ Compatible y muy útil",
+  "❌ Poca diversidad de casos o alta dimensionalidad"
+)
+
+detalles_cbr <- c(
+  "Paradigma de resolución de problemas que se basa en la experiencia. Resuelve nuevos problemas adaptando soluciones a problemas similares resueltos en el pasado (casos). Es un ciclo de recuperar, reusar, revisar y retener.",
+  "La 'variable respuesta' es la solución o resultado del caso. Puede ser un valor numérico (ej., precio de venta), una categoría (ej., diagnóstico), o una acción compleja (ej., plan de tratamiento).",
+  "Las 'variables predictoras' son las características que describen el problema o el contexto del caso. Pueden ser de tipos muy diversos, incluyendo descripciones textuales, valores numéricos, categorías, etc.",
+  "La relación entre las características del problema y la solución es inherentemente compleja y no lineal. Se basa en la noción de 'similitud' o 'analogía' entre el nuevo problema y los casos almacenados.",
+  "No hace suposiciones estadísticas sobre la normalidad de los residuos, ya que no es un modelo paramétrico basado en regresión.",
+  "El concepto de independencia de errores no aplica directamente. La efectividad se basa en la calidad de la base de casos y la capacidad de encontrar casos relevantes. La 'independencia' se refiere más a que cada caso es una instancia separada de experiencia.",
+  "No asume homoscedasticidad. La solución se deriva del caso más similar, no de un promedio ponderado que dependa de varianzas.",
+  "Sí, CBR puede ser sensible a outliers si un caso atípico se considera erróneamente muy similar a un nuevo problema. Sin embargo, si los outliers se identifican y gestionan adecuadamente en la base de casos, o si la métrica de similitud es robusta, la sensibilidad puede mitigarse.",
+  "CBR puede manejar la multicolinealidad de manera natural si la función de similitud es capaz de ponderar las características de forma inteligente o si las características redundantes no afectan la identificación de casos realmente similares. No es tan susceptible como los modelos lineales.",
+  "La interpretabilidad es una de sus mayores fortalezas. La solución se proporciona junto con los casos pasados más similares, lo que permite al usuario entender 'por qué' se llegó a esa solución. Es un modelo transparente.",
+  "La velocidad y eficiencia pueden variar significativamente. La fase de 'recuperación' (buscar el caso más similar) puede ser computacionalmente intensiva para bases de casos muy grandes o de alta dimensionalidad. Las técnicas de indexación son cruciales para la escalabilidad.",
+  "Es compatible y muy útil. Se puede evaluar la precisión de la solución predicha. La validación cruzada puede ayudar a determinar la robustez del sistema y la efectividad de las funciones de similitud y adaptación.",
+  "No funciona bien si: 1) la base de casos es demasiado pequeña o no es representativa del dominio del problema, 2) no hay suficientes casos similares al nuevo problema, 3) la dimensionalidad de las características es extremadamente alta y dificulta el cálculo de similitudes, o 4) la definición de 'similitud' es ambigua o difícil de cuantificar."
+)
+
+tabla_cbr <- data.frame(Criterio = criterios_cbr, Aplica = aplica_cbr, Detalles = detalles_cbr)
+
+tabla_cbr %>%
+  gt() %>%
+  tab_header(
+    title = "Guía rápida para elegir Case-Based Reasoning (CBR)",
+    subtitle = "Razonamiento a partir de la Experiencia Pasada"
+  ) %>%
+  tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+  tab_options(
+    heading.title.font.size = 14,
+    heading.subtitle.font.size = 12,
+    table.font.names = "Century Gothic",
+    table.font.size = 10,
+    data_row.padding = px(1)
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left", weight = 'bold')),
+    locations = list(cells_title(groups = c("title")))
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left")),
+    locations = list(cells_title(groups = c("subtitle")))
+  ) %>%
+  cols_width(
+    starts_with("Detalles") ~ px(500),
+    everything() ~ px(200)
+  ) %>%
+  as_raw_html()
+```
+
+
 
 ## k - Nearest Neighbour (kNN)  {-}    
 
@@ -122,6 +205,89 @@ tabla_knn %>%
 require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Intance-Based/Kernel Regression.png"))
 ```
+
+```{r}
+library(gt)
+
+criterios_kernel_reg <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica_kernel_reg <- c(
+  "✅ Supervisado",
+  "✅ Numérica continua",
+  "✅ Numéricas",
+  "✅ Muy compleja (altamente no lineal)",
+  "❌ No es requisito",
+  "✅ Necesaria",
+  "❌ No es requisito (pero puede ser modelada)",
+  "⚠️ Sí (muy)",
+  "✅ Maneja bien (si la distancia es apropiada)",
+  "⚠️ Baja (no hay coeficientes fijos)",
+  "⚠️ Baja a Moderada (costo computacional alto para N grande)",
+  "✅ Compatible y esencial",
+  "❌ Dimensionalidad muy alta, ruido excesivo, datos escasos"
+)
+
+detalles_kernel_reg <- c(
+  "Método de regresión no paramétrico que estima el valor de la variable respuesta en un punto basándose en un promedio ponderado de las variables respuesta de los puntos vecinos en el conjunto de entrenamiento. La ponderación se determina por una función de kernel y un parámetro de ancho de banda.",
+  "La variable dependiente debe ser numérica y continua.",
+  "Las variables predictoras deben ser numéricas para calcular distancias. Es crucial pre-procesar y escalar los datos adecuadamente.",
+  "Es capaz de capturar relaciones altamente complejas y no lineales entre las variables, adaptándose localmente a la forma de los datos sin asumir una forma funcional predefinida.",
+  "No hace suposiciones sobre la normalidad de los residuos ni la distribución subyacente de los datos, ya que es un método no paramétrico.",
+  "Asume que los errores asociados a las observaciones son independientes entre sí.",
+  "No asume homoscedasticidad. Puede modelar cómo la varianza de la respuesta cambia en diferentes regiones del espacio de las características, ya que la estimación es local.",
+  "Sí, la Regresión Kernel es muy sensible a los outliers. Un outlier puede tener una influencia desproporcionada en la estimación de su vecindario local, especialmente si el ancho de banda es pequeño. La presencia de ruido también puede degradar el rendimiento.",
+  "Maneja bien la multicolinealidad, ya que su enfoque se basa en las distancias entre puntos y en la ponderación de vecinos, no en la inversión de matrices que se ve afectada por la colinealidad.",
+  "La interpretabilidad es baja en el sentido tradicional. No produce coeficientes fijos o una ecuación explícita. La 'explicación' se basa en qué vecinos contribuyeron a la predicción, pero no es una relación simple y global.",
+  "La velocidad y eficiencia pueden ser un problema para datasets grandes. Para hacer una predicción para un nuevo punto, se necesita calcular la distancia a *todos* los puntos de entrenamiento, lo que resulta en una complejidad computacional de O(N) por predicción, donde N es el número de muestras. El ajuste del ancho de banda también es costoso.",
+  "Es compatible y **esencial** para la Regresión Kernel. Permite seleccionar el ancho de banda óptimo del kernel, que es un hiperparámetro crítico que controla el equilibrio entre el sesgo y la varianza del modelo.",
+  "No funciona bien si: 1) la **dimensionalidad de las características es muy alta** (sufre la 'maldición de la dimensionalidad', donde los datos se vuelven escasos en espacios de alta dimensión, haciendo que los 'vecinos' sean menos representativos), 2) los datos son **muy ruidosos**, o 3) el **dataset es muy pequeño** para capturar patrones locales significativos o **muy grande** para ser computacionalmente eficiente."
+)
+
+tabla_kernel_reg <- data.frame(Criterio = criterios_kernel_reg, Aplica = aplica_kernel_reg, Detalles = detalles_kernel_reg)
+
+tabla_kernel_reg %>%
+  gt() %>%
+  tab_header(
+    title = "Guía rápida para elegir Kernel Regression",
+    subtitle = "Regresión no Paramétrica Basada en la Proximidad Local"
+  ) %>%
+  tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+  tab_options(
+    heading.title.font.size = 14,
+    heading.subtitle.font.size = 12,
+    table.font.names = "Century Gothic",
+    table.font.size = 10,
+    data_row.padding = px(1)
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left", weight = 'bold')),
+    locations = list(cells_title(groups = c("title")))
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left")),
+    locations = list(cells_title(groups = c("subtitle")))
+  ) %>%
+  cols_width(
+    starts_with("Detalles") ~ px(500),
+    everything() ~ px(200)
+  ) %>%
+  as_raw_html()
+```
+
 
 ## Learning Vector Quantization (LVQ)  {-} 
 
@@ -446,3 +612,87 @@ tabla_som %>%
 require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Intance-Based/PBL.png"))
 ```
+
+
+```{r, echo = FALSE}
+library(gt)
+
+criterios_prototype_based <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica_prototype_based <- c(
+  "✅ Supervisado / No Supervisado",
+  "✅ Numérica o Categórica (depende de la tarea)",
+  "✅ Numéricas (principalmente)",
+  "✅ Compleja (a través de la proximidad a prototipos)",
+  "❌ No es requisito",
+  "❌ No aplica directamente",
+  "❌ No es requisito",
+  "⚠️ Sí (la selección de prototipos puede ser afectada)",
+  "✅ Maneja bien (la distancia es clave)",
+  "✅ Muy alta (transparente por naturaleza)",
+  "⚠️ Moderada (depende del número de prototipos y búsqueda)",
+  "✅ Compatible y útil",
+  "❌ Datos de muy alta dimensionalidad o con ruido excesivo"
+)
+
+detalles_prototype_based <- c(
+  "Clase de algoritmos de Machine Learning que construyen modelos identificando ejemplos representativos, llamados **prototipos**. Estos prototipos actúan como plantillas o resúmenes de los datos. Se utiliza tanto en clasificación como en clustering.",
+  "La 'variable respuesta' es la etiqueta de clase (en clasificación supervisada) o la pertenencia a un clúster (en clustering no supervisado). Para regresión, el prototipo puede estar asociado con un valor numérico.",
+  "Las variables predictoras suelen ser numéricas, ya que la mayoría de los algoritmos basados en prototipos se basan en métricas de distancia (euclídea, manhattan, etc.). La escalada de características es a menudo crucial.",
+  "Las relaciones entre las variables se capturan de forma no lineal a través de la proximidad a los prototipos. Un nuevo punto de datos se clasifica o agrupa según su similitud con los prototipos existentes. La complejidad de la relación depende de cómo se definan y usen los prototipos.",
+  "No hace suposiciones sobre la normalidad de los residuos ni la distribución de los datos, ya que no es un modelo paramétrico que dependa de esas suposiciones.",
+  "El concepto de independencia de errores no aplica directamente. El aprendizaje se basa en la representación de datos a través de prototipos, no en la modelación de errores residuales.",
+  "No asume homoscedasticidad. La decisión se basa en la proximidad o la ponderación local, que no dependen de la varianza constante del error.",
+  "Sí, el aprendizaje basado en prototipos puede ser sensible a los outliers. Si un outlier es seleccionado como prototipo, o si su presencia influye significativamente en la posición de los prototipos, puede sesgar las clasificaciones o agrupaciones. Algunas variantes tienen mecanismos para mitigar esto.",
+  "Maneja bien la multicolinealidad. Dado que se basa en métricas de distancia, las características correlacionadas simplemente contribuirán a la proximidad de manera consistente, sin los problemas de inestabilidad que se encuentran en los modelos lineales basados en la inversión de matrices.",
+  "La interpretabilidad es **muy alta**. Los prototipos son puntos de datos reales (o representantes de clústeres) que se pueden examinar y comprender. Esto permite entender 'por qué' se hizo una predicción o 'qué' representa un grupo de datos, señalando un ejemplo concreto.",
+  "La velocidad y eficiencia son moderadas. La fase de aprendizaje puede ser rápida (si los prototipos son solo ejemplos del conjunto de datos) o más lenta (si los prototipos se optimizan). La fase de predicción implica calcular distancias a todos los prototipos, lo que puede ser lento para muchos prototipos o alta dimensionalidad.",
+  "Es compatible y útil. Se puede utilizar para evaluar la robustez del modelo y optimizar hiperparámetros como el número de prototipos, la métrica de distancia o el ancho de banda del kernel (si aplica).",
+  "No funciona bien si: 1) los datos tienen una **dimensionalidad extremadamente alta** (sufre la maldición de la dimensionalidad, haciendo que las distancias sean menos significativas), 2) los datos son **muy ruidosos** y los prototipos pueden ser seleccionados incorrectamente, o 3) no hay una estructura clara de 'prototipos' o 'representantes' dentro de los datos."
+)
+
+tabla_prototype_based <- data.frame(Criterio = criterios_prototype_based, Aplica = aplica_prototype_based, Detalles = detalles_prototype_based)
+
+tabla_prototype_based %>%
+  gt() %>%
+  tab_header(
+    title = "Guía rápida para elegir el Aprendizaje Basado en Prototipos",
+    subtitle = "Modelos que Aprenden a partir de Ejemplos Representativos"
+  ) %>%
+  tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+  tab_options(
+    heading.title.font.size = 14,
+    heading.subtitle.font.size = 12,
+    table.font.names = "Century Gothic",
+    table.font.size = 10,
+    data_row.padding = px(1)
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left", weight = 'bold')),
+    locations = list(cells_title(groups = c("title")))
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left")),
+    locations = list(cells_title(groups = c("subtitle")))
+  ) %>%
+  cols_width(
+    starts_with("Detalles") ~ px(500),
+    everything() ~ px(200)
+  ) %>%
+  as_raw_html()
+```
+

@@ -315,6 +315,89 @@ require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Bayesian/BLR.png"))
 ```
 
+```{r, echo = FALSE}
+library(gt)
+
+criterios_blr <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica_blr <- c(
+  "✅ Supervisado",
+  "✅ Numérica continua",
+  "✅ Numéricas y categóricas",
+  "✅ Lineal",
+  "✅ Necesaria (asunción para el error)",
+  "✅ Necesaria",
+  "✅ Necesaria",
+  "⚠️ Sí (puede mitigar con priors robustos)",
+  "✅ Maneja bien (a través de priors)",
+  "✅ Alta (distribuciones de coeficientes)",
+  "⚠️ Moderada a Baja (muestreo, computacionalmente intensivo)",
+  "✅ Compatible y muy útil",
+  "❌ Relaciones no lineales o datos no normales"
+)
+
+detalles_blr <- c(
+  "Modelo de regresión supervisado que aborda la regresión lineal desde una perspectiva Bayesiana. En lugar de estimar un único valor para los coeficientes, estima una distribución de probabilidad para ellos, incorporando conocimiento previo (priors).",
+  "La variable dependiente debe ser numérica y continua, al igual que en la regresión lineal clásica.",
+  "Las variables predictoras pueden ser numéricas o categóricas (estas últimas deben ser codificadas, por ejemplo, con one-hot encoding).",
+  "Asume una relación lineal entre las variables predictoras y la media de la variable respuesta. La linealidad es en los parámetros, no necesariamente en las características (se pueden incluir términos polinómicos).",
+  "Asume que los errores (residuos) se distribuyen normalmente (o con otra distribución especificada) con media cero, similar a la regresión lineal clásica. Sin embargo, la elección de *priors* robustos puede mitigar la sensibilidad a la normalidad.",
+  "Asume que los errores asociados a las observaciones son independientes entre sí. Esto es crucial para la validez de la inferencia.",
+  "Asume que la varianza de los errores es constante en todos los niveles de las variables predictoras (homoscedasticidad). Al igual que la normalidad, *priors* sobre la varianza pueden influir.",
+  "Sí, la BLR puede ser sensible a outliers si se usan priors no informativos o poco robustos. Sin embargo, la flexibilidad Bayesiana permite el uso de distribuciones *prior* más robustas (ej., t-Student) para los errores o los parámetros, lo que puede mitigar este problema.",
+  "Maneja la multicolinealidad de manera más robusta que la regresión lineal OLS mediante la incorporación de *priors* informativos en los coeficientes. Estos *priors* pueden 'encoger' los coeficientes y estabilizar la estimación, actuando como una forma de regularización.",
+  "La interpretabilidad es alta. En lugar de un solo valor, se obtienen distribuciones de probabilidad para cada coeficiente, lo que proporciona una medida de la incertidumbre. Esto permite afirmaciones probabilísticas sobre el efecto de cada predictor.",
+  "El entrenamiento puede ser computacionalmente más intensivo y lento que la regresión lineal OLS, especialmente para grandes datasets o modelos complejos, ya que a menudo requiere métodos de muestreo como Monte Carlo de Cadena de Markov (MCMC). La predicción es rápida una vez entrenado.",
+  "Es compatible y muy útil. Permite evaluar la robustez del modelo y la sensibilidad a la elección de *priors*. La validación cruzada Bayesiana (ej., Leave-One-Out Cross-Validation LOO) es una forma robusta de evaluar el rendimiento predictivo.",
+  "No funciona bien si la relación subyacente entre las variables no es lineal y no se incorporan transformaciones adecuadas (ej., términos polinómicos). Tampoco es ideal si los datos violan gravemente los supuestos de distribución de errores y no se usan *priors* o modelos de error robustos."
+)
+
+tabla_blr <- data.frame(Criterio = criterios_blr, Aplica = aplica_blr, Detalles = detalles_blr)
+
+tabla_blr %>%
+  gt() %>%
+  tab_header(
+    title = "Guía rápida para elegir Bayesian Linear Regression (BLR)",
+    subtitle = "Regresión Lineal desde una Perspectiva Bayesiana"
+  ) %>%
+  tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+  tab_options(
+    heading.title.font.size = 14,
+    heading.subtitle.font.size = 12,
+    table.font.names = "Century Gothic",
+    table.font.size = 10,
+    data_row.padding = px(1)
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left", weight = 'bold')),
+    locations = list(cells_title(groups = c("title")))
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left")),
+    locations = list(cells_title(groups = c("subtitle")))
+  ) %>%
+  cols_width(
+    starts_with("Detalles") ~ px(500),
+    everything() ~ px(200)
+  ) %>%
+  as_raw_html()
+```
+
+
 ## Gaussian Naive Bayes (GNB) {-}   
 
 ```{r, echo = FALSE,out.width='50%', fig.align='center'}
@@ -419,12 +502,178 @@ require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Bayesian/HMMs.png"))
 ```
 
+```{r, echo = FALSE}
+library(gt)
+
+criterios_hmm <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica_hmm <- c(
+  "✅ Supervisado/No Supervisado (secuencial, inferencia de estados)",
+  "✅ Observaciones secuenciales (discretas/continuas)",
+  "❌ No aplica directamente (el modelo es la secuencia observada)",
+  "✅ Compleja (dependencias temporales y estados ocultos)",
+  "❌ No es requisito directo (depende de la distribución de emisión)",
+  "❌ No aplica (asume dependencia entre estados)",
+  "❌ No es requisito",
+  "⚠️ Sí",
+  "❌ No aplica directamente",
+  "⚠️ Moderada (si los estados ocultos son interpretables)",
+  "⚠️ Moderada a Baja (entrenamiento, inferencia)",
+  "✅ Compatible (para evaluación predictiva)",
+  "❌ No hay dependencia temporal o los estados ocultos no son discretos"
+)
+
+detalles_hmm <- c(
+  "Modelos probabilísticos que describen un sistema que se cree que es un proceso de Márkov con **estados ocultos (no observables)**. Las observaciones son una función de esos estados ocultos. Se usan para reconocimiento de patrones, modelado de series de tiempo y secuenciales.",
+  "Las HMMs no tienen una 'variable respuesta' predictora en el sentido tradicional. En su lugar, tienen una secuencia de **observaciones** (que pueden ser discretas o continuas) generadas por los estados ocultos. Se utilizan para inferir la secuencia de estados ocultos más probable o la probabilidad de una secuencia observada.",
+  "No se utilizan 'variables predictoras' externas de la misma manera que en la regresión. El modelo se entrena sobre secuencias de observaciones para aprender las probabilidades de transición entre estados ocultos y las probabilidades de emisión de observaciones desde esos estados.",
+  "La relación es compleja: los estados ocultos forman una cadena de Márkov (un estado solo depende del anterior), y las observaciones dependen únicamente del estado oculto actual. Esto permite modelar dependencias temporales y estructuras secuenciales.",
+  "No asume normalidad de los residuos como en la regresión. La distribución de emisión de las observaciones desde cada estado oculto puede ser gaussiana, categórica, etc., dependiendo del tipo de datos.",
+  "Por su naturaleza, las HMMs **no asumen independencia de errores**. Asumen una dependencia de primer orden entre los estados ocultos (propiedad de Márkov) y una independencia condicional de las observaciones dado el estado actual.",
+  "No asume homoscedasticidad. La varianza de las observaciones puede diferir según el estado oculto (si se usan distribuciones de emisión con varianza).",
+  "Sí, las HMMs pueden ser sensibles a los outliers en las secuencias de observación, ya que estos puntos anómalos pueden influir en las estimaciones de las probabilidades de emisión y transición, sesgando el modelo.",
+  "El concepto de multicolinealidad entre 'predictores' no aplica directamente, ya que el modelo trabaja con secuencias de observaciones, no con múltiples características independientes en el mismo punto temporal.",
+  "La interpretabilidad es moderada. Si los estados ocultos pueden ser conceptualmente asociados con eventos o fases reales (ej., 'hablando', 'silencio' en el habla), el modelo es interpretable. Sin embargo, los parámetros de probabilidad suelen ser difíciles de interpretar directamente.",
+  "La velocidad y eficiencia varían. El entrenamiento (algoritmo de Baum-Welch) y la inferencia (algoritmo de Viterbi, Forward-Backward) pueden ser computacionalmente intensivos, especialmente para secuencias largas o un gran número de estados ocultos.",
+  "Es compatible para evaluar la capacidad predictiva del modelo sobre nuevas secuencias. Se puede usar para medir la probabilidad de secuencias no vistas o la precisión en tareas de clasificación/segmentación si se tienen etiquetas verdaderas.",
+  "No funciona bien si: 1) no hay una dependencia temporal subyacente en los datos, 2) los estados ocultos no son discretos o no se ajustan a la suposición de Márkov de primer orden, 3) las secuencias son demasiado cortas para aprender patrones robustos, o 4) hay un ruido excesivo que enmascara las transiciones de estado."
+)
+
+tabla_hmm <- data.frame(Criterio = criterios_hmm, Aplica = aplica_hmm, Detalles = detalles_hmm)
+
+tabla_hmm %>%
+  gt() %>%
+  tab_header(
+    title = "Guía rápida para elegir Hidden Markov Models (HMMs)",
+    subtitle = "Modelos para Secuencias y Estados Ocultos"
+  ) %>%
+  tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+  tab_options(
+    heading.title.font.size = 14,
+    heading.subtitle.font.size = 12,
+    table.font.names = "Century Gothic",
+    table.font.size = 10,
+    data_row.padding = px(1)
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left", weight = 'bold')),
+    locations = list(cells_title(groups = c("title")))
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left")),
+    locations = list(cells_title(groups = c("subtitle")))
+  ) %>%
+  cols_width(
+    starts_with("Detalles") ~ px(500),
+    everything() ~ px(200)
+  ) %>%
+  as_raw_html()
+```
+
+
 ## Kalman Filter {-}  
 
 ```{r, echo = FALSE,out.width='50%', fig.align='center'}
 require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Bayesian/KF.png"))
 ```
+
+```{r, echo = FALSE}
+library(gt)
+
+criterios_kalman <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica_kalman <- c(
+  "✅ Supervisado (Estimación de estados en series de tiempo)",
+  "✅ Estados de un sistema (internos y/o observables)",
+  "✅ Observaciones secuenciales (con ruido), Entradas de control",
+  "✅ Lineal (o linealizable, con extensiones como EKF/UKF)",
+  "✅ Necesaria (asunción de ruido Gaussiano)",
+  "✅ Necesaria (ruido del proceso y de medición)",
+  "✅ Necesaria (matrices de covarianza de ruido)",
+  "⚠️ Sí, muy",
+  "❌ No aplica directamente (se modelan covarianza)",
+  "✅ Alta (estados del sistema, covarianza)",
+  "✅ Muy alta (computacionalmente eficiente)",
+  "❌ No aplica directamente (evaluación de la estimación)",
+  "❌ No linealidad fuerte o ruido no Gaussiano"
+)
+
+detalles_kalman <- c(
+  "Algoritmo recursivo que estima el estado de un sistema dinámico a partir de una serie de mediciones ruidosas. Es óptimo para sistemas lineales con ruido Gaussiano. Consiste en una fase de predicción y una de actualización (corrección).",
+  "El Filtro de Kalman estima las 'variables de estado' internas de un sistema que no pueden ser observadas directamente o que son medidas con ruido (ej., posición y velocidad de un objeto).",
+  "Recibe como 'predictores' una secuencia de **observaciones** (mediciones ruidosas) y opcionalmente **entradas de control** (acciones externas que afectan el sistema).",
+  "Asume un modelo lineal que describe la transición del estado del sistema de un momento a otro y la relación lineal entre el estado y las observaciones. Para sistemas no lineales, se utilizan extensiones como el Filtro de Kalman Extendido (EKF) o el Filtro de Kalman No Perfumado (UKF).",
+  "Una suposición **clave** es que tanto el ruido del proceso (que afecta la transición del estado) como el ruido de la medición (que afecta las observaciones) son procesos **Gaussianos** con media cero y covarianza conocida.",
+  "Asume que el ruido del proceso es independiente del ruido de la medición, y que los ruidos en diferentes instantes de tiempo son independientes entre sí. La independencia entre las observaciones (condicionadas al estado) también es fundamental.",
+  "Asume que las matrices de covarianza del ruido del proceso y del ruido de la medición son constantes o conocidas. Si la varianza del ruido cambia, el filtro debe ser reajustado.",
+  "Sí, el Filtro de Kalman es muy sensible a los outliers. Un outlier en las mediciones puede sesgar gravemente la estimación del estado, ya que se asume que las mediciones siguen una distribución Gaussiana con respecto al estado verdadero.",
+  "El concepto de multicolinealidad entre predictores no aplica directamente como en la regresión. En su lugar, el filtro modela las covarianza entre las variables de estado y entre el ruido.",
+  "La interpretabilidad es alta. El filtro proporciona estimaciones del estado y, crucialmente, las matrices de covarianza de la estimación, lo que permite cuantificar la incertidumbre de la estimación en cada paso.",
+  "Es extremadamente eficiente computacionalmente. El filtro es recursivo y opera en tiempo real, lo que lo hace ideal para aplicaciones en línea donde las estimaciones deben actualizarse rápidamente a medida que llegan nuevas mediciones.",
+  "La validación cruzada no se aplica de la misma manera que en modelos de ML predictivos. La evaluación se centra en la precisión de la estimación del estado (ej., error RMS) y la consistencia de las covarianza de error, a menudo comparándolo con la 'verdad' de referencia si está disponible.",
+  "No funciona bien si: 1) el sistema es **altamente no lineal** y las linealizaciones (EKF) o aproximaciones (UKF) no son suficientes, 2) el **ruido no es Gaussiano**, 3) las **matrices de covarianza del ruido no se conocen** con precisión (lo que requiere métodos como el filtro de Kalman adaptativo), o 4) hay una alta frecuencia de **outliers** que no son manejados por pre-procesamiento o extensiones robustas."
+)
+
+tabla_kalman <- data.frame(Criterio = criterios_kalman, Aplica = aplica_kalman, Detalles = detalles_kalman)
+
+tabla_kalman %>%
+  gt() %>%
+  tab_header(
+    title = "Guía rápida para elegir el Filtro de Kalman",
+    subtitle = "Estimación Óptima de Estados en Sistemas Dinámicos"
+  ) %>%
+  tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+  tab_options(
+    heading.title.font.size = 14,
+    heading.subtitle.font.size = 12,
+    table.font.names = "Century Gothic",
+    table.font.size = 10,
+    data_row.padding = px(1)
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left", weight = 'bold')),
+    locations = list(cells_title(groups = c("title")))
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left")),
+    locations = list(cells_title(groups = c("subtitle")))
+  ) %>%
+  cols_width(
+    starts_with("Detalles") ~ px(500),
+    everything() ~ px(200)
+  ) %>%
+  as_raw_html()
+```
+
 
 ## Multinomial Naive Bayes (MNB) {-}   
 
@@ -630,3 +879,86 @@ tabla_nb %>%
 require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Bayesian/Particle Filter.png"))
 ```
+
+```{r, echo = FALSE}
+library(gt)
+
+criterios_particle_filter <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica_particle_filter <- c(
+  "✅ Supervisado (Estimación de estados en series de tiempo)",
+  "✅ Estados de un sistema (internos y/o observables)",
+  "✅ Observaciones secuenciales (con ruido), Entradas de control",
+  "✅ Muy compleja (no lineal, multimodal)",
+  "❌ No es requisito",
+  "✅ Necesaria (ruido del proceso y de medición)",
+  "❌ No es requisito",
+  "✅ Sí, pero puede mitigar (con resampling robusto)",
+  "❌ No aplica directamente (se modelan distribuciones)",
+  "⚠️ Moderada (se estiman distribuciones, no valores únicos)",
+  "⚠️ Baja (computacionalmente intensivo, especialmente con muchas partículas)",
+  "❌ No aplica directamente (evaluación de la estimación)",
+  "❌ Dimensiones muy altas o modelo de ruido muy incierto"
+)
+
+detalles_particle_filter <- c(
+  "Algoritmo secuencial de Monte Carlo utilizado para estimar el estado de un sistema dinámico. A diferencia del Filtro de Kalman, no asume linealidad ni ruido Gaussiano, siendo apto para sistemas no lineales y distribuciones no Gaussianas (multimodales).",
+  "El Filtro de Partículas estima la distribución de probabilidad de las 'variables de estado' internas de un sistema, que pueden ser continuas o discretas, observables o inferidas a partir de mediciones ruidosas.",
+  "Recibe como 'predictores' una secuencia de **observaciones** ruidosas y, opcionalmente, **entradas de control** (acciones externas). Estas observaciones se utilizan para ponderar y re-muestrear las partículas.",
+  "Puede modelar relaciones altamente complejas y no lineales entre los estados del sistema y entre los estados y las observaciones. Lo logra representando la distribución de probabilidad del estado como un conjunto de 'partículas' ponderadas.",
+  "No asume ninguna distribución específica para el ruido del proceso o de la medición (es decir, no asume normalidad). Esta es una de sus mayores fortalezas, permitiendo manejar distribuciones multimodales o asimétricas.",
+  "Asume que el ruido del proceso y el ruido de la medición son independientes entre sí en cada paso de tiempo, y que los ruidos en diferentes instantes son independientes. Las observaciones son condicionalmente independientes dado el estado.",
+  "No asume homoscedasticidad. Las distribuciones de ruido pueden tener varianzas que cambian con el tiempo o el estado, y el filtro puede adaptarse a ello.",
+  "Sí, el Filtro de Partículas puede ser sensible a los outliers extremos, ya que una observación muy atípica podría hacer que todas las partículas tengan un peso muy bajo, lo que lleva a la degeneración del filtro. Sin embargo, puede ser más robusto que el Filtro de Kalman en presencia de cierto tipo de outliers debido a su naturaleza no paramétrica y al re-muestreo.",
+  "El concepto de multicolinealidad entre predictores no aplica directamente. El filtro trabaja con la evolución probabilística del estado a lo largo del tiempo, no con relaciones estáticas entre características.",
+  "La interpretabilidad es moderada. Aunque no produce una única estimación puntual (como el Filtro de Kalman para sistemas lineales), el conjunto de partículas ponderadas proporciona una representación de la distribución de probabilidad del estado, lo que permite ver la incertidumbre y las posibles multimodalidades.",
+  "Es computacionalmente intensivo y puede ser lento, especialmente cuando se requiere un gran número de partículas para representar con precisión la distribución de probabilidad del estado (típicamente en sistemas de alta dimensión o con distribuciones complejas). Su complejidad escala con el número de partículas y la dimensión del estado.",
+  "La validación cruzada no se aplica de la misma manera que en modelos de ML predictivos. La evaluación se centra en la precisión de la estimación del estado (ej., error RMS respecto a la verdad fundamental) y la consistencia de las estimaciones de la distribución de probabilidad del estado.",
+  "No funciona bien si: 1) la **dimensionalidad del espacio de estados es muy alta** (lo que requeriría un número intratable de partículas para una buena aproximación), 2) el **modelo del proceso o de observación es extremadamente ruidoso o incierto**, 3) la **distribución de propuesta es deficiente**, o 4) hay **pocas observaciones** para actualizar y ponderar las partículas de manera efectiva."
+)
+
+tabla_particle_filter <- data.frame(Criterio = criterios_particle_filter, Aplica = aplica_particle_filter, Detalles = detalles_particle_filter)
+
+tabla_particle_filter %>%
+  gt() %>%
+  tab_header(
+    title = "Guía rápida para elegir el Filtro de Partículas",
+    subtitle = "Estimación de Estados en Sistemas No Lineales y No Gaussianos"
+  ) %>%
+  tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+  tab_options(
+    heading.title.font.size = 14,
+    heading.subtitle.font.size = 12,
+    table.font.names = "Century Gothic",
+    table.font.size = 10,
+    data_row.padding = px(1)
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left", weight = 'bold')),
+    locations = list(cells_title(groups = c("title")))
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left")),
+    locations = list(cells_title(groups = c("subtitle")))
+  ) %>%
+  cols_width(
+    starts_with("Detalles") ~ px(500),
+    everything() ~ px(200)
+  ) %>%
+  as_raw_html()
+```
+
