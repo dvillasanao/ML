@@ -9,7 +9,18 @@
 
 ## Affinity Propagation {-}   
 
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Clustering/AF.png"))
+```
+
+
 ## Agglomerative Clustering {-}   
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Clustering/Agglomerative Clustering.png"))
+```
 
 ## Density-Based Spatial Clustering of Applications with Noise (DBSCAN)  {-}    
 
@@ -230,6 +241,11 @@ tabla_em %>%
 
 ## Gaussian Mixture Models (GMMs) {-}   
 
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Clustering/GMMs.png"))
+```
 
 ## Hierarchical Clustering (hclust) {-} 
 
@@ -576,8 +592,23 @@ tabla_kmedians %>%
 
 ## Mean-Shift {-}   
 
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Clustering/Mean-Shift.png"))
+```
+
 ## Ordering Points To Identify the Clustering Structure (OPTICS) {-}   
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Clustering/OPTICS.png"))
+```
 
 ## Spectral Clustering {-}   
 
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Clustering/Spectral Clustering.png"))
+```
 
