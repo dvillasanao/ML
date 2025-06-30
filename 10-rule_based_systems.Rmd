@@ -8,11 +8,26 @@
 ---
 
 
-## Associative Classification (e.g., CBA, CMAR, FP-Growth based methods) {-}     
+## Associative Classification (e.g., CBA, CMAR, FP-Growth based methods) {-}   
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Rule-System/Associative Classification.png"))
+```
 
 ## CN2 Algorithm {-}  
 
-## Decision List/Decision Tree to Rules {-}  
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Rule-System/CN2.png"))
+```
+
+## Decision List/Decision Tree to Rules {-} 
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Rule-System/Decision Tree to Rules.png"))
+```
 
 ## Decision Rules  {-}   
 
@@ -250,6 +265,11 @@ tabla_fuzzy %>%
 ```
 
 ## Minsky's Perceptron {-}    
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Rule-System/Minsky's Perceptron.png"))
+```
 
 ## One Rule (OneR)  {-}   
 
