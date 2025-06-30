@@ -214,6 +214,12 @@ tabla_dbn %>%
 
 ## Reinforcement Learning (DL-based RL) {-}  
 
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Deep learning/Reinforcement Learning.png"))
+```
+
+
 ## Stacked Auto-Enconders {-}  
 
 ```{r, echo = FALSE,out.width='50%', fig.align='center'}
@@ -323,3 +329,8 @@ tabla_sae %>%
 
 
 ## Variational Autoencoders (VAEs) {-}
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Deep learning/VAEs.png"))
+```
