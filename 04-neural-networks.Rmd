@@ -405,11 +405,177 @@ require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Neural Networks/GRU.png"))
 ```
 
+```{r, echo = FALSE}
+library(gt)
+
+criterios_gru <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica_gru <- c(
+  "✅ Supervisado",
+  "✅ Numérica o Categórica (secuencial)",
+  "✅ Numéricas y categóricas (secuenciales)",
+  "✅ Muy compleja (dependencias temporales)",
+  "❌ No es requisito",
+  "❌ No aplica (dependencia temporal)",
+  "❌ No es requisito",
+  "⚠️ Sí (datos ruidosos)",
+  "✅ Maneja bien (características dentro de secuencias)",
+  "❌ Muy baja (caja negra)",
+  "✅ Moderada a Alta",
+  "✅ Compatible y recomendada",
+  "❌ Series muy cortas o sin dependencias"
+)
+
+detalles_gru <- c(
+  "Red neuronal recurrente (RNN) utilizada para procesar secuencias de datos. Puede ser para regresión (predicción de valores futuros) o clasificación (etiquetado de secuencias).",
+  "La variable respuesta puede ser numérica (ej., precio de acciones, temperatura) o categórica (ej., clase de una secuencia de audio), siempre en un contexto secuencial.",
+  "Las variables predictoras pueden ser de cualquier tipo, pero se espera que formen una secuencia (ej., series de tiempo, texto, audio). Requieren pre-procesamiento adecuado (ej., embedding para texto).",
+  "Captura dependencias temporales y patrones no lineales complejos a lo largo de una secuencia. Usa 'compuertas' (gates) para controlar el flujo de información y resolver el problema del 'gradiente que se desvanece'.",
+  "No asume ninguna distribución específica para los residuos. Se enfoca en la capacidad predictiva sobre secuencias.",
+  "A diferencia de muchos modelos, los GRU están diseñados para modelar la **dependencia temporal** entre observaciones. Las observaciones *dentro de una secuencia* no son independientes.",
+  "No asume homoscedasticidad. Su capacidad de modelado es flexible y puede capturar heterogeneidad en la varianza a lo largo del tiempo.",
+  "Sí, las GRU pueden ser sensibles al ruido y a los valores atípicos, especialmente si estos afectan las dependencias temporales cruciales. Requiere una limpieza de datos adecuada.",
+  "Los GRU pueden manejar características correlacionadas dentro de las secuencias, ya que aprenden a extraer características relevantes a lo largo del tiempo.",
+  "Como todas las redes neuronales profundas, los GRU son modelos de 'caja negra'. La interpretabilidad de cómo se toman las decisiones es muy baja.",
+  "Moderadamente eficiente. Más rápido que las LSTMs debido a su arquitectura más simple (menos compuertas), pero más lento que modelos no recurrentes. Requiere GPUs para un entrenamiento eficiente en grandes datasets.",
+  "Esencial para evaluar la capacidad de generalización del modelo en datos no vistos y para la sintonización de hiperparámetros. Comúnmente se usa validación cruzada basada en el tiempo.",
+  "No funcionará bien con secuencias muy cortas donde no hay dependencias temporales significativas que aprender. También, si las características no tienen una estructura secuencial inherente, un GRU podría ser una sobreingeniería."
+)
+
+tabla_gru <- data.frame(Criterio = criterios_gru, Aplica = aplica_gru, Detalles = detalles_gru)
+
+tabla_gru %>%
+  gt() %>%
+  tab_header(
+    title = "Guía rápida para elegir Gated Recurrent Unit (GRU)",
+    subtitle = "Red Neuronal Recurrente para Secuencias"
+  ) %>%
+  tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+  tab_options(
+    heading.title.font.size = 14,
+    heading.subtitle.font.size = 12,
+    table.font.names = "Century Gothic",
+    table.font.size = 10,
+    data_row.padding = px(1)
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left", weight = 'bold')),
+    locations = list(cells_title(groups = c("title")))
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left")),
+    locations = list(cells_title(groups = c("subtitle")))
+  ) %>%
+  cols_width(
+    starts_with("Detalles") ~ px(500),
+    everything() ~ px(200)
+  ) %>%
+  as_raw_html()
+```
+
+
 ## Generative Adversarial Networks (GANs) {-}  
 
 ```{r, echo = FALSE,out.width='50%', fig.align='center'}
 require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Neural Networks/GANs.png"))
+```
+
+
+```{r, echo = FALSE}
+library(gt)
+
+criterios_gan <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica_gan <- c(
+  "✅ Generativo (No Supervisado/Semi-supervisado)",
+  "❌ No aplica directamente (genera datos)",
+  "❌ No aplica directamente (genera a partir de ruido)",
+  "✅ Muy compleja (captura distribuciones subyacentes)",
+  "❌ No es requisito",
+  "❌ No aplica directamente",
+  "❌ No es requisito",
+  "⚠️ Sí (inestabilidad, colapso de modo)",
+  "❌ No aplica directamente",
+  "❌ Muy baja (caja negra compleja)",
+  "⚠️ Moderada a Baja (entrenamiento intensivo)",
+  "❌ No aplica directamente (evaluación cualitativa/métrica)",
+  "❌ Datos insuficientes, falta de diversidad, inestabilidad"
+)
+
+detalles_gan <- c(
+  "Modelo generativo que aprende a crear nuevos datos con las mismas características que los datos de entrenamiento. Consiste en dos redes: un Generador y un Discriminador, que compiten entre sí.",
+  "Las GANs no tienen una 'variable respuesta' en el sentido tradicional. Su objetivo es generar *nuevas muestras de datos* (ej., imágenes, texto, audio) que imiten la distribución de los datos reales.",
+  "Las GANs no toman 'variables predictoras' directas del dataset. El Generador toma como entrada un vector de ruido aleatorio (ruido latente) para crear nuevas muestras de datos.",
+  "Capturan relaciones intrincadas y de alta dimensión en los datos, aprendiendo la distribución de probabilidad subyacente de las muestras reales para replicarla.",
+  "No hacen suposiciones sobre la normalidad de los residuos, ya que no predicen un valor numérico ni modelan errores de predicción.",
+  "Aunque los datos de entrenamiento individuales son idealmente independientes, la interacción entre el Generador y el Discriminador durante el entrenamiento es un proceso complejo y dinámico, no de errores independientes.",
+  "No asume homoscedasticidad. Su objetivo es aprender la variabilidad inherente en los datos reales para generar muestras diversas.",
+  "Las GANs pueden ser sensibles a datos ruidosos o anómalos, lo que puede llevar a inestabilidades en el entrenamiento o a un 'colapso de modo' (generar poca diversidad de muestras).",
+  "No aplica la multicolinealidad de predictores de la misma manera que en modelos supervisados, ya que no hay 'predictores' en el sentido usual. El Generador aprende correlaciones y estructuras en el espacio latente.",
+  "La interpretabilidad de cómo las GANs generan datos es extremadamente baja. Son modelos complejos de 'caja negra'.",
+  "El entrenamiento de GANs es computacionalmente muy intensivo y puede ser lento, especialmente para modelos grandes o datos de alta resolución. Requiere GPUs potentes y a menudo mucho tiempo.",
+  "La validación cruzada no se aplica directamente para evaluar GANs. Su rendimiento se mide a menudo cualitativamente (inspección visual de las muestras generadas) y/o mediante métricas como Inception Score (IS), Fréchet Inception Distance (FID) o Generative Adversarial Metric (GAM).",
+  "Las GANs no funcionan bien si: 1) el tamaño del conjunto de datos es muy pequeño, 2) hay poca diversidad en los datos de entrenamiento, 3) el entrenamiento es inestable y conduce a un 'colapso de modo' (cuando el generador produce una gama muy limitada de salidas). Además, pueden ser difíciles de entrenar."
+)
+
+tabla_gan <- data.frame(Criterio = criterios_gan, Aplica = aplica_gan, Detalles = detalles_gan)
+
+tabla_gan %>%
+  gt() %>%
+  tab_header(
+    title = "Guía rápida para elegir Generative Adversarial Networks (GANs)",
+    subtitle = "Redes Generativas Antagónicas"
+  ) %>%
+  tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+  tab_options(
+    heading.title.font.size = 14,
+    heading.subtitle.font.size = 12,
+    table.font.names = "Century Gothic",
+    table.font.size = 10,
+    data_row.padding = px(1)
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left", weight = 'bold')),
+    locations = list(cells_title(groups = c("title")))
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left")),
+    locations = list(cells_title(groups = c("subtitle")))
+  ) %>%
+  cols_width(
+    starts_with("Detalles") ~ px(500),
+    everything() ~ px(200)
+  ) %>%
+  as_raw_html()
 ```
 
 ## Long Short-Term Memory (LSTM) {-}  
@@ -418,6 +584,89 @@ knitr::include_graphics(paste0(here::here(), "/img/Neural Networks/GANs.png"))
 require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Neural Networks/LSTM.png"))
 ```
+
+```{r, echo = FALSE}
+library(gt)
+
+criterios_lstm <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica_lstm <- c(
+  "✅ Supervisado",
+  "✅ Numérica o Categórica (secuencial)",
+  "✅ Numéricas y categóricas (secuenciales)",
+  "✅ Muy compleja (dependencias temporales largas)",
+  "❌ No es requisito",
+  "❌ No aplica (dependencia temporal)",
+  "❌ No es requisito",
+  "⚠️ Sí (datos ruidosos)",
+  "✅ Maneja bien (características dentro de secuencias)",
+  "❌ Muy baja (caja negra)",
+  "⚠️ Moderada (más lento que GRU)",
+  "✅ Compatible y recomendada",
+  "❌ Series muy cortas o sin dependencias"
+)
+
+detalles_lstm <- c(
+  "Red neuronal recurrente (RNN) avanzada utilizada para procesar y aprender de secuencias de datos. Adecuada para tareas de regresión, clasificación y generación de secuencias.",
+  "La variable respuesta puede ser numérica continua (ej., predicción de series de tiempo) o categórica (ej., clasificación de texto), siempre en un contexto de datos secuenciales.",
+  "Las variables predictoras pueden ser de cualquier tipo, pero deben estar estructuradas como secuencias (ej., palabras en una frase, valores en una serie temporal). Requieren pre-procesamiento como embeddings para datos categóricos.",
+  "Especialmente diseñada para capturar y recordar dependencias a largo plazo en los datos secuenciales, gracias a su arquitectura con 'celdas de memoria' y 'compuertas' (input, forget, output gates).",
+  "No asume ninguna distribución específica para los errores o residuos. Es un modelo no paramétrico que aprende patrones complejos de datos.",
+  "A diferencia de modelos estadísticos, las LSTMs están diseñadas para modelar y explotar la **dependencia temporal** entre observaciones dentro de una secuencia. Las observaciones individuales *no* son independientes.",
+  "No asume homoscedasticidad. Su flexibilidad le permite aprender patrones donde la varianza puede cambiar a lo largo de la secuencia.",
+  "Sí, al igual que otras redes neuronales, las LSTMs pueden ser sensibles a datos ruidosos y valores atípicos que pueden distorsionar los patrones aprendidos, especialmente si ocurren en puntos críticos de la secuencia.",
+  "Las LSTMs son robustas a la multicolinealidad entre características dentro de una secuencia, ya que aprenden a extraer representaciones útiles a partir de las entradas correlacionadas a lo largo del tiempo.",
+  "Como modelos de aprendizaje profundo, las LSTMs son 'cajas negras'. Es muy difícil interpretar directamente cómo las celdas de memoria y compuertas influyen en una predicción específica. Se usan métodos de explicabilidad global o local (ej., LRP, atención).",
+  "Son computacionalmente más intensivas que las GRU debido a su arquitectura más compleja (más compuertas). El entrenamiento en datasets grandes y secuencias largas requiere recursos significativos como GPUs.",
+  "Es fundamental para evaluar la capacidad de generalización del modelo y para el ajuste de hiperparámetros. Se utilizan técnicas de validación cruzada adaptadas a series de tiempo (ej., validación progresiva).",
+  "No funcionan bien si las secuencias son muy cortas o si no hay dependencias temporales significativas entre los elementos de la secuencia. En estos casos, modelos más simples podrían ser más eficientes y suficientes."
+)
+
+tabla_lstm <- data.frame(Criterio = criterios_lstm, Aplica = aplica_lstm, Detalles = detalles_lstm)
+
+tabla_lstm %>%
+  gt() %>%
+  tab_header(
+    title = "Guía rápida para elegir Long Short-Term Memory (LSTM)",
+    subtitle = "Redes Recurrentes para Dependencias a Largo Plazo"
+  ) %>%
+  tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+  tab_options(
+    heading.title.font.size = 14,
+    heading.subtitle.font.size = 12,
+    table.font.names = "Century Gothic",
+    table.font.size = 10,
+    data_row.padding = px(1)
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left", weight = 'bold')),
+    locations = list(cells_title(groups = c("title")))
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left")),
+    locations = list(cells_title(groups = c("subtitle")))
+  ) %>%
+  cols_width(
+    starts_with("Detalles") ~ px(500),
+    everything() ~ px(200)
+  ) %>%
+  as_raw_html()
+```
+
 
 ## Multilayer Perceptron (MP)  {-}     
 
@@ -810,6 +1059,89 @@ tabla_rnn %>%
 require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Neural Networks/RBM.png"))
 ```
+
+```{r, echo = FALSE}
+library(gt)
+
+criterios_rbm <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica_rbm <- c(
+  "✅ Generativo (No Supervisado)",
+  "❌ No aplica directamente",
+  "✅ Numéricas y categóricas (binarizadas/escaladas)",
+  "✅ Compleja (probabilística, latente)",
+  "❌ No es requisito",
+  "❌ No aplica directamente",
+  "❌ No es requisito",
+  "⚠️ Sí (puede ser influenciada)",
+  "✅ Maneja bien (aprende representaciones latentes)",
+  "❌ Muy baja (caja negra)",
+  "⚠️ Moderada a Baja",
+  "❌ No aplica directamente (métrica de reconstrucción)",
+  "❌ Datos ruidosos o falta de patrones complejos"
+)
+
+detalles_rbm <- c(
+  "Modelo generativo y no supervisado. Aprende la distribución de probabilidad de entrada para extraer características o reducir la dimensionalidad. A menudo se usa como bloque de construcción para Deep Belief Networks.",
+  "Las RBM no tienen una 'variable respuesta' en el sentido supervisado. Su objetivo es aprender las características latentes de los datos de entrada.",
+  "Las variables de entrada pueden ser numéricas (escaladas entre 0 y 1) o categóricas (binarizadas o codificadas one-hot). Las RBM más básicas son binarias (Bernoulli).",
+  "Aprende relaciones complejas y no lineales entre las variables visibles (entrada) y las variables ocultas (latentes) a través de un modelo probabilístico basado en energía.",
+  "No hace suposiciones sobre la distribución de los residuos, ya que no predice un valor continuo ni modela errores de predicción.",
+  "No aplica directamente; las RBM modelan las correlaciones entre las variables de entrada y las características latentes, no la independencia de los errores residuales.",
+  "No asume homoscedasticidad. Se enfoca en aprender la estructura de la distribución de los datos.",
+  "Sí, las RBM pueden ser influenciadas por outliers, ya que intentan modelar la distribución de todos los datos. Outliers extremos pueden distorsionar las características latentes aprendidas.",
+  "Maneja bien la multicolinealidad. Al aprender representaciones latentes, las RBM pueden capturar las relaciones subyacentes entre variables correlacionadas de manera eficiente.",
+  "La interpretabilidad de las características latentes aprendidas por las RBM es muy baja. Es difícil atribuir un significado directo a las activaciones de las unidades ocultas.",
+  "El entrenamiento de las RBM (especialmente usando el algoritmo de Contrastive Divergence) puede ser moderadamente intensivo computacionalmente y lento para grandes datasets o redes profundas. La inferencia es más rápida.",
+  "La validación cruzada no se aplica de la misma manera que en modelos supervisados. La evaluación se realiza a menudo mediante la capacidad de reconstrucción de los datos de entrada o su utilidad como pre-entrenamiento para modelos supervisados.",
+  "No funciona bien si los datos son puramente aleatorios o no contienen patrones complejos que el modelo pueda aprender. También, puede ser difícil de entrenar si hay muchos datos ruidosos o si el algoritmo de entrenamiento no converge."
+)
+
+tabla_rbm <- data.frame(Criterio = criterios_rbm, Aplica = aplica_rbm, Detalles = detalles_rbm)
+
+tabla_rbm %>%
+  gt() %>%
+  tab_header(
+    title = "Guía rápida para elegir Restricted Boltzmann Machine (RBM)",
+    subtitle = "Máquinas de Boltzmann Restringidas para Aprendizaje No Supervisado"
+  ) %>%
+  tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+  tab_options(
+    heading.title.font.size = 14,
+    heading.subtitle.font.size = 12,
+    table.font.names = "Century Gothic",
+    table.font.size = 10,
+    data_row.padding = px(1)
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left", weight = 'bold')),
+    locations = list(cells_title(groups = c("title")))
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left")),
+    locations = list(cells_title(groups = c("subtitle")))
+  ) %>%
+  cols_width(
+    starts_with("Detalles") ~ px(500),
+    everything() ~ px(200)
+  ) %>%
+  as_raw_html()
+```
+
 
 ## Transformers  {-}  
 
