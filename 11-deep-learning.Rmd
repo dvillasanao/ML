@@ -219,6 +219,87 @@ require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Deep learning/Reinforcement Learning.png"))
 ```
 
+```{r, echo = FALSE}
+library(gt)
+
+criterios_drl <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica_drl <- c(
+  "✅ Aprendizaje por Refuerzo (secuencial, optimización de política)",
+  "❌ No aplica directamente (el agente aprende a optimizar una señal de recompensa)",
+  "✅ Mixtas (estados de alta dimensionalidad: imágenes, series de tiempo, etc.)",
+  "✅ Muy compleja (decisiones secuenciales, dependencias temporales, no lineal)",
+  "❌ No es requisito",
+  "❌ No aplica directamente",
+  "❌ No es requisito",
+  "⚠️ Sí (la función de recompensa es clave, puede aprender comportamientos subóptimos)",
+  "✅ Maneja bien (las redes neuronales profundas pueden aprender representaciones robustas)",
+  "⚠️ Baja (las políticas aprendidas pueden ser cajas negras complejas)",
+  "⚠️ Baja a Moderada (entrenamiento muy costoso computacionalmente)",
+  "❌ No aplica directamente (se usa simulación y evaluación de políticas)",
+  "❌ Función de recompensa mal definida, entornos complejos/no estacionarios, escasez de datos/simulaciones"
+)
+
+detalles_drl <- c(
+  "DRL es una subcategoría del Machine Learning que combina el Aprendizaje por Refuerzo (RL) con Redes Neuronales Profundas (Deep Learning). Un 'agente' aprende a tomar una secuencia de decisiones en un 'entorno' para maximizar una 'recompensa acumulativa'.",
+  "En DRL, no hay una 'variable respuesta' en el sentido tradicional supervisado. El agente aprende una 'política' óptima: un mapeo de estados a acciones que maximiza la recompensa esperada a largo plazo.",
+  "Las 'variables predictoras' son las características que describen el 'estado' del entorno en un momento dado. Gracias a las redes profundas, DRL puede manejar estados de alta dimensionalidad como píxeles de imágenes, lecturas de sensores, o representaciones de texto.",
+  "DRL puede modelar relaciones extremadamente complejas y no lineales entre estados, acciones y recompensas. Es ideal para problemas de decisión secuencial donde las acciones actuales afectan futuros estados y recompensas (dependencias temporales).",
+  "No hace suposiciones sobre la normalidad de los residuos ni la distribución de los datos, ya que es un paradigma de aprendizaje basado en la interacción y la optimización de la política, no en modelos estadísticos de regresión/clasificación.",
+  "El concepto de independencia de errores no aplica directamente. El aprendizaje es iterativo y se basa en la secuencia de experiencias (estados, acciones, recompensas, nuevos estados).",
+  "No asume homoscedasticidad. Las redes neuronales profundas pueden aprender representaciones complejas y la varianza de los valores (Q-valores o valores de estado) puede ser heterocedástica.",
+  "Sí, el DRL puede ser sensible a outliers en las señales de recompensa o en los estados. Una función de recompensa mal diseñada o la presencia de recompensas espurias o muy atípicas pueden llevar al agente a aprender políticas subóptimas o inestables. Requiere un diseño cuidadoso de la función de recompensa.",
+  "Maneja bien la multicolinealidad. Las redes neuronales profundas son capaces de aprender características y representaciones robustas incluso en presencia de correlaciones elevadas entre las variables de entrada.",
+  "La interpretabilidad es baja. Las políticas aprendidas por las redes neuronales profundas son a menudo 'cajas negras'. Entender por qué el agente tomó una decisión particular en un estado dado puede ser muy difícil.",
+  "La velocidad y eficiencia son bajas. El entrenamiento de modelos DRL es extremadamente costoso computacionalmente, requiriendo GPUs/TPUs potentes y grandes cantidades de tiempo de simulación o datos de interacción. La eficiencia de la muestra (cuántas interacciones necesita para aprender) es a menudo un desafío.",
+  "La validación cruzada tradicional no se aplica directamente. En DRL, la evaluación se realiza probando al agente en el entorno (real o simulado) y midiendo su recompensa acumulada promedio, éxito en tareas, o comparación con el rendimiento humano. Se pueden usar métricas como el 'rendimiento promedio de episodios'.",
+  "No funciona bien si: 1) la **función de recompensa es difícil de diseñar** o es muy dispersa/escasa (sparse rewards), 2) el **entorno es muy complejo o no estacionario**, lo que dificulta la convergencia, 3) hay una **escasez de datos o capacidad de simulación** (DRL es muy hambriento de datos), 4) la **seguridad es crítica** (la exploración puede llevar a acciones peligrosas) o 5) se requiere **alta interpretabilidad** del proceso de toma de decisiones del agente."
+)
+
+tabla_drl <- data.frame(Criterio = criterios_drl, Aplica = aplica_drl, Detalles = detalles_drl)
+
+tabla_drl %>%
+  gt() %>%
+  tab_header(
+    title = "Guía rápida para elegir Deep Reinforcement Learning (DL-based RL)",
+    subtitle = "Aprendizaje por Refuerzo Profundo: Agentes Inteligentes en Entornos Dinámicos"
+  ) %>%
+  tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+  tab_options(
+    heading.title.font.size = 14,
+    heading.subtitle.font.size = 12,
+    table.font.names = "Century Gothic",
+    table.font.size = 10,
+    data_row.padding = px(1)
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left", weight = 'bold')),
+    locations = list(cells_title(groups = c("title")))
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left")),
+    locations = list(cells_title(groups = c("subtitle")))
+  ) %>%
+  cols_width(
+    starts_with("Detalles") ~ px(500),
+    everything() ~ px(200)
+  ) %>%
+  as_raw_html()
+```
 
 ## Stacked Auto-Enconders {-}  
 
@@ -334,3 +415,87 @@ tabla_sae %>%
 require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Deep learning/VAEs.png"))
 ```
+
+
+```{r, echo = FALSE}
+library(gt)
+
+criterios_vae <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica_vae <- c(
+  "✅ No Supervisado (Generación, Reducción de Dimensionalidad, Detección de Anomalías)",
+  "❌ No aplica directamente (se recrea el input)",
+  "✅ Mixtas (imágenes, texto, datos tabulares, series de tiempo)",
+  "✅ Muy compleja (codificación/decodificación no lineal)",
+  "❌ No es requisito directo (pero el espacio latente es Gaussiano)",
+  "❌ No aplica directamente",
+  "❌ No es requisito",
+  "⚠️ Sí (la reconstrucción puede ser afectada, pueden diluirse en el espacio latente)",
+  "✅ Maneja bien (las redes neuronales profundas pueden aprender representaciones robustas)",
+  "⚠️ Moderada (el espacio latente es continuo y puede ser 'explorado')",
+  "⚠️ Moderada a Baja (entrenamiento, tamaño del modelo)",
+  "❌ No aplica directamente (evaluación de la calidad de generación y reconstrucción)",
+  "❌ Datos sin estructura subyacente, ruido excesivo, tamaño inadecuado del espacio latente"
+)
+
+detalles_vae <- c(
+  "Los VAEs son un tipo de modelo generativo que combina las propiedades de los autoencoders con el aprendizaje variacional probabilístico. Su objetivo es aprender una representación latente (codificada) de los datos de entrada en un espacio continuo, de la cual se pueden muestrear nuevas instancias que se asemejan a los datos originales.",
+  "En los VAEs, no hay una 'variable respuesta' en el sentido tradicional. La red intenta reconstruir su propia entrada, por lo que la 'respuesta' ideal sería una copia perfecta de las 'variables predictoras'.",
+  "Las variables de entrada pueden ser de diversos tipos: píxeles de imágenes, vectores de características, secuencias de texto, o datos tabulares. Son los datos que el VAE intenta codificar y decodificar.",
+  "Modelan relaciones altamente complejas y no lineales entre los datos de entrada y su representación latente, así como entre la representación latente y la reconstrucción. Lo hacen a través de arquitecturas de redes neuronales profundas (codificador y decodificador).",
+  "No asume normalidad de los residuos. Sin embargo, impone una distribución normal (generalmente una normal estándar multivariada) sobre el **espacio latente** (la representación comprimida). Esto es clave para la generación de datos y la interpolación.",
+  "El concepto de independencia de errores no aplica directamente. El aprendizaje se basa en la optimización de dos componentes: la calidad de la reconstrucción y la regularización del espacio latente para que se parezca a una distribución normal.",
+  "No asume homoscedasticidad en los datos originales. La varianza en la reconstrucción o en la distribución de datos es capturada por el modelo generativo.",
+  "Sí, los VAEs pueden ser sensibles a los outliers. Un outlier podría influir en la forma del espacio latente o en la capacidad de reconstrucción del modelo, ya que el VAE intenta 'promediar' la información de los datos. Sin embargo, su capacidad de modelar densidades puede ayudar a identificar anomalías.",
+  "Maneja bien la multicolinealidad. Las redes neuronales profundas son capaces de aprender representaciones eficientes incluso en presencia de correlaciones elevadas entre las características de entrada, proyectándolas a un espacio latente de menor dimensión.",
+  "La interpretabilidad es moderada. Aunque el modelo en sí es una 'caja negra', el **espacio latente** es continuo y se puede explorar. Es posible interpolar entre puntos latentes para ver cómo cambian los datos generados, o identificar dimensiones latentes que corresponden a características específicas de los datos (ej., color, estilo).",
+  "La velocidad y eficiencia varían. El entrenamiento de VAEs puede ser computacionalmente intensivo, similar a otras redes neuronales profundas, requiriendo GPUs. Sin embargo, una vez entrenados, la generación de nuevas muestras es relativamente rápida.",
+  "La validación cruzada tradicional no se aplica directamente. La evaluación se centra en métricas como la **calidad de reconstrucción** (ej., error MSE para imágenes), la **calidad de los datos generados** (evaluación subjetiva, métricas de diversidad, FID score para imágenes) y la **calidad del espacio latente** (qué tan bien separa las clases, qué tan suave es la interpolación).",
+  "No funciona bien si: 1) los datos de entrada **no tienen una estructura subyacente** que pueda ser capturada en un espacio latente de baja dimensión, 2) el **ruido en los datos es excesivo** y dificulta la reconstrucción o el aprendizaje de representaciones significativas, 3) el **tamaño del espacio latente** es inadecuado (demasiado pequeño puede perder información, demasiado grande puede llevar a un sobreajuste o un espacio latente desorganizado), o 4) se buscan **reconstrucciones perfectas** de los datos de entrada (los VAEs priorizan la capacidad generativa sobre la perfección de la reconstrucción)."
+)
+
+tabla_vae <- data.frame(Criterio = criterios_vae, Aplica = aplica_vae, Detalles = detalles_vae)
+
+tabla_vae %>%
+  gt() %>%
+  tab_header(
+    title = "Guía rápida para elegir Variational Autoencoders (VAEs)",
+    subtitle = "Generación de Datos y Aprendizaje de Representaciones Latentes"
+  ) %>%
+  tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+  tab_options(
+    heading.title.font.size = 14,
+    heading.subtitle.font.size = 12,
+    table.font.names = "Century Gothic",
+    table.font.size = 10,
+    data_row.padding = px(1)
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left", weight = 'bold')),
+    locations = list(cells_title(groups = c("title")))
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left")),
+    locations = list(cells_title(groups = c("subtitle")))
+  ) %>%
+  cols_width(
+    starts_with("Detalles") ~ px(500),
+    everything() ~ px(200)
+  ) %>%
+  as_raw_html()
+```
+

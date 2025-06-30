@@ -14,8 +14,86 @@ require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Clustering/AF.png"))
 ```
 
-```{r}
+```{r, echo = FALSE}
+library(gt)
 
+criterios_affinity_prop <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica_affinity_prop <- c(
+  "✅ No Supervisado (Clustering)",
+  "❌ No aplica directamente",
+  "✅ Numéricas (o datos de similitud/distancia)",
+  "✅ Muy compleja (determina prototipos y agrupaciones)",
+  "❌ No es requisito",
+  "❌ No aplica directamente",
+  "❌ No es requisito",
+  "⚠️ Sí (la elección de 'preferencia' es clave)",
+  "✅ Maneja bien (si la similitud es adecuada)",
+  "✅ Moderada (los 'ejemplares' son interpretables)",
+  "⚠️ Baja (costo computacional cuadrático)",
+  "❌ No aplica directamente (evaluación de la coherencia del clúster)",
+  "❌ Datasets muy grandes, ruido excesivo, significado de distancias no euclidianas"
+)
+
+detalles_affinity_prop <- c(
+  "Algoritmo de clustering no supervisado que no requiere especificar el número de clústeres de antemano. Identifica 'ejemplares' (puntos de datos representativos) y agrupa otros puntos alrededor de ellos basándose en un proceso de 'paso de mensajes' entre todos los puntos.",
+  "Affinity Propagation no tiene una 'variable respuesta'. Su objetivo es agrupar puntos de datos similares en clústeres, identificando automáticamente los centros de clúster (ejemplares).",
+  "Las variables de entrada deben ser numéricas para calcular las similitudes/distancias. Alternativamente, se le puede proporcionar directamente una matriz de similitud o distancia precalculada.",
+  "Capta relaciones complejas al determinar la similitud entre cada par de puntos y luego pasar 'mensajes' de responsabilidad y disponibilidad para identificar ejemplares y asignaciones de clúster. No asume formas de clúster específicas (ej., esferas).",
+  "No hace suposiciones sobre la normalidad de los residuos ni la distribución de los datos, ya que no es un modelo paramétrico de regresión o clasificación.",
+  "El concepto de independencia de errores no aplica directamente. El algoritmo se basa en las interacciones y el paso de mensajes entre todos los puntos para determinar las agrupaciones.",
+  "No asume homoscedasticidad. Las decisiones de agrupación se basan en similitudes y la identificación de ejemplares, no en la varianza constante.",
+  "Sí, Affinity Propagation puede ser sensible a los outliers, especialmente a través de la elección del parámetro de 'preferencia'. Un outlier puede convertirse en un ejemplar si su preferencia es alta, o influir en las similitudes si no se maneja adecuadamente. Puede crear clústeres de un solo miembro si hay muchos outliers.",
+  "Maneja bien la multicolinealidad, siempre y cuando la métrica de similitud subyacente (ej., similitud euclidiana, si es el caso) sea adecuada para los datos. El algoritmo se enfoca en las relaciones de similitud entre puntos, no en las relaciones directas entre características.",
+  "La interpretabilidad es moderada a alta. Los centros de los clústeres son puntos de datos reales ('ejemplares'), lo que facilita su inspección y comprensión. Esto puede ser una gran ventaja en aplicaciones donde la representatividad es clave.",
+  "La velocidad y eficiencia son bajas. La complejidad computacional de Affinity Propagation es O(N^2 * log N) o O(N^2) en el número de muestras (N), lo que la hace poco práctica para datasets con más de unos pocos miles de puntos. El pre-procesamiento para reducir el número de puntos es a menudo necesario para grandes datasets.",
+  "La validación cruzada no se aplica directamente en el clustering, ya que no hay etiquetas verdaderas para predecir. La evaluación se realiza utilizando métricas de coherencia de clúster (ej., coeficiente de silueta) o comparando con agrupaciones conocidas si se tienen etiquetas de referencia (índice de Rand ajustado, V-measure).",
+  "No funciona bien si: 1) el **dataset es muy grande** debido a su alta complejidad computacional, 2) hay **mucho ruido** que dificulta la identificación de similitudes reales, 3) la estructura de clústeres es muy difusa, o 4) la elección del parámetro de 'preferencia' (que controla el número de clústeres) es difícil de ajustar para el dominio específico."
+)
+
+tabla_affinity_prop <- data.frame(Criterio = criterios_affinity_prop, Aplica = aplica_affinity_prop, Detalles = detalles_affinity_prop)
+
+tabla_affinity_prop %>%
+  gt() %>%
+  tab_header(
+    title = "Guía rápida para elegir Affinity Propagation",
+    subtitle = "Agrupamiento Basado en el Paso de Mensajes"
+  ) %>%
+  tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+  tab_options(
+    heading.title.font.size = 14,
+    heading.subtitle.font.size = 12,
+    table.font.names = "Century Gothic",
+    table.font.size = 10,
+    data_row.padding = px(1)
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left", weight = 'bold')),
+    locations = list(cells_title(groups = c("title")))
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left")),
+    locations = list(cells_title(groups = c("subtitle")))
+  ) %>%
+  cols_width(
+    starts_with("Detalles") ~ px(500),
+    everything() ~ px(200)
+  ) %>%
+  as_raw_html()
 ```
 
 
@@ -26,6 +104,89 @@ knitr::include_graphics(paste0(here::here(), "/img/Clustering/AF.png"))
 require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Clustering/Agglomerative Clustering.png"))
 ```
+
+```{r, echo = FALSE}
+library(gt)
+
+criterios_agglomerative <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica_agglomerative <- c(
+  "✅ No Supervisado (Clustering Jerárquico)",
+  "❌ No aplica directamente",
+  "✅ Numéricas (o datos de distancia)",
+  "✅ Muy compleja (estructura anidada de clústeres)",
+  "❌ No es requisito",
+  "❌ No aplica directamente",
+  "❌ No es requisito",
+  "⚠️ Sí (puede distorsionar las uniones)",
+  "✅ Maneja bien (si la distancia es adecuada)",
+  "✅ Muy alta (a través del dendrograma)",
+  "⚠️ Baja (costo computacional alto)",
+  "❌ No aplica directamente (evaluación de la coherencia)",
+  "❌ Datasets muy grandes o ruido excesivo"
+)
+
+detalles_agglomerative <- c(
+  "Algoritmo de clustering no supervisado que construye una jerarquía de clústeres. Comienza con cada punto de datos como su propio clúster y fusiona iterativamente los pares de clústeres más similares hasta que todos los puntos estén en un solo clúster o se alcance un criterio de parada. El resultado es un dendrograma.",
+  "Agglomerative Clustering no tiene una 'variable respuesta'. Su objetivo es identificar grupos naturales de puntos de datos y la relación jerárquica entre ellos.",
+  "Las variables de entrada deben ser numéricas para calcular las distancias (o similitudes). Es crucial escalar las características adecuadamente antes de calcular las distancias.",
+  "Capta relaciones complejas al organizar los datos en una estructura de árbol anidada (dendrograma), lo que permite visualizar agrupaciones en diferentes niveles de granularidad. No asume formas de clúster específicas (ej., esferas).",
+  "No hace suposiciones sobre la normalidad de los residuos ni la distribución subyacente de los datos, ya que no es un modelo paramétrico.",
+  "El concepto de independencia de errores no aplica directamente. El algoritmo se basa en las distancias entre puntos y clústeres para realizar fusiones.",
+  "No asume homoscedasticidad. Las decisiones de agrupación se basan en la proximidad o la conexión entre clústeres, no en la varianza constante.",
+  "Sí, Agglomerative Clustering es sensible a los outliers. Un punto anómalo puede permanecer como un clúster de un solo miembro durante mucho tiempo o, si se une, puede forzar una unión subóptima y distorsionar la estructura del clúster a niveles superiores. El ruido puede afectar las distancias y, por lo tanto, las fusiones.",
+  "Maneja bien la multicolinealidad, siempre y cuando la métrica de distancia subyacente sea adecuada para los datos. El algoritmo se enfoca en las relaciones de distancia entre puntos, no en las relaciones directas entre características.",
+  "La interpretabilidad es **muy alta** debido a la generación del dendrograma. Este árbol visual permite al usuario entender cómo se forman los clústeres a diferentes niveles de similitud y elegir el número de clústeres 'óptimo' cortando el árbol.",
+  "La velocidad y eficiencia son bajas. Su complejidad computacional es típicamente O(N^3) en el número de muestras (N) debido a la recalculación de distancias en cada paso, o O(N^2) si se usa una matriz de distancia precalculada. Esto lo hace poco práctico para datasets con más de unos pocos miles de puntos.",
+  "La validación cruzada no se aplica directamente en el clustering, ya que no hay etiquetas verdaderas para predecir. La evaluación se realiza utilizando métricas de coherencia de clúster (ej., coeficiente de silueta) o comparando con agrupaciones conocidas si se tienen etiquetas de referencia (índice de Rand ajustado, V-measure).",
+  "No funciona bien si: 1) el **dataset es muy grande** debido a su alta complejidad computacional y requisitos de memoria, 2) hay **mucho ruido** que puede llevar a fusiones incorrectas en los niveles iniciales, o 3) no hay una estructura jerárquica clara en los datos, haciendo que el dendrograma sea menos informativo."
+)
+
+tabla_agglomerative <- data.frame(Criterio = criterios_agglomerative, Aplica = aplica_agglomerative, Detalles = detalles_agglomerative)
+
+tabla_agglomerative %>%
+  gt() %>%
+  tab_header(
+    title = "Guía rápida para elegir Agglomerative Clustering",
+    subtitle = "Agrupamiento Jerárquico Ascendente"
+  ) %>%
+  tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+  tab_options(
+    heading.title.font.size = 14,
+    heading.subtitle.font.size = 12,
+    table.font.names = "Century Gothic",
+    table.font.size = 10,
+    data_row.padding = px(1)
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left", weight = 'bold')),
+    locations = list(cells_title(groups = c("title")))
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left")),
+    locations = list(cells_title(groups = c("subtitle")))
+  ) %>%
+  cols_width(
+    starts_with("Detalles") ~ px(500),
+    everything() ~ px(200)
+  ) %>%
+  as_raw_html()
+```
+
 
 ## Density-Based Spatial Clustering of Applications with Noise (DBSCAN)  {-}    
 
@@ -251,6 +412,89 @@ tabla_em %>%
 require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Clustering/GMMs.png"))
 ```
+
+```{r, echo = FALSE}
+library(gt)
+
+criterios_gmm <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica_gmm <- c(
+  "✅ No Supervisado (Clustering, Estimación de Densidad)",
+  "❌ No aplica directamente",
+  "✅ Numéricas",
+  "✅ Muy compleja (modelado probabilístico de formas de clúster)",
+  "❌ No es requisito directo (pero componentes son Gaussianos)",
+  "❌ No aplica directamente",
+  "❌ No es requisito directo (componentes pueden tener diferentes covarianzas)",
+  "⚠️ Sí (muy)",
+  "✅ Maneja bien (a través de la covarianza)",
+  "⚠️ Moderada (si los componentes tienen sentido)",
+  "✅ Moderada a Alta (para datos de tamaño razonable)",
+  "✅ Compatible (para selección de hiperparámetros)",
+  "❌ Datos con formas no elípticas, ruido excesivo, selección errónea de K"
+)
+
+detalles_gmm <- c(
+  "Modelo de probabilidad que representa la distribución de un conjunto de datos como una suma ponderada de varias distribuciones Gaussianas (normales). Se utiliza principalmente para clustering probabilístico y estimación de densidad.",
+  "GMMs no tienen una 'variable respuesta'. Su objetivo es modelar la distribución subyacente de los datos y agruparlos en 'componentes Gaussianos', donde cada punto pertenece a cada clúster con una cierta probabilidad.",
+  "Las variables de entrada deben ser numéricas. Es importante escalar las características para asegurar que las métricas de distancia y covarianza se interpreten correctamente.",
+  "Capta relaciones muy complejas y no lineales al modelar clústeres de forma elíptica o esférica con diferentes centros, varianzas y orientaciones. Permite que un punto pertenezca a múltiples clústeres con diferentes probabilidades.",
+  "Aunque el modelo general no asume normalidad global, cada **componente individual** del GMM se asume que es Gaussiano. Por lo tanto, los datos dentro de cada clúster modelado deben aproximarse a una distribución normal.",
+  "No aplica el concepto de independencia de errores como en modelos predictivos. En cambio, se estima la probabilidad de que cada punto pertenezca a cada componente Gaussiano.",
+  "No asume homoscedasticidad global. Cada componente Gaussiano dentro de la mezcla puede tener su propia matriz de covarianza, lo que permite modelar clústeres con diferentes formas y orientaciones.",
+  "Sí, GMMs son muy sensibles a outliers. Un outlier puede afectar significativamente la estimación de los parámetros (media y covarianza) de un componente Gaussiano, o incluso hacer que el algoritmo asigne un componente entero para modelar solo los outliers.",
+  "Maneja bien la multicolinealidad, ya que su enfoque se basa en la estimación de matrices de covarianza para cada componente Gaussiano. Las relaciones entre las características se capturan dentro de estas matrices.",
+  "La interpretabilidad es moderada. Cada componente Gaussiano puede ser interpretado como un clúster, y sus parámetros (media, covarianza) describen la forma y ubicación de ese clúster. Sin embargo, el significado de los clústeres a menudo requiere análisis posterior.",
+  "La velocidad y eficiencia son moderadas a altas para datasets de tamaño razonable. El algoritmo de Expectation-Maximization (EM) utilizado para el entrenamiento puede converger rápidamente, pero puede ser lento para un número muy grande de componentes o datos de muy alta dimensión.",
+  "Es compatible y muy útil. La validación cruzada (o criterios de información como AIC/BIC) se utiliza comúnmente para seleccionar el número óptimo de componentes Gaussianos (K) y el tipo de matriz de covarianza a utilizar.",
+  "No funciona bien si: 1) los clústeres en los datos no tienen una forma elíptica o esférica, 2) el **número de componentes (K)** no se elige correctamente (demasiados pueden sobreajustar, pocos pueden subajustar), 3) hay **ruido excesivo** que dificulta la estimación de las distribuciones, o 4) hay **demasiados outliers** sin pre-procesamiento."
+)
+
+tabla_gmm <- data.frame(Criterio = criterios_gmm, Aplica = aplica_gmm, Detalles = detalles_gmm)
+
+tabla_gmm %>%
+  gt() %>%
+  tab_header(
+    title = "Guía rápida para elegir Gaussian Mixture Models (GMMs)",
+    subtitle = "Modelos de Mezclas Gaussianas para Clustering y Estimación de Densidad"
+  ) %>%
+  tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+  tab_options(
+    heading.title.font.size = 14,
+    heading.subtitle.font.size = 12,
+    table.font.names = "Century Gothic",
+    table.font.size = 10,
+    data_row.padding = px(1)
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left", weight = 'bold')),
+    locations = list(cells_title(groups = c("title")))
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left")),
+    locations = list(cells_title(groups = c("subtitle")))
+  ) %>%
+  cols_width(
+    starts_with("Detalles") ~ px(500),
+    everything() ~ px(200)
+  ) %>%
+  as_raw_html()
+```
+
 
 ## Hierarchical Clustering (hclust) {-} 
 
@@ -603,6 +847,89 @@ require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Clustering/Mean-Shift.png"))
 ```
 
+```{r, echo = FALSE}
+library(gt)
+
+criterios_mean_shift <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica_mean_shift <- c(
+  "✅ No Supervisado (Clustering, Estimación de Densidad)",
+  "❌ No aplica directamente",
+  "✅ Numéricas",
+  "✅ Muy compleja (determina clústeres de forma arbitraria)",
+  "❌ No es requisito",
+  "❌ No aplica directamente",
+  "❌ No es requisito",
+  "⚠️ Sí (pero puede formar clústeres pequeños para ellos)",
+  "✅ Maneja bien (basado en la densidad)",
+  "✅ Moderada (los centros son puntos de densidad)",
+  "⚠️ Baja (costo computacional alto para N grande)",
+  "❌ No aplica directamente (evaluación de la coherencia del clúster)",
+  "❌ Dimensionalidad muy alta, ruido excesivo, elección de ancho de banda"
+)
+
+detalles_mean_shift <- c(
+  "Algoritmo de clustering no supervisado que no requiere especificar el número de clústeres de antemano. Funciona iterativamente desplazando cada punto de datos hacia la media de los puntos dentro de una ventana de vecindad, hasta que converge a un pico de densidad.",
+  "Mean-Shift no tiene una 'variable respuesta'. Su objetivo es identificar picos de densidad en el espacio de características, donde cada pico representa el centro de un clúster, y asignar puntos a esos clústeres.",
+  "Las variables de entrada deben ser numéricas para permitir el cálculo de distancias y la estimación de densidad. Es importante escalar las características para asegurar que las distancias sean significativas.",
+  "Capta relaciones muy complejas y no lineales al identificar automáticamente clústeres de forma arbitraria (no solo esféricos o elípticos), basándose en la concentración de puntos de datos. Se adapta a la forma intrínseca de los datos.",
+  "No hace suposiciones sobre la normalidad de los residuos ni la distribución subyacente de los datos, ya que es un método no paramétrico basado en la estimación de la densidad de Kernel.",
+  "El concepto de independencia de errores no aplica directamente. El algoritmo se basa en la convergencia de puntos hacia picos de densidad en el espacio de características.",
+  "No asume homoscedasticidad. La forma de los clústeres y la densidad pueden variar en diferentes regiones del espacio de características.",
+  "Sí, Mean-Shift puede ser sensible a los outliers. Un outlier muy aislado puede convertirse en un 'clúster' de un solo miembro si el ancho de banda es pequeño, o puede influir en la posición de la media si está cerca del borde de un clúster. El ruido excesivo puede crear muchos picos de densidad espurios.",
+  "Maneja bien la multicolinealidad, ya que su enfoque se basa en la densidad de puntos en el espacio. Las características correlacionadas simplemente contribuirán a la concentración de puntos en ciertas regiones.",
+  "La interpretabilidad es moderada. Los centros de los clústeres son picos de densidad, que pueden ser interpretados como puntos representativos o focos de la concentración de datos. Sin embargo, no son necesariamente puntos de datos reales como en Affinity Propagation.",
+  "La velocidad y eficiencia son bajas. La complejidad computacional de Mean-Shift es típicamente O(N^2) en el número de muestras (N), lo que la hace poco práctica para datasets con más de unos pocos miles de puntos. Las implementaciones optimizadas pueden reducir esto a O(N log N) en algunos casos.",
+  "La validación cruzada no se aplica directamente en el clustering. La evaluación se realiza utilizando métricas de coherencia de clúster (ej., coeficiente de silueta) o comparando con agrupaciones conocidas si se tienen etiquetas de referencia (índice de Rand ajustado, V-measure).",
+  "No funciona bien si: 1) el **dataset es muy grande** debido a su alta complejidad computacional, 2) la **dimensionalidad de las características es muy alta** (la estimación de densidad se vuelve poco fiable debido a la maldición de la dimensionalidad), 3) el **parámetro de ancho de banda (bandwidth)** es difícil de determinar o no se elige correctamente, o 4) los datos tienen **ruido excesivo** que lleva a muchos pequeños clústeres falsos."
+)
+
+tabla_mean_shift <- data.frame(Criterio = criterios_mean_shift, Aplica = aplica_mean_shift, Detalles = detalles_mean_shift)
+
+tabla_mean_shift %>%
+  gt() %>%
+  tab_header(
+    title = "Guía rápida para elegir Mean-Shift",
+    subtitle = "Agrupamiento Basado en la Densidad y Desplazamiento de Medias"
+  ) %>%
+  tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+  tab_options(
+    heading.title.font.size = 14,
+    heading.subtitle.font.size = 12,
+    table.font.names = "Century Gothic",
+    table.font.size = 10,
+    data_row.padding = px(1)
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left", weight = 'bold')),
+    locations = list(cells_title(groups = c("title")))
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left")),
+    locations = list(cells_title(groups = c("subtitle")))
+  ) %>%
+  cols_width(
+    starts_with("Detalles") ~ px(500),
+    everything() ~ px(200)
+  ) %>%
+  as_raw_html()
+```
+
+
 ## Ordering Points To Identify the Clustering Structure (OPTICS) {-}   
 
 ```{r, echo = FALSE,out.width='50%', fig.align='center'}
@@ -610,10 +937,176 @@ require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Clustering/OPTICS.png"))
 ```
 
+```{r, echo = FALSE}
+library(gt)
+
+criterios_optics <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica_optics <- c(
+  "✅ No Supervisado (Clustering Basado en Densidad, Jerárquico)",
+  "❌ No aplica directamente",
+  "✅ Numéricas",
+  "✅ Muy compleja (detecta clústeres de forma arbitraria y anidada)",
+  "❌ No es requisito",
+  "❌ No aplica directamente",
+  "❌ No es requisito",
+  "⚠️ Sí (pero puede identificarlos como ruido)",
+  "✅ Maneja bien (basado en la densidad local)",
+  "✅ Moderada a Alta (a través de la gráfica de alcanzabilidad)",
+  "⚠️ Baja (costo computacional alto para N grande)",
+  "❌ No aplica directamente (evaluación de la coherencia del clúster)",
+  "❌ Dimensionalidad muy alta, ruido excesivo, significado de distancias"
+)
+
+detalles_optics <- c(
+  "Algoritmo de clustering no supervisado basado en la densidad, similar a DBSCAN, pero con una ventaja clave: produce una **estructura jerárquica** de clústeres. Genera un 'diagrama de alcanzabilidad' que permite extraer clústeres de diferentes densidades y granularidades.",
+  "OPTICS no tiene una 'variable respuesta'. Su objetivo es identificar la estructura de agrupamiento de los datos, incluyendo clústeres de diferentes densidades y puntos de ruido, sin predefinir el número de clústeres.",
+  "Las variables de entrada deben ser numéricas para calcular las distancias. Es crucial escalar las características para asegurar que las métricas de distancia sean significativas.",
+  "Capta relaciones muy complejas y no lineales al identificar clústeres de forma arbitraria (no solo esféricos) y también clústeres **anidados**. Funciona encontrando los 'puntos centrales' de clústeres de alta densidad y extendiéndose a partir de ellos.",
+  "No hace suposiciones sobre la normalidad de los residuos ni la distribución subyacente de los datos, ya que es un método no paramétrico basado en la densidad.",
+  "El concepto de independencia de errores no aplica directamente. El algoritmo se basa en las distancias y densidades locales entre los puntos.",
+  "No asume homoscedasticidad. Es capaz de descubrir clústeres con densidades variables en diferentes regiones del espacio de datos.",
+  "Sí, OPTICS puede ser sensible a los outliers, especialmente si se encuentran en regiones de baja densidad. Sin embargo, una de sus fortalezas es que puede **identificar explícitamente el ruido** (puntos que no pertenecen a ningún clúster denso), lo que lo hace útil para la detección de anomalías.",
+  "Maneja bien la multicolinealidad, ya que su enfoque se basa en la densidad de puntos en el espacio. Las características correlacionadas simplemente contribuirán a la concentración de puntos en ciertas regiones.",
+  "La interpretabilidad es moderada a alta. El **diagrama de alcanzabilidad** es una herramienta visual poderosa que permite entender la jerarquía de los clústeres, sus densidades relativas y cómo se anidan. Elegir los clústeres finales del diagrama requiere cierta interpretación manual o un algoritmo de extracción.",
+  "La velocidad y eficiencia son bajas para datasets muy grandes. Su complejidad computacional es típicamente O(N^2) en el número de muestras (N) en el peor de los casos (similar a la construcción de un árbol de distancias), lo que la hace poco práctica para más de unas pocas decenas de miles de puntos. Las optimizaciones con índices espaciales pueden mejorar a O(N log N).",
+  "La validación cruzada no se aplica directamente en el clustering. La evaluación se realiza utilizando métricas de coherencia de clúster (ej., coeficiente de silueta) o comparando con agrupaciones conocidas si se tienen etiquetas de referencia (índice de Rand ajustado, V-measure). La evaluación visual del diagrama de alcanzabilidad es clave.",
+  "No funciona bien si: 1) el **dataset es muy grande** debido a su alta complejidad computacional y requisitos de memoria, 2) la **dimensionalidad de las características es muy alta** (la densidad se vuelve menos significativa debido a la maldición de la dimensionalidad), 3) hay **ruido excesivo** que dificulta la identificación de densidades significativas, o 4) la elección de los parámetros `eps` (radio de vecindad) y `min_samples` (número mínimo de puntos) es difícil para el dominio específico."
+)
+
+tabla_optics <- data.frame(Criterio = criterios_optics, Aplica = aplica_optics, Detalles = detalles_optics)
+
+tabla_optics %>%
+  gt() %>%
+  tab_header(
+    title = "Guía rápida para elegir Ordering Points To Identify the Clustering Structure (OPTICS)",
+    subtitle = "Agrupamiento Basado en la Densidad con Estructura Jerárquica"
+  ) %>%
+  tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+  tab_options(
+    heading.title.font.size = 14,
+    heading.subtitle.font.size = 12,
+    table.font.names = "Century Gothic",
+    table.font.size = 10,
+    data_row.padding = px(1)
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left", weight = 'bold')),
+    locations = list(cells_title(groups = c("title")))
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left")),
+    locations = list(cells_title(groups = c("subtitle")))
+  ) %>%
+  cols_width(
+    starts_with("Detalles") ~ px(500),
+    everything() ~ px(200)
+  ) %>%
+  as_raw_html()
+```
+
+
 ## Spectral Clustering {-}   
 
 ```{r, echo = FALSE,out.width='50%', fig.align='center'}
 require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Clustering/Spectral Clustering.png"))
 ```
+
+```{r, echo = FALSE}
+library(gt)
+
+criterios_spectral <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica_spectral <- c(
+  "✅ No Supervisado (Clustering)",
+  "❌ No aplica directamente",
+  "✅ Numéricas",
+  "✅ Muy compleja (detecta formas de clúster no convexas)",
+  "❌ No es requisito",
+  "❌ No aplica directamente",
+  "❌ No es requisito",
+  "⚠️ Sí (la construcción del grafo y los autovectores pueden afectarse)",
+  "✅ Maneja bien (si la similitud es adecuada)",
+  "⚠️ Baja (los nuevos espacios son abstractos)",
+  "⚠️ Moderada a Baja (costo computacional alto para N grande)",
+  "❌ No aplica directamente (evaluación de la coherencia del clúster)",
+  "❌ Datos inconexos, ruido excesivo, elección del número de clústeres"
+)
+
+detalles_spectral <- c(
+  "Algoritmo de clustering no supervisado que aborda el problema de agrupamiento transformando los datos en un problema de corte de grafo. Construye una matriz de similitud (o afinidad) entre los puntos, la transforma en una matriz Laplaciana, y luego realiza una reducción de dimensionalidad con los autovectores de esta matriz antes de aplicar k-Means.",
+  "Spectral Clustering no tiene una 'variable respuesta'. Su objetivo es identificar grupos de puntos de datos que están fuertemente conectados en un grafo de similitud, incluso si estos grupos no son convexos.",
+  "Las variables de entrada deben ser numéricas para calcular las similitudes/distancias. Es crucial escalar las características y seleccionar una métrica de similitud apropiada (ej., RBF kernel) para construir el grafo.",
+  "Capta relaciones muy complejas y no lineales al considerar la conectividad entre los puntos en un grafo. Puede encontrar clústeres de formas arbitrarias y no convexas, algo que algoritmos como k-Means no pueden hacer directamente.",
+  "No hace suposiciones sobre la normalidad de los residuos ni la distribución subyacente de los datos, ya que no es un modelo paramétrico.",
+  "El concepto de independencia de errores no aplica directamente. El algoritmo se basa en la estructura de conectividad y similitud entre los puntos en un grafo.",
+  "No asume homoscedasticidad. La forma y la dispersión de los clústeres se derivan de la conectividad en el grafo, no de varianzas uniformes.",
+  "Sí, Spectral Clustering es sensible a los outliers. Un outlier puede afectar la construcción de la matriz de similitud (especialmente si usa un kernel RBF muy ajustado) y, por lo tanto, distorsionar la estructura del grafo y los autovectores calculados. El ruido también puede crear 'puentes' espurios entre clústeres o aislar puntos.",
+  "Maneja bien la multicolinealidad, siempre y cuando la métrica de similitud utilizada sea robusta a las características correlacionadas. La transformación a un grafo y la reducción de dimensionalidad con autovectores ayudan a mitigar este problema.",
+  "La interpretabilidad es baja. Las nuevas dimensiones obtenidas de los autovectores no suelen tener un significado físico o intuitivo directo en términos de las características originales, a diferencia de PCA. La interpretabilidad se limita a la visualización de los clústeres finales.",
+  "La velocidad y eficiencia pueden ser bajas para datasets grandes. La construcción de la matriz de similitud es O(N^2), y el cálculo de autovectores de una matriz N x N es computacionalmente intensivo (típicamente O(N^3) o más eficiente con métodos iterativos). Esto lo hace poco práctico para más de unos pocos miles de puntos.",
+  "La validación cruzada no se aplica directamente en el clustering, ya que no hay etiquetas verdaderas para predecir. La evaluación se realiza utilizando métricas de coherencia de clúster (ej., coeficiente de silueta) o comparando con agrupaciones conocidas si se tienen etiquetas de referencia (índice de Rand ajustado, V-measure).",
+  "No funciona bien si: 1) el **dataset es muy grande** debido a su alta complejidad computacional, 2) los datos están **demasiado dispersos** o inconexos en el grafo de similitud, lo que hace que los cortes no sean significativos, 3) la **elección de los parámetros del kernel** (ej., ancho de banda de RBF) y el número de clústeres (K) es difícil y crítica, o 4) hay **ruido excesivo** que genera conexiones espurias o aislamientos incorrectos."
+)
+
+tabla_spectral <- data.frame(Criterio = criterios_spectral, Aplica = aplica_spectral, Detalles = detalles_spectral)
+
+tabla_spectral %>%
+  gt() %>%
+  tab_header(
+    title = "Guía rápida para elegir Spectral Clustering",
+    subtitle = "Agrupamiento Basado en la Estructura Espectral del Grafo"
+  ) %>%
+  tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+  tab_options(
+    heading.title.font.size = 14,
+    heading.subtitle.font.size = 12,
+    table.font.names = "Century Gothic",
+    table.font.size = 10,
+    data_row.padding = px(1)
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left", weight = 'bold')),
+    locations = list(cells_title(groups = c("title")))
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left")),
+    locations = list(cells_title(groups = c("subtitle")))
+  ) %>%
+  cols_width(
+    starts_with("Detalles") ~ px(500),
+    everything() ~ px(200)
+  ) %>%
+  as_raw_html()
+```
+
 

@@ -15,6 +15,89 @@ require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Rule-System/Associative Classification.png"))
 ```
 
+```{r, echo = FALSE}
+library(gt)
+
+criterios_associative_classification <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica_associative_classification <- c(
+  "✅ Supervisado (Reglas de Clasificación)",
+  "✅ Categórica",
+  "✅ Categóricas (principalmente)",
+  "✅ Compleja (a través de reglas 'SI-ENTONCES')",
+  "❌ No es requisito",
+  "❌ No aplica directamente",
+  "❌ No es requisito",
+  "⚠️ Sí (puede generar reglas inusuales)",
+  "✅ Maneja bien (identifica patrones de coexistencia)",
+  "✅ Muy alta (reglas claras)",
+  "⚠️ Baja a Moderada (generación de reglas, filtrado)",
+  "✅ Compatible y recomendada",
+  "❌ Datos numéricos predominantes o relaciones no asociativas"
+)
+
+detalles_associative_classification <- c(
+  "Paradigma de clasificación supervisado que utiliza **reglas de asociación** para construir un clasificador. Primero, genera un conjunto de reglas de asociación (ej., usando Apriori) donde el consecuente es la clase objetivo, y luego selecciona y combina estas reglas para formar un modelo de clasificación.",
+  "La variable dependiente debe ser **categórica**. El objetivo es predecir la clase o categoría a la que pertenece una instancia de datos.",
+  "Las variables predictoras son predominantemente **categóricas** o discretas. Los datos numéricos deben ser discretizados para poder generar reglas de asociación.",
+  "Establece relaciones complejas y no lineales en forma de reglas 'SI-ENTONCES'. Busca patrones de coexistencia entre los atributos y la clase, identificando las combinaciones de atributos que predicen con mayor confianza una clase específica.",
+  "No hace suposiciones sobre la normalidad de los residuos ni la distribución de los datos, ya que no es un modelo paramétrico de regresión.",
+  "El concepto de independencia de errores no aplica directamente. El modelo se basa en la co-ocurrencia de ítems para formar reglas.",
+  "No asume homoscedasticidad. La predicción se basa en la activación y ponderación de reglas, no en la varianza constante de un error.",
+  "Sí, la clasificación asociativa puede ser sensible a los outliers si estos dan lugar a la generación de reglas de asociación inusuales pero con alta confianza. Sin embargo, los umbrales de soporte y confianza pueden mitigar esto al filtrar reglas poco frecuentes.",
+  "Maneja muy bien la multicolinealidad. De hecho, la identifica al encontrar combinaciones de atributos que coexisten frecuentemente y predicen la clase. No sufre de los problemas de inestabilidad que enfrentan los modelos lineales en presencia de multicolinealidad.",
+  "La interpretabilidad es **muy alta**. El modelo resultante es un conjunto de reglas 'SI-ENTONCES' que son fáciles de entender y explicar. Esto permite a los expertos del dominio revisar y validar el conocimiento extraído.",
+  "La velocidad y eficiencia pueden ser bajas a moderadas. La fase de generación de reglas de asociación puede ser computacionalmente intensiva y consumir mucha memoria, especialmente si el dataset es grande o el número de atributos es alto. El filtrado y la combinación de reglas también añaden complejidad.",
+  "Es compatible y **recomendada**. La validación cruzada es esencial para evaluar la capacidad de generalización del clasificador resultante y para ajustar hiperparámetros como el soporte mínimo, la confianza mínima y los criterios de selección de reglas.",
+  "No funciona bien si: 1) el dataset contiene **predominantemente variables numéricas** que no pueden discretizarse bien, 2) las relaciones predictivas son puramente continuas y no se expresan bien como patrones discretos, 3) hay **muy pocas reglas de asociación fuertes** para construir un clasificador robusto, o 4) el dataset es **muy grande** y la generación de reglas se vuelve inviable."
+)
+
+tabla_associative_classification <- data.frame(Criterio = criterios_associative_classification, Aplica = aplica_associative_classification, Detalles = detalles_associative_classification)
+
+tabla_associative_classification %>%
+  gt() %>%
+  tab_header(
+    title = "Guía rápida para elegir la Clasificación Asociativa",
+    subtitle = "Combinando Reglas de Asociación con Clasificación"
+  ) %>%
+  tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+  tab_options(
+    heading.title.font.size = 14,
+    heading.subtitle.font.size = 12,
+    table.font.names = "Century Gothic",
+    table.font.size = 10,
+    data_row.padding = px(1)
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left", weight = 'bold')),
+    locations = list(cells_title(groups = c("title")))
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left")),
+    locations = list(cells_title(groups = c("subtitle")))
+  ) %>%
+  cols_width(
+    starts_with("Detalles") ~ px(500),
+    everything() ~ px(200)
+  ) %>%
+  as_raw_html()
+```
+
+
 ## CN2 Algorithm {-}  
 
 ```{r, echo = FALSE,out.width='50%', fig.align='center'}
@@ -22,12 +105,178 @@ require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Rule-System/CN2.png"))
 ```
 
+```{r, echo = FALSE}
+library(gt)
+
+criterios_cn2 <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica_cn2 <- c(
+  "✅ Supervisado (Clasificación basada en reglas)",
+  "✅ Categórica",
+  "✅ Mixtas (numéricas y categóricas)",
+  "✅ Compleja (reglas 'SI-ENTONCES')",
+  "❌ No es requisito",
+  "❌ No aplica directamente",
+  "❌ No es requisito",
+  "✅ Sí (pero maneja el ruido mejor que otros métodos de reglas)",
+  "✅ Maneja bien (si la métrica de evaluación es robusta)",
+  "✅ Muy alta (reglas claras)",
+  "⚠️ Moderada (depende del tamaño del haz y umbrales)",
+  "✅ Compatible y recomendada",
+  "❌ Datos con relaciones puramente numéricas y continuas sin discretización"
+)
+
+detalles_cn2 <- c(
+  "El algoritmo CN2 es un algoritmo de inducción de reglas que genera un conjunto de reglas 'SI-ENTONCES' para la clasificación. Combina ideas de algoritmos como AQ (que produce reglas) e ID3 (que maneja datos ruidosos), siendo efectivo incluso con datos imperfectos.",
+  "La variable dependiente debe ser **categórica**. El objetivo es asignar una instancia a una clase o categoría específica basándose en las reglas aprendidas.",
+  "Las variables predictoras pueden ser **numéricas o categóricas**. Las variables numéricas suelen discretizarse para formar las condiciones de las reglas. Es importante un pre-procesamiento adecuado.",
+  "Establece relaciones complejas y no lineales mediante la creación de reglas que identifican combinaciones específicas de atributos que predicen una clase. A diferencia de los árboles de decisión, puede generar conjuntos de reglas más concisos y comprensibles.",
+  "No hace suposiciones estadísticas sobre la normalidad de los residuos, ya que es un modelo no paramétrico basado en reglas discretas.",
+  "El concepto de independencia de errores no aplica directamente. El algoritmo se enfoca en encontrar patrones de co-ocurrencia que formen reglas predictivas.",
+  "No asume homoscedasticidad. La predicción se basa en la activación de reglas y la clase mayoritaria de los ejemplos cubiertos por la regla, no en la varianza constante de un error.",
+  "Sí, el CN2 puede ser sensible a outliers si estos son lo suficientemente frecuentes como para influir en la creación de reglas. Sin embargo, una de sus fortalezas es su capacidad para **manejar datos ruidosos** y evitar el sobreajuste mediante el uso de pruebas de significancia estadística y técnicas de poda, lo que lo hace más robusto que algoritmos de reglas más simples.",
+  "Maneja bien la multicolinealidad. Al igual que otros algoritmos basados en reglas, identifica combinaciones de atributos. Si las características están correlacionadas, el algoritmo puede aprender reglas que incluyen esas características sin sufrir inestabilidad como los modelos lineales.",
+  "La interpretabilidad es **muy alta**. Las reglas 'SI-ENTONCES' generadas son intuitivas y fáciles de entender por humanos, lo que permite a los expertos del dominio validar la lógica del modelo y obtener información sobre los patrones en los datos.",
+  "La velocidad y eficiencia son moderadas. El proceso de búsqueda de reglas se realiza utilizando una **búsqueda en haz (beam search)**, que es más eficiente que una búsqueda exhaustiva. Sin embargo, puede ser lento para conjuntos de datos muy grandes o con un número muy elevado de posibles condiciones.",
+  "Es compatible y **recomendada**. La validación cruzada es fundamental para evaluar la capacidad de generalización de las reglas inducidas y para ajustar hiperparámetros como el ancho del haz (beam width) y los umbrales de significancia (alpha) y cobertura mínima de la regla.",
+  "No funciona bien si: 1) el dataset contiene **relaciones puramente numéricas y continuas** que no pueden discretizarse de manera significativa, 2) las clases no pueden ser discriminadas por conjuntos de reglas concisos, lo que lleva a un número excesivo de reglas, o 3) el **tamaño del dataset es extremadamente grande** haciendo que la búsqueda de reglas sea ineficiente incluso con la poda."
+)
+
+tabla_cn2 <- data.frame(Criterio = criterios_cn2, Aplica = aplica_cn2, Detalles = detalles_cn2)
+
+tabla_cn2 %>%
+  gt() %>%
+  tab_header(
+    title = "Guía rápida para elegir el Algoritmo CN2",
+    subtitle = "Inducción de Reglas de Clasificación con Manejo de Ruido"
+  ) %>%
+  tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+  tab_options(
+    heading.title.font.size = 14,
+    heading.subtitle.font.size = 12,
+    table.font.names = "Century Gothic",
+    table.font.size = 10,
+    data_row.padding = px(1)
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left", weight = 'bold')),
+    locations = list(cells_title(groups = c("title")))
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left")),
+    locations = list(cells_title(groups = c("subtitle")))
+  ) %>%
+  cols_width(
+    starts_with("Detalles") ~ px(500),
+    everything() ~ px(200)
+  ) %>%
+  as_raw_html()
+```
+
+
 ## Decision List/Decision Tree to Rules {-} 
 
 ```{r, echo = FALSE,out.width='50%', fig.align='center'}
 require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Rule-System/Decision Tree to Rules.png"))
 ```
+
+```{r, echo = FALSE}
+library(gt)
+
+criterios_dt_to_rules <- c(
+  "Tipo de Modelo (original y resultado)",
+  "Variable Respuesta (del modelo original)",
+  "Variables Predictoras (del modelo original)",
+  "Relación entre variables (en las reglas)",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensibilidad a Outliers",
+  "Multicolinealidad entre Predictores",
+  "Interpretabilidad (del resultado)",
+  "Velocidad y eficiencia (del proceso de conversión y uso)",
+  "Validación Cruzada (aplicabilidad)",
+  "No funciona bien si..."
+)
+
+aplica_dt_to_rules <- c(
+  "✅ Supervisado (Clasificación/Regresión)",
+  "✅ Categórica o Numérica (según el árbol)",
+  "✅ Mixtas (numéricas y categóricas)",
+  "✅ Compleja (reglas 'SI-ENTONCES')",
+  "❌ No es requisito",
+  "❌ No aplica directamente",
+  "❌ No es requisito",
+  "⚠️ Sí (hereda la sensibilidad del árbol)",
+  "✅ Maneja bien (hereda la capacidad del árbol)",
+  "✅ Muy alta (reglas claras y concisas)",
+  "✅ Muy alta (proceso rápido y reglas eficientes)",
+  "✅ Compatible y útil",
+  "❌ Árboles de decisión excesivamente complejos o sobreajustados"
+)
+
+detalles_dt_to_rules <- c(
+  "El proceso de convertir un **Árbol de Decisión** en un conjunto de reglas 'SI-ENTONCES'. Cada ruta desde la raíz hasta un nodo hoja en el árbol se traduce directamente en una regla. Este método busca mejorar la interpretabilidad y, a veces, la generalización del modelo original.",
+  "La variable dependiente es la misma que la del árbol de decisión original, que puede ser **categórica** (para clasificación) o **numérica continua** (para regresión). En el caso de regresión, la regla predice un valor numérico.",
+  "Las variables predictoras son las mismas que se usaron para construir el árbol de decisión. Pueden ser **numéricas** (con umbrales) o **categóricas** (con condiciones de igualdad/desigualdad).",
+  "La relación se expresa a través de conjunciones lógicas de condiciones (`AND`) que forman las reglas. Las reglas capturan la lógica de ramificación del árbol, lo que permite modelar relaciones complejas y no lineales entre los predictores y la variable respuesta.",
+  "No hace suposiciones sobre la normalidad de los residuos, ya que el proceso de conversión se basa en la estructura lógica del árbol, no en la distribución estadística de los errores.",
+  "El concepto de independencia de errores no aplica directamente al proceso de extracción de reglas. La validez de las reglas depende de la calidad del árbol original.",
+  "No asume homoscedasticidad. Las reglas representan segmentos del espacio de características, y la varianza de la respuesta dentro de esos segmentos no se asume constante.",
+  "Sí, el proceso de conversión **hereda la sensibilidad a outliers del árbol de decisión original**. Si el árbol se sobreajusta a outliers, las reglas resultantes también reflejarán ese sobreajuste. Sin embargo, si el árbol está podado, las reglas serán más robustas.",
+  "Maneja bien la multicolinealidad, ya que **hereda la capacidad del árbol de decisión** para trabajar con predictores correlacionados. Los árboles de decisión son inherentemente robustos a la multicolinealidad porque eligen la mejor característica para dividir en cada paso, sin requerir independencia entre ellas.",
+  "La interpretabilidad es **muy alta**. Las reglas 'SI-ENTONCES' son una de las formas más fáciles de entender la lógica de un modelo. Permiten una inspección directa del conocimiento extraído y son fácilmente comunicables a no expertos.",
+  "La velocidad y eficiencia son **muy altas**. El proceso de convertir un árbol ya entrenado en reglas es trivial y rápido. Las reglas resultantes son muy eficientes para la inferencia, ya que solo implican evaluaciones de condiciones lógicas.",
+  "Es compatible y **muy útil**. La validación cruzada se aplica al modelo de árbol de decisión original para evaluar su rendimiento y prevenir el sobreajuste antes de la extracción de reglas. Además, el conjunto de reglas resultante puede evaluarse con validación cruzada para confirmar su generalización.",
+  "No funciona bien si: 1) el **árbol de decisión original es excesivamente complejo o profundo** (lo que resulta en un número muy grande de reglas, cada una muy específica, perdiendo interpretabilidad), 2) el árbol está **sobreajustado** a los datos de entrenamiento, o 3) las relaciones en los datos son tan complejas que incluso un árbol profundo no puede capturarlas bien, llevando a reglas débiles."
+)
+
+tabla_dt_to_rules <- data.frame(Criterio = criterios_dt_to_rules, Aplica = aplica_dt_to_rules, Detalles = detalles_dt_to_rules)
+
+tabla_dt_to_rules %>%
+  gt() %>%
+  tab_header(
+    title = "Guía rápida para la Conversión de Árboles de Decisión a Reglas",
+    subtitle = "Extrayendo Conocimiento Explícito y Simplificado de Árboles"
+  ) %>%
+  tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+  tab_options(
+    heading.title.font.size = 14,
+    heading.subtitle.font.size = 12,
+    table.font.names = "Century Gothic",
+    table.font.size = 10,
+    data_row.padding = px(1)
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left", weight = 'bold')),
+    locations = list(cells_title(groups = c("title")))
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left")),
+    locations = list(cells_title(groups = c("subtitle")))
+  ) %>%
+  cols_width(
+    starts_with("Detalles") ~ px(500),
+    everything() ~ px(200)
+  ) %>%
+  as_raw_html()
+```
+
 
 ## Decision Rules  {-}   
 
@@ -270,6 +519,89 @@ tabla_fuzzy %>%
 require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Rule-System/Minsky's Perceptron.png"))
 ```
+
+```{r, echo = FALSE}
+library(gt)
+
+criterios_perceptron_minsky <- c(
+  "Tipo de modelo",
+  "Variable respuesta",
+  "Variables predictoras",
+  "Relación entre variables",
+  "Normalidad de residuos",
+  "Independencia de errores",
+  "Homoscedasticidad",
+  "Sensible a outliers",
+  "Multicolinealidad entre predictores",
+  "Interpretabilidad",
+  "Velocidad y eficiencia",
+  "Validación cruzada",
+  "No funciona bien si..."
+)
+
+aplica_perceptron_minsky <- c(
+  "✅ Supervisado (Clasificación)",
+  "✅ Categórica binaria (0/1 o -1/1)",
+  "✅ Numéricas",
+  "✅ Linealmente separable",
+  "❌ No es requisito",
+  "❌ No aplica directamente",
+  "❌ No es requisito",
+  "⚠️ Sí (la convergencia puede verse afectada)",
+  "✅ Maneja bien (si la linealidad es el problema)",
+  "✅ Alta (pesos directos)",
+  "✅ Muy alta (algoritmo simple y rápido)",
+  "✅ Compatible",
+  "❌ Datos no linealmente separables"
+)
+
+detalles_perceptron_minsky <- c(
+  "Un clasificador binario lineal, una de las primeras arquitecturas de red neuronal artificial. Su objetivo es encontrar un hiperplano que separe dos clases de datos.",
+  "La variable dependiente debe ser categórica con solo dos clases, típicamente codificadas como 0/1 o -1/1.",
+  "Las variables predictoras deben ser numéricas. Las categóricas necesitan ser codificadas adecuadamente (ej. one-hot encoding).",
+  "Asume que las clases en los datos son **linealmente separables**, es decir, que se puede trazar una línea (o hiperplano en dimensiones superiores) para separar perfectamente las dos clases.",
+  "No hace suposiciones sobre la normalidad de los residuos ni la distribución de los datos, ya que no es un modelo estadístico paramétrico en ese sentido.",
+  "El concepto de independencia de errores no aplica directamente. El algoritmo se entrena iterativamente ajustando pesos basados en ejemplos individuales.",
+  "No asume homoscedasticidad. Su objetivo es encontrar un límite de decisión, no modelar la varianza.",
+  "Sí, el Perceptrón es sensible a los outliers. Un outlier puede impedir la convergencia si hace que el conjunto de datos se vuelva no linealmente separable, o puede forzar al hiperplano a un lugar subóptimo.",
+  "Maneja bien la multicolinealidad en el sentido de que todavía puede encontrar un hiperplano si existe. Sin embargo, puede hacer que la solución no sea única y que los pesos sean menos estables.",
+  "La interpretabilidad es alta. Los pesos asignados a cada predictor indican la importancia y dirección de la influencia de esa característica en la clasificación, de manera similar a los coeficientes en la regresión lineal.",
+  "La velocidad y eficiencia son muy altas. El algoritmo de entrenamiento es simple y converge rápidamente a una solución si los datos son linealmente separables. Las predicciones son extremadamente rápidas.",
+  "Es compatible. La validación cruzada se puede utilizar para evaluar el rendimiento de generalización del Perceptrón en conjuntos de datos no vistos.",
+  "No funciona bien si: 1) los datos **no son linealmente separables** (el problema del XOR es el ejemplo clásico, donde un solo Perceptrón no puede encontrar un límite de decisión), 2) los datos tienen **mucho ruido** que afecta la separabilidad lineal, o 3) se requiere una estimación de probabilidad de pertenencia a la clase (ya que produce una salida binaria dura)."
+)
+
+tabla_perceptron_minsky <- data.frame(Criterio = criterios_perceptron_minsky, Aplica = aplica_perceptron_minsky, Detalles = detalles_perceptron_minsky)
+
+tabla_perceptron_minsky %>%
+  gt() %>%
+  tab_header(
+    title = "Guía rápida sobre el Perceptrón (de Minsky)",
+    subtitle = "Clasificador Lineal Binario y sus Limitaciones"
+  ) %>%
+  tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+  tab_options(
+    heading.title.font.size = 14,
+    heading.subtitle.font.size = 12,
+    table.font.names = "Century Gothic",
+    table.font.size = 10,
+    data_row.padding = px(1)
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left", weight = 'bold')),
+    locations = list(cells_title(groups = c("title")))
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left")),
+    locations = list(cells_title(groups = c("subtitle")))
+  ) %>%
+  cols_width(
+    starts_with("Detalles") ~ px(500),
+    everything() ~ px(200)
+  ) %>%
+  as_raw_html()
+```
+
 
 ## One Rule (OneR)  {-}   
 
