@@ -129,7 +129,9 @@ k-Nearest Neighbour (kNN) es el ejemplo por excelencia de un modelo de **aprendi
 
 
 ```{r, echo = FALSE}
-criterios <- c(
+library(gt)
+
+criterios_knn <- c(
   "Tipo de modelo",
   "Variable respuesta",
   "Variables predictoras",
@@ -145,58 +147,67 @@ criterios <- c(
   "No funciona bien si..."
 )
 
-aplica <- c(
-  "✅ Supervisado (clasificación y regresión)",
-  "✅ Numérica (regresión) o categórica (clasificación)",
-  "✅ Numéricas (preferible), aunque puede adaptarse para categóricas",
-  "❌ No asume ninguna forma funcional",
-  "❌ No aplica",
-  "❌ No aplica",
-  "❌ No aplica",
-  "⚠️ Muy sensible a valores atípicos",
-  "⚠️ Problemas si hay predictores muy correlacionados",
-  "⚠️ Difícil de interpretar (modelo basado en instancias)",
-  "❌ Lento con grandes volúmenes (requiere calcular distancias)",
-  "✅ Crucial para elegir el mejor valor de *k*",
-  "❌ No escala bien con datos grandes o con ruido"
+aplica_knn <- c(
+  "✅ Supervisado (Clasificación/Regresión)",
+  "✅ Categórica (Clasif.) / Numérica (Regr.)",
+  "✅ Numéricas (o codificadas)",
+  "✅ Compleja (no lineal, local)",
+  "❌ No es requisito",
+  "❌ No aplica directamente",
+  "❌ No es requisito",
+  "⚠️ Sí (muy)",
+  "✅ Maneja bien (si la distancia es adecuada)",
+  "✅ Alta (localmente)",
+  "⚠️ Baja (predicción en datasets grandes)",
+  "✅ Esencial",
+  "❌ Alta dimensionalidad, ruido, imbalance de clases"
 )
 
-detalles <- c(
-  "Modelo no paramétrico que predice en función de la cercanía a ejemplos del conjunto de entrenamiento.",
-  "Se usa tanto para clasificación como para regresión según el tipo de variable objetivo.",
-  "Las variables deben estar en la misma escala; se recomienda estandarizar.",
-  "No asume una relación específica entre variables; se basa en similitud.",
-  "No se ajusta una función, por lo tanto no hay residuos como tal.",
-  "No se estiman errores independientes, ya que no hay función de error explícita.",
-  "No hay regresión residual, por lo tanto este supuesto no aplica.",
-  "Outliers pueden alterar los vecinos más cercanos y afectar la predicción.",
-  "No requiere modelo explícito, pero predictores correlacionados pueden afectar el peso relativo en la distancia.",
-  "Predicción se basa en instancias cercanas, difícil de resumir en una fórmula.",
-  "Requiere calcular distancia para cada predicción → lento con grandes bases.",
-  "Se suele usar validación cruzada para encontrar el número óptimo de vecinos (*k*).",
-  "Alta dimensión, ruido o escalas distintas entre variables afectan el rendimiento del modelo."
+detalles_knn <- c(
+  "k-NN es un algoritmo de aprendizaje no paramétrico perezoso (lazy learner) que se utiliza tanto para clasificación como para regresión. No construye un modelo durante la fase de entrenamiento, sino que almacena todo el conjunto de datos de entrenamiento. Las predicciones se hacen buscando los 'k' puntos de datos más cercanos (vecinos) en el espacio de características.",
+  "Para **clasificación**, la variable respuesta es **categórica**. La predicción se basa en la mayoría de votos de la clase entre los 'k' vecinos más cercanos. Para **regresión**, la variable respuesta es **numérica continua**. La predicción es el promedio (o mediana) de los valores de la variable respuesta de los 'k' vecinos más cercanos.",
+  "Las variables predictoras deben ser **numéricas**. Si hay variables categóricas, deben ser codificadas a numéricas (ej. one-hot encoding). Es **CRÍTICO escalar las características** (normalización o estandarización) antes de aplicar k-NN, ya que se basa en métricas de distancia. Las características con mayores rangos dominarán el cálculo de la distancia si no se escalan.",
+  "Captura relaciones **muy complejas y no lineales** entre las variables, ya que la predicción se basa en la proximidad local de los puntos de datos. No asume ninguna forma funcional para la relación, adaptándose a la estructura intrínseca de los datos.",
+  "No hace suposiciones sobre la normalidad de los residuos ni la distribución subyacente de los datos, ya que no es un modelo paramétrico.",
+  "El concepto de independencia de errores no aplica directamente en k-NN. La predicción se basa en la cercanía de las observaciones, por lo que la independencia de las *observaciones* es importante para la generalización.",
+  "No asume homoscedasticidad. La predicción se basa en la proximidad local de los puntos, que no depende de la varianza constante de un error.",
+  "Sí, k-NN es **muy sensible a los outliers y al ruido**. Un solo outlier en los 'k' vecinos más cercanos puede distorsionar significativamente la predicción, especialmente si 'k' es pequeño. Los puntos de datos ruidosos pueden ser clasificados erróneamente, o atraer a otros puntos hacia sí mismos.",
+  "Maneja la multicolinealidad **relativamente bien**, siempre y cuando la métrica de distancia utilizada sea adecuada. Las características correlacionadas simplemente contribuirán a la proximidad de manera consistente. Sin embargo, en alta dimensionalidad, el efecto combinado puede ser problemático (ver la 'Maldición de la Dimensionalidad').",
+  "La interpretabilidad es **alta a nivel local**. Para una predicción específica, se puede identificar fácilmente cuáles fueron los 'k' vecinos y por qué influyeron en la decisión. Sin embargo, no hay un modelo global único que explique las relaciones de forma concisa.",
+  "La velocidad y eficiencia son **bajas durante la fase de predicción**. Como es un 'lazy learner', no hay un modelo pre-calculado. Cada vez que se hace una predicción, el algoritmo tiene que calcular la distancia a *todos* los puntos de entrenamiento, lo que puede ser muy lento para datasets grandes. Las estructuras de datos como KD-Trees o Ball Trees pueden acelerar la búsqueda de vecinos, pero aún así escalan mal con la dimensionalidad.",
+  "Es **esencial y muy compatible**. La validación cruzada es crucial para seleccionar el número óptimo de vecinos (`k`) y la métrica de distancia apropiada (ej., euclidiana, manhattan). Es el método preferido para ajustar estos hiperparámetros.",
+  "No funciona bien si: 1) el **dataset es muy grande** (problemas de eficiencia en la predicción), 2) la **dimensionalidad de las características es muy alta** (sufre la 'Maldición de la Dimensionalidad', donde las distancias se vuelven menos significativas en espacios de alta dimensión), 3) hay **mucho ruido o outliers** en los datos, o 4) hay un **fuerte desequilibrio de clases** (la clase mayoritaria puede dominar la votación de los vecinos)."
 )
 
-tabla_knn <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+tabla_knn <- data.frame(Criterio = criterios_knn, Aplica = aplica_knn, Detalles = detalles_knn)
 
 tabla_knn %>%
- gt() %>%
-  tab_header(title = "Guía rápida para elegir kNN",
-             subtitle = "k - Nearest Neighbour (kNN)")  %>%
-   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
-     tab_options(heading.title.font.size = 14, 
-                 heading.subtitle.font.size = 12,
-                 table.font.names = "Century Gothic",
-                 table.font.size = 10,
-                 data_row.padding = px(1)) %>%
-      tab_style(style = list(cell_text(align = "left",
-                                       weight = 'bold')),
-                locations = list(cells_title(groups = c("title")))) %>%
-       tab_style(style = list(cell_text(align = "left")),
-                 locations = list(cells_title(groups = c("subtitle")))) %>%
-        cols_width(starts_with("Detalles") ~ px(500),
-                   everything() ~ px(200)) %>%
-         as_raw_html() 
+  gt() %>%
+  tab_header(
+    title = "Guía rápida para elegir k-Nearest Neighbors (k-NN)",
+    subtitle = "Clasificación y Regresión Basada en la Proximidad"
+  ) %>%
+  tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+  tab_options(
+    heading.title.font.size = 14,
+    heading.subtitle.font.size = 12,
+    table.font.names = "Century Gothic",
+    table.font.size = 10,
+    data_row.padding = px(1)
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left", weight = 'bold')),
+    locations = list(cells_title(groups = c("title")))
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left")),
+    locations = list(cells_title(groups = c("subtitle")))
+  ) %>%
+  cols_width(
+    starts_with("Detalles") ~ px(500),
+    everything() ~ px(200)
+  ) %>%
+  as_raw_html()
 ```
 
 ## Kernel Regression / Nadaraya-Watson Estimator   

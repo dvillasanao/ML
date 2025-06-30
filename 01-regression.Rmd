@@ -291,7 +291,9 @@ Least Angle Regression (LARS) es un modelo de **aprendizaje global**.
 
 
 ```{r, echo = FALSE}
-criterios <- c(
+library(gt)
+
+criterios_lars <- c(
   "Tipo de modelo",
   "Variable respuesta",
   "Variables predictoras",
@@ -307,58 +309,67 @@ criterios <- c(
   "No funciona bien si..."
 )
 
-aplica <- c(
-  "✅ Supervisado (regresión)",
-  "✅ Numérica continua",
-  "✅ Numéricas (requiere estandarización)",
-  "✅ Lineal",
-  "⚠️ Deseable para inferencia clásica",
+aplica_lars <- c(
+  "✅ Supervisado (Regresión)",
+  "✅ Numérica (continua)",
+  "✅ Numéricas (o categóricas codificadas)",
+  "✅ Lineal (o linealizable)",
+  "❌ No es requisito directo (pero asume errores i.i.d.)",
   "✅ Necesaria",
-  "✅ Supuesto importante",
-  "⚠️ Afectado por valores extremos",
-  "✅ Maneja bien multicolinealidad como LASSO",
-  "✅ Muy interpretable (secuencia de modelos anidados)",
-  "✅ Muy eficiente, especialmente con muchas variables",
-  "✅ Útil para elegir número de variables con validación cruzada",
-  "❌ Datos ruidosos o no lineales; ❌ si hay muchas interacciones no capturadas"
+  "✅ Deseable",
+  "⚠️ Sí (más que OLS y Ridge)",
+  "⚠️ Puede ser problemático (selecciona una entre correlacionadas)",
+  "✅ Muy alta (ruta de coeficientes explícita)",
+  "✅ Muy alta (especialmente para modelos esparsos)",
+  "✅ Compatible",
+  "❌ Datos con relaciones muy no lineales, ruido excesivo"
 )
 
-detalles <- c(
-  "Algoritmo de regresión eficiente que selecciona variables secuencialmente como alternativa a LASSO.",
-  "Busca predecir una variable continua usando múltiples predictores.",
-  "Usa variables numéricas estandarizadas; es sensible a escala.",
-  "Asume relación lineal entre predictores y respuesta.",
-  "No exige normalidad para predicción, pero sí para inferencia estadística.",
-  "Errores deben ser independientes entre sí.",
-  "Supone varianza constante de los errores.",
-  "Puede verse afectado si hay valores extremos en las variables.",
-  "Muy útil cuando los predictores están correlacionados; elige uno a la vez.",
-  "Produce una ruta de modelos fácilmente interpretable con selección progresiva.",
-  "Más rápido que LASSO al generar trayectorias de coeficientes.",
-  "Puede aplicarse validación cruzada para seleccionar el mejor modelo en la secuencia.",
-  "No captura relaciones no lineales o interacciones sin modificación previa del modelo."
+detalles_lars <- c(
+  "Least Angle Regression (LARS) es un algoritmo para ajustar modelos lineales a datos de alta dimensión, especialmente cuando se espera que el modelo final sea esparso (es decir, que solo un pequeño número de características sean realmente relevantes). Es similar a LASSO, pero construye la solución paso a paso, 'moviéndose' en la dirección menos angulada de los predictores correlacionados.",
+  "La variable dependiente debe ser **numérica continua**. LARS está diseñado para problemas de regresión lineal.",
+  "Las variables predictoras deben ser **numéricas**. Las variables categóricas deben ser transformadas a numéricas (ej., one-hot encoding). Es **crucial escalar las características** (normalización o estandarización) antes de aplicar LARS, ya que se basa en el ángulo y la correlación entre predictores.",
+  "Asume una relación **lineal** entre las variables predictoras y la variable respuesta. LARS es un método para ajustar modelos lineales esparsos, por lo que las relaciones no lineales deben ser capturadas a través de transformaciones de características si es necesario.",
+  "No asume estrictamente la normalidad de los residuos para el proceso de estimación, pero los errores suelen asumirse independientes e idénticamente distribuidos (i.i.d.) para inferencia estadística. Su enfoque principal es la selección de características y el encogimiento de coeficientes.",
+  "Sí, se asume que las observaciones y sus errores asociados son independientes entre sí. Esto es fundamental para la validez de los estimadores y la correcta selección de variables.",
+  "Es deseable que la varianza de los errores sea constante (homoscedasticidad). LARS, al igual que OLS, se basa en la minimización de la suma de errores al cuadrado y puede verse afectado por la heterocedasticidad, aunque la regularización puede ofrecer cierta robustez.",
+  "Sí, LARS es **sensible a los outliers**. Como genera una ruta de solución que se basa en la correlación entre los residuos y los predictores, los outliers que afectan la correlación pueden alterar significativamente el orden en que se seleccionan las variables y la magnitud de sus coeficientes. Es potencialmente más sensible que Ridge o incluso OLS en la fase inicial de selección.",
+  "Puede ser **problemático en presencia de alta multicolinealidad** si se busca un modelo donde todas las variables correlacionadas son relevantes. Al igual que LASSO, LARS tiende a seleccionar solo una de un grupo de variables altamente correlacionadas y anular las demás en etapas tempranas. Esto es bueno para la escasez pero puede no ser ideal si todas las variables correlacionadas tienen importancia teórica o práctica.",
+  "La interpretabilidad es **muy alta**. LARS genera una **ruta de solución completa** para todos los valores del parámetro de regularización, mostrando exactamente cuándo cada variable entra en el modelo y cómo cambian sus coeficientes. Esto ofrece una visión profunda del proceso de selección de características y de la importancia relativa de los predictores.",
+  "La velocidad y eficiencia son **muy altas**, especialmente para modelos esparsos. Es computacionalmente tan eficiente como la regresión OLS para el mismo número de predictores, y mucho más rápido que métodos de selección de subconjuntos de fuerza bruta. Es particularmente eficiente cuando el número de características es muy grande pero se espera que solo un subconjunto pequeño sea relevante.",
+  "Es **compatible y muy útil**. La validación cruzada se utiliza típicamente para seleccionar el paso óptimo en la ruta de LARS (equivalente a elegir el `lambda` en LASSO) o el número de características a incluir en el modelo final, equilibrando el ajuste y la complejidad.",
+  "No funciona bien si: 1) las **relaciones subyacentes son altamente no lineales** y no pueden ser capturadas por transformaciones de características, 2) hay **ruido excesivo** en los datos que puede hacer que la ruta de selección de variables sea inestable o se incluyan variables irrelevantes, o 3) se requiere que **todos los predictores correlacionados** sean retenidos en el modelo final con coeficientes no nulos (en cuyo caso Elastic Net podría ser mejor)."
 )
 
-tabla_lars <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+tabla_lars <- data.frame(Criterio = criterios_lars, Aplica = aplica_lars, Detalles = detalles_lars)
 
 tabla_lars %>%
- gt() %>%
-  tab_header(title = "Guía rápida para elegir LARS",
-             subtitle = "Least Angle Regression (LARS)")  %>%
-   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
-     tab_options(heading.title.font.size = 14, 
-                 heading.subtitle.font.size = 12,
-                 table.font.names = "Century Gothic",
-                 table.font.size = 10,
-                 data_row.padding = px(1)) %>%
-      tab_style(style = list(cell_text(align = "left",
-                                       weight = 'bold')),
-                locations = list(cells_title(groups = c("title")))) %>%
-       tab_style(style = list(cell_text(align = "left")),
-                 locations = list(cells_title(groups = c("subtitle")))) %>%
-        cols_width(starts_with("Detalles") ~ px(500),
-                   everything() ~ px(200)) %>%
-         as_raw_html() 
+  gt() %>%
+  tab_header(
+    title = "Guía rápida para elegir Least Angle Regression (LARS)",
+    subtitle = "Algoritmo de Regresión Lineal para Modelos Esparsos y Alta Dimensionalidad"
+  ) %>%
+  tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+  tab_options(
+    heading.title.font.size = 14,
+    heading.subtitle.font.size = 12,
+    table.font.names = "Century Gothic",
+    table.font.size = 10,
+    data_row.padding = px(1)
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left", weight = 'bold')),
+    locations = list(cells_title(groups = c("title")))
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left")),
+    locations = list(cells_title(groups = c("subtitle")))
+  ) %>%
+  cols_width(
+    starts_with("Detalles") ~ px(500),
+    everything() ~ px(200)
+  ) %>%
+  as_raw_html()
 ```
 
 

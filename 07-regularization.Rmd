@@ -42,7 +42,9 @@ Elastic Net es un modelo de **aprendizaje global**.
 
 
 ```{r, echo = FALSE}
-criterios <- c(
+library(gt)
+
+criterios_elastic_net <- c(
   "Tipo de modelo",
   "Variable respuesta",
   "Variables predictoras",
@@ -58,58 +60,67 @@ criterios <- c(
   "No funciona bien si..."
 )
 
-aplica <- c(
-  "✅ Supervisado (regresión)",
-  "✅ Numérica continua",
-  "✅ Numéricas (requiere estandarización)",
-  "✅ Lineal (como OLS)",
-  "⚠️ Deseable, pero no esencial",
-  "✅ Supuesto importante",
-  "✅ Requiere homoscedasticidad",
-  "⚠️ Afectado por outliers (no tan robusto)",
-  "✅ Ideal para multicolinealidad alta (mejor que LASSO)",
-  "⚠️ Puede ser menos interpretable que LASSO si hay muchas variables seleccionadas",
-  "✅ Rápido incluso con datos grandes",
-  "✅ Requiere validar los hiperparámetros `lambda` y `alpha`",
-  "❌ Relación no lineal, o pocos datos con muchas variables no relevantes"
+aplica_elastic_net <- c(
+  "✅ Supervisado (Regresión/Clasificación)",
+  "✅ Numérica (continua) / Categórica (para clasificación)",
+  "✅ Numéricas (o categóricas codificadas)",
+  "✅ Lineal (o linealizable)",
+  "❌ No es requisito directo (pero asume errores i.i.d.)",
+  "✅ Necesaria",
+  "✅ Deseable",
+  "⚠️ Sí (pero menos que OLS)",
+  "✅ Muy bien (su punto fuerte)",
+  "✅ Moderada a Alta (coeficientes reducidos/cero)",
+  "✅ Alta (especialmente con algoritmos eficientes)",
+  "✅ Esencial",
+  "❌ Relaciones altamente no lineales no capturadas"
 )
 
-detalles <- c(
-  "Modelo de regresión penalizada que combina LASSO (L1) y Ridge (L2) en un solo modelo.",
-  "Predice una variable continua a partir de variables independientes numéricas.",
-  "Las variables deben estar estandarizadas para evitar que la penalización sesgue los coeficientes.",
-  "Asume que la relación entre variables es lineal.",
-  "La normalidad ayuda para inferencia, pero no es crítica para predicción.",
-  "Errores deben ser independientes para que los coeficientes sean válidos.",
-  "Varianza constante de los errores es un supuesto clave.",
-  "Aunque regulariza, no es inmune a valores atípicos.",
-  "Funciona bien cuando hay muchas variables correlacionadas entre sí.",
-  "Mezcla selección de variables (L1) y regularización (L2), lo cual puede dificultar la interpretación directa.",
-  "A pesar de usar dos penalizaciones, sigue siendo eficiente con librerías como `glmnet`.",
-  "Validación cruzada se usa para seleccionar los mejores valores de `lambda` y `alpha`.",
-  "Puede tener bajo rendimiento si no hay una relación lineal o si las variables relevantes no están presentes en el conjunto."
+detalles_elastic_net <- c(
+  "Elastic Net es una técnica de regresión lineal regularizada que combina las penalizaciones L1 (Lasso) y L2 (Ridge). Su objetivo es realizar selección de variables y regularización simultáneamente, lo que la hace útil para modelos predictivos y de alta dimensionalidad.",
+  "La variable dependiente puede ser **numérica continua** para problemas de regresión o **categórica** (generalmente binaria) para problemas de clasificación (usando una función de enlace, como en la regresión logística).",
+  "Las variables predictoras deben ser **numéricas**. Las variables categóricas deben ser transformadas a numéricas (ej., one-hot encoding). Es crucial escalar las características antes de aplicar Elastic Net.",
+  "Asume una relación **lineal** entre las variables predictoras y la variable respuesta (o una transformación de esta, como en regresión logística). Sin embargo, puede manejar interacciones si se crean explícitamente como nuevas características.",
+  "No asume estrictamente la normalidad de los residuos para el proceso de estimación, pero los errores suelen asumirse independientes e idénticamente distribuidos (i.i.d.) para inferencia estadística.",
+  "Sí, se asume que las observaciones y sus errores asociados son independientes entre sí. Esto es fundamental para la validez de los estimadores.",
+  "Es deseable que la varianza de los errores sea constante (homoscedasticidad), aunque la penalización puede hacer el modelo más robusto a desviaciones leves que el Mínimos Cuadrados Ordinarios (OLS).",
+  "Sí, Elastic Net, como otros modelos lineales, es sensible a los outliers en los datos. Un outlier puede influir desproporcionadamente en los coeficientes. Sin embargo, la penalización L2 (Ridge) tiende a ser un poco más robusta a los outliers que OLS, pero no es una solución robusta per se.",
+  "Este es uno de los **grandes puntos fuertes** de Elastic Net. Maneja la multicolinealidad **muy bien** al combinar las propiedades de Lasso (que tiende a seleccionar una de las variables correlacionadas y anular las otras) y Ridge (que reparte los pesos entre las variables correlacionadas). Esto es especialmente útil en conjuntos de datos con muchas características correlacionadas.",
+  "La interpretabilidad es **moderada a alta**. Dado que Elastic Net realiza selección de variables (gracias al componente L1), puede producir modelos con menos características, lo que los hace más fáciles de interpretar que modelos con todos los predictores. Los coeficientes no nulos indican la importancia relativa de las variables.",
+  "La velocidad y eficiencia son **altas**. El entrenamiento de Elastic Net es computacionalmente eficiente, incluso para datasets con un gran número de características (alta dimensionalidad), gracias a algoritmos de optimización especializados.",
+  "Es **esencial**. La validación cruzada es crucial para sintonizar los dos hiperparámetros clave de Elastic Net: `alpha` (que controla la mezcla entre Lasso y Ridge) y `lambda` (la fuerza total de la regularización). Sin una validación cruzada adecuada, se corre el riesgo de sobreajuste o subajuste.",
+  "No funciona bien si: 1) las **relaciones subyacentes son altamente no lineales** y no pueden ser capturadas por transformaciones de características, 2) el **número de características es extremadamente bajo** (ya que la regularización podría no ser necesaria), o 3) se busca un modelo puramente interpretable con *todos* los coeficientes no nulos y sin ninguna penalización de complejidad."
 )
 
-tabla_elastic_net <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+tabla_elastic_net <- data.frame(Criterio = criterios_elastic_net, Aplica = aplica_elastic_net, Detalles = detalles_elastic_net)
 
 tabla_elastic_net %>%
- gt() %>%
-  tab_header(title = "Guía rápida para elegir elastic net",
-             subtitle = "Elastic Net")  %>%
-   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
-     tab_options(heading.title.font.size = 14, 
-                 heading.subtitle.font.size = 12,
-                 table.font.names = "Century Gothic",
-                 table.font.size = 10,
-                 data_row.padding = px(1)) %>%
-      tab_style(style = list(cell_text(align = "left",
-                                       weight = 'bold')),
-                locations = list(cells_title(groups = c("title")))) %>%
-       tab_style(style = list(cell_text(align = "left")),
-                 locations = list(cells_title(groups = c("subtitle")))) %>%
-        cols_width(starts_with("Detalles") ~ px(500),
-                   everything() ~ px(200)) %>%
-         as_raw_html() 
+  gt() %>%
+  tab_header(
+    title = "Guía rápida para elegir Elastic Net",
+    subtitle = "Regresión Lineal Regularizada para Selección de Variables"
+  ) %>%
+  tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+  tab_options(
+    heading.title.font.size = 14,
+    heading.subtitle.font.size = 12,
+    table.font.names = "Century Gothic",
+    table.font.size = 10,
+    data_row.padding = px(1)
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left", weight = 'bold')),
+    locations = list(cells_title(groups = c("title")))
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left")),
+    locations = list(cells_title(groups = c("subtitle")))
+  ) %>%
+  cols_width(
+    starts_with("Detalles") ~ px(500),
+    everything() ~ px(200)
+  ) %>%
+  as_raw_html()
 ```
 
 
@@ -151,7 +162,9 @@ Ridge Regression es un modelo de **aprendizaje global**.
 
 
 ```{r, echo = FALSE}
-criterios <- c(
+library(gt)
+
+criterios_ridge <- c(
   "Tipo de modelo",
   "Variable respuesta",
   "Variables predictoras",
@@ -167,58 +180,67 @@ criterios <- c(
   "No funciona bien si..."
 )
 
-aplica <- c(
-  "✅ Supervisado (regresión)",
-  "✅ Numérica continua",
-  "✅ Numéricas (requiere estandarización)",
-  "✅ Lineal (como OLS)",
-  "⚠️ Supuesto deseable pero no estricto",
-  "✅ Supuesto necesario",
-  "✅ Supuesto necesario",
-  "⚠️ Puede verse afectado, pero menos que OLS",
-  "✅ Diseñado para mitigarla mediante penalización",
-  "⚠️ Menos interpretable que OLS (coeficientes sesgados)",
-  "✅ Eficiente incluso con muchas variables",
-  "✅ Requiere validación para ajustar parámetro lambda",
-  "❌ Si la relación no es lineal o hay muchas variables irrelevantes"
+aplica_ridge <- c(
+  "✅ Supervisado (Regresión/Clasificación)",
+  "✅ Numérica (continua) / Categórica (para clasificación)",
+  "✅ Numéricas (o categóricas codificadas)",
+  "✅ Lineal (o linealizable)",
+  "❌ No es requisito directo (pero asume errores i.i.d.)",
+  "✅ Necesaria",
+  "✅ Deseable",
+  "⚠️ Sí (pero más robusta que OLS)",
+  "✅ Muy bien (su punto fuerte)",
+  "✅ Moderada (todos los coeficientes son no nulos)",
+  "✅ Alta (especialmente con algoritmos eficientes)",
+  "✅ Esencial",
+  "❌ Se desea selección de variables o un modelo muy esparso"
 )
 
-detalles <- c(
-  "Extensión de la regresión lineal que agrega penalización L2 para reducir sobreajuste y manejar multicolinealidad.",
-  "Se utiliza cuando se desea predecir una variable numérica continua.",
-  "Las variables deben ser numéricas y estar estandarizadas para que la penalización tenga sentido.",
-  "Asume relación lineal entre predictores y variable respuesta, como la regresión lineal.",
-  "La normalidad es deseable para inferencia, pero no indispensable para predicción.",
-  "Se espera independencia entre observaciones para que el modelo sea válido.",
-  "Es importante que los errores tengan varianza constante para predicciones fiables.",
-  "Reduce varianza, pero valores extremos aún pueden afectar los resultados.",
-  "La penalización reduce varianza al achicar coeficientes, útil con predictores correlacionados.",
-  "Coeficientes penalizados dificultan la interpretación directa, pero mejoran estabilidad.",
-  "Rápido y adecuado para problemas con muchas variables; incluso p > n.",
-  "Se usa validación cruzada para elegir el mejor valor de lambda (parámetro de regularización).",
-  "No se recomienda cuando la relación entre variables es no lineal o se requiere interpretación clara."
+detalles_ridge <- c(
+  "Ridge Regression es una técnica de regresión lineal que añade una penalización L2 (la suma de los cuadrados de los coeficientes) a la función de costo de los Mínimos Cuadrados Ordinarios (OLS). Esto ayuda a reducir la magnitud de los coeficientes y a prevenir el sobreajuste, siendo especialmente útil en presencia de multicolinealidad.",
+  "La variable dependiente puede ser **numérica continua** para problemas de regresión. También se puede extender a problemas de clasificación (ej., regresión logística Ridge) donde la variable es **categórica** (generalmente binaria).",
+  "Las variables predictoras deben ser **numéricas**. Las variables categóricas deben ser transformadas a numéricas (ej., one-hot encoding). Es **crucial escalar las características** antes de aplicar Ridge Regression para asegurar que la penalización L2 se aplique de manera justa a todos los coeficientes.",
+  "Asume una relación **lineal** entre las variables predictoras y la variable respuesta (o una transformación de esta, como en regresión logística). Aunque es un modelo lineal, la regularización permite manejar conjuntos de datos con más predictores que observaciones.",
+  "No asume estrictamente la normalidad de los residuos para el proceso de estimación, pero los errores suelen asumirse independientes e idénticamente distribuidos (i.i.d.) para inferencia estadística. La penalización se enfoca en la reducción de la varianza de los estimadores.",
+  "Sí, se asume que las observaciones y sus errores asociados son independientes entre sí. Esto es fundamental para la validez de los estimadores y la efectividad de la regularización.",
+  "Es deseable que la varianza de los errores sea constante (homoscedasticidad). La penalización L2 hace el modelo más robusto a desviaciones de esta asunción que el Mínimos Cuadrados Ordinarios (OLS).",
+  "Sí, Ridge Regression es sensible a los **outliers** en los datos, ya que minimiza la suma de errores al cuadrado. Sin embargo, debido a la penalización L2 que encoge los coeficientes, tiende a ser **menos sensible** que la regresión OLS pura, haciendo los estimadores más estables frente a pequeñas perturbaciones de los datos. No es una solución robusta para outliers severos.",
+  "Este es el **principal punto fuerte** de Ridge Regression. Maneja la **multicolinealidad muy bien** encogiendo los coeficientes de las variables correlacionadas de manera proporcional, en lugar de anularlos como Lasso. Esto estabiliza los estimadores y mejora la generalización del modelo.",
+  "La interpretabilidad es **moderada**. Aunque Ridge encoge los coeficientes, **nunca los reduce a cero absolutos** (a menos que el `lambda` sea infinito). Esto significa que todas las características siguen siendo parte del modelo, lo que puede dificultar la identificación de las características más importantes si hay muchas. Sin embargo, los coeficientes aún indican la dirección y magnitud de la relación.",
+  "La velocidad y eficiencia son **altas**. El entrenamiento de Ridge Regression es computacionalmente eficiente, incluso para conjuntos de datos con un gran número de características (alta dimensionalidad), gracias a soluciones de forma cerrada o algoritmos iterativos rápidos.",
+  "Es **esencial**. La validación cruzada es crucial para sintonizar el hiperparámetro `lambda` (la fuerza de la regularización). Un `lambda` mal elegido puede llevar a un sobreajuste (si es muy bajo) o a un subajuste severo (si es muy alto).",
+  "No funciona bien si: 1) las **relaciones subyacentes son altamente no lineales** y no pueden ser capturadas por transformaciones de características, 2) se busca un modelo **esparso** donde las características irrelevantes se excluyan automáticamente (para eso Lasso o Elastic Net son mejores), o 3) el **número de características es extremadamente bajo** y la regularización podría no ser necesaria."
 )
 
-tabla_ridge <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+tabla_ridge <- data.frame(Criterio = criterios_ridge, Aplica = aplica_ridge, Detalles = detalles_ridge)
 
 tabla_ridge %>%
- gt() %>%
-  tab_header(title = "Guía rápida para elegir ridge",
-             subtitle = "Ridge Regression")  %>%
-   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
-     tab_options(heading.title.font.size = 14, 
-                 heading.subtitle.font.size = 12,
-                 table.font.names = "Century Gothic",
-                 table.font.size = 10,
-                 data_row.padding = px(1)) %>%
-      tab_style(style = list(cell_text(align = "left",
-                                       weight = 'bold')),
-                locations = list(cells_title(groups = c("title")))) %>%
-       tab_style(style = list(cell_text(align = "left")),
-                 locations = list(cells_title(groups = c("subtitle")))) %>%
-        cols_width(starts_with("Detalles") ~ px(500),
-                   everything() ~ px(200)) %>%
-         as_raw_html() 
+  gt() %>%
+  tab_header(
+    title = "Guía rápida para elegir Ridge Regression",
+    subtitle = "Regresión Lineal Regularizada para Mitigar la Multicolinealidad"
+  ) %>%
+  tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+  tab_options(
+    heading.title.font.size = 14,
+    heading.subtitle.font.size = 12,
+    table.font.names = "Century Gothic",
+    table.font.size = 10,
+    data_row.padding = px(1)
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left", weight = 'bold')),
+    locations = list(cells_title(groups = c("title")))
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left")),
+    locations = list(cells_title(groups = c("subtitle")))
+  ) %>%
+  cols_width(
+    starts_with("Detalles") ~ px(500),
+    everything() ~ px(200)
+  ) %>%
+  as_raw_html()
 ```
 
 
@@ -261,7 +283,9 @@ LASSO es un modelo de **aprendizaje global**.
 
 
 ```{r, echo = FALSE}
-criterios <- c(
+library(gt)
+
+criterios_lasso <- c(
   "Tipo de modelo",
   "Variable respuesta",
   "Variables predictoras",
@@ -277,58 +301,67 @@ criterios <- c(
   "No funciona bien si..."
 )
 
-aplica <- c(
-  "✅ Supervisado (regresión)",
-  "✅ Numérica continua",
-  "✅ Numéricas (requiere estandarización)",
-  "✅ Lineal (como OLS)",
-  "⚠️ Deseable pero no estrictamente necesaria",
-  "✅ Requiere independencia de errores",
-  "✅ Requiere homoscedasticidad",
-  "⚠️ Puede verse afectado por outliers extremos",
-  "✅ Maneja multicolinealidad mediante regularización",
-  "✅ Realiza selección de variables (coeficientes pueden ser 0)",
-  "✅ Eficiente en alta dimensión; mejor que OLS",
-  "✅ Validación cruzada necesaria para lambda",
-  "❌ No es adecuado si la relación es no lineal o hay muchas variables correlacionadas con igual relevancia"
+aplica_lasso <- c(
+  "✅ Supervisado (Regresión/Clasificación)",
+  "✅ Numérica (continua) / Categórica (para clasificación)",
+  "✅ Numéricas (o categóricas codificadas)",
+  "✅ Lineal (o linealizable)",
+  "❌ No es requisito directo (pero asume errores i.i.d.)",
+  "✅ Necesaria",
+  "✅ Deseable",
+  "⚠️ Sí (más que Ridge)",
+  "⚠️ Puede ser problemático (selecciona una entre correlacionadas)",
+  "✅ Muy alta (genera modelos esparsos)",
+  "✅ Alta (especialmente con algoritmos eficientes)",
+  "✅ Esencial",
+  "❌ Datos con grupos de variables correlacionadas donde todas son importantes"
 )
 
-detalles <- c(
-  "Modelo de regresión penalizada que agrega penalización L1, capaz de forzar coeficientes a cero (selección de variables).",
-  "Se usa cuando se desea predecir una variable continua.",
-  "Las variables predictoras deben estandarizarse para que la penalización sea justa entre coeficientes.",
-  "Asume una relación lineal entre los predictores y la respuesta.",
-  "La normalidad ayuda para inferencia, pero no es crítica para predicción.",
-  "Los errores deben ser independientes para que las estimaciones sean válidas.",
-  "Es deseable que la varianza de los errores sea constante a lo largo de los valores ajustados.",
-  "Puede verse afectado por valores atípicos, aunque penaliza el modelo.",
-  "Disminuye la varianza de los coeficientes y ayuda a estabilizar el modelo frente a multicolinealidad.",
-  "Permite eliminar automáticamente variables irrelevantes, facilitando modelos más simples y explicables.",
-  "Es computacionalmente eficiente, incluso cuando hay más variables que observaciones.",
-  "Lambda (parámetro de penalización) se selecciona generalmente vía validación cruzada.",
-  "Si hay muchas variables correlacionadas, LASSO tiende a seleccionar solo una de ellas, lo que puede ser inadecuado en algunos contextos."
+detalles_lasso <- c(
+  "LASSO (Least Absolute Shrinkage and Selection Operator) es una técnica de regresión lineal regularizada que añade una penalización L1 (la suma de los valores absolutos de los coeficientes) a la función de costo de los Mínimos Cuadrados Ordinarios (OLS). Esto fuerza a algunos coeficientes a ser exactamente cero, realizando así selección de variables.",
+  "La variable dependiente puede ser **numérica continua** para problemas de regresión. También se puede extender a problemas de clasificación (ej., regresión logística Lasso) donde la variable es **categórica** (generalmente binaria).",
+  "Las variables predictoras deben ser **numéricas**. Las variables categóricas deben ser transformadas a numéricas (ej., one-hot encoding). Es **crucial escalar las características** antes de aplicar LASSO para asegurar que la penalización L1 se aplique de manera justa a todos los coeficientes.",
+  "Asume una relación **lineal** entre las variables predictoras y la variable respuesta (o una transformación de esta, como en regresión logística). Aunque es un modelo lineal, la regularización permite manejar conjuntos de datos con más predictores que observaciones.",
+  "No asume estrictamente la normalidad de los residuos para el proceso de estimación, pero los errores suelen asumirse independientes e idénticamente distribuidos (i.i.d.) para inferencia estadística. La penalización se enfoca en la creación de modelos esparsos.",
+  "Sí, se asume que las observaciones y sus errores asociados son independientes entre sí. Esto es fundamental para la validez de los estimadores y la efectividad de la regularización.",
+  "Es deseable que la varianza de los errores sea constante (homoscedasticidad). Sin embargo, la penalización L1 puede hacer el modelo más robusto a desviaciones leves que el Mínimos Cuadrados Ordinarios (OLS), aunque no está diseñado específicamente para heterocedasticidad.",
+  "Sí, LASSO es sensible a los **outliers** en los datos. Como minimiza la suma de errores al cuadrado (como OLS), los outliers pueden influir desproporcionadamente en los coeficientes antes de la penalización. Puede ser más sensible a outliers que Ridge Regression.",
+  "Puede ser **problemático en presencia de alta multicolinealidad**. Si hay un grupo de variables altamente correlacionadas, LASSO tiende a seleccionar solo una de ellas arbitrariamente y anular las demás. Esto es bueno para la escasez pero puede no ser ideal si todas las variables correlacionadas son importantes para el dominio del problema.",
+  "La interpretabilidad es **muy alta**. La principal fortaleza de LASSO es su capacidad para realizar **selección de variables automática**, forzando los coeficientes de las variables menos importantes a ser exactamente cero. Esto resulta en modelos más esparsos y fáciles de interpretar, ya que solo las características más relevantes permanecen en la ecuación.",
+  "La velocidad y eficiencia son **altas**. El entrenamiento de LASSO es computacionalmente eficiente, incluso para conjuntos de datos con un gran número de características (alta dimensionalidad), gracias a algoritmos de optimización especializados (ej., mínimos cuadrados coordinados).",
+  "Es **esencial**. La validación cruzada es crucial para sintonizar el hiperparámetro `lambda` (la fuerza de la regularización L1). Un `lambda` mal elegido puede llevar a un sobreajuste (si es muy bajo) o a un subajuste severo y un modelo vacío (si es muy alto).",
+  "No funciona bien si: 1) las **relaciones subyacentes son altamente no lineales** y no pueden ser capturadas por transformaciones de características, 2) hay **grupos de variables predictoras altamente correlacionadas y se espera que todas ellas sean relevantes** (en este caso, Elastic Net es una mejor opción), o 3) se busca un modelo donde *todos* los coeficientes deben ser no nulos por razones de interpretabilidad."
 )
 
-tabla_lasso <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+tabla_lasso <- data.frame(Criterio = criterios_lasso, Aplica = aplica_lasso, Detalles = detalles_lasso)
 
 tabla_lasso %>%
- gt() %>%
-  tab_header(title = "Guía rápida para elegir LASSO",
-             subtitle = "Least Absolute Shrinkage and Selection Operator (LASSO)")  %>%
-   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
-     tab_options(heading.title.font.size = 14, 
-                 heading.subtitle.font.size = 12,
-                 table.font.names = "Century Gothic",
-                 table.font.size = 10,
-                 data_row.padding = px(1)) %>%
-      tab_style(style = list(cell_text(align = "left",
-                                       weight = 'bold')),
-                locations = list(cells_title(groups = c("title")))) %>%
-       tab_style(style = list(cell_text(align = "left")),
-                 locations = list(cells_title(groups = c("subtitle")))) %>%
-        cols_width(starts_with("Detalles") ~ px(500),
-                   everything() ~ px(200)) %>%
-         as_raw_html() 
+  gt() %>%
+  tab_header(
+    title = "Guía rápida para elegir Least Absolute Shrinkage and Selection Operator (LASSO)",
+    subtitle = "Regresión Lineal Regularizada para Selección de Variables y Escasez"
+  ) %>%
+  tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+  tab_options(
+    heading.title.font.size = 14,
+    heading.subtitle.font.size = 12,
+    table.font.names = "Century Gothic",
+    table.font.size = 10,
+    data_row.padding = px(1)
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left", weight = 'bold')),
+    locations = list(cells_title(groups = c("title")))
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left")),
+    locations = list(cells_title(groups = c("subtitle")))
+  ) %>%
+  cols_width(
+    starts_with("Detalles") ~ px(500),
+    everything() ~ px(200)
+  ) %>%
+  as_raw_html()
 ```
 
 

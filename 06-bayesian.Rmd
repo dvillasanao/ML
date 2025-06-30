@@ -138,7 +138,9 @@ Una Red Bayesiana (BN) es fundamentalmente un modelo de **aprendizaje global** e
 
 
 ```{r, echo = FALSE}
-criterios <- c(
+library(gt)
+
+criterios_bn <- c(
   "Tipo de modelo",
   "Variable respuesta",
   "Variables predictoras",
@@ -154,58 +156,67 @@ criterios <- c(
   "No funciona bien si..."
 )
 
-aplica <- c(
-  "✅ Supervisado o no supervisado",
-  "✅ Categórica o continua (depende del tipo de red)",
-  "✅ Categóricas y/o continuas",
-  "✅ Modela relaciones condicionales entre variables (estructura dirigida)",
-  "❌ No aplica (no hay residuos típicos)",
-  "⚠️ Depende de la estructura de la red",
-  "❌ No aplica como en regresión clásica",
-  "⚠️ Puede ser sensible si afecta las probabilidades condicionales",
-  "⚠️ Puede causar redundancia si no se ajusta bien la estructura",
-  "✅ Muy interpretables si se visualiza la red y se conocen las dependencias",
-  "⚠️ Aprendizaje de estructura puede ser computacionalmente costoso",
-  "✅ Puede usarse validación cruzada para evaluar rendimiento predictivo",
-  "❌ Cuando hay muchas variables y poca información para definir relaciones"
+aplica_bn <- c(
+  "✅ Supervisado / No Supervisado / Semi-supervisado (Estimación de relaciones probabilísticas)",
+  "✅ Numérica o Categórica (cualquier variable en el grafo puede ser objetivo)",
+  "✅ Mixtas (numéricas y categóricas)",
+  "✅ Compleja (dependencias condicionales explícitas)",
+  "❌ No es requisito directo (pero las distribuciones condicionales pueden ser Gaussianas)",
+  "✅ Implícitamente modelada (a través de la estructura del grafo)",
+  "❌ No es requisito",
+  "⚠️ Sí (la estimación de parámetros puede verse afectada)",
+  "✅ Muy bien (su estructura explícita permite manejarla)",
+  "✅ Muy alta (estructura de grafo y probabilidades son claras)",
+  "⚠️ Moderada a Baja (aprendizaje de la estructura, inferencia)",
+  "✅ Compatible y útil",
+  "❌ Relaciones con ciclos, tamaño de dataset muy pequeño para muchas variables"
 )
 
-detalles <- c(
-  "Modelo probabilístico que representa relaciones condicionales entre variables mediante un grafo dirigido acíclico (DAG).",
-  "Puede predecir una variable (modo supervisado) o descubrir estructura entre variables (modo no supervisado).",
-  "Acepta variables mixtas, aunque muchas implementaciones requieren discretización.",
-  "Cada nodo representa una variable y las conexiones modelan dependencias condicionales.",
-  "No genera residuos como los modelos de regresión, por lo que no aplica este supuesto.",
-  "Algunas estructuras pueden implicar independencia condicional; otras no.",
-  "No se evalúa homoscedasticidad, pues no hay predicción de error numérico.",
-  "Valores atípicos pueden sesgar las probabilidades estimadas si no se controlan.",
-  "Si hay variables redundantes o fuertemente correlacionadas, se debe ajustar la estructura de la red para evitar errores.",
-  "La red permite interpretar cómo influyen unas variables sobre otras, ideal para razonamiento causal.",
-  "El ajuste de parámetros es eficiente, pero aprender la estructura de la red puede ser lento.",
-  "Puede evaluarse el desempeño con k-fold o validación simple en tareas supervisadas.",
-  "Cuando no se tiene información previa o datos suficientes, la red puede no capturar relaciones reales."
+detalles_bn <- c(
+  "Una Red Bayesiana es un modelo gráfico probabilístico que representa un conjunto de variables y sus dependencias condicionales mediante un Grafo Acíclico Dirigido (DAG). Los nodos representan variables (observables o latentes) y los aristas representan dependencias probabilísticas directas.",
+  "En una BN, cualquier variable en el grafo puede ser considerada la 'variable respuesta' para una consulta específica. Se pueden realizar inferencias para cualquier variable dada la evidencia de otras.",
+  "Las variables predictoras son otros nodos en el grafo que se utilizan para inferir la distribución de la variable objetivo. Las BNs manejan bien datos mixtos (numéricos y categóricos), pero las variables numéricas pueden requerir discretización o modelado con distribuciones paramétricas (ej., Gaussianas).",
+  "Capta relaciones muy complejas y no lineales a través de la estructura explícita del grafo y las Tablas de Probabilidad Condicional (CPTs) o funciones de densidad. Permite modelar cómo la probabilidad de una variable depende de sus 'padres' en el grafo.",
+  "No asume normalidad de los residuos de manera general. Sin embargo, si se utilizan redes Bayesianas Gaussianas o modelos paramétricos para las relaciones condicionales, entonces las distribuciones de los datos dentro de esas condiciones podrían ser Gaussianas.",
+  "La independencia de errores no es una suposición externa, sino que se **modela explícitamente** dentro de la estructura del grafo. Las dependencias e independencias condicionales son el corazón de la BN.",
+  "No asume homoscedasticidad. Las distribuciones condicionales de las variables pueden tener varianzas diferentes dependiendo de los valores de sus padres.",
+  "Sí, las Redes Bayesianas pueden ser sensibles a los outliers, especialmente durante la fase de **estimación de parámetros** (las probabilidades condicionales). Un outlier puede distorsionar las estimaciones de probabilidad si no se maneja adecuadamente o si el dataset es pequeño. Sin embargo, en la inferencia, pueden ser robustas si el outlier es tratado como un valor de baja probabilidad.",
+  "Maneja la multicolinealidad **muy bien**. De hecho, las BNs la representan explícitamente a través de la estructura del grafo. Si dos variables están correlacionadas, habrá una arista o un camino que represente esa dependencia, a diferencia de los modelos lineales que sufren por ella.",
+  "La interpretabilidad es **muy alta**. La estructura del grafo (qué variables influyen en cuáles) es visual y comprensible. Las probabilidades condicionales asociadas a cada nodo explican la fuerza y la naturaleza de las relaciones. Esto es invaluable para la validación por expertos de dominio y la extracción de conocimiento.",
+  "La velocidad y eficiencia son **moderadas a bajas**. El **aprendizaje de la estructura** del grafo es un problema NP-difícil, lo que lo hace muy costoso computacionalmente para un gran número de variables. La **inferencia probabilística** (calcular probabilidades en el grafo) también puede ser costosa (NP-dura en general), aunque existen algoritmos eficientes para ciertos tipos de redes.",
+  "Es compatible y **muy útil**. La validación cruzada se utiliza para evaluar el rendimiento predictivo de la BN (ej., precisión de clasificación, log-verosimilitud) y para comparar diferentes estructuras de grafo o la elección de hiperparámetros en el aprendizaje de la estructura.",
+  "No funciona bien si: 1) el **número de variables es muy grande** (el aprendizaje de la estructura se vuelve inviable), 2) las **relaciones en los datos son cíclicas** (las BNs son DAGs, no pueden modelar ciclos directos, aunque pueden modelar dependencias a largo plazo), 3) el **dataset es muy pequeño** para estimar de forma fiable las tablas de probabilidad condicional de nodos con muchos padres, o 4) hay **mucho ruido aleatorio** que oscurece las dependencias reales."
 )
 
-tabla_bn <- data.frame(Criterio = criterios, Aplica = aplica, Detalles = detalles)
+tabla_bn <- data.frame(Criterio = criterios_bn, Aplica = aplica_bn, Detalles = detalles_bn)
 
 tabla_bn %>%
- gt() %>%
-  tab_header(title = "Guía rápida para elegir BN",
-             subtitle = "Bayesian Network (BN)")  %>%
-   tab_footnote(footnote = "Fuente: Elaboración propia") %>%
-     tab_options(heading.title.font.size = 14, 
-                 heading.subtitle.font.size = 12,
-                 table.font.names = "Century Gothic",
-                 table.font.size = 10,
-                 data_row.padding = px(1)) %>%
-      tab_style(style = list(cell_text(align = "left",
-                                       weight = 'bold')),
-                locations = list(cells_title(groups = c("title")))) %>%
-       tab_style(style = list(cell_text(align = "left")),
-                 locations = list(cells_title(groups = c("subtitle")))) %>%
-        cols_width(starts_with("Detalles") ~ px(500),
-                   everything() ~ px(200)) %>%
-         as_raw_html() 
+  gt() %>%
+  tab_header(
+    title = "Guía rápida para elegir Redes Bayesianas (BN)",
+    subtitle = "Modelado Probabilístico con Dependencias Condicionales"
+  ) %>%
+  tab_footnote(footnote = "Fuente: Elaboración propia") %>%
+  tab_options(
+    heading.title.font.size = 14,
+    heading.subtitle.font.size = 12,
+    table.font.names = "Century Gothic",
+    table.font.size = 10,
+    data_row.padding = px(1)
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left", weight = 'bold')),
+    locations = list(cells_title(groups = c("title")))
+  ) %>%
+  tab_style(
+    style = list(cell_text(align = "left")),
+    locations = list(cells_title(groups = c("subtitle")))
+  ) %>%
+  cols_width(
+    starts_with("Detalles") ~ px(500),
+    everything() ~ px(200)
+  ) %>%
+  as_raw_html()
 ```
 
 
