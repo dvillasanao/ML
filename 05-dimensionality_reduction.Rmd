@@ -104,7 +104,17 @@ tabla_fda %>%
 
 ## Independent Component Analysis (ICA) {-}   
 
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Dimensionality Reduction/ICA.png"))
+```
+
 ## Kernel PCA (KPCA) {-}   
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Dimensionality Reduction/KPCA.png"))
+```
   
 ## Linear Discriminant Analysis (LDA)  {-}    
 
@@ -202,6 +212,11 @@ tabla_lda %>%
 
 
 ## Locally Linear Embedding (LLE) {-}    
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Dimensionality Reduction/LLE.png"))
+```
    
 ## Mixture Discriminant Analysis (MDA)  {-}   
 
@@ -1215,7 +1230,12 @@ tabla_rda %>%
 ```
 
 
-## -	t-Distributed Stochastic Neighbor Embedding (t-SNE) {-}
+## t-Distributed Stochastic Neighbor Embedding (t-SNE) {-}
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Dimensionality Reduction/t-SNE.png"))
+```
 
 ## Uniform Manifold Approximation and Projection (UMAP) {-}   
 
