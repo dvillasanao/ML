@@ -8,7 +8,11 @@
 ---
 
 
-## C4.5  {-}   
+## C4.5  {-}    
+
+<a href="https://dvillasanao.github.io/ML_Examples/Output/Decision%20Tree/02_01_C4.5.html" style="color: blue;">
+  Algoritmo `C4.5` en R
+</a>
 
 ```{r, echo = FALSE,out.width='50%', fig.align='center'}
 require(knitr)
@@ -101,6 +105,10 @@ tabla_c45 %>%
 
 ## C5.0  {-} 
 
+<a href="https://dvillasanao.github.io/ML_Examples/Output/Decision%20Tree/02_02_C5.0.html" style="color: blue;">
+  Algoritmo `C5.0` en R
+</a>
+
 ```{r, echo = FALSE,out.width='50%', fig.align='center'}
 require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Decision Tree/C5.0.png"))
@@ -192,7 +200,12 @@ tabla_c50 %>%
 ``` 
 
 
-## Classification and Regression Tree (CART)  {-} 
+## Classification and Regression Tree (CART)  {-}
+
+<a href="https://dvillasanao.github.io/ML_Examples/Output/Decision%20Tree/02_03_CART.html" style="color: blue;">
+  Classification and Regression Tree (`CART`) en R
+</a>
+
 
 ```{r echo=FALSE, fig.show="hold", out.width="48%"}
 require(knitr)
@@ -284,7 +297,11 @@ tabla_cart %>%
 
 
 
-## Chi-squared Automatic Interaction Detection (CHAID)  {-}    
+## Chi-squared Automatic Interaction Detection (`CHAID`)  {-}    
+
+<a href="https://dvillasanao.github.io/ML_Examples/Output/Decision%20Tree/02_04_CHAID.html" style="color: blue;">
+  Chi-squared Automatic Interaction Detection (`CHAID`) en R
+</a>
 
 ```{r echo=FALSE, fig.show="hold", out.width="48%", fig.cap="https://select-statistics.co.uk/blog/chaid-chi-square-automatic-interaction-detector/"}
 require(knitr)
@@ -372,7 +389,11 @@ tabla_chaid %>%
          as_raw_html() 
 ```
 
-## Conditional Decision Trees (Conditional Inference Trees - CITs)  {-}   
+## Conditional Decision Trees (Conditional Inference Trees - `CITs`)  {-}   
+
+<a href="https://dvillasanao.github.io/ML_Examples/Output/Decision%20Tree/02_09_CITs.html" style="color: blue;">
+  Conditional Inference Trees (`CITs`) en R
+</a>
 
 **Conditional Decision Trees**, often referred to as **Conditional Inference Trees (CITs)**, represent a class of **árboles de decisión** que abordan una limitación importante de los algoritmos de árboles de decisión tradicionales como CART, ID3, y C4.5: el **sesgo en la selección de variables**. Mientras que los algoritmos tradicionales pueden favorecer variables predictoras con muchas categorías o valores continuos (debido a que estas variables tienen más "oportunidades" de generar una división que parezca óptima), los CITs emplean un enfoque basado en **pruebas estadísticas** para seleccionar la mejor división.
 
@@ -461,7 +482,12 @@ tabla_ctree %>%
 
 ```
 
-## Cubist  {-}
+## Cubist  {-}  
+
+<a href="https://dvillasanao.github.io/ML_Examples/Output/Decision%20Tree/02_05_Cubist.html" style="color: blue;">
+  Cubist en R
+</a>
+
 
 ```{r, echo = FALSE,out.width='50%', fig.align='center'}
 require(knitr)
@@ -571,6 +597,10 @@ tabla_cubist %>%
 
 ## Decision Stump  {-} 
 
+<a href="https://dvillasanao.github.io/ML_Examples/Output/Decision%20Tree/02_06_Decision-Stump.html" style="color: blue;">
+  Decision Stump en R
+</a>
+
 ```{r echo=FALSE, fig.show="hold", out.width="48%"}
 require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Decision Tree/Decision Stump.png"))
@@ -655,7 +685,12 @@ tabla_stump %>%
          as_raw_html() 
 ```
 
-## Guided Trees / Hybrid Trees {-}    
+## Guided Trees / Hybrid Trees {-}
+
+<a href="https://dvillasanao.github.io/ML_Examples/Output/Decision%20Tree/02_06_Decision-Stump.html" style="color: blue;">
+ Hybrid Trees en R
+</a>
+
 
 ```{r, echo = FALSE,out.width='50%', fig.align='center'}
 require(knitr)
@@ -745,7 +780,12 @@ tabla_hybrid_trees %>%
 ```
 
 
-## Iterative Dichotomiser 3 (ID3)  {-}    
+## Iterative Dichotomiser 3 (`ID3`)  {-}    
+
+<a href="https://dvillasanao.github.io/ML_Examples/Output/Decision%20Tree/02_07_ID3.html" style="color: blue;">
+ Iterative Dichotomiser 3 (`ID3`) en R
+</a>
+
 
 ```{r, echo = FALSE,out.width='50%', fig.align='center'}
 require(knitr)
@@ -835,6 +875,10 @@ tabla_id3 %>%
 
 ## M5 (Model Tree) {-}   
 
+<a href="https://dvillasanao.github.io/ML_Examples/Output/Decision%20Tree/02_08_M5.html" style="color: blue;">
+  M5 (Model Tree) en R
+</a>
+
 ```{r, echo = FALSE,out.width='50%', fig.align='center'}
 require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Decision Tree/M5 (Model Tree).png"))
@@ -923,6 +967,10 @@ tabla_m5 %>%
 
 
 ## Oblique Decision Trees {-}    
+
+<a href="https://dvillasanao.github.io/ML_Examples/Output/Decision%20Tree/02_11_ODT.html" style="color: blue;">
+  Oblique Decision Trees en R
+</a>
 
 ```{r, echo = FALSE,out.width='50%', fig.align='center'}
 require(knitr)
