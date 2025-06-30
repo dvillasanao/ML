@@ -6,7 +6,8 @@ knitr::opts_chunk$set(
   comment = "#>",
   collapse = TRUE,
   message = FALSE,
-  warning = FALSE
+  warning = FALSE,
+  cache = TRUE
 )
 knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 setwd(here::here())

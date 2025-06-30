@@ -9,8 +9,13 @@
 
 ## Ordinary Least Squares Regression (`OLSR`) {-}    
 
-[Ordinary Least Squares Regression (`OLSR`) en R](https://dvillasanao.github.io/ML_Examples/Output/Regression/01_01.OLSR.html)  
-[Ordinary Least Squares Regression (`OLSR`) en Python](https://dvillasanao.github.io/ML_Examples/R/Regression/01_01_OLSR_py.html)   
+<a href="https://dvillasanao.github.io/ML_Examples/Output/Regression/01_01.OLSR.html" style="color: blue;">
+  Ordinary Least Squares Regression (`OLSR`) en R
+</a>
+
+<a href="https://dvillasanao.github.io/ML_Examples/R/01_Regression/01_01_OLSR_py.html" style="color: blue;">
+  Ordinary Least Squares Regression (`OLSR`) en Python
+</a>
 
 ```{r echo=FALSE, fig.show="hold", out.width="48%"}
 require(knitr)
@@ -84,6 +89,10 @@ La Regresión Lineal es un modelo de **aprendizaje puramente global**.
 
 
 ## Regresión Logística (Logit) {.unnumbered}
+
+<a href="https://dvillasanao.github.io/ML_Examples/Output/Regression/01_02_Logit.html" style="color: blue;">
+  Regresión Logística (`Logit`) en R
+</a>
 
 ```{r, echo = FALSE,out.width='50%', fig.align='center', fig.cap="Elaboración propia"}
 require(knitr)
@@ -167,7 +176,12 @@ tabla_logit %>%
          as_raw_html()
 ```
 
-## Generalized Linear Model (GLM) {-}  
+## Generalized Linear Model (GLM) {-}
+
+<a href="https://dvillasanao.github.io/ML_Examples/Output/Regression/01_07_GLM.html" style="color: blue;">
+  Generalized Linear Model (`GLM`) en R
+</a>
+
 
 ```{r, echo = FALSE,out.width='50%', fig.align='center'}
 require(knitr)
@@ -256,6 +270,10 @@ tabla_glm %>%
 
 
 ## Least Angle Regression (LARS)  {-}  
+
+<a href="https://dvillasanao.github.io/ML_Examples/Output/Regression/01_09_LARS.html" style="color: blue;">
+  Least Angle Regression (`LARS`) en R
+</a>
 
 ```{r, echo = FALSE,out.width='50%', fig.align='center'}
 require(knitr)
@@ -376,6 +394,10 @@ tabla_lars %>%
 
 ## Locally Estimated Scatterplot Smoothing (`LOESS`) {.unnumbered} 
 
+<a href="https://dvillasanao.github.io/ML_Examples/Output/Regression/01_03_LOESS.html" style="color: blue;">
+  Locally Estimated Scatterplot Smoothing (`LOESS`) en R
+</a>
+
 ```{r echo=FALSE, fig.show="hold", out.width="48%"}
 knitr::include_graphics(paste0(here::here(), "/img/Regression/LOESS.png"))
 knitr::include_graphics(paste0(here::here(), "/img/Regression/LOESS_1.png"))
@@ -455,7 +477,12 @@ tabla_loess %>%
          as_raw_html()
 ```
 
-## Multivariate Adaptive Regression Splines (`MARS`) {.unnumbered} 
+## Multivariate Adaptive Regression Splines (`MARS`) {.unnumbered}  
+
+<a href="https://dvillasanao.github.io/ML_Examples/Output/Regression/01_04_MARS.html" style="color: blue;">
+  Multivariate Adaptive Regression Splines (`MARS`) en R
+</a>
+
 
 ```{r echo=FALSE, fig.show="hold", out.width="48%"}
 require(knitr)
@@ -539,6 +566,11 @@ tabla_mars %>%
 ```
 
 ## Polynomial Regression {-} 
+
+<a href="https://dvillasanao.github.io/ML_Examples/Output/Regression/01_06_Polynomial-Regression.html" style="color: blue;">
+  Polynomial Regression en R
+</a>
+
 
 ```{r, echo = FALSE,out.width='50%', fig.align='center'}
 require(knitr)
@@ -627,6 +659,11 @@ tabla_poly_reg %>%
 
 
 ## Quantile Regression {-}   
+
+<a href="https://dvillasanao.github.io/ML_Examples/Output/Regression/01_08_Quantile-Regression.html" style="color: blue;">
+  Quantile Regression en R
+</a>
+
 
 ```{r, echo = FALSE,out.width='50%', fig.align='center'}
 require(knitr)
@@ -774,6 +811,10 @@ La Regresión por Pasos es un modelo de **aprendizaje global**.
 
 
 ## Support Vector Machine (SVM) {.unnumbered} 
+
+<a href="https://dvillasanao.github.io/ML_Examples/Output/Regression/01_05_SVM.html" style="color: blue;">
+  Support Vector Machine (`SVM`) en R
+</a>
 
 ```{r echo=FALSE, fig.show="hold", out.width="48%"}
 require(knitr)
