@@ -1,4 +1,0 @@
-fig:unnamed-chunk-8
-fig:unnamed-chunk-10
-fig:unnamed-chunk-29
-kernel-regression-nadaraya-watson-estimator

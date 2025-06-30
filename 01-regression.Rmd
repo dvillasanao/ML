@@ -169,7 +169,7 @@ tabla_logit %>%
 
 ## Generalized Linear Model (GLM) {-}  
 
-```{r, echo = FALSE,out.width='50%', fig.align='center', fig.cap="Elaboración propia"}
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
 require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Regression/GLM.png"))
 ```
