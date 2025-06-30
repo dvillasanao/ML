@@ -308,7 +308,12 @@ tabla_bbn %>%
          as_raw_html() 
 ```
 
-## Bayesian Linear Regression {-}   
+## Bayesian Linear Regression (BLR) {-}   
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Bayesian/BLR.png"))
+```
 
 ## Gaussian Naive Bayes (GNB) {-}   
 
@@ -409,7 +414,17 @@ tabla_gnb %>%
 
 ## Hidden Markov Models (HMMs) {-}   
 
-## Kalman Filter {-}   
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Bayesian/HMMs.png"))
+```
+
+## Kalman Filter {-}  
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Bayesian/KF.png"))
+```
 
 ## Multinomial Naive Bayes (MNB) {-}   
 
@@ -609,4 +624,9 @@ tabla_nb %>%
 ```
 
 
-## Particle Filter {-}   
+## Particle Filter {-}  
+
+```{r, echo = FALSE,out.width='50%', fig.align='center'}
+require(knitr)
+knitr::include_graphics(paste0(here::here(), "/img/Bayesian/Particle Filter.png"))
+```
