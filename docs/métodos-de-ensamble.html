@@ -71,6 +71,9 @@
 <div id="adaptive-boosting-adaboost" class="section level2 unnumbered">
 <h2>Adaptive Boosting (AdaBoost)<a class="anchor" aria-label="anchor" href="#adaptive-boosting-adaboost"><i class="fas fa-link"></i></a>
 </h2>
+<p><a href="https://dvillasanao.github.io/ML_Examples/Output/Ensemble/03_01_AdaBoost.html" style="color: blue;">
+Adaptive Boosting (AdaBoost) en R
+</a></p>
 <div class="inline-figure"><img src="img/Ensemble/AdaBoost.png" width="50%" style="display: block; margin: auto;"></div>
 <p><strong>AdaBoost (Adaptive Boosting)</strong> es uno de los algoritmos de <strong>boosting</strong> más influyentes y el primero en ser propuesto con éxito, desarrollado por Yoav Freund y Robert Schapire en 1995. Es una técnica de <strong>aprendizaje conjunto (ensemble learning)</strong> utilizada principalmente para <strong>clasificación</strong>, aunque sus principios pueden extenderse a la regresión. La idea fundamental de AdaBoost es construir un modelo fuerte combinando secuencialmente las predicciones de múltiples <strong>clasificadores “débiles” o “base”</strong>, y lo hace prestando más atención a los ejemplos que los modelos anteriores clasificaron incorrectamente.</p>
 <p>El funcionamiento de AdaBoost se basa en un sistema de <strong>re-ponderación de datos</strong> en cada iteración:</p>
@@ -186,6 +189,9 @@
 <div id="boosting" class="section level2 unnumbered">
 <h2>Boosting<a class="anchor" aria-label="anchor" href="#boosting"><i class="fas fa-link"></i></a>
 </h2>
+<p><a href="https://dvillasanao.github.io/ML_Examples/Output/Ensemble/03_02_Boosting.html" style="color: blue;">
+Boosting en R
+</a></p>
 <div class="inline-figure"><img src="img/Ensemble/Boosting.png" width="50%" style="display: block; margin: auto;"></div>
 <p><strong>Boosting</strong> es una técnica de <strong>aprendizaje conjunto (ensemble learning)</strong> que busca transformar un conjunto de <strong>modelos “débiles” o “base”</strong> en un <strong>modelo “fuerte” o “preciso”</strong>. La idea fundamental es construir modelos de forma <strong>secuencial</strong> e <strong>iterativa</strong>, donde cada nuevo modelo se centra en corregir los errores o deficiencias de los modelos construidos en las iteraciones anteriores. A diferencia del <em>bagging</em> (como en Random Forest), donde los modelos se entrenan de forma independiente, el <em>boosting</em> es intrínsecamente secuencial y adaptativo.</p>
 <p>El concepto clave de Boosting radica en la asignación de <strong>pesos</strong> o en el enfoque en los <strong>errores residuales</strong>:</p>
@@ -296,6 +302,9 @@
 <div id="bootstrapped-aggregation-bagging" class="section level2 unnumbered">
 <h2>Bootstrapped Aggregation (Bagging)<a class="anchor" aria-label="anchor" href="#bootstrapped-aggregation-bagging"><i class="fas fa-link"></i></a>
 </h2>
+<p><a href="https://dvillasanao.github.io/ML_Examples/Output/Ensemble/03_03_Bagging.html" style="color: blue;">
+Bootstrapped Aggregation (Bagging) en R
+</a></p>
 <div class="inline-figure"><img src="img/Ensemble/Bagging.png" width="50%" style="display: block; margin: auto;"></div>
 <p><strong>Bootstrapped Aggregation (Bagging)</strong> es una técnica de <strong>aprendizaje conjunto (ensemble learning)</strong> diseñada para mejorar la estabilidad y precisión de los algoritmos de aprendizaje automático, particularmente para reducir la <strong>varianza</strong> en los modelos. Fue introducida por Leo Breiman en 1996 y es la base de algoritmos muy populares como <strong>Random Forest</strong>. La idea fundamental de Bagging es entrenar múltiples versiones de un mismo modelo base en diferentes subconjuntos del conjunto de datos original y luego combinar sus predicciones.</p>
 <p>El proceso central de Bagging implica dos pasos clave:</p>
@@ -401,6 +410,9 @@
 <div id="catboost" class="section level2 unnumbered">
 <h2>CatBoost<a class="anchor" aria-label="anchor" href="#catboost"><i class="fas fa-link"></i></a>
 </h2>
+<p><a href="https://dvillasanao.github.io/ML_Examples/Output/Ensemble/03_04_CatBoost.html" style="color: blue;">
+CatBoost en R
+</a></p>
 <div class="inline-figure"><img src="img/Ensemble/CatBoost.png" width="50%" style="display: block; margin: auto;"></div>
 <div id="ovzwspojqh" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
   
@@ -499,6 +511,9 @@
 <div id="extreme-gradient-boosting-xgboost" class="section level2 unnumbered">
 <h2>Extreme Gradient Boosting (XGBoost)<a class="anchor" aria-label="anchor" href="#extreme-gradient-boosting-xgboost"><i class="fas fa-link"></i></a>
 </h2>
+<p><a href="https://dvillasanao.github.io/ML_Examples/Output/Ensemble/03_05_XGBoost.html" style="color: blue;">
+Extreme Gradient Boosting (XGBoost) en R
+</a></p>
 <div class="inline-figure"><img src="img/Ensemble/XGBoost.png" width="50%" style="display: block; margin: auto;"></div>
 <p><strong>XGBoost (Extreme Gradient Boosting)</strong> es una implementación optimizada y altamente eficiente del algoritmo de <strong>Gradient Boosting Machines (GBM)</strong>, ampliamente reconocida por su <strong>velocidad</strong>, <strong>rendimiento</strong> y <strong>escalabilidad</strong> en problemas de <strong>clasificación</strong> y <strong>regresión</strong>. Ganó una inmensa popularidad debido a su éxito en numerosas competiciones de <em>machine learning</em> (como Kaggle). Aunque se basa en los principios de GBM, XGBoost introduce varias mejoras clave que lo hacen superior en muchos escenarios.</p>
 <p>La idea fundamental de XGBoost, al igual que GBM, es construir un modelo aditivo de forma <strong>secuencial</strong>, donde cada nuevo árbol intenta corregir los errores residuales del conjunto de árboles previos. Sin embargo, XGBoost optimiza este proceso con las siguientes características:</p>
@@ -614,6 +629,9 @@
 <div id="gradient-boosting-machines-gbm" class="section level2 unnumbered">
 <h2>Gradient Boosting Machines (GBM)<a class="anchor" aria-label="anchor" href="#gradient-boosting-machines-gbm"><i class="fas fa-link"></i></a>
 </h2>
+<p><a href="https://dvillasanao.github.io/ML_Examples/Output/Ensemble/03_06_GBM.html" style="color: blue;">
+Gradient Boosting Machines (GBM) en R
+</a></p>
 <div class="inline-figure"><img src="img/Ensemble/GBM.png" width="50%" style="display: block; margin: auto;"></div>
 <p><strong>Gradient Boosting Machines (GBM)</strong> es un algoritmo de <strong>aprendizaje conjunto (ensemble learning)</strong> extremadamente potente y versátil, utilizado para <strong>clasificación</strong>, <strong>regresión</strong> y otras tareas predictivas. A diferencia de Random Forest que construye árboles de forma independiente en paralelo (bagging), GBM construye los árboles de forma <strong>secuencial</strong> y aditiva. La idea central es que cada nuevo árbol en el conjunto intenta corregir los errores residuales (residuos) del conjunto de árboles construidos previamente.</p>
 <p>El concepto fundamental detrás de GBM es el <strong>impulso (boosting)</strong>, donde los modelos “débiles” (generalmente árboles de decisión, a menudo árboles poco profundos o “stumps”) se combinan para formar un modelo “fuerte”. GBM logra esto de una manera específica:</p>
@@ -727,6 +745,9 @@
 <div id="gradient-boosted-regression-trees-gbrt" class="section level2 unnumbered">
 <h2>Gradient Boosted Regression Trees (GBRT)<a class="anchor" aria-label="anchor" href="#gradient-boosted-regression-trees-gbrt"><i class="fas fa-link"></i></a>
 </h2>
+<p><a href="https://dvillasanao.github.io/ML_Examples/Output/Ensemble/03_07_GBRT.html" style="color: blue;">
+Gradient Boosted Regression Trees (GBRT) en R
+</a></p>
 <div class="inline-figure"><img src="img/Ensemble/GBRT.png" width="50%" style="display: block; margin: auto;"></div>
 <p><strong>Gradient Boosted Regression Trees (GBRT)</strong>, a menudo conocida como <strong>Gradient Boosting Machines (GBM)</strong> cuando los modelos base son árboles de decisión de regresión, es una técnica de <strong>aprendizaje conjunto (ensemble learning)</strong> extremadamente potente y ampliamente utilizada para tareas de <strong>regresión</strong> (predicción de valores numéricos continuos) y también puede adaptarse para <strong>clasificación</strong>. Su fortaleza radica en su capacidad para construir un modelo predictivo robusto y preciso mediante la combinación secuencial de múltiples árboles de decisión “débiles”.</p>
 <p>La idea central de GBRT se basa en el principio de <strong>boosting</strong>, donde cada nuevo árbol en el conjunto se entrena para <strong>corregir los errores residuales</strong> (la diferencia entre los valores reales y las predicciones acumuladas del modelo hasta ese momento) de los árboles construidos en las iteraciones anteriores. Este proceso es iterativo y aditivo:</p>
@@ -840,6 +861,9 @@
 <div id="isolation-forest" class="section level2 unnumbered">
 <h2>Isolation Forest<a class="anchor" aria-label="anchor" href="#isolation-forest"><i class="fas fa-link"></i></a>
 </h2>
+<p><a href="https://dvillasanao.github.io/ML_Examples/Output/Ensemble/03_08_Isolation-Forest.html" style="color: blue;">
+Isolation Forest en R
+</a></p>
 <div class="inline-figure"><img src="img/Ensemble/Isolation%20Forest.png" width="50%" style="display: block; margin: auto;"></div>
 <div id="qkghkqabzq" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
   
@@ -938,6 +962,9 @@
 <div id="light-gradient-boosting-machine-lightgbm" class="section level2 unnumbered">
 <h2>Light Gradient Boosting Machine (LightGBM)<a class="anchor" aria-label="anchor" href="#light-gradient-boosting-machine-lightgbm"><i class="fas fa-link"></i></a>
 </h2>
+<p><a href="https://dvillasanao.github.io/ML_Examples/Output/Ensemble/03_09_LightGBM.html" style="color: blue;">
+Light Gradient Boosting Machine (LightGBM) en R
+</a></p>
 <div class="inline-figure"><img src="img/Ensemble/LightGBM.png" width="50%" style="display: block; margin: auto;"></div>
 <p><strong>LightGBM (Light Gradient Boosting Machine)</strong> es otro algoritmo de <strong>Gradient Boosting Machines (GBM)</strong> de alto rendimiento, desarrollado por Microsoft. Está diseñado para ser <strong>extremadamente rápido</strong> y <strong>eficiente</strong> en el uso de memoria, especialmente con grandes conjuntos de datos, sin sacrificar una precisión significativa. Al igual que XGBoost, ha ganado popularidad en competiciones de <em>machine learning</em> por su velocidad y capacidad para manejar grandes volúmenes de datos.</p>
 <p>La idea fundamental de LightGBM es la misma que la de otros algoritmos de boosting: construir un modelo aditivo de forma <strong>secuencial</strong>, donde cada nuevo árbol intenta corregir los errores residuales del modelo combinado anterior. Sin embargo, LightGBM introduce varias optimizaciones clave para lograr su notable eficiencia:</p>
@@ -1049,6 +1076,9 @@
 <div id="random-forest" class="section level2 unnumbered">
 <h2>Random Forest<a class="anchor" aria-label="anchor" href="#random-forest"><i class="fas fa-link"></i></a>
 </h2>
+<p><a href="https://dvillasanao.github.io/ML_Examples/Output/Ensemble/03_10_Random-Forest.html" style="color: blue;">
+Random Forest en R
+</a></p>
 <div class="inline-figure"><img src="img/Ensemble/Bagging.png" width="50%" style="display: block; margin: auto;"></div>
 <p><strong>Random Forest</strong> es un algoritmo de <strong>aprendizaje conjunto (ensemble learning)</strong> altamente popular y potente, utilizado tanto para tareas de <strong>clasificación</strong> como de <strong>regresión</strong>. Fue desarrollado por Leo Breiman en 2001 y se basa en la idea de combinar las predicciones de múltiples <strong>árboles de decisión</strong> para lograr una mayor precisión y robustez que un solo árbol. La fuerza de Random Forest reside en dos conceptos clave: <strong>bagging (bootstrap aggregation)</strong> y la <strong>aleatoriedad en la selección de características</strong>.</p>
 <p>La idea fundamental detrás de Random Forest es construir un “bosque” de árboles de decisión de una manera específica:</p>
@@ -1155,6 +1185,9 @@
 <div id="stacked-generlization-blending" class="section level2 unnumbered">
 <h2>Stacked Generlization (Blending)<a class="anchor" aria-label="anchor" href="#stacked-generlization-blending"><i class="fas fa-link"></i></a>
 </h2>
+<p><a href="https://dvillasanao.github.io/ML_Examples/Output/Ensemble/03_11_Blending.html" style="color: blue;">
+Stacked Generlization (Blending) en R
+</a></p>
 <div class="inline-figure"><img src="img/Ensemble/Blending.png" width="50%" style="display: block; margin: auto;"></div>
 <p><strong>Stacked Generalization</strong>, comúnmente conocido como <strong>Stacking</strong>, y su variante <strong>Blending</strong>, son técnicas avanzadas de <strong>aprendizaje conjunto (ensemble learning)</strong> que buscan combinar las predicciones de múltiples modelos de aprendizaje automático para obtener un rendimiento predictivo superior al de cualquier modelo individual. La idea fundamental es que, en lugar de simplemente promediar o votar las predicciones, se entrena un <strong>modelo de segundo nivel (meta-modelo)</strong> para aprender a combinar óptimamente las predicciones de los modelos de primer nivel (modelos base).</p>
 <p>El proceso de Stacking generalmente implica dos o más “capas” de modelos:</p>

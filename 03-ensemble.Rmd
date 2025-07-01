@@ -9,6 +9,10 @@
 
 ## Adaptive Boosting (AdaBoost)  {-}   
 
+<a href="https://dvillasanao.github.io/ML_Examples/Output/Ensemble/03_01_AdaBoost.html" style="color: blue;">
+  Adaptive Boosting (AdaBoost) en R
+</a>
+
 ```{r, echo = FALSE,out.width='50%', fig.align='center'}
 require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Ensemble/AdaBoost.png"))
@@ -102,6 +106,10 @@ tabla_adaboost %>%
 
 ## Boosting  {-}   
 
+<a href="https://dvillasanao.github.io/ML_Examples/Output/Ensemble/03_02_Boosting.html" style="color: blue;">
+  Boosting en R
+</a>
+
 ```{r, echo = FALSE,out.width='50%', fig.align='center'}
 require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Ensemble/Boosting.png"))
@@ -194,6 +202,10 @@ tabla_boosting %>%
 
 ## Bootstrapped Aggregation (Bagging)  {-}    
 
+<a href="https://dvillasanao.github.io/ML_Examples/Output/Ensemble/03_03_Bagging.html" style="color: blue;">
+  Bootstrapped Aggregation (Bagging) en R
+</a>
+
 ```{r, echo = FALSE,out.width='50%', fig.align='center'}
 require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Ensemble/Bagging.png"))
@@ -281,6 +293,10 @@ tabla_bagging %>%
 ```
 
 ## CatBoost {-}  
+
+<a href="https://dvillasanao.github.io/ML_Examples/Output/Ensemble/03_04_CatBoost.html" style="color: blue;">
+  CatBoost en R
+</a>
 
 ```{r, echo = FALSE,out.width='50%', fig.align='center'}
 require(knitr)
@@ -371,6 +387,10 @@ tabla_catboost %>%
 
 
 ## Extreme Gradient Boosting (XGBoost)  {-}   
+
+<a href="https://dvillasanao.github.io/ML_Examples/Output/Ensemble/03_05_XGBoost.html" style="color: blue;">
+  Extreme Gradient Boosting (XGBoost) en R
+</a>
 
 ```{r, echo = FALSE,out.width='50%', fig.align='center'}
 require(knitr)
@@ -464,6 +484,10 @@ tabla_xgboost %>%
 
 
 ## Gradient Boosting Machines (GBM)  {-}  
+
+<a href="https://dvillasanao.github.io/ML_Examples/Output/Ensemble/03_06_GBM.html" style="color: blue;">
+  Gradient Boosting Machines (GBM) en R
+</a>
 
 ```{r, echo = FALSE,out.width='50%', fig.align='center'}
 require(knitr)
@@ -559,6 +583,10 @@ tabla_gbm %>%
 
 ## Gradient Boosted Regression Trees (GBRT)  {-}  
 
+<a href="https://dvillasanao.github.io/ML_Examples/Output/Ensemble/03_07_GBRT.html" style="color: blue;">
+  Gradient Boosted Regression Trees (GBRT) en R
+</a>
+
 ```{r, echo = FALSE,out.width='50%', fig.align='center'}
 require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Ensemble/GBRT.png"))
@@ -652,6 +680,10 @@ tabla_gbrt %>%
 
 ## Isolation Forest {-}  
 
+<a href="https://dvillasanao.github.io/ML_Examples/Output/Ensemble/03_08_Isolation-Forest.html" style="color: blue;">
+  Isolation Forest en R
+</a>
+
 ```{r, echo = FALSE,out.width='50%', fig.align='center'}
 require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Ensemble/Isolation Forest.png"))
@@ -741,6 +773,10 @@ tabla_isolation_forest %>%
 
 
 ## Light Gradient Boosting Machine (LightGBM)  {-}  
+
+<a href="https://dvillasanao.github.io/ML_Examples/Output/Ensemble/03_09_LightGBM.html" style="color: blue;">
+  Light Gradient Boosting Machine (LightGBM) en R
+</a>
 
 ```{r, echo = FALSE,out.width='50%', fig.align='center'}
 require(knitr)
@@ -833,6 +869,10 @@ tabla_lightgbm %>%
 
 ## Random Forest  {-}   
 
+<a href="https://dvillasanao.github.io/ML_Examples/Output/Ensemble/03_10_Random-Forest.html" style="color: blue;">
+  Random Forest en R
+</a>
+
 ```{r, echo = FALSE,out.width='50%', fig.align='center'}
 require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Ensemble/Bagging.png"))
@@ -922,7 +962,11 @@ tabla_rf %>%
          as_raw_html() 
 ```
 
-## Stacked Generlization (Blending) {-}    
+## Stacked Generlization (Blending) {-}   
+
+<a href="https://dvillasanao.github.io/ML_Examples/Output/Ensemble/03_11_Blending.html" style="color: blue;">
+  Stacked Generlization (Blending) en R
+</a>
 
 ```{r, echo = FALSE,out.width='50%', fig.align='center'}
 require(knitr)

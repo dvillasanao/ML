@@ -9,6 +9,11 @@
 
 ## Autoenconder  {-}  
 
+<a href="https://dvillasanao.github.io/ML_Examples/Output/Neural%20Networks/04_01_Autoenconder.html" style="color: blue;">
+  Autoenconder en R
+</a>
+
+
 ```{r, echo = FALSE,out.width='50%', fig.align='center'}
 require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Neural Networks/Autoenconder.png"))
@@ -111,6 +116,11 @@ tabla_autoencoder %>%
 
 ## Back - Propagation  {-}  
 
+<a href="https://dvillasanao.github.io/ML_Examples/Output/Neural%20Networks/04_02_Back---Propagation.html" style="color: blue;">
+  Back - Propagation en R
+</a>
+
+
 ```{r, echo = FALSE,out.width='50%', fig.align='center'}
 require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Neural Networks/Back - Propagation.png"))
@@ -211,6 +221,11 @@ tabla_backprop %>%
 
 ## Convolutional Neural Network (CNN)  {-}   
 
+<a href="https://dvillasanao.github.io/ML_Examples/Output/Neural%20Networks/04_03_CNN.html" style="color: blue;">
+  Convolutional Neural Network (CNN) en R
+</a>
+
+
 
 ```{r, echo = FALSE,out.width='50%', fig.align='center'}
 require(knitr)
@@ -302,6 +317,11 @@ tabla_cnn %>%
 
 
 ## Hopfield Network  {-}    
+
+<a href="https://dvillasanao.github.io/ML_Examples/Output/Neural%20Networks/04_04_Hopfield-Network.html" style="color: blue;">
+  Hopfield Network en R
+</a>
+
 
 ```{r, echo = FALSE,out.width='50%', fig.align='center'}
 require(knitr)
@@ -400,6 +420,11 @@ tabla_hopfield %>%
 
 ## Gated Recurrent Unit (GRU) {-}   
 
+<a href="https://dvillasanao.github.io/ML_Examples/Output/Neural%20Networks/04_12_GRU.html" style="color: blue;">
+  Gated Recurrent Unit (GRU) en R
+</a>
+
+
 ```{r, echo = FALSE,out.width='50%', fig.align='center'}
 require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Neural Networks/GRU.png"))
@@ -489,6 +514,11 @@ tabla_gru %>%
 
 
 ## Generative Adversarial Networks (GANs) {-}  
+
+<a href="https://dvillasanao.github.io/ML_Examples/Output/Neural%20Networks/04_05_GANs.html" style="color: blue;">
+  Generative Adversarial Networks (GANs) en R
+</a>
+
 
 ```{r, echo = FALSE,out.width='50%', fig.align='center'}
 require(knitr)
@@ -580,6 +610,11 @@ tabla_gan %>%
 
 ## Long Short-Term Memory (LSTM) {-}  
 
+<a href="https://dvillasanao.github.io/ML_Examples/Output/Neural%20Networks/04_13_LSTM.html" style="color: blue;">
+  Long Short-Term Memory (LSTM) en R
+</a>
+
+
 ```{r, echo = FALSE,out.width='50%', fig.align='center'}
 require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Neural Networks/LSTM.png"))
@@ -669,6 +704,11 @@ tabla_lstm %>%
 
 
 ## Multilayer Perceptron (MP)  {-}     
+
+<a href="https://dvillasanao.github.io/ML_Examples/Output/Neural%20Networks/04_06_MP.html" style="color: blue;">
+  Multilayer Perceptron (MP) en R
+</a>
+
 
 ```{r, echo = FALSE,out.width='50%', fig.align='center'}
 require(knitr)
@@ -762,6 +802,11 @@ tabla_mp %>%
 ```
 
 ## Perceptron  {-}     
+
+<a href="https://dvillasanao.github.io/ML_Examples/Output/Neural%20Networks/04_07_Perceptron.html" style="color: blue;">
+  Perceptron en R
+</a>
+
 
 ```{r, echo = FALSE,out.width='50%', fig.align='center'}
 require(knitr)
@@ -858,7 +903,12 @@ tabla_perceptron %>%
 ```
 
 
-## Radial Basis Function Network (RBFN)  {-}   
+## Radial Basis Function Network (RBFN)  {-}  
+
+<a href="https://dvillasanao.github.io/ML_Examples/Output/Neural%20Networks/04_08_RBFN.html" style="color: blue;">
+  Radial Basis Function Network (RBFN) en R
+</a>
+
 
 ```{r, echo = FALSE,out.width='50%', fig.align='center'}
 require(knitr)
@@ -954,6 +1004,11 @@ tabla_rbfn %>%
 ```
 
 ## Recurrent Neural Networks (RNNs) {-}  
+
+<a href="https://dvillasanao.github.io/ML_Examples/Output/Neural%20Networks/04_09_RNNs.html" style="color: blue;">
+  Recurrent Neural Networks (RNNs) en R
+</a>
+
 
 ```{r, echo = FALSE,out.width='50%', fig.align='center'}
 require(knitr)
@@ -1055,6 +1110,11 @@ tabla_rnn %>%
 
 ## Restricted Boltzmann Machine (RBM) {-}   
 
+<a href="https://dvillasanao.github.io/ML_Examples/Output/Neural%20Networks/04_10_RBM.html" style="color: blue;">
+  Restricted Boltzmann Machine (RBM) en R
+</a>
+
+
 ```{r, echo = FALSE,out.width='50%', fig.align='center'}
 require(knitr)
 knitr::include_graphics(paste0(here::here(), "/img/Neural Networks/RBM.png"))
@@ -1144,6 +1204,11 @@ tabla_rbm %>%
 
 
 ## Transformers  {-}  
+
+<a href="https://dvillasanao.github.io/ML_Examples/Output/Neural%20Networks/04_11_Transformers.html" style="color: blue;">
+  Transformers en R
+</a>
+
 
 
 ```{r, echo = FALSE,out.width='50%', fig.align='center'}
